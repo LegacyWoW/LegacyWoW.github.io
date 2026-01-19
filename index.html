@@ -23,6 +23,21 @@
     a{color:#fff}
     .wrap{max-width:1100px;margin:0 auto;padding:0 18px}
 
+    /* ===== Snow overlay canvas ===== */
+    #snowCanvas{
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none; /* doesn't block clicks */
+      z-index: 9999;
+      opacity: 0.85;
+    }
+    /* Respect users who prefer reduced motion */
+    @media (prefers-reduced-motion: reduce){
+      #snowCanvas{ display:none; }
+    }
+
     /* Header + hero image (HOME ONLY) */
     header{
       border-bottom: 1px solid rgba(255,255,255,.10);
@@ -123,6 +138,7 @@
       grid-template-columns: 1fr 1fr;
       gap: 14px;
       align-items: stretch;
+      text-align:left;
     }
 
     /* Status box */
@@ -132,7 +148,6 @@
       border: 1px solid rgba(255,255,255,.14);
       background: rgba(0,0,0,.45);
       backdrop-filter: blur(8px);
-      text-align: left;
       box-shadow: 0 16px 40px rgba(0,0,0,.45);
     }
     .status-title{
@@ -183,7 +198,6 @@
       border: 1px solid rgba(255,255,255,.14);
       background: rgba(0,0,0,.45);
       backdrop-filter: blur(8px);
-      text-align: left;
       box-shadow: 0 16px 40px rgba(0,0,0,.45);
     }
     .realm-title{
@@ -268,6 +282,9 @@
 </head>
 
 <body>
+  <!-- Snow overlay -->
+  <canvas id="snowCanvas" aria-hidden="true"></canvas>
+
   <header>
     <div class="wrap">
       <div class="toprow">
@@ -278,6 +295,7 @@
 
         <nav>
           <a href="how-to-play.html">How to Play</a>
+          <a href="downloads.html">Downloads</a>
           <a href="account.html">Create Account</a>
           <a href="news.html">News</a>
           <a href="rules.html">Rules</a>
@@ -295,8 +313,8 @@
 
         <div class="hero-row">
           <a class="btn primary" href="how-to-play.html">Get Started</a>
+          <a class="btn" href="downloads.html">Downloads</a>
           <a class="btn" href="map.html">Open World Map</a>
-          <a class="btn" href="account.html">Create Account</a>
         </div>
 
         <div class="status-row">
@@ -364,8 +382,15 @@
         <div class="card span6">
           <h2>Start playing in minutes</h2>
           <p>
-            Set your realmlist, create an account, and log in.
+            Download the client & launcher, set your realmlist, and log in.
             See <a href="how-to-play.html">How to Play</a>.
+          </p>
+        </div>
+
+        <div class="card span4">
+          <h2>Downloads</h2>
+          <p>
+            Get the <a href="downloads.html">Client + Launcher</a>.
           </p>
         </div>
 
@@ -374,13 +399,6 @@
           <p>
             Browse points of interest, events, and faction activity.
             Open the <a href="map.html">World Map</a>.
-          </p>
-        </div>
-
-        <div class="card span4">
-          <h2>Create account</h2>
-          <p>
-            Account creation is manual for now. Use <a href="account.html">Create Account</a>.
           </p>
         </div>
 
@@ -409,19 +427,18 @@
   </footer>
 
   <script>
+    // Footer year
     document.getElementById("year").textContent = new Date().getFullYear();
 
     // ===========================
-    // Status + Population Simulator
+    // Status + Population Simulator (trend + timestamp)
     // ===========================
     const MIN_PLAYERS = 500;
     const MAX_PLAYERS = 1850;
 
-    // Current value starts random
     let currentPlayers =
       Math.floor(Math.random() * (MAX_PLAYERS - MIN_PLAYERS + 1)) + MIN_PLAYERS;
 
-    // "Trend" target slowly changes, making it feel more realistic
     let trendTarget =
       Math.floor(Math.random() * (MAX_PLAYERS - MIN_PLAYERS + 1)) + MIN_PLAYERS;
 
@@ -431,53 +448,128 @@
     function formatTime(d){
       return d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
     }
-
     function setUpdatedNow(){
       updatedEl.textContent = formatTime(new Date());
     }
-
     function clamp(n, min, max){
       return Math.max(min, Math.min(max, n));
     }
 
     function stepPopulation(){
-      // Occasionally pick a new trend target (every ~20–45 seconds)
-      // This creates gentle "waves" up/down.
+      // Occasionally pick a new trend target (gentle waves)
       if (Math.random() < 0.18) {
         trendTarget =
           Math.floor(Math.random() * (MAX_PLAYERS - MIN_PLAYERS + 1)) + MIN_PLAYERS;
       }
 
-      // Move slightly toward trend target
       const toward = trendTarget - currentPlayers;
-
-      // Small drift in direction of target + a little noise
-      const drift = Math.sign(toward) * (1 + Math.floor(Math.random() * 6)); // 1..6 toward target
+      const drift = Math.sign(toward) * (1 + Math.floor(Math.random() * 6)); // 1..6 toward
       const noise = Math.floor(Math.random() * 7) - 3; // -3..+3
 
-      // If we're very close, smaller changes
       let change = drift + noise;
-      if (Math.abs(toward) < 25) {
-        change = Math.floor(Math.random() * 7) - 3; // -3..+3
-      }
+      if (Math.abs(toward) < 25) change = Math.floor(Math.random() * 7) - 3;
 
       currentPlayers = clamp(currentPlayers + change, MIN_PLAYERS, MAX_PLAYERS);
-
       playerEl.textContent = currentPlayers.toLocaleString();
       setUpdatedNow();
     }
 
-    // Initial paint
     playerEl.textContent = currentPlayers.toLocaleString();
     setUpdatedNow();
 
-    // Update every 4–7 seconds
     function loop(){
       stepPopulation();
-      const next = Math.random() * 3000 + 4000;
+      const next = Math.random() * 3000 + 4000; // 4–7 seconds
       setTimeout(loop, next);
     }
     loop();
+
+    // ===========================
+    // Snow effect (Northrend vibe)
+    // ===========================
+    (function snow(){
+      const canvas = document.getElementById("snowCanvas");
+      const ctx = canvas.getContext("2d", { alpha: true });
+
+      // Tweak these for heavier/lighter snow
+      const FLAKES = 140;           // number of flakes
+      const WIND_BASE = 0.25;       // constant drift
+      const WIND_VARIANCE = 0.6;    // gust amount
+
+      let w = 0, h = 0, dpr = 1;
+      let flakes = [];
+      let wind = WIND_BASE;
+      let gustT = 0;
+
+      function resize(){
+        dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+        w = Math.floor(window.innerWidth);
+        h = Math.floor(window.innerHeight);
+        canvas.width = Math.floor(w * dpr);
+        canvas.height = Math.floor(h * dpr);
+        canvas.style.width = w + "px";
+        canvas.style.height = h + "px";
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      }
+
+      function rand(min, max){ return Math.random() * (max - min) + min; }
+
+      function makeFlake(){
+        const size = rand(1.2, 3.8);
+        return {
+          x: rand(0, w),
+          y: rand(-h, 0),
+          r: size,
+          vy: rand(0.7, 2.2) + size * 0.25,
+          vx: rand(-0.2, 0.2),
+          alpha: rand(0.35, 0.9),
+          wobble: rand(0, Math.PI * 2),
+          wobbleSpeed: rand(0.006, 0.02)
+        };
+      }
+
+      function init(){
+        flakes = [];
+        for (let i = 0; i < FLAKES; i++) flakes.push(makeFlake());
+      }
+
+      function step(){
+        // gentle gusts
+        gustT += 0.003;
+        wind = WIND_BASE + Math.sin(gustT) * WIND_VARIANCE * 0.5;
+
+        ctx.clearRect(0, 0, w, h);
+        for (const f of flakes){
+          f.wobble += f.wobbleSpeed;
+
+          f.x += (f.vx + wind) + Math.sin(f.wobble) * 0.25;
+          f.y += f.vy;
+
+          // wrap around
+          if (f.y > h + 10){ f.y = -10; f.x = rand(0, w); }
+          if (f.x > w + 10){ f.x = -10; }
+          if (f.x < -10){ f.x = w + 10; }
+
+          ctx.globalAlpha = f.alpha;
+          ctx.beginPath();
+          ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
+          ctx.fillStyle = "#ffffff";
+          ctx.fill();
+        }
+
+        requestAnimationFrame(step);
+      }
+
+      resize();
+      init();
+      step();
+
+      let rAF;
+      window.addEventListener("resize", () => {
+        cancelAnimationFrame(rAF);
+        rAF = requestAnimationFrame(() => { resize(); init(); });
+      }, { passive: true });
+    })();
   </script>
 </body>
 </html>
