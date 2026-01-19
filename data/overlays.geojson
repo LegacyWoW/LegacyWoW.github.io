@@ -1,21 +1,4 @@
 {
   "type": "FeatureCollection",
-  "features": [
-    {
-      "type": "Feature",
-      "properties": {
-        "title": "Stormwind",
-        "color": "#ffffff",
-        "category": "neutral",
-        "icon": "city"
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          1220.75,
-          300.5
-        ]
-      }
-    }
-  ]
+  "features": []
 }
