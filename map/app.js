@@ -1,19 +1,19 @@
 // =======================================================
-// LegacyWoW Interactive Map (Image-based, Leaflet)
+// LegacyWoW Interactive Azeroth Map (IMAGE-BASED)
 // Admin mode: map.html?admin=1
-// Overlays load from: data/overlays.geojson
 // =======================================================
 
 // ---- ADMIN MODE ----
 const ADMIN = new URLSearchParams(window.location.search).get("admin") === "1";
 
 // ---- MAP IMAGE CONFIG ----
-// !!! DO NOT CHANGE AFTER YOU START PLACING MARKERS !!!
+// DO NOT CHANGE AFTER PLACING MARKERS
 const IMAGE_HEIGHT = 1000;
 const IMAGE_WIDTH  = 1800;
 
-// Path to your uploaded map image
-const IMAGE_URL = "assets/worldmap.jpg?v=" + Date.now();
+// ABSOLUTE PATHS (THIS FIXES THE BLACK MAP ISSUE)
+const IMAGE_URL = "/assets/worldmap.jpg";
+const DATA_URL  = "/data/overlays.geojson";
 
 // ---- CREATE MAP ----
 const map = L.map("map", {
@@ -24,22 +24,20 @@ const map = L.map("map", {
   attributionControl: false
 });
 
-// Image bounds (pixel space)
+// Image bounds (pixel coordinate space)
 const bounds = [[0, 0], [IMAGE_HEIGHT, IMAGE_WIDTH]];
-
-// Fit & lock map
 map.fitBounds(bounds);
 map.setMaxBounds(bounds);
 
-// ---- ADD IMAGE OVERLAY ----
+// ---- ADD IMAGE OVERLAY (AZEROTH MAP) ----
 L.imageOverlay(IMAGE_URL, bounds).addTo(map);
 
-// ---- DRAWN LAYERS GROUP ----
+// ---- DRAWN ITEMS GROUP ----
 const drawnItems = new L.FeatureGroup();
 map.addLayer(drawnItems);
 
 // ---- LOAD SAVED OVERLAYS ----
-fetch("data/overlays.geojson", { cache: "no-store" })
+fetch(DATA_URL, { cache: "no-store" })
   .then(res => res.ok ? res.json() : null)
   .then(data => {
     if (!data || !data.features) return;
@@ -71,9 +69,8 @@ fetch("data/overlays.geojson", { cache: "no-store" })
           title: feature.properties?.title || "",
           color: feature.properties?.color || "#2ea8ff"
         };
-        const title = layer._lw.title;
-        if (title && layer.bindPopup) {
-          layer.bindPopup(`<b>${escapeHtml(title)}</b>`);
+        if (layer._lw.title && layer.bindPopup) {
+          layer.bindPopup(`<b>${escapeHtml(layer._lw.title)}</b>`);
         }
       }
     }).eachLayer(l => drawnItems.addLayer(l));
@@ -188,34 +185,8 @@ function attachEditPopup(layer) {
 // ---- APPLY STYLE ----
 function applyStyle(layer) {
   const color = layer._lw?.color || "#2ea8ff";
-
   if (layer.setStyle) {
     layer.setStyle({
       color,
       fillColor: color,
-      fillOpacity: 0.25,
-      opacity: 0.9,
-      weight: 3
-    });
-  }
-}
-
-// ---- UTILITIES ----
-function downloadJSON(obj, filename) {
-  const blob = new Blob([JSON.stringify(obj, null, 2)], { type: "application/json" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = filename;
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-  URL.revokeObjectURL(url);
-}
-
-function escapeHtml(s) {
-  return String(s).replace(/[&<>"']/g, c => ({
-    "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"
-  }[c]));
-}
-function escapeAttr(s){ return escapeHtml(s).replace(/"/g,"&quot;"); }
+      fil
