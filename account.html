@@ -21,7 +21,7 @@
       background: radial-gradient(1200px 600px at 50% 0%, #1a1a1a 0%, var(--bg) 60%);
       color: var(--text);
     }
-    .wrap{ max-width:900px; margin:0 auto; padding:26px 18px; }
+    .wrap{ max-width:950px; margin:0 auto; padding:26px 18px; }
     a{ color:#fff; }
     .top{
       display:flex;
@@ -51,6 +51,8 @@
       border:1px solid rgba(255,255,255,.12);
       background: rgba(255,255,255,.04);
     }
+    .nav a:hover{ background: rgba(255,255,255,.10); }
+
     .panel{
       border:1px solid var(--border);
       border-radius:18px;
@@ -58,7 +60,7 @@
       padding:18px;
     }
     h1{ margin:0 0 6px; font-size:30px; }
-    p{ margin:0 0 14px; color:var(--muted); line-height:1.5; }
+    p{ margin:0 0 14px; color:var(--muted); line-height:1.55; }
 
     .grid{
       display:grid;
@@ -70,7 +72,7 @@
       flex-direction:column;
       gap:6px;
     }
-    label{ font-size:13px; opacity:.95; font-weight:700; }
+    label{ font-size:13px; opacity:.95; font-weight:800; }
     input{
       padding:12px 12px;
       border-radius:14px;
@@ -96,19 +98,11 @@
       border:1px solid rgba(255,255,255,.18);
       background: rgba(255,255,255,.08);
       color:#fff;
-      font-weight:800;
+      font-weight:900;
       cursor:pointer;
     }
     button:hover{ background: rgba(255,255,255,.12); }
 
-    .note{
-      margin-top:14px;
-      border-top:1px solid rgba(255,255,255,.10);
-      padding-top:14px;
-      color: rgba(232,232,232,.75);
-      font-size:13px;
-      line-height:1.5;
-    }
     .msg{
       display:none;
       margin-top:12px;
@@ -116,13 +110,41 @@
       border-radius:14px;
       border:1px solid rgba(255,255,255,.16);
       background: rgba(255,255,255,.06);
-      font-weight:700;
+      font-weight:800;
     }
     .msg.ok{ color: var(--ok); }
     .msg.bad{ color: var(--bad); }
 
-    @media (max-width: 800px){
-      .grid{ grid-template-columns: 1fr; }
+    .codebox{
+      display:none;
+      margin-top:12px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.35);
+      border-radius:16px;
+      padding:12px;
+      overflow:auto;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size:13px;
+      color: rgba(255,255,255,.92);
+      white-space: pre;
+    }
+    .note{
+      margin-top:14px;
+      border-top:1px solid rgba(255,255,255,.10);
+      padding-top:14px;
+      color: rgba(232,232,232,.75);
+      font-size:13px;
+      line-height:1.55;
+    }
+    .mini{
+      margin-top:12px;
+      color: rgba(232,232,232,.78);
+      font-size:13px;
+      line-height:1.55;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      border-radius:16px;
+      padding:12px;
     }
   </style>
 </head>
@@ -134,21 +156,23 @@
       <div class="nav">
         <a href="how-to-play.html">How to Play</a>
         <a href="news.html">News</a>
-        <a href="account.html">Create Account</a>
+        <a href="rules.html">Rules</a>
+        <a href="faq.html">FAQ</a>
       </div>
     </div>
 
     <div class="panel">
       <h1>Create Account</h1>
       <p>
-        Create your LegacyWoW account below. This page is ready now, and we can connect it to your real account system when you’re ready.
+        For now, account creation is <b>manual</b> (safe and simple). Fill this out and the site will generate the exact
+        <b>AzerothCore console command</b> you can copy/paste into your server to create the account.
       </p>
 
       <form id="accountForm" autocomplete="off">
         <div class="grid">
           <div class="field">
             <label for="username">Account Name</label>
-            <input id="username" name="username" placeholder="e.g. ThrallSlayer" minlength="3" maxlength="16" required />
+            <input id="username" name="username" placeholder="e.g. LegacyPlayer" minlength="3" maxlength="16" required />
           </div>
 
           <div class="field">
@@ -168,30 +192,35 @@
         </div>
 
         <div class="actions">
-          <button type="submit">Create Account</button>
+          <button type="submit">Generate Create Command</button>
+          <button type="button" id="copyBtn">Copy Command</button>
           <a href="index.html">Back to Home</a>
         </div>
 
         <div id="msgOk" class="msg ok"></div>
         <div id="msgBad" class="msg bad"></div>
+        <div id="cmdBox" class="codebox"></div>
       </form>
 
+      <div class="mini">
+        <b>Admin Instructions (AzerothCore):</b><br/>
+        1) Open your <b>worldserver console</b> (or GM in-game).<br/>
+        2) Paste the generated command, press Enter.<br/>
+        3) The player can now log in with that username/password.
+      </div>
+
       <div class="note">
-        <b>Important:</b> GitHub Pages can’t directly create accounts on your game server by itself.
-        To make this fully functional, we’ll connect it to your server’s account system (an API or a web backend).
-        For now, this validates your input and shows a “ready” message.
+        <b>Why not SQL?</b> AzerothCore stores secure password hashes. Using the built-in <code>account create</code> command avoids mistakes and keeps everything compatible.
       </div>
     </div>
   </div>
 
   <script>
-    // Later, if you have an API endpoint, you’ll set this to something like:
-    // const ACCOUNT_API = "https://yourdomain.com/api/create-account";
-    const ACCOUNT_API = "";
-
     const form = document.getElementById("accountForm");
     const msgOk = document.getElementById("msgOk");
     const msgBad = document.getElementById("msgBad");
+    const cmdBox = document.getElementById("cmdBox");
+    const copyBtn = document.getElementById("copyBtn");
 
     function show(el, text){
       el.textContent = text;
@@ -199,18 +228,30 @@
     }
     function hide(el){ el.style.display = "none"; }
 
-    form.addEventListener("submit", async (e) => {
+    function sanitizeUsername(u){
+      // AzerothCore usernames are typically uppercase internally, but command accepts normal.
+      // Keep it strict for safety:
+      return u.replace(/\s+/g,"").trim();
+    }
+
+    form.addEventListener("submit", (e) => {
       e.preventDefault();
       hide(msgOk); hide(msgBad);
+      cmdBox.style.display = "none";
+      cmdBox.textContent = "";
 
-      const username = document.getElementById("username").value.trim();
+      const usernameRaw = document.getElementById("username").value;
       const email = document.getElementById("email").value.trim();
       const password = document.getElementById("password").value;
       const confirm = document.getElementById("confirm").value;
 
-      // Simple client-side rules (safe + beginner-friendly)
+      const username = sanitizeUsername(usernameRaw);
+
       if(!/^[A-Za-z0-9_]+$/.test(username)){
         return show(msgBad, "Account Name can only contain letters, numbers, and underscore.");
+      }
+      if(username.length < 3 || username.length > 16){
+        return show(msgBad, "Account Name must be 3–16 characters.");
       }
       if(password !== confirm){
         return show(msgBad, "Passwords do not match.");
@@ -219,30 +260,34 @@
         return show(msgBad, "Password must be at least 6 characters.");
       }
 
-      // If no backend yet, show a “ready” message
-      if(!ACCOUNT_API){
-        return show(
-          msgOk,
-          "Looks good! Account creation backend is not connected yet. When you’re ready, we’ll wire this button to your real account system."
-        );
+      // Generate safe AzerothCore command
+      const cmd = `account create ${username} ${password}`;
+
+      cmdBox.textContent =
+`COPY/PASTE THIS INTO YOUR AZEROTHCORE WORLDSERVER CONSOLE:
+
+${cmd}
+
+Optional: if you want to set an email later, do it in your future account website or admin tools.
+Email entered here: ${email ? email : "(none)"}`
+      ;
+
+      cmdBox.style.display = "block";
+      show(msgOk, "Command generated! Copy it and paste into your worldserver console to create the account.");
+    });
+
+    copyBtn.addEventListener("click", async () => {
+      hide(msgOk); hide(msgBad);
+      if(!cmdBox.textContent){
+        return show(msgBad, "Generate the command first.");
       }
+      const textToCopy = cmdBox.textContent;
 
-      // If you DO have a backend later, this will work:
       try{
-        const res = await fetch(ACCOUNT_API, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ username, email, password })
-        });
-
-        const data = await res.json().catch(() => ({}));
-        if(!res.ok){
-          return show(msgBad, data.error || "Account creation failed. Please try again.");
-        }
-        show(msgOk, data.message || "Account created! You can now log in.");
-        form.reset();
-      }catch(err){
-        show(msgBad, "Network error. Backend not reachable.");
+        await navigator.clipboard.writeText(textToCopy);
+        show(msgOk, "Copied! Now paste it into your AzerothCore worldserver console.");
+      }catch(e){
+        show(msgBad, "Copy failed (browser blocked it). Select the text in the box and copy manually (Ctrl+C).");
       }
     });
   </script>
