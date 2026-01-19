@@ -5,7 +5,6 @@
   <title>LegacyWoW — World Map</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- Your shared site styling can stay; this file includes its own minimal styling too -->
   <style>
     :root{
       --bg:#0b0b0b;
@@ -21,13 +20,12 @@
       color: var(--text);
     }
 
-    /* Header matches your hero vibe */
     header{
       padding: 18px 0;
       border-bottom: 1px solid rgba(255,255,255,.10);
       background:
         linear-gradient(180deg, rgba(0,0,0,.25), rgba(0,0,0,.85)),
-        url("assets/hero.jpg");
+        url("/assets/hero.jpg");
       background-size: cover;
       background-position: center;
     }
@@ -58,7 +56,6 @@
     }
     nav a:hover{ background: rgba(0,0,0,.45); }
 
-    /* Map layout */
     .shell{
       position: relative;
       height: calc(100vh - 88px);
@@ -70,13 +67,12 @@
       background: #111;
     }
 
-    /* Floating UI */
     .panel{
       position:absolute;
       top:16px;
       left:16px;
       z-index: 999;
-      width: 320px;
+      width: 340px;
       max-width: calc(100% - 32px);
       border:1px solid var(--border);
       background: var(--panel);
@@ -127,7 +123,7 @@
       line-height:1.45;
     }
 
-    /* Leaflet tweaks so controls look fine on dark */
+    /* Leaflet dark tweaks */
     .leaflet-control a{
       background: rgba(0,0,0,.55) !important;
       color:#fff !important;
@@ -164,7 +160,7 @@
     <div class="wrap toprow">
       <a class="brand" href="index.html">
         <div class="logo" id="logoBox">
-          <img id="logoImg" src="assets/logo.png" alt="LegacyWoW" onerror="this.remove();" />
+          <img id="logoImg" src="/assets/logo.png" alt="LegacyWoW" onerror="this.remove();" />
         </div>
         <div>LegacyWoW — World Map</div>
       </a>
@@ -180,14 +176,14 @@
     </div>
   </header>
 
-  <img src="assets/worldmap.jpg" style="max-width:260px;border:1px solid #444;border-radius:12px;margin:12px 18px;" />
   <div class="shell">
     <div id="map"></div>
 
     <div class="panel">
       <h1>Interactive Map</h1>
       <p>
-        Users can view markers & polygons. Admins can enable edit mode with a URL flag.
+        Toggle layers (Alliance/Horde/Events/Neutral). Admins edit with:
+        <span class="kbd">map.html?admin=1</span>
       </p>
 
       <div class="row">
@@ -197,19 +193,20 @@
       </div>
 
       <div class="hint" id="helpBox" style="display:none;">
-        <div><b>Viewer mode:</b> default.</div>
+        <div><b>Viewer mode:</b> default (layers can still be toggled).</div>
         <div style="margin-top:6px;">
-          <b>Admin mode:</b> open the map like:
+          <b>Admin mode:</b> open:
           <div class="kbd" style="display:inline-block;margin-top:6px;">map.html?admin=1</div>
         </div>
         <div style="margin-top:8px;">
-          Draw shapes using the left toolbar, click a shape to rename/change color, then click <b>Export GeoJSON</b>.
-          Upload the exported file to: <span class="kbd">data/overlays.geojson</span>
+          Draw shapes → click them to set <b>Name</b>, <b>Color</b>, <b>Category</b> (layer), and marker <b>Icon</b>.
+          Then click <b>Export GeoJSON</b> and upload it to:
+          <span class="kbd">data/overlays.geojson</span>
         </div>
       </div>
     </div>
   </div>
 
-  <script src="map/app.js"></script>
+  <script src="/map/app.js"></script>
 </body>
 </html>
