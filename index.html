@@ -13,90 +13,169 @@
       --text:#e8e8e8;
       --muted: rgba(232,232,232,.85);
     }
+
     body{
       margin:0;
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      background: radial-gradient(1200px 600px at 50% 0%, #1a1a1a 0%, var(--bg) 60%);
+      background: var(--bg);
       color: var(--text);
     }
+
     .wrap{ max-width:1100px; margin:0 auto; padding:0 18px; }
+
+    /* HERO WITH IMAGE */
     header{
-      padding:54px 0 22px;
-      border-bottom:1px solid rgba(255,255,255,.08);
-      background: linear-gradient(180deg, rgba(20,20,20,.9), rgba(11,11,11,.6));
+      position: relative;
+      padding:60px 0 26px;
+      border-bottom:1px solid rgba(255,255,255,.10);
+      background:
+        linear-gradient(180deg, rgba(0,0,0,.25), rgba(0,0,0,.85)),
+        url("assets/hero.jpg");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
     }
+
     .hero{
       display:grid;
       grid-template-columns: 1.4fr .6fr;
       gap:16px;
       align-items:start;
     }
+
+    /* logo + title row */
+    .brandrow{
+      display:flex;
+      align-items:center;
+      gap:14px;
+      flex-wrap:wrap;
+      margin-bottom:8px;
+    }
+    .logo{
+      width:64px;
+      height:64px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.18);
+      background: rgba(0,0,0,.35);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
+      box-shadow: 0 12px 30px rgba(0,0,0,.35);
+    }
+    .logo img{
+      width:100%;
+      height:100%;
+      object-fit: cover;
+      display:block;
+    }
+    /* If you don’t upload logo.png, you’ll still see a nice box */
+    .logo.fallback::after{
+      content:"LW";
+      font-weight:900;
+      letter-spacing:.6px;
+      opacity:.9;
+    }
+
     h1{
-      margin:0 0 10px;
+      margin:0;
       font-size:52px;
       letter-spacing:.8px;
       line-height:1.02;
+      text-shadow: 0 6px 22px rgba(0,0,0,.55);
     }
+
     .sub{
       margin:0 0 18px;
-      color: var(--muted);
+      color: rgba(255,255,255,.86);
       max-width:80ch;
       font-size:16px;
       line-height:1.5;
+      text-shadow: 0 4px 18px rgba(0,0,0,.55);
     }
+
     .btns{ display:flex; gap:10px; flex-wrap:wrap; }
     .btn{
       display:inline-block;
       padding:12px 16px;
       border-radius:12px;
-      border:1px solid rgba(255,255,255,.18);
-      background: rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.22);
+      background: rgba(0,0,0,.35);
       color:#fff;
       text-decoration:none;
-      font-weight:600;
+      font-weight:700;
+      backdrop-filter: blur(4px);
     }
-    .btn:hover{ background: rgba(255,255,255,.12); }
-    .mini{
-      border:1px solid var(--border);
-      border-radius:16px;
+    .btn:hover{ background: rgba(0,0,0,.50); }
+
+    nav{
+      margin-top:14px;
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      opacity:.95;
+    }
+    nav a{
+      color:#fff;
+      text-decoration:none;
+      font-weight:700;
+      font-size:13px;
+      padding:8px 10px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,.18);
       background: rgba(0,0,0,.25);
+      backdrop-filter: blur(4px);
+    }
+    nav a:hover{ background: rgba(0,0,0,.45); }
+
+    .mini{
+      border:1px solid rgba(255,255,255,.14);
+      border-radius:16px;
+      background: rgba(0,0,0,.35);
       padding:14px;
+      backdrop-filter: blur(6px);
     }
     .mini h3{ margin:0 0 8px; font-size:14px; opacity:.95; }
+
     .pill{
       display:inline-block;
       font-size:12px;
       padding:6px 10px;
       border-radius:999px;
-      border:1px solid rgba(255,255,255,.16);
-      background: rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.18);
+      background: rgba(0,0,0,.30);
       margin-right:8px;
       margin-bottom:8px;
       opacity:.95;
       white-space:nowrap;
     }
 
-    main{ padding:28px 0 42px; }
+    main{
+      padding:28px 0 42px;
+      background: radial-gradient(1100px 520px at 50% 0%, #141414 0%, #0b0b0b 65%);
+    }
+
     .grid{
       display:grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap:14px;
     }
     .card{
-      border:1px solid var(--border);
+      border:1px solid rgba(255,255,255,.10);
       border-radius:16px;
-      background: var(--panel);
+      background: rgba(255,255,255,.04);
       padding:16px;
       min-height:120px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.25);
     }
     .card h3{ margin:0 0 6px; font-size:16px; }
     .card p{ margin:0; color: var(--muted); font-size:13.5px; line-height:1.45; }
 
     .bar{
       margin-top:14px;
-      border:1px solid var(--border);
+      border:1px solid rgba(255,255,255,.10);
       border-radius:16px;
-      background: rgba(0,0,0,.25);
+      background: rgba(0,0,0,.30);
       padding:14px;
       display:flex;
       justify-content:space-between;
@@ -113,30 +192,14 @@
       color: rgba(232,232,232,.65);
       font-size:12.5px;
       line-height:1.45;
+      background:#070707;
     }
-    nav{
-      margin-top:14px;
-      display:flex;
-      gap:12px;
-      flex-wrap:wrap;
-      opacity:.95;
-    }
-    nav a{
-      color:#fff;
-      text-decoration:none;
-      font-weight:600;
-      font-size:13px;
-      padding:8px 10px;
-      border-radius:12px;
-      border:1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.04);
-    }
-    nav a:hover{ background: rgba(255,255,255,.10); }
 
     @media (max-width: 900px){
       h1{ font-size:38px; }
       .hero{ grid-template-columns: 1fr; }
       .grid{ grid-template-columns: 1fr; }
+      header{ padding:44px 0 22px; }
     }
   </style>
 </head>
@@ -146,10 +209,17 @@
     <div class="wrap">
       <div class="hero">
         <div>
-          <h1>LegacyWoW</h1>
+          <div class="brandrow">
+            <!-- If you uploaded assets/logo.png it will show. If not, you’ll see “LW”. -->
+            <div class="logo" id="logoBox">
+              <img id="logoImg" src="assets/logo.png" alt="LegacyWoW Logo" onerror="this.remove();" />
+            </div>
+            <h1>LegacyWoW</h1>
+          </div>
+
           <p class="sub">
-            A progressive World of Warcraft server for the <b>3.3.5a</b> client, beginning at <b>patch 1.0.0</b> and advancing all the way to <b>3.3.5a</b> —
-            with <b>custom content</b> added along the way to keep the journey fresh.
+            A progressive World of Warcraft server for the <b>3.3.5a</b> client, beginning at <b>patch 1.0.0</b> and advancing to <b>3.3.5a</b> —
+            with <b>custom content</b> added throughout the journey.
           </p>
 
           <div class="btns">
@@ -171,6 +241,7 @@
           <div class="pill">Progression: 1.0.0 → 3.3.5a</div>
           <div class="pill">Custom Content: Yes</div>
           <div class="pill">Core: AzerothCore</div>
+          <div class="pill">Realmlist: 25.39.161.60</div>
 
           <div class="bar">
             <div>
@@ -188,23 +259,24 @@
       <div class="grid">
         <div class="card">
           <h3>Patch Progression</h3>
-          <p>Start in classic launch content (1.0.0) and progress forward through expansions toward 3.3.5a.</p>
+          <p>Start in classic launch era content (1.0.0) and progress forward through eras toward 3.3.5a.</p>
         </div>
         <div class="card">
           <h3>Custom Content</h3>
-          <p>Original quests, events, and surprises appear throughout the progression — not just at the end.</p>
+          <p>Original quests, events, and surprises appear throughout progression — not just at the end.</p>
         </div>
         <div class="card">
-          <h3>Built on AzerothCore</h3>
-          <p>Stable 3.3.5a foundation with room to grow and continuously improve.</p>
+          <h3>Stable Core</h3>
+          <p>Built on AzerothCore for a reliable foundation and room to grow with frequent improvements.</p>
         </div>
       </div>
 
       <div class="bar" style="margin-top:16px;">
         <div>
-          <strong>New here?</strong>
-          <span>Go to <a href="how-to-play.html" style="color:#fff;">How to Play</a> to set your realmlist and get started.</span>
+          <strong>Realmlist:</strong>
+          <span><code style="color:#fff;">set realmlist 25.39.161.60</code></span>
         </div>
+        <span>New? Start with <a href="how-to-play.html" style="color:#fff;">How to Play</a>.</span>
       </div>
     </div>
   </main>
@@ -219,9 +291,17 @@
   <script>
     document.getElementById("year").textContent = new Date().getFullYear();
 
-    // Optional: server status (we can wire this up later if you add a status endpoint)
-    // document.getElementById("statusText").textContent = "Online";
-    // document.getElementById("playersText").textContent = "Players: 123";
+    // Logo fallback if logo image missing
+    const logoImg = document.getElementById("logoImg");
+    const logoBox = document.getElementById("logoBox");
+    // If the image fails, we remove it and show "LW" via fallback class
+    logoImg.addEventListener("error", () => {
+      logoBox.classList.add("fallback");
+    });
+    // If the image loads, all good
+    logoImg.addEventListener("load", () => {
+      logoBox.classList.remove("fallback");
+    });
   </script>
 </body>
 </html>
