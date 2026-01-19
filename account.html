@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>LegacyWoW — Create Account</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    :root{
+      --bg:#0b0b0b;
+      --panel: rgba(255,255,255,.04);
+      --border: rgba(255,255,255,.10);
+      --text:#e8e8e8;
+      --muted: rgba(232,232,232,.85);
+      --ok: rgba(120,255,170,.9);
+      --bad: rgba(255,120,120,.9);
+    }
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: radial-gradient(1200px 600px at 50% 0%, #1a1a1a 0%, var(--bg) 60%);
+      color: var(--text);
+    }
+    .wrap{ max-width:900px; margin:0 auto; padding:26px 18px; }
+    a{ color:#fff; }
+    .top{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-bottom:14px;
+    }
+    .brand{
+      font-weight:800;
+      letter-spacing:.4px;
+      text-decoration:none;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+      padding:10px 12px;
+      border-radius:14px;
+      display:inline-block;
+    }
+    .nav{ display:flex; gap:10px; flex-wrap:wrap; }
+    .nav a{
+      text-decoration:none;
+      font-weight:700;
+      font-size:13px;
+      padding:10px 12px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+    }
+    .panel{
+      border:1px solid var(--border);
+      border-radius:18px;
+      background: rgba(0,0,0,.25);
+      padding:18px;
+    }
+    h1{ margin:0 0 6px; font-size:30px; }
+    p{ margin:0 0 14px; color:var(--muted); line-height:1.5; }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:12px;
+    }
+    .field{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+    label{ font-size:13px; opacity:.95; font-weight:700; }
+    input{
+      padding:12px 12px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.05);
+      color:#fff;
+      outline:none;
+      font-size:14px;
+    }
+    input::placeholder{ color: rgba(255,255,255,.45); }
+    input:focus{ border-color: rgba(255,255,255,.28); }
+
+    .actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:12px;
+      align-items:center;
+    }
+    button{
+      padding:12px 16px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.08);
+      color:#fff;
+      font-weight:800;
+      cursor:pointer;
+    }
+    button:hover{ background: rgba(255,255,255,.12); }
+
+    .note{
+      margin-top:14px;
+      border-top:1px solid rgba(255,255,255,.10);
+      padding-top:14px;
+      color: rgba(232,232,232,.75);
+      font-size:13px;
+      line-height:1.5;
+    }
+    .msg{
+      display:none;
+      margin-top:12px;
+      padding:12px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.16);
+      background: rgba(255,255,255,.06);
+      font-weight:700;
+    }
+    .msg.ok{ color: var(--ok); }
+    .msg.bad{ color: var(--bad); }
+
+    @media (max-width: 800px){
+      .grid{ grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="top">
+      <a class="brand" href="index.html">LegacyWoW</a>
+      <div class="nav">
+        <a href="how-to-play.html">How to Play</a>
+        <a href="news.html">News</a>
+        <a href="account.html">Create Account</a>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h1>Create Account</h1>
+      <p>
+        Create your LegacyWoW account below. This page is ready now, and we can connect it to your real account system when you’re ready.
+      </p>
+
+      <form id="accountForm" autocomplete="off">
+        <div class="grid">
+          <div class="field">
+            <label for="username">Account Name</label>
+            <input id="username" name="username" placeholder="e.g. ThrallSlayer" minlength="3" maxlength="16" required />
+          </div>
+
+          <div class="field">
+            <label for="email">Email (optional)</label>
+            <input id="email" name="email" placeholder="you@example.com" maxlength="64" />
+          </div>
+
+          <div class="field">
+            <label for="password">Password</label>
+            <input id="password" name="password" type="password" placeholder="••••••••" minlength="6" maxlength="64" required />
+          </div>
+
+          <div class="field">
+            <label for="confirm">Confirm Password</label>
+            <input id="confirm" name="confirm" type="password" placeholder="••••••••" minlength="6" maxlength="64" required />
+          </div>
+        </div>
+
+        <div class="actions">
+          <button type="submit">Create Account</button>
+          <a href="index.html">Back to Home</a>
+        </div>
+
+        <div id="msgOk" class="msg ok"></div>
+        <div id="msgBad" class="msg bad"></div>
+      </form>
+
+      <div class="note">
+        <b>Important:</b> GitHub Pages can’t directly create accounts on your game server by itself.
+        To make this fully functional, we’ll connect it to your server’s account system (an API or a web backend).
+        For now, this validates your input and shows a “ready” message.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Later, if you have an API endpoint, you’ll set this to something like:
+    // const ACCOUNT_API = "https://yourdomain.com/api/create-account";
+    const ACCOUNT_API = "";
+
+    const form = document.getElementById("accountForm");
+    const msgOk = document.getElementById("msgOk");
+    const msgBad = document.getElementById("msgBad");
+
+    function show(el, text){
+      el.textContent = text;
+      el.style.display = "block";
+    }
+    function hide(el){ el.style.display = "none"; }
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      hide(msgOk); hide(msgBad);
+
+      const username = document.getElementById("username").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
+      const confirm = document.getElementById("confirm").value;
+
+      // Simple client-side rules (safe + beginner-friendly)
+      if(!/^[A-Za-z0-9_]+$/.test(username)){
+        return show(msgBad, "Account Name can only contain letters, numbers, and underscore.");
+      }
+      if(password !== confirm){
+        return show(msgBad, "Passwords do not match.");
+      }
+      if(password.length < 6){
+        return show(msgBad, "Password must be at least 6 characters.");
+      }
+
+      // If no backend yet, show a “ready” message
+      if(!ACCOUNT_API){
+        return show(
+          msgOk,
+          "Looks good! Account creation backend is not connected yet. When you’re ready, we’ll wire this button to your real account system."
+        );
+      }
+
+      // If you DO have a backend later, this will work:
+      try{
+        const res = await fetch(ACCOUNT_API, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username, email, password })
+        });
+
+        const data = await res.json().catch(() => ({}));
+        if(!res.ok){
+          return show(msgBad, data.error || "Account creation failed. Please try again.");
+        }
+        show(msgOk, data.message || "Account created! You can now log in.");
+        form.reset();
+      }catch(err){
+        show(msgBad, "Network error. Backend not reachable.");
+      }
+    });
+  </script>
+</body>
+</html>
