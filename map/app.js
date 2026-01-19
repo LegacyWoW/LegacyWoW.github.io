@@ -1,5 +1,6 @@
 // =======================================================
 // LegacyWoW Interactive Map (Leaflet + Leaflet.draw)
+// FIXED: reliable Admin edit popup + Save button
 // Layers: Alliance / Horde / Events / Neutral
 // Marker icons: City, Raid, PvP, Quest, Event, Default
 //
@@ -10,14 +11,14 @@
 
 const ADMIN = new URLSearchParams(window.location.search).get("admin") === "1";
 
-// --- IMPORTANT: DO NOT CHANGE AFTER YOU START PLACING MARKERS ---
+// --- IMPORTANT: DO NOT CHANGE AFTER YOU PLACE MARKERS ---
 const IMAGE_HEIGHT = 1000;
 const IMAGE_WIDTH  = 1800;
 
 const IMAGE_URL = "/assets/worldmap.jpg";
 const DATA_URL  = "/data/overlays.geojson";
 
-// Inject marker CSS (keeps everything self-contained)
+// Inject marker CSS
 (function injectMarkerCSS(){
   const css = `
     .lw-marker{
@@ -34,7 +35,6 @@ const DATA_URL  = "/data/overlays.geojson";
       background: rgba(0,0,0,.55);
       user-select:none;
     }
-    .lw-marker::after{ content: ""; }
   `;
   const style = document.createElement("style");
   style.textContent = css;
@@ -43,20 +43,20 @@ const DATA_URL  = "/data/overlays.geojson";
 
 // Icon choices
 const ICONS = {
-  pin:  { label: "Default", emoji: "📍" },
-  city: { label: "City",    emoji: "🏰" },
-  raid: { label: "Raid",    emoji: "☠️" },
-  pvp:  { label: "PvP",     emoji: "⚔️" },
-  quest:{ label: "Quest",   emoji: "⭐" },
-  event:{ label: "Event",   emoji: "🎉" }
+  pin:   { label: "Default", emoji: "📍" },
+  city:  { label: "City",    emoji: "🏰" },
+  raid:  { label: "Raid",    emoji: "☠️" },
+  pvp:   { label: "PvP",     emoji: "⚔️" },
+  quest: { label: "Quest",   emoji: "⭐" },
+  event: { label: "Event",   emoji: "🎉" }
 };
 
 // Layer categories
 const CATEGORIES = [
-  { key: "neutral", label: "Neutral" },
+  { key: "neutral",  label: "Neutral" },
   { key: "alliance", label: "Alliance" },
-  { key: "horde", label: "Horde" },
-  { key: "events", label: "Events" }
+  { key: "horde",    label: "Horde" },
+  { key: "events",   label: "Events" }
 ];
 
 // Create map (image coordinate space)
@@ -72,18 +72,18 @@ const bounds = [[0,0],[IMAGE_HEIGHT, IMAGE_WIDTH]];
 map.fitBounds(bounds);
 map.setMaxBounds(bounds);
 
-// Add Azeroth image overlay
+// Add image overlay
 L.imageOverlay(IMAGE_URL, bounds).addTo(map);
 
-// Layer groups (these are what you toggle)
+// Category layer groups (toggleable)
 const groups = {
-  neutral: L.featureGroup().addTo(map),
+  neutral:  L.featureGroup().addTo(map),
   alliance: L.featureGroup().addTo(map),
-  horde: L.featureGroup().addTo(map),
-  events: L.featureGroup().addTo(map)
+  horde:    L.featureGroup().addTo(map),
+  events:   L.featureGroup().addTo(map)
 };
 
-// Layer toggles UI
+// Layer toggles
 L.control.layers(
   null,
   {
@@ -95,29 +95,44 @@ L.control.layers(
   { collapsed: false }
 ).addTo(map);
 
-// For Leaflet.draw editing, we keep a master collection
+// Master group used by Leaflet.draw edit/remove
 const drawnItems = new L.FeatureGroup().addTo(map);
 
-// Add everything in groups into drawnItems too (so edit tool can manage all)
-function addToCategory(layer, catKey){
-  const key = groups[catKey] ? catKey : "neutral";
-  groups[key].addLayer(layer);
+// ---------- Helpers: categories ----------
+function normalizeCategory(cat){
+  return groups[cat] ? cat : "neutral";
+}
+function addToCategory(layer, cat){
+  const c = normalizeCategory(cat);
+  groups[c].addLayer(layer);
   drawnItems.addLayer(layer);
 }
-
-// Remove from all category groups
-function removeFromCategories(layer){
+function removeFromAllCategories(layer){
   Object.values(groups).forEach(g => g.removeLayer(layer));
 }
 
-// Determine category
-function getCategory(layer){
-  return (layer._lw?.category && groups[layer._lw.category]) ? layer._lw.category : "neutral";
+// ---------- Helpers: styles/icons ----------
+function buildMarkerIcon(color, iconKey){
+  const emoji = ICONS[iconKey]?.emoji || ICONS.pin.emoji;
+  const html = `<div class="lw-marker" style="border-color:${color};">${emoji}</div>`;
+  return L.divIcon({
+    className: "",
+    html,
+    iconSize: [30,30],
+    iconAnchor: [15,15],
+    popupAnchor: [0,-14]
+  });
 }
 
-// Apply polygon/circle style
-function styleShape(layer){
+function applyStyle(layer){
   const color = layer._lw?.color || "#2ea8ff";
+
+  if (layer instanceof L.Marker) {
+    const iconKey = layer._lw?.icon || "pin";
+    layer.setIcon(buildMarkerIcon(color, iconKey));
+    return;
+  }
+
   if (layer.setStyle) {
     layer.setStyle({
       color,
@@ -129,47 +144,27 @@ function styleShape(layer){
   }
 }
 
-// Build a divIcon marker
-function buildMarkerIcon(color, iconKey){
-  const emoji = ICONS[iconKey]?.emoji || ICONS.pin.emoji;
-  const html = `<div class="lw-marker" style="border-color:${color};">${emoji}</div>`;
-  return L.divIcon({
-    className: "", // prevent default styles
-    html,
-    iconSize: [30, 30],
-    iconAnchor: [15, 15],
-    popupAnchor: [0, -14]
-  });
-}
-
-// Apply marker icon
-function styleMarker(layer){
-  const color = layer._lw?.color || "#2ea8ff";
-  const iconKey = layer._lw?.icon || "pin";
-  if (layer.setIcon) layer.setIcon(buildMarkerIcon(color, iconKey));
-}
-
-// Attach viewer popup
 function attachViewerPopup(layer){
   const title = layer._lw?.title || (layer instanceof L.Marker ? "Marker" : "Area");
-  if (layer.bindPopup) layer.bindPopup(`<b>${escapeHtml(title)}</b>`);
+  layer.bindPopup(`<b>${escapeHtml(title)}</b>`);
 }
 
-// Attach admin editor popup
+// FIX: reliable popup wiring (no missing Save button)
 function attachAdminPopup(layer){
-  const props = layer._lw || {};
-  const title = props.title || "";
-  const color = props.color || "#2ea8ff";
-  const category = props.category || "neutral";
-  const iconKey = props.icon || "pin";
   const isMarker = layer instanceof L.Marker;
 
+  layer._lw = layer._lw || {};
+  layer._lw.title = layer._lw.title ?? (isMarker ? "New Marker" : "New Area");
+  layer._lw.color = layer._lw.color ?? "#2ea8ff";
+  layer._lw.category = normalizeCategory(layer._lw.category ?? "neutral");
+  if (isMarker) layer._lw.icon = layer._lw.icon ?? "pin";
+
   const categoryOptions = CATEGORIES.map(c =>
-    `<option value="${c.key}" ${c.key===category ? "selected" : ""}>${c.label}</option>`
+    `<option value="${c.key}" ${c.key===layer._lw.category ? "selected" : ""}>${c.label}</option>`
   ).join("");
 
   const iconOptions = Object.entries(ICONS).map(([k,v]) =>
-    `<option value="${k}" ${k===iconKey ? "selected" : ""}>${v.emoji} ${v.label}</option>`
+    `<option value="${k}" ${k===(layer._lw.icon || "pin") ? "selected" : ""}>${v.emoji} ${v.label}</option>`
   ).join("");
 
   const iconRow = isMarker ? `
@@ -184,7 +179,7 @@ function attachAdminPopup(layer){
       <div style="font-weight:900;margin-bottom:8px;">Edit</div>
 
       <label style="font-size:12px;opacity:.9;">Name</label>
-      <input id="lw_title" value="${escapeAttr(title)}"
+      <input id="lw_title" value="${escapeAttr(layer._lw.title)}"
         style="width:100%;margin:6px 0 10px;padding:8px;border-radius:10px;border:1px solid rgba(255,255,255,.18);background:rgba(0,0,0,.35);color:#fff;" />
 
       <label style="font-size:12px;opacity:.9;">Category (Layer)</label>
@@ -195,13 +190,13 @@ function attachAdminPopup(layer){
       <div style="height:10px"></div>
 
       <label style="font-size:12px;opacity:.9;">Color</label>
-      <input id="lw_color" type="color" value="${escapeAttr(color)}"
+      <input id="lw_color" type="color" value="${escapeAttr(layer._lw.color)}"
         style="width:100%;height:40px;margin-top:6px;border-radius:10px;border:1px solid rgba(255,255,255,.18);background:rgba(0,0,0,.35);" />
 
       ${iconRow}
 
       <button id="lw_save"
-        style="margin-top:10px;width:100%;padding:10px;border-radius:12px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.08);color:#fff;font-weight:900;cursor:pointer;">
+        style="margin-top:10px;width:100%;padding:10px;border-radius:12px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.10);color:#fff;font-weight:900;cursor:pointer;">
         Save
       </button>
 
@@ -213,39 +208,39 @@ function attachAdminPopup(layer){
 
   layer.bindPopup(html).openPopup();
 
-  layer.once("popupopen", () => {
+  // Use a short timeout so the popup DOM is definitely present before we bind handlers
+  setTimeout(() => {
     const titleEl = document.getElementById("lw_title");
-    const catEl = document.getElementById("lw_category");
+    const catEl   = document.getElementById("lw_category");
     const colorEl = document.getElementById("lw_color");
-    const iconEl = document.getElementById("lw_icon");
-    const saveEl = document.getElementById("lw_save");
+    const iconEl  = document.getElementById("lw_icon");
+    const saveEl  = document.getElementById("lw_save");
 
-    if (!saveEl) return;
+    if (!saveEl) return; // if user closed popup instantly
 
-    saveEl.addEventListener("click", () => {
-      layer._lw = layer._lw || {};
-      layer._lw.title = (titleEl?.value || "").trim();
-      layer._lw.category = (catEl?.value || "neutral").trim();
+    saveEl.onclick = () => {
+      layer._lw.title = (titleEl?.value || "").trim() || (isMarker ? "Marker" : "Area");
+      layer._lw.category = normalizeCategory((catEl?.value || "neutral").trim());
       layer._lw.color = (colorEl?.value || "#2ea8ff").trim();
 
-      if (layer instanceof L.Marker) {
-        layer._lw.icon = (iconEl?.value || "pin").trim();
-        styleMarker(layer);
-      } else {
-        styleShape(layer);
-      }
+      if (isMarker) layer._lw.icon = (iconEl?.value || "pin").trim();
 
-      // Move between categories if needed
-      removeFromCategories(layer);
+      // Restyle
+      applyStyle(layer);
+
+      // Move between category layers (so toggles work)
+      removeFromAllCategories(layer);
       addToCategory(layer, layer._lw.category);
 
+      // Viewer popup content
       attachViewerPopup(layer);
+
       layer.closePopup();
-    });
-  });
+    };
+  }, 50);
 }
 
-// Load overlays
+// ---------- Load overlays ----------
 fetch(DATA_URL, { cache: "no-store" })
   .then(r => (r.ok ? r.json() : null))
   .then(geo => {
@@ -257,12 +252,11 @@ fetch(DATA_URL, { cache: "no-store" })
         const color = props.color || "#2ea8ff";
         const iconKey = props.icon || "pin";
 
-        // Use divIcon markers (icons!)
         const m = L.marker(latlng, { icon: buildMarkerIcon(color, iconKey) });
         m._lw = {
           title: props.title || "Marker",
           color,
-          category: props.category || "neutral",
+          category: normalizeCategory(props.category || "neutral"),
           icon: iconKey
         };
         attachViewerPopup(m);
@@ -274,26 +268,24 @@ fetch(DATA_URL, { cache: "no-store" })
         return { color, weight: 3, opacity: 0.9, fillColor: color, fillOpacity: 0.25 };
       },
       onEachFeature: (feature, layer) => {
-        // Non-point features arrive here
         if (feature.geometry.type !== "Point") {
           const props = feature.properties || {};
           layer._lw = {
             title: props.title || "Area",
             color: props.color || "#2ea8ff",
-            category: props.category || "neutral"
+            category: normalizeCategory(props.category || "neutral")
           };
-          styleShape(layer);
+          applyStyle(layer);
           attachViewerPopup(layer);
         }
       }
     }).eachLayer(layer => {
-      const cat = getCategory(layer);
-      addToCategory(layer, cat);
+      addToCategory(layer, layer._lw?.category || "neutral");
     });
   })
-  .catch(() => { /* ok if empty */ });
+  .catch(() => {});
 
-// Admin draw tools
+// ---------- Admin draw tools ----------
 if (ADMIN) {
   const drawControl = new L.Control.Draw({
     edit: { featureGroup: drawnItems, remove: true },
@@ -302,7 +294,6 @@ if (ADMIN) {
       rectangle: true,
       circle: true,
       marker: true,
-      // keep it simple: icons are handled on markers
       polyline: false,
       circlemarker: false
     }
@@ -311,41 +302,32 @@ if (ADMIN) {
 
   map.on(L.Draw.Event.CREATED, (e) => {
     const layer = e.layer;
+    const isMarker = layer instanceof L.Marker;
 
-    // Defaults
     layer._lw = {
-      title: (e.layerType === "marker") ? "New Marker" : "New Area",
+      title: isMarker ? "New Marker" : "New Area",
       color: "#2ea8ff",
       category: "neutral",
       icon: "pin"
     };
 
-    if (layer instanceof L.Marker) {
-      styleMarker(layer);
-    } else {
-      styleShape(layer);
-    }
-
+    applyStyle(layer);
     attachViewerPopup(layer);
-    addToCategory(layer, layer._lw.category);
+    addToCategory(layer, "neutral");
 
-    // Immediately open editor popup so admin can set fields
+    // Open editor immediately
     attachAdminPopup(layer);
   });
 
   map.on(L.Draw.Event.EDITED, (e) => {
     e.layers.eachLayer(layer => {
-      // Keep style and popups
-      if (layer instanceof L.Marker) styleMarker(layer);
-      else styleShape(layer);
+      applyStyle(layer);
       attachViewerPopup(layer);
     });
   });
-
-  map.on(L.Draw.Event.DELETED, () => {});
 }
 
-// Clicking shapes: viewer sees popup; admin gets editor
+// Click: admin gets editor, viewer sees popup
 Object.values(groups).forEach(g => {
   g.on("click", (e) => {
     const layer = e.layer;
@@ -355,7 +337,7 @@ Object.values(groups).forEach(g => {
   });
 });
 
-// UI buttons
+// ---------- UI buttons ----------
 const exportBtn = document.getElementById("exportBtn");
 const clearBtn = document.getElementById("clearBtn");
 const toggleHelpBtn = document.getElementById("toggleHelpBtn");
@@ -371,14 +353,15 @@ exportBtn?.addEventListener("click", () => {
   const features = [];
   drawnItems.eachLayer(layer => {
     const gj = layer.toGeoJSON();
+    const isMarker = layer instanceof L.Marker;
+
     gj.properties = {
       title: layer._lw?.title || "",
       color: layer._lw?.color || "#2ea8ff",
-      category: layer._lw?.category || "neutral",
-      icon: (layer instanceof L.Marker) ? (layer._lw?.icon || "pin") : undefined
+      category: normalizeCategory(layer._lw?.category || "neutral")
     };
-    // remove undefined props for cleanliness
-    Object.keys(gj.properties).forEach(k => gj.properties[k] === undefined && delete gj.properties[k]);
+    if (isMarker) gj.properties.icon = layer._lw?.icon || "pin";
+
     features.push(gj);
   });
 
@@ -389,12 +372,11 @@ clearBtn?.addEventListener("click", () => {
   if (!ADMIN) return alert("Clear is admin-only. Open: map.html?admin=1");
   if (!confirm("Clear all shapes from the map (local only)?")) return;
 
-  // Clear all groups + master
   Object.values(groups).forEach(g => g.clearLayers());
   drawnItems.clearLayers();
 });
 
-// Helpers
+// ---------- Utils ----------
 function downloadJson(obj, filename) {
   const blob = new Blob([JSON.stringify(obj, null, 2)], { type: "application/json" });
   const url = URL.createObjectURL(blob);
