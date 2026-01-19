@@ -40,7 +40,7 @@
     .sub{
       margin:0 0 18px;
       color: var(--muted);
-      max-width:70ch;
+      max-width:80ch;
       font-size:16px;
       line-height:1.5;
     }
@@ -73,6 +73,7 @@
       margin-right:8px;
       margin-bottom:8px;
       opacity:.95;
+      white-space:nowrap;
     }
 
     main{ padding:28px 0 42px; }
@@ -147,15 +148,14 @@
         <div>
           <h1>LegacyWoW</h1>
           <p class="sub">
-            A World of Warcraft <b>1.12.1</b> progressive server, starting at <b>patch 1.0.0</b> and advancing through Vanilla.
-            Rates: <b>x2 XP</b>, <b>x1.5 gold</b>, <b>x1 honor</b>. <b>RPPvP</b>.
+            A progressive World of Warcraft server for the <b>3.3.5a</b> client, beginning at <b>patch 1.0.0</b> and advancing all the way to <b>3.3.5a</b> —
+            with <b>custom content</b> added along the way to keep the journey fresh.
           </p>
 
           <div class="btns">
             <a class="btn" href="how-to-play.html">How to Play</a>
             <a class="btn" href="news.html">News</a>
-            <a class="btn" href="#" id="discordLink">Join Discord</a>
-            <a class="btn" href="#" id="accountLink">Create Account</a>
+            <a class="btn" href="account.html">Create Account</a>
           </div>
 
           <nav>
@@ -167,12 +167,10 @@
 
         <aside class="mini">
           <h3>Server Info</h3>
-          <div class="pill">Version: 1.12.1</div>
-          <div class="pill">Progression: 1.0.0 → 1.12.1</div>
-          <div class="pill">Type: RPPvP</div>
-          <div class="pill">XP: x2</div>
-          <div class="pill">Gold: x1.5</div>
-          <div class="pill">Honor: x1</div>
+          <div class="pill">Client: 3.3.5a</div>
+          <div class="pill">Progression: 1.0.0 → 3.3.5a</div>
+          <div class="pill">Custom Content: Yes</div>
+          <div class="pill">Core: AzerothCore</div>
 
           <div class="bar">
             <div>
@@ -189,22 +187,23 @@
     <div class="wrap">
       <div class="grid">
         <div class="card">
-          <h3>Progressive Vanilla</h3>
-          <p>Relive Azeroth from day one — content unlocks and patches progress toward 1.12.1.</p>
+          <h3>Patch Progression</h3>
+          <p>Start in classic launch content (1.0.0) and progress forward through expansions toward 3.3.5a.</p>
         </div>
         <div class="card">
-          <h3>RPPvP World</h3>
-          <p>Faction tension, world PvP, and roleplay-friendly rules to keep the world alive.</p>
+          <h3>Custom Content</h3>
+          <p>Original quests, events, and surprises appear throughout the progression — not just at the end.</p>
         </div>
         <div class="card">
-          <h3>Fair Rates</h3>
-          <p>x2 experience keeps leveling brisk without skipping the journey. x1.5 gold, x1 honor.</p>
+          <h3>Built on AzerothCore</h3>
+          <p>Stable 3.3.5a foundation with room to grow and continuously improve.</p>
         </div>
       </div>
 
       <div class="bar" style="margin-top:16px;">
         <div>
-          <strong>New here?</strong> <span>Go to <a href="how-to-play.html" style="color:#fff;">How to Play</a> to set your realmlist and join Discord support.</span>
+          <strong>New here?</strong>
+          <span>Go to <a href="how-to-play.html" style="color:#fff;">How to Play</a> to set your realmlist and get started.</span>
         </div>
       </div>
     </div>
@@ -218,16 +217,11 @@
   </footer>
 
   <script>
-    // ====== EDIT THESE TWO LINKS ======
-    const DISCORD_INVITE = "https://discord.gg/YOURINVITE";
-    const ACCOUNT_URL = "account.html"; // later you can set this to your account portal
-
-    document.getElementById("discordLink").href = DISCORD_INVITE;
-    document.getElementById("accountLink").href = ACCOUNT_URL;
     document.getElementById("year").textContent = new Date().getFullYear();
 
-    // Optional: server status (we'll wire this up later if you have an endpoint)
-    // For now it just shows "Coming soon" and Players: —
+    // Optional: server status (we can wire this up later if you add a status endpoint)
+    // document.getElementById("statusText").textContent = "Online";
+    // document.getElementById("playersText").textContent = "Players: 123";
   </script>
 </body>
 </html>
