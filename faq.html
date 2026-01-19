@@ -4,166 +4,53 @@
   <meta charset="UTF-8" />
   <title>LegacyWoW — FAQ</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <style>
-    :root{
-      --bg:#0b0b0b;
-      --panel: rgba(255,255,255,.04);
-      --border: rgba(255,255,255,.10);
-      --text:#e8e8e8;
-      --muted: rgba(232,232,232,.85);
-    }
-    body{
-      margin:0;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      background: radial-gradient(1200px 600px at 50% 0%, #1a1a1a 0%, var(--bg) 60%);
-      color: var(--text);
-    }
-    .wrap{ max-width:950px; margin:0 auto; padding:26px 18px; }
-    a{ color:#fff; }
-    .top{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-bottom:14px;
-    }
-    .brand{
-      font-weight:800;
-      letter-spacing:.4px;
-      text-decoration:none;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.04);
-      padding:10px 12px;
-      border-radius:14px;
-      display:inline-block;
-    }
-    .nav{ display:flex; gap:10px; flex-wrap:wrap; }
-    .nav a{
-      text-decoration:none;
-      font-weight:700;
-      font-size:13px;
-      padding:10px 12px;
-      border-radius:14px;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.04);
-    }
-    .nav a:hover{ background: rgba(255,255,255,.10); }
-
-    .panel{
-      border:1px solid var(--border);
-      border-radius:18px;
-      background: rgba(0,0,0,.25);
-      padding:18px;
-    }
-    h1{ margin:0 0 6px; font-size:30px; }
-    p{ margin:0 0 14px; color:var(--muted); line-height:1.55; }
-
-    details{
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.04);
-      border-radius:16px;
-      padding:12px 14px;
-      margin: 10px 0;
-    }
-    summary{
-      cursor:pointer;
-      font-weight:800;
-      font-size:14px;
-      color:#fff;
-      outline:none;
-    }
-    .ans{
-      margin-top:10px;
-      color: var(--muted);
-      line-height:1.6;
-      font-size:13.5px;
-    }
-    .code{
-      margin-top:10px;
-      background: rgba(0,0,0,.35);
-      border:1px solid rgba(255,255,255,.10);
-      border-radius:14px;
-      padding:12px;
-      overflow:auto;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-      font-size:13px;
-      color: rgba(255,255,255,.92);
-      white-space: pre;
-    }
-  </style>
+  <link rel="stylesheet" href="shared.css" />
 </head>
-
 <body>
-  <div class="wrap">
-    <div class="top">
-      <a class="brand" href="index.html">LegacyWoW</a>
-      <div class="nav">
+
+<header class="hero-header">
+  <div class="wrap hero">
+    <div>
+      <div class="brandrow">
+        <div class="logo">
+          <img src="assets/logo.png" onerror="this.remove();" />
+        </div>
+        <h1>FAQ</h1>
+      </div>
+
+      <nav class="topnav">
+        <a href="index.html">Home</a>
         <a href="how-to-play.html">How to Play</a>
         <a href="account.html">Create Account</a>
         <a href="news.html">News</a>
         <a href="rules.html">Rules</a>
-        <a href="faq.html">FAQ</a>
-      </div>
-    </div>
-
-    <div class="panel">
-      <h1>FAQ</h1>
-      <p>Common questions and quick fixes.</p>
-
-      <details>
-        <summary>What client do I need?</summary>
-        <div class="ans">
-          You need a clean <b>World of Warcraft 3.3.5a</b> client.
-        </div>
-      </details>
-
-      <details>
-        <summary>Where do I set the realmlist?</summary>
-        <div class="ans">
-          Edit <b>realmlist.wtf</b> (commonly in <b>Data\enUS</b> or <b>Data\enGB</b>) and set:
-          <div class="code">set realmlist 25.39.161.60</div>
-        </div>
-      </details>
-
-      <details>
-        <summary>I set the realmlist but it keeps reverting. Why?</summary>
-        <div class="ans">
-          Some client repacks include a launcher that overwrites realmlist. Try:
-          <ul>
-            <li>Make sure you are editing the correct language folder (enUS vs enGB).</li>
-            <li>Run the game using <b>Wow.exe</b> instead of a custom launcher.</li>
-            <li>Right-click <b>realmlist.wtf</b> → Properties → uncheck “Read-only” if needed (or check it to prevent changes).</li>
-          </ul>
-        </div>
-      </details>
-
-      <details>
-        <summary>I can’t log in (wrong password / account not found).</summary>
-        <div class="ans">
-          Make sure you created your account on the <a href="account.html">Create Account</a> page.
-          If account creation isn’t connected to the game server yet, the website will tell you.
-          (We can wire it up to AzerothCore when your backend endpoint is ready.)
-        </div>
-      </details>
-
-      <details>
-        <summary>What does “progressive from 1.0.0 → 3.3.5a” mean?</summary>
-        <div class="ans">
-          The server begins with classic-era content and progresses forward through patches/eras up to <b>3.3.5a</b>,
-          with custom content added along the way.
-        </div>
-      </details>
-
-      <details>
-        <summary>Can I transfer my character?</summary>
-        <div class="ans">
-          If character transfers are offered, they’ll be announced in <a href="news.html">News</a>.
-        </div>
-      </details>
-
+      </nav>
     </div>
   </div>
+</header>
+
+<main class="main">
+  <div class="wrap panel">
+    <h3>What client?</h3>
+    <p>World of Warcraft 3.3.5a</p>
+
+    <h3>Realmlist?</h3>
+    <pre>set realmlist 25.39.161.60</pre>
+
+    <h3>How do accounts work?</h3>
+    <p>
+      The site generates an AzerothCore command. An admin pastes it into the worldserver console.
+    </p>
+  </div>
+</main>
+
+<footer class="footer">
+  © <span id="year"></span> LegacyWoW
+</footer>
+
+<script>
+  document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+
 </body>
 </html>
