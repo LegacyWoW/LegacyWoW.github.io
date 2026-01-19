@@ -170,15 +170,15 @@
 
   <script src="/map/app.js"></script>
 
-  <script>
-    // Hide admin buttons unless admin=1
-    const isAdmin = new URLSearchParams(location.search).get("admin") === "1";
-    if (!isAdmin) {
-      const exportBtn = document.getElementById("exportBtn");
-      const clearBtn = document.getElementById("clearBtn");
-      if (exportBtn) exportBtn.style.display = "none";
-      if (clearBtn) clearBtn.style.display = "none";
-    }
-  </script>
+<script>
+  // Hide the entire panel for normal users
+  const isAdmin = new URLSearchParams(location.search).get("admin") === "1";
+  const panel = document.getElementById("mapPanel");
+
+  if (!isAdmin) {
+    if (panel) panel.style.display = "none";
+  }
+</script>
+
 </body>
 </html>
