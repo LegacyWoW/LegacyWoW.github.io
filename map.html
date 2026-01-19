@@ -8,10 +8,8 @@
   <style>
     :root{
       --bg:#0b0b0b;
-      --panel: rgba(0,0,0,.45);
       --border: rgba(255,255,255,.14);
       --text:#e8e8e8;
-      --muted: rgba(232,232,232,.85);
     }
     body{
       margin:0;
@@ -21,13 +19,9 @@
     }
 
     header{
-      padding: 18px 0;
+      padding: 14px 0;
       border-bottom: 1px solid rgba(255,255,255,.10);
-      background:
-        linear-gradient(180deg, rgba(0,0,0,.25), rgba(0,0,0,.85)),
-        url("/assets/hero.jpg");
-      background-size: cover;
-      background-position: center;
+      background: #070707;
     }
     .wrap{ max-width:1100px; margin:0 auto; padding:0 18px; }
     .toprow{
@@ -38,9 +32,9 @@
       font-weight:900; letter-spacing:.4px;
     }
     .logo{
-      width:44px; height:44px; border-radius:12px; overflow:hidden;
+      width:40px; height:40px; border-radius:12px; overflow:hidden;
       border:1px solid rgba(255,255,255,.18);
-      background: rgba(0,0,0,.35);
+      background: rgba(255,255,255,.04);
       display:flex; align-items:center; justify-content:center;
     }
     .logo img{ width:100%; height:100%; object-fit:cover; display:block; }
@@ -50,14 +44,13 @@
       color:#fff; text-decoration:none; font-weight:800; font-size:13px;
       padding:10px 12px; border-radius:14px;
       border:1px solid rgba(255,255,255,.18);
-      background: rgba(0,0,0,.28);
-      backdrop-filter: blur(6px);
+      background: rgba(255,255,255,.04);
     }
-    nav a:hover{ background: rgba(0,0,0,.45); }
+    nav a:hover{ background: rgba(255,255,255,.10); }
 
     .shell{
       position: relative;
-      height: calc(100vh - 88px);
+      height: calc(100vh - 72px);
       min-height: 560px;
     }
     #map{
@@ -66,28 +59,22 @@
       background: #111;
     }
 
-    /* Small viewer panel (safe for users; admin-only buttons hidden by JS) */
-    .panel{
+    /* Admin-only top-right bar */
+    .adminbar{
       position:absolute;
       top:16px;
-      left:16px;
+      right:16px;
       z-index: 999;
-      width: 280px;
-      max-width: calc(100% - 32px);
+      display:flex;
+      gap:10px;
+      align-items:center;
+      padding:10px;
+      border-radius:14px;
       border:1px solid var(--border);
-      background: var(--panel);
-      border-radius:16px;
-      padding:12px;
+      background: rgba(0,0,0,.45);
       backdrop-filter: blur(10px);
       box-shadow: 0 12px 30px rgba(0,0,0,.35);
     }
-    .panel h1{
-      margin:0 0 8px;
-      font-size:15px;
-      letter-spacing:.2px;
-    }
-    .row{ display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
-
     .btn{
       border:1px solid rgba(255,255,255,.18);
       background: rgba(255,255,255,.06);
@@ -99,9 +86,8 @@
       font-size:13px;
     }
     .btn:hover{ background: rgba(255,255,255,.12); }
-    .btn.small{ padding:8px 10px; font-weight:800; }
 
-    /* ✅ IMPORTANT FIX: do NOT use `background:` here (it removes draw icons) */
+    /* ✅ IMPORTANT: don't wipe Leaflet-draw icons */
     .leaflet-control a{
       background-color: rgba(0,0,0,.55) !important;
       color:#fff !important;
@@ -158,27 +144,19 @@
   <div class="shell">
     <div id="map"></div>
 
-    <!-- This panel is safe for users (no admin instructions). Admin buttons hidden unless ?admin=1 -->
-    <div class="panel" id="mapPanel">
-      <h1>World Map</h1>
-      <div class="row">
-        <button class="btn small" id="exportBtn" title="Admin only">Export</button>
-        <button class="btn small" id="clearBtn" title="Admin only">Clear</button>
-      </div>
+    <!-- Admin-only controls (hidden unless ?admin=1) -->
+    <div class="adminbar" id="adminBar">
+      <button class="btn" id="exportBtn">Export</button>
+      <button class="btn" id="clearBtn">Clear</button>
     </div>
   </div>
 
   <script src="/map/app.js"></script>
 
-<script>
-  // Hide the entire panel for normal users
-  const isAdmin = new URLSearchParams(location.search).get("admin") === "1";
-  const panel = document.getElementById("mapPanel");
-
-  if (!isAdmin) {
-    if (panel) panel.style.display = "none";
-  }
-</script>
-
+  <script>
+    const isAdmin = new URLSearchParams(location.search).get("admin") === "1";
+    const adminBar = document.getElementById("adminBar");
+    if (!isAdmin && adminBar) adminBar.style.display = "none";
+  </script>
 </body>
 </html>
