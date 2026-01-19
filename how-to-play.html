@@ -5,171 +5,61 @@
   <title>LegacyWoW — How to Play</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <style>
-    :root{
-      --bg:#0b0b0b;
-      --panel: rgba(255,255,255,.04);
-      --border: rgba(255,255,255,.10);
-      --text:#e8e8e8;
-      --muted: rgba(232,232,232,.85);
-    }
-    body{
-      margin:0;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      background: radial-gradient(1200px 600px at 50% 0%, #1a1a1a 0%, var(--bg) 60%);
-      color: var(--text);
-    }
-    .wrap{ max-width:950px; margin:0 auto; padding:26px 18px; }
-    a{ color:#fff; }
-    .top{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-bottom:14px;
-    }
-    .brand{
-      font-weight:800;
-      letter-spacing:.4px;
-      text-decoration:none;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.04);
-      padding:10px 12px;
-      border-radius:14px;
-      display:inline-block;
-    }
-    .nav{ display:flex; gap:10px; flex-wrap:wrap; }
-    .nav a{
-      text-decoration:none;
-      font-weight:700;
-      font-size:13px;
-      padding:10px 12px;
-      border-radius:14px;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.04);
-    }
-    .nav a:hover{ background: rgba(255,255,255,.10); }
-
-    .panel{
-      border:1px solid var(--border);
-      border-radius:18px;
-      background: rgba(0,0,0,.25);
-      padding:18px;
-    }
-    h1{ margin:0 0 6px; font-size:30px; }
-    p{ margin:0 0 14px; color:var(--muted); line-height:1.55; }
-
-    .step{
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.04);
-      border-radius:16px;
-      padding:14px;
-      margin: 12px 0;
-    }
-    .step h2{
-      margin:0 0 8px;
-      font-size:16px;
-      letter-spacing:.2px;
-    }
-    .code{
-      background: rgba(0,0,0,.35);
-      border:1px solid rgba(255,255,255,.10);
-      border-radius:14px;
-      padding:12px;
-      overflow:auto;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-      font-size:13px;
-      color: rgba(255,255,255,.92);
-      margin: 10px 0 0;
-      white-space: pre;
-    }
-    .note{
-      margin-top:12px;
-      color: rgba(232,232,232,.78);
-      font-size:13px;
-      line-height:1.55;
-      border-top:1px solid rgba(255,255,255,.10);
-      padding-top:12px;
-    }
-    .btn{
-      display:inline-block;
-      padding:11px 14px;
-      border-radius:14px;
-      border:1px solid rgba(255,255,255,.18);
-      background: rgba(255,255,255,.08);
-      color:#fff;
-      text-decoration:none;
-      font-weight:800;
-    }
-    .btn:hover{ background: rgba(255,255,255,.12); }
-  </style>
+  <link rel="stylesheet" href="shared.css" />
 </head>
-
 <body>
-  <div class="wrap">
-    <div class="top">
-      <a class="brand" href="index.html">LegacyWoW</a>
-      <div class="nav">
-        <a href="how-to-play.html">How to Play</a>
+
+<header class="hero-header">
+  <div class="wrap hero">
+    <div>
+      <div class="brandrow">
+        <div class="logo" id="logoBox">
+          <img src="assets/logo.png" alt="LegacyWoW Logo" onerror="this.remove();" />
+        </div>
+        <h1>How to Play</h1>
+      </div>
+
+      <p class="sub">
+        LegacyWoW runs on the <b>3.3.5a</b> client and progresses from <b>patch 1.0.0 → 3.3.5a</b>.
+      </p>
+
+      <nav class="topnav">
+        <a href="index.html">Home</a>
         <a href="account.html">Create Account</a>
         <a href="news.html">News</a>
         <a href="rules.html">Rules</a>
         <a href="faq.html">FAQ</a>
-      </div>
-    </div>
-
-    <div class="panel">
-      <h1>How to Play</h1>
-      <p>
-        LegacyWoW runs on the <b>3.3.5a</b> client and progresses from <b>patch 1.0.0 → 3.3.5a</b>, with custom content along the way.
-        Follow the steps below and you’ll be in-game fast.
-      </p>
-
-      <div class="step">
-        <h2>1) Get the 3.3.5a client</h2>
-        <p>Install or extract a clean World of Warcraft <b>3.3.5a</b> client. (No extra patches required unless we announce otherwise.)</p>
-      </div>
-
-      <div class="step">
-        <h2>2) Set your realmlist</h2>
-        <p>
-          Find your <b>realmlist.wtf</b> file. Common locations for 3.3.5a include:
-        </p>
-        <div class="code">World of Warcraft\Data\enUS\realmlist.wtf
-World of Warcraft\Data\enGB\realmlist.wtf</div>
-
-        <p style="margin-top:10px;">
-          Open it with Notepad and set it to:
-        </p>
-        <div class="code">set realmlist 25.39.161.60</div>
-
-        <p class="note">
-          Tip: if you have multiple language folders (enUS/enGB/etc), make sure you edit the one your client uses.
-        </p>
-      </div>
-
-      <div class="step">
-        <h2>3) Create your account</h2>
-        <p>
-          Create your account on our website:
-        </p>
-        <p style="margin:10px 0 0;">
-          <a class="btn" href="account.html">Create Account</a>
-        </p>
-      </div>
-
-      <div class="step">
-        <h2>4) Log in and play</h2>
-        <p>
-          Run <b>Wow.exe</b>, log in with your new account, and you’re set.
-        </p>
-      </div>
-
-      <div class="note">
-        If you get stuck, check the <a href="faq.html">FAQ</a> first — it covers the most common login and realmlist issues.
-      </div>
+      </nav>
     </div>
   </div>
+</header>
+
+<main class="main">
+  <div class="wrap panel">
+    <h2>1) Get the Client</h2>
+    <p>Use a clean <b>World of Warcraft 3.3.5a</b> client.</p>
+
+    <h2>2) Set your realmlist</h2>
+    <pre>set realmlist 25.39.161.60</pre>
+
+    <h2>3) Create an Account</h2>
+    <p>
+      Use the <a href="account.html">Create Account</a> page to generate the AzerothCore command.
+      An admin pastes it into the worldserver console.
+    </p>
+
+    <h2>4) Play</h2>
+    <p>Launch <b>Wow.exe</b> and log in.</p>
+  </div>
+</main>
+
+<footer class="footer">
+  © <span id="year"></span> LegacyWoW — Not affiliated with Blizzard Entertainment.
+</footer>
+
+<script>
+  document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+
 </body>
 </html>
