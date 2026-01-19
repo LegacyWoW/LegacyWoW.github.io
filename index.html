@@ -1,94 +1,483 @@
-<!-- ================= SERVER STATUS ================= -->
-<style>
-  .status-box{
-    max-width: 420px;
-    margin: 28px auto 10px;
-    padding: 18px 20px;
-    border-radius: 18px;
-    border: 1px solid rgba(255,255,255,.14);
-    background: rgba(0,0,0,.45);
-    backdrop-filter: blur(8px);
-    text-align: center;
-    box-shadow: 0 16px 40px rgba(0,0,0,.45);
-  }
-  .status-title{
-    font-weight: 900;
-    letter-spacing: .6px;
-    font-size: 14px;
-    opacity: .9;
-    margin-bottom: 10px;
-  }
-  .status-online{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    font-size: 18px;
-    font-weight: 900;
-    color: #3cff8f;
-    margin-bottom: 6px;
-  }
-  .dot{
-    width: 12px;
-    height: 12px;
-    background: #3cff8f;
-    border-radius: 50%;
-    box-shadow: 0 0 12px rgba(60,255,143,.9);
-    animation: pulse 1.8s infinite;
-  }
-  @keyframes pulse{
-    0%{transform:scale(1);opacity:1}
-    50%{transform:scale(1.4);opacity:.6}
-    100%{transform:scale(1);opacity:1}
-  }
-  .players{
-    font-size: 14px;
-    opacity: .9;
-  }
-  .players span{
-    font-weight: 900;
-  }
-</style>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LegacyWoW — Progressive Vanilla → Wrath (3.3.5a)</title>
 
-<div class="status-box">
-  <div class="status-title">SERVER STATUS</div>
-  <div class="status-online">
-    <div class="dot"></div>
-    ONLINE
-  </div>
-  <div class="players">
-    Players Online: <span id="playerCount">---</span>
-  </div>
-</div>
+  <style>
+    :root{
+      --bg:#0b0b0b;
+      --border: rgba(255,255,255,.14);
+      --text:#e8e8e8;
+      --muted: rgba(232,232,232,.82);
+      --card: rgba(255,255,255,.04);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+    a{color:#fff}
+    .wrap{max-width:1100px;margin:0 auto;padding:0 18px}
 
-<script>
-  // Player count simulation (safe for static sites)
-  const MIN_PLAYERS = 500;
-  const MAX_PLAYERS = 1850;
+    /* Header + hero image (HOME ONLY) */
+    header{
+      border-bottom: 1px solid rgba(255,255,255,.10);
+      background:
+        linear-gradient(180deg, rgba(0,0,0,.25), rgba(0,0,0,.88)),
+        url("/assets/hero.jpg");
+      background-size: cover;
+      background-position: center;
+    }
+    .toprow{
+      display:flex; justify-content:space-between; align-items:center;
+      gap:12px; flex-wrap:wrap;
+      padding: 16px 0;
+    }
+    .brand{
+      display:flex; align-items:center; gap:12px;
+      text-decoration:none; color:#fff;
+      font-weight:900; letter-spacing:.4px;
+    }
+    .logo{
+      width:44px; height:44px; border-radius:12px; overflow:hidden;
+      border:1px solid rgba(255,255,255,.18);
+      background: rgba(0,0,0,.35);
+      display:flex; align-items:center; justify-content:center;
+    }
+    .logo img{width:100%;height:100%;object-fit:cover;display:block}
 
-  let currentPlayers =
-    Math.floor(Math.random() * (MAX_PLAYERS - MIN_PLAYERS)) + MIN_PLAYERS;
+    nav{display:flex; gap:10px; flex-wrap:wrap}
+    nav a{
+      color:#fff; text-decoration:none; font-weight:800; font-size:13px;
+      padding:10px 12px; border-radius:14px;
+      border:1px solid rgba(255,255,255,.18);
+      background: rgba(0,0,0,.28);
+      backdrop-filter: blur(6px);
+    }
+    nav a:hover{background: rgba(0,0,0,.45);}
 
-  const playerEl = document.getElementById("playerCount");
-  playerEl.textContent = currentPlayers.toLocaleString();
+    .hero{
+      padding: 34px 0 22px;
+      text-align:center;
+    }
+    .hero h1{
+      margin:0;
+      font-size: 44px;
+      letter-spacing:.2px;
+      line-height: 1.05;
+    }
+    .hero p{
+      margin: 12px auto 0;
+      max-width: 860px;
+      color: var(--muted);
+      font-size: 15.5px;
+      line-height: 1.5;
+    }
 
-  function updatePlayers(){
-    // Change by a small natural amount
-    const change = Math.floor(Math.random() * 41) - 20; // -20 to +20
-    currentPlayers += change;
+    .hero-row{
+      margin-top: 18px;
+      display:flex;
+      justify-content:center;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .btn{
+      display:inline-block;
+      text-decoration:none;
+      border:1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.06);
+      color:#fff;
+      border-radius:14px;
+      padding:12px 14px;
+      font-weight:900;
+      font-size:13px;
+    }
+    .btn:hover{background: rgba(255,255,255,.12);}
+    .btn.primary{
+      background: rgba(60,255,143,.12);
+      border-color: rgba(60,255,143,.25);
+    }
+    .btn.primary:hover{
+      background: rgba(60,255,143,.18);
+    }
+    .kbd{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size:12px;
+      opacity:.95;
+      border:1px solid rgba(255,255,255,.16);
+      border-radius:10px;
+      padding:2px 8px;
+      background: rgba(0,0,0,.25);
+      display:inline-block;
+    }
 
-    if (currentPlayers < MIN_PLAYERS) currentPlayers = MIN_PLAYERS;
-    if (currentPlayers > MAX_PLAYERS) currentPlayers = MAX_PLAYERS;
+    /* Status + Realm Info row */
+    .status-row{
+      margin: 18px auto 0;
+      max-width: 980px;
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      align-items: stretch;
+    }
 
+    /* Status box */
+    .status-box{
+      padding: 18px 20px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.45);
+      backdrop-filter: blur(8px);
+      text-align: left;
+      box-shadow: 0 16px 40px rgba(0,0,0,.45);
+    }
+    .status-title{
+      font-weight: 900;
+      letter-spacing: .6px;
+      font-size: 13px;
+      opacity: .9;
+      margin-bottom: 10px;
+    }
+    .status-online{
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 18px;
+      font-weight: 900;
+      color: #3cff8f;
+      margin-bottom: 6px;
+    }
+    .dot{
+      width: 12px;
+      height: 12px;
+      background: #3cff8f;
+      border-radius: 50%;
+      box-shadow: 0 0 12px rgba(60,255,143,.9);
+      animation: pulse 1.8s infinite;
+    }
+    @keyframes pulse{
+      0%{transform:scale(1);opacity:1}
+      50%{transform:scale(1.4);opacity:.6}
+      100%{transform:scale(1);opacity:1}
+    }
+    .players{
+      font-size: 14px;
+      opacity: .95;
+      margin-top: 6px;
+    }
+    .players span{font-weight: 900;}
+    .updated{
+      margin-top: 8px;
+      font-size: 12.5px;
+      opacity: .75;
+    }
+
+    /* Realm Info box */
+    .realm-box{
+      padding: 18px 20px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.45);
+      backdrop-filter: blur(8px);
+      text-align: left;
+      box-shadow: 0 16px 40px rgba(0,0,0,.45);
+    }
+    .realm-title{
+      font-weight: 900;
+      letter-spacing: .6px;
+      font-size: 13px;
+      opacity: .9;
+      margin-bottom: 10px;
+    }
+    .realm-grid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px 14px;
+    }
+    .kv{
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      border-radius: 14px;
+      padding: 10px 12px;
+    }
+    .k{
+      font-size: 11.5px;
+      letter-spacing: .5px;
+      opacity: .72;
+      font-weight: 900;
+    }
+    .v{
+      margin-top: 4px;
+      font-size: 14px;
+      font-weight: 900;
+      opacity: .98;
+    }
+    .v small{
+      font-weight: 800;
+      opacity: .75;
+      font-size: 12px;
+    }
+
+    /* Main cards */
+    main{padding: 22px 0 36px;}
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 14px;
+      margin-top: 16px;
+    }
+    .card{
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:16px;
+      background: var(--card);
+      padding:16px;
+    }
+    .card h2{
+      margin:0 0 8px;
+      font-size: 16px;
+      letter-spacing:.2px;
+    }
+    .card p{
+      margin:0;
+      color: var(--muted);
+      line-height:1.5;
+      font-size: 14px;
+    }
+    .span6{grid-column: span 6;}
+    .span4{grid-column: span 4;}
+    .span12{grid-column: span 12;}
+
+    @media (max-width: 900px){
+      .hero h1{font-size:36px;}
+      .span6,.span4{grid-column: span 12;}
+      .status-row{grid-template-columns: 1fr;}
+    }
+
+    footer{
+      border-top:1px solid rgba(255,255,255,.08);
+      padding:16px 0;
+      background:#070707;
+      color:rgba(232,232,232,.65);
+      font-size:12.5px;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="wrap">
+      <div class="toprow">
+        <a class="brand" href="index.html">
+          <div class="logo"><img src="/assets/logo.png" alt="LegacyWoW" onerror="this.remove();" /></div>
+          <div>LegacyWoW</div>
+        </a>
+
+        <nav>
+          <a href="how-to-play.html">How to Play</a>
+          <a href="account.html">Create Account</a>
+          <a href="news.html">News</a>
+          <a href="rules.html">Rules</a>
+          <a href="faq.html">FAQ</a>
+          <a href="map.html">Map</a>
+        </nav>
+      </div>
+
+      <div class="hero">
+        <h1>Progressive Vanilla → Wrath</h1>
+        <p>
+          LegacyWoW is a progressive server built on <b>AzerothCore</b>, running on the <b>3.3.5a</b> client and
+          progressing from <b>Patch 1.0.0 → 3.3.5a</b> with custom content along the way.
+        </p>
+
+        <div class="hero-row">
+          <a class="btn primary" href="how-to-play.html">Get Started</a>
+          <a class="btn" href="map.html">Open World Map</a>
+          <a class="btn" href="account.html">Create Account</a>
+        </div>
+
+        <div class="status-row">
+          <!-- Status -->
+          <div class="status-box">
+            <div class="status-title">SERVER STATUS</div>
+            <div class="status-online">
+              <div class="dot"></div>
+              ONLINE
+            </div>
+            <div class="players">
+              Players Online: <span id="playerCount">---</span>
+            </div>
+            <div class="updated">
+              Last updated: <span id="lastUpdated">---</span>
+            </div>
+          </div>
+
+          <!-- Realm Info -->
+          <div class="realm-box">
+            <div class="realm-title">REALM INFO</div>
+            <div class="realm-grid">
+              <div class="kv">
+                <div class="k">CLIENT</div>
+                <div class="v">3.3.5a <small>(Wrath client)</small></div>
+              </div>
+              <div class="kv">
+                <div class="k">PROGRESSION</div>
+                <div class="v">1.0.0 → 3.3.5a</div>
+              </div>
+              <div class="kv">
+                <div class="k">CORE</div>
+                <div class="v">AzerothCore</div>
+              </div>
+              <div class="kv">
+                <div class="k">RATES</div>
+                <div class="v">XP x2 · Gold x1.5 · Honor x1</div>
+              </div>
+              <div class="kv" style="grid-column: span 2;">
+                <div class="k">REALMLIST</div>
+                <div class="v"><span class="kbd">set realmlist 25.39.161.60</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <p style="margin-top:14px;color:var(--muted);font-size:13.5px;">
+          Not affiliated with Blizzard Entertainment.
+        </p>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="wrap">
+      <div class="grid">
+        <div class="card span6">
+          <h2>What makes LegacyWoW different</h2>
+          <p>
+            A true long-term progression path, with custom content woven into each era. Experience the world evolve—
+            from early Vanilla to the gates of Northrend.
+          </p>
+        </div>
+
+        <div class="card span6">
+          <h2>Start playing in minutes</h2>
+          <p>
+            Set your realmlist, create an account, and log in.
+            See <a href="how-to-play.html">How to Play</a>.
+          </p>
+        </div>
+
+        <div class="card span4">
+          <h2>Interactive world map</h2>
+          <p>
+            Browse points of interest, events, and faction activity.
+            Open the <a href="map.html">World Map</a>.
+          </p>
+        </div>
+
+        <div class="card span4">
+          <h2>Create account</h2>
+          <p>
+            Account creation is manual for now. Use <a href="account.html">Create Account</a>.
+          </p>
+        </div>
+
+        <div class="card span4">
+          <h2>Rules & FAQ</h2>
+          <p>
+            Keep it fair and fun. Read the <a href="rules.html">Rules</a> and <a href="faq.html">FAQ</a>.
+          </p>
+        </div>
+
+        <div class="card span12">
+          <h2>Quick commands</h2>
+          <p style="margin-bottom:8px;color:var(--muted);">Realmlist:</p>
+          <div class="kbd">set realmlist 25.39.161.60</div>
+          <p style="margin:12px 0 8px;color:var(--muted);">Account creation (manual for now):</p>
+          <div class="kbd">account create USERNAME PASSWORD</div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      © <span id="year"></span> LegacyWoW — Not affiliated with Blizzard Entertainment.
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    // ===========================
+    // Status + Population Simulator
+    // ===========================
+    const MIN_PLAYERS = 500;
+    const MAX_PLAYERS = 1850;
+
+    // Current value starts random
+    let currentPlayers =
+      Math.floor(Math.random() * (MAX_PLAYERS - MIN_PLAYERS + 1)) + MIN_PLAYERS;
+
+    // "Trend" target slowly changes, making it feel more realistic
+    let trendTarget =
+      Math.floor(Math.random() * (MAX_PLAYERS - MIN_PLAYERS + 1)) + MIN_PLAYERS;
+
+    const playerEl = document.getElementById("playerCount");
+    const updatedEl = document.getElementById("lastUpdated");
+
+    function formatTime(d){
+      return d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+    }
+
+    function setUpdatedNow(){
+      updatedEl.textContent = formatTime(new Date());
+    }
+
+    function clamp(n, min, max){
+      return Math.max(min, Math.min(max, n));
+    }
+
+    function stepPopulation(){
+      // Occasionally pick a new trend target (every ~20–45 seconds)
+      // This creates gentle "waves" up/down.
+      if (Math.random() < 0.18) {
+        trendTarget =
+          Math.floor(Math.random() * (MAX_PLAYERS - MIN_PLAYERS + 1)) + MIN_PLAYERS;
+      }
+
+      // Move slightly toward trend target
+      const toward = trendTarget - currentPlayers;
+
+      // Small drift in direction of target + a little noise
+      const drift = Math.sign(toward) * (1 + Math.floor(Math.random() * 6)); // 1..6 toward target
+      const noise = Math.floor(Math.random() * 7) - 3; // -3..+3
+
+      // If we're very close, smaller changes
+      let change = drift + noise;
+      if (Math.abs(toward) < 25) {
+        change = Math.floor(Math.random() * 7) - 3; // -3..+3
+      }
+
+      currentPlayers = clamp(currentPlayers + change, MIN_PLAYERS, MAX_PLAYERS);
+
+      playerEl.textContent = currentPlayers.toLocaleString();
+      setUpdatedNow();
+    }
+
+    // Initial paint
     playerEl.textContent = currentPlayers.toLocaleString();
-  }
+    setUpdatedNow();
 
-  // Update every 4–7 seconds (randomized)
-  function scheduleUpdate(){
-    updatePlayers();
-    const next = Math.random() * 3000 + 4000; // 4–7 seconds
-    setTimeout(scheduleUpdate, next);
-  }
-  scheduleUpdate();
-</script>
-<!-- ================= END STATUS ================= -->
+    // Update every 4–7 seconds
+    function loop(){
+      stepPopulation();
+      const next = Math.random() * 3000 + 4000;
+      setTimeout(loop, next);
+    }
+    loop();
+  </script>
+</body>
+</html>
