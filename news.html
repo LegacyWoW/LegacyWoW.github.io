@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>LegacyWoW — News</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    :root{
+      --bg:#0b0b0b;
+      --panel: rgba(255,255,255,.04);
+      --border: rgba(255,255,255,.10);
+      --text:#e8e8e8;
+      --muted: rgba(232,232,232,.85);
+    }
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: radial-gradient(1200px 600px at 50% 0%, #1a1a1a 0%, var(--bg) 60%);
+      color: var(--text);
+    }
+    .wrap{ max-width:980px; margin:0 auto; padding:26px 18px; }
+    a{ color:#fff; }
+    .top{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-bottom:14px;
+    }
+    .brand{
+      font-weight:800;
+      letter-spacing:.4px;
+      text-decoration:none;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+      padding:10px 12px;
+      border-radius:14px;
+      display:inline-block;
+    }
+    .nav{ display:flex; gap:10px; flex-wrap:wrap; }
+    .nav a{
+      text-decoration:none;
+      font-weight:700;
+      font-size:13px;
+      padding:10px 12px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+    }
+    .nav a:hover{ background: rgba(255,255,255,.10); }
+
+    .panel{
+      border:1px solid var(--border);
+      border-radius:18px;
+      background: rgba(0,0,0,.25);
+      padding:18px;
+    }
+    h1{ margin:0 0 6px; font-size:30px; }
+    p{ margin:0 0 14px; color:var(--muted); line-height:1.55; }
+
+    .post{
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      border-radius:16px;
+      padding:14px;
+      margin: 12px 0;
+    }
+    .post h2{
+      margin:0 0 6px;
+      font-size:16px;
+      letter-spacing:.2px;
+    }
+    .meta{
+      font-size:12px;
+      opacity:.75;
+      margin-bottom:10px;
+    }
+    ul{ margin: 0 0 0 18px; color: var(--muted); line-height:1.6; }
+    .small{
+      margin-top:12px;
+      border-top:1px solid rgba(255,255,255,.10);
+      padding-top:12px;
+      font-size:13px;
+      color: rgba(232,232,232,.75);
+      line-height:1.55;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="top">
+      <a class="brand" href="index.html">LegacyWoW</a>
+      <div class="nav">
+        <a href="how-to-play.html">How to Play</a>
+        <a href="account.html">Create Account</a>
+        <a href="news.html">News</a>
+        <a href="rules.html">Rules</a>
+        <a href="faq.html">FAQ</a>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h1>News</h1>
+      <p>
+        Announcements, patch notes, progression updates, and custom content drops.
+      </p>
+
+      <div class="post">
+        <h2>Welcome to LegacyWoW</h2>
+        <div class="meta">Post date: <span id="today"></span></div>
+        <ul>
+          <li>Client: 3.3.5a</li>
+          <li>Progression: patch 1.0.0 → 3.3.5a</li>
+          <li>Custom content added throughout progression</li>
+          <li>Realmlist: <b>set realmlist 25.39.161.60</b></li>
+        </ul>
+        <div class="small">
+          This page is intentionally simple. If you want, we can upgrade News later into a “click to expand” archive
+          or a multi-page blog-style system (still free).
+        </div>
+      </div>
+
+      <div class="post">
+        <h2>Progression Roadmap (Template)</h2>
+        <div class="meta">Post date: Coming soon</div>
+        <ul>
+          <li>Phase 1: Classic launch era</li>
+          <li>Phase 2: Classic content unlocks + custom events</li>
+          <li>Phase 3: Expansion transitions (TBC → Wrath) as the server progresses</li>
+          <li>Custom content continues through every era</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    // Shows today's date on the first post
+    const d = new Date();
+    document.getElementById("today").textContent =
+      d.toLocaleDateString(undefined, { year:"numeric", month:"long", day:"numeric" });
+  </script>
+</body>
+</html>
