@@ -13,7 +13,7 @@ const IMAGE_HEIGHT = 1000;
 const IMAGE_WIDTH  = 1800;
 
 // Path to your uploaded map image
-const IMAGE_URL = "assets/worldmap.jpg";
+const IMAGE_URL = "assets/worldmap.jpg?v=" + Date.now();
 
 // ---- CREATE MAP ----
 const map = L.map("map", {
