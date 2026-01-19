@@ -23,19 +23,15 @@
     a{color:#fff}
     .wrap{max-width:1100px;margin:0 auto;padding:0 18px}
 
-    /* ===== Snow overlay canvas ===== */
+    /* ===== Snow overlay canvas (ALWAYS ON) ===== */
     #snowCanvas{
       position: fixed;
       inset: 0;
       width: 100vw;
       height: 100vh;
       pointer-events: none; /* doesn't block clicks */
-      z-index: 9999;
-      opacity: 0.85;
-    }
-    /* Respect users who prefer reduced motion */
-    @media (prefers-reduced-motion: reduce){
-      #snowCanvas{ display:none; }
+      z-index: 99999;
+      opacity: 1;
     }
 
     /* Header + hero image (HOME ONLY) */
@@ -130,7 +126,6 @@
       display:inline-block;
     }
 
-    /* Status + Realm Info row */
     .status-row{
       margin: 18px auto 0;
       max-width: 980px;
@@ -140,9 +135,7 @@
       align-items: stretch;
       text-align:left;
     }
-
-    /* Status box */
-    .status-box{
+    .status-box,.realm-box{
       padding: 18px 20px;
       border-radius: 18px;
       border: 1px solid rgba(255,255,255,.14);
@@ -150,7 +143,7 @@
       backdrop-filter: blur(8px);
       box-shadow: 0 16px 40px rgba(0,0,0,.45);
     }
-    .status-title{
+    .status-title,.realm-title{
       font-weight: 900;
       letter-spacing: .6px;
       font-size: 13px;
@@ -179,34 +172,10 @@
       50%{transform:scale(1.4);opacity:.6}
       100%{transform:scale(1);opacity:1}
     }
-    .players{
-      font-size: 14px;
-      opacity: .95;
-      margin-top: 6px;
-    }
-    .players span{font-weight: 900;}
-    .updated{
-      margin-top: 8px;
-      font-size: 12.5px;
-      opacity: .75;
-    }
+    .players{font-size:14px;opacity:.95;margin-top:6px}
+    .players span{font-weight:900}
+    .updated{margin-top:8px;font-size:12.5px;opacity:.75}
 
-    /* Realm Info box */
-    .realm-box{
-      padding: 18px 20px;
-      border-radius: 18px;
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(0,0,0,.45);
-      backdrop-filter: blur(8px);
-      box-shadow: 0 16px 40px rgba(0,0,0,.45);
-    }
-    .realm-title{
-      font-weight: 900;
-      letter-spacing: .6px;
-      font-size: 13px;
-      opacity: .9;
-      margin-bottom: 10px;
-    }
     .realm-grid{
       display:grid;
       grid-template-columns: 1fr 1fr;
@@ -218,25 +187,10 @@
       border-radius: 14px;
       padding: 10px 12px;
     }
-    .k{
-      font-size: 11.5px;
-      letter-spacing: .5px;
-      opacity: .72;
-      font-weight: 900;
-    }
-    .v{
-      margin-top: 4px;
-      font-size: 14px;
-      font-weight: 900;
-      opacity: .98;
-    }
-    .v small{
-      font-weight: 800;
-      opacity: .75;
-      font-size: 12px;
-    }
+    .k{font-size:11.5px;letter-spacing:.5px;opacity:.72;font-weight:900}
+    .v{margin-top:4px;font-size:14px;font-weight:900;opacity:.98}
+    .v small{font-weight:800;opacity:.75;font-size:12px}
 
-    /* Main cards */
     main{padding: 22px 0 36px;}
     .grid{
       display:grid;
@@ -250,17 +204,8 @@
       background: var(--card);
       padding:16px;
     }
-    .card h2{
-      margin:0 0 8px;
-      font-size: 16px;
-      letter-spacing:.2px;
-    }
-    .card p{
-      margin:0;
-      color: var(--muted);
-      line-height:1.5;
-      font-size: 14px;
-    }
+    .card h2{margin:0 0 8px;font-size:16px;letter-spacing:.2px}
+    .card p{margin:0;color:var(--muted);line-height:1.5;font-size:14px}
     .span6{grid-column: span 6;}
     .span4{grid-column: span 4;}
     .span12{grid-column: span 12;}
@@ -282,7 +227,6 @@
 </head>
 
 <body>
-  <!-- Snow overlay -->
   <canvas id="snowCanvas" aria-hidden="true"></canvas>
 
   <header>
@@ -318,7 +262,6 @@
         </div>
 
         <div class="status-row">
-          <!-- Status -->
           <div class="status-box">
             <div class="status-title">SERVER STATUS</div>
             <div class="status-online">
@@ -333,7 +276,6 @@
             </div>
           </div>
 
-          <!-- Realm Info -->
           <div class="realm-box">
             <div class="realm-title">REALM INFO</div>
             <div class="realm-grid">
@@ -373,42 +315,24 @@
       <div class="grid">
         <div class="card span6">
           <h2>What makes LegacyWoW different</h2>
-          <p>
-            A true long-term progression path, with custom content woven into each era. Experience the world evolve—
-            from early Vanilla to the gates of Northrend.
-          </p>
+          <p>A true long-term progression path with custom content woven into each era.</p>
         </div>
-
         <div class="card span6">
           <h2>Start playing in minutes</h2>
-          <p>
-            Download the client & launcher, set your realmlist, and log in.
-            See <a href="how-to-play.html">How to Play</a>.
-          </p>
+          <p>Download the client & launcher, set your realmlist, and log in.</p>
         </div>
-
         <div class="card span4">
           <h2>Downloads</h2>
-          <p>
-            Get the <a href="downloads.html">Client + Launcher</a>.
-          </p>
+          <p>Get the <a href="downloads.html">Client + Launcher</a>.</p>
         </div>
-
         <div class="card span4">
           <h2>Interactive world map</h2>
-          <p>
-            Browse points of interest, events, and faction activity.
-            Open the <a href="map.html">World Map</a>.
-          </p>
+          <p>Browse points of interest and events on the <a href="map.html">World Map</a>.</p>
         </div>
-
         <div class="card span4">
           <h2>Rules & FAQ</h2>
-          <p>
-            Keep it fair and fun. Read the <a href="rules.html">Rules</a> and <a href="faq.html">FAQ</a>.
-          </p>
+          <p>Read the <a href="rules.html">Rules</a> and <a href="faq.html">FAQ</a>.</p>
         </div>
-
         <div class="card span12">
           <h2>Quick commands</h2>
           <p style="margin-bottom:8px;color:var(--muted);">Realmlist:</p>
@@ -427,48 +351,27 @@
   </footer>
 
   <script>
-    // Footer year
     document.getElementById("year").textContent = new Date().getFullYear();
 
-    // ===========================
-    // Status + Population Simulator (trend + timestamp)
-    // ===========================
-    const MIN_PLAYERS = 500;
-    const MAX_PLAYERS = 1850;
-
-    let currentPlayers =
-      Math.floor(Math.random() * (MAX_PLAYERS - MIN_PLAYERS + 1)) + MIN_PLAYERS;
-
-    let trendTarget =
-      Math.floor(Math.random() * (MAX_PLAYERS - MIN_PLAYERS + 1)) + MIN_PLAYERS;
+    // Population simulator
+    const MIN_PLAYERS = 500, MAX_PLAYERS = 1850;
+    let currentPlayers = Math.floor(Math.random() * (MAX_PLAYERS - MIN_PLAYERS + 1)) + MIN_PLAYERS;
+    let trendTarget = Math.floor(Math.random() * (MAX_PLAYERS - MIN_PLAYERS + 1)) + MIN_PLAYERS;
 
     const playerEl = document.getElementById("playerCount");
     const updatedEl = document.getElementById("lastUpdated");
 
-    function formatTime(d){
-      return d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-    }
-    function setUpdatedNow(){
-      updatedEl.textContent = formatTime(new Date());
-    }
-    function clamp(n, min, max){
-      return Math.max(min, Math.min(max, n));
-    }
+    function formatTime(d){ return d.toLocaleTimeString([], { hour:"2-digit", minute:"2-digit" }); }
+    function clamp(n,min,max){ return Math.max(min, Math.min(max, n)); }
+    function setUpdatedNow(){ updatedEl.textContent = formatTime(new Date()); }
 
     function stepPopulation(){
-      // Occasionally pick a new trend target (gentle waves)
-      if (Math.random() < 0.18) {
-        trendTarget =
-          Math.floor(Math.random() * (MAX_PLAYERS - MIN_PLAYERS + 1)) + MIN_PLAYERS;
-      }
-
+      if (Math.random() < 0.18) trendTarget = Math.floor(Math.random() * (MAX_PLAYERS - MIN_PLAYERS + 1)) + MIN_PLAYERS;
       const toward = trendTarget - currentPlayers;
-      const drift = Math.sign(toward) * (1 + Math.floor(Math.random() * 6)); // 1..6 toward
-      const noise = Math.floor(Math.random() * 7) - 3; // -3..+3
-
+      const drift = Math.sign(toward) * (1 + Math.floor(Math.random() * 6));
+      const noise = Math.floor(Math.random() * 7) - 3;
       let change = drift + noise;
       if (Math.abs(toward) < 25) change = Math.floor(Math.random() * 7) - 3;
-
       currentPlayers = clamp(currentPlayers + change, MIN_PLAYERS, MAX_PLAYERS);
       playerEl.textContent = currentPlayers.toLocaleString();
       setUpdatedNow();
@@ -477,34 +380,26 @@
     playerEl.textContent = currentPlayers.toLocaleString();
     setUpdatedNow();
 
-    function loop(){
+    (function loop(){
       stepPopulation();
-      const next = Math.random() * 3000 + 4000; // 4–7 seconds
-      setTimeout(loop, next);
-    }
-    loop();
+      setTimeout(loop, Math.random() * 3000 + 4000);
+    })();
 
-    // ===========================
-    // Snow effect (Northrend vibe)
-    // ===========================
-    (function snow(){
+    // Snow (strong + always visible)
+    window.addEventListener("load", () => {
       const canvas = document.getElementById("snowCanvas");
-      const ctx = canvas.getContext("2d", { alpha: true });
-
-      // Tweak these for heavier/lighter snow
-      const FLAKES = 140;           // number of flakes
-      const WIND_BASE = 0.25;       // constant drift
-      const WIND_VARIANCE = 0.6;    // gust amount
+      const ctx = canvas.getContext("2d");
 
       let w = 0, h = 0, dpr = 1;
-      let flakes = [];
-      let wind = WIND_BASE;
-      let gustT = 0;
+      const FLAKES = 240; // heavier so it's obvious
+      const flakes = [];
+
+      function rand(min, max){ return Math.random() * (max - min) + min; }
 
       function resize(){
         dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
-        w = Math.floor(window.innerWidth);
-        h = Math.floor(window.innerHeight);
+        w = window.innerWidth;
+        h = window.innerHeight;
         canvas.width = Math.floor(w * dpr);
         canvas.height = Math.floor(h * dpr);
         canvas.style.width = w + "px";
@@ -512,64 +407,57 @@
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       }
 
-      function rand(min, max){ return Math.random() * (max - min) + min; }
-
       function makeFlake(){
-        const size = rand(1.2, 3.8);
+        const r = rand(1.2, 4.2);
         return {
           x: rand(0, w),
           y: rand(-h, 0),
-          r: size,
-          vy: rand(0.7, 2.2) + size * 0.25,
-          vx: rand(-0.2, 0.2),
-          alpha: rand(0.35, 0.9),
-          wobble: rand(0, Math.PI * 2),
-          wobbleSpeed: rand(0.006, 0.02)
+          r,
+          vy: rand(0.8, 2.6) + r * 0.25,
+          vx: rand(-0.4, 0.6),
+          a: rand(0.35, 0.95),
+          wob: rand(0, Math.PI * 2),
+          ws: rand(0.006, 0.02)
         };
       }
 
       function init(){
-        flakes = [];
-        for (let i = 0; i < FLAKES; i++) flakes.push(makeFlake());
+        flakes.length = 0;
+        for (let i=0;i<FLAKES;i++) flakes.push(makeFlake());
       }
 
-      function step(){
-        // gentle gusts
-        gustT += 0.003;
-        wind = WIND_BASE + Math.sin(gustT) * WIND_VARIANCE * 0.5;
+      let t = 0;
+      function draw(){
+        t += 0.004;
+        const wind = 0.35 + Math.sin(t) * 0.7;
 
         ctx.clearRect(0, 0, w, h);
         for (const f of flakes){
-          f.wobble += f.wobbleSpeed;
+          f.wob += f.ws;
 
-          f.x += (f.vx + wind) + Math.sin(f.wobble) * 0.25;
+          f.x += f.vx + wind + Math.sin(f.wob) * 0.35;
           f.y += f.vy;
 
-          // wrap around
           if (f.y > h + 10){ f.y = -10; f.x = rand(0, w); }
-          if (f.x > w + 10){ f.x = -10; }
-          if (f.x < -10){ f.x = w + 10; }
+          if (f.x > w + 10) f.x = -10;
+          if (f.x < -10) f.x = w + 10;
 
-          ctx.globalAlpha = f.alpha;
+          ctx.globalAlpha = f.a;
           ctx.beginPath();
           ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
           ctx.fillStyle = "#ffffff";
           ctx.fill();
         }
-
-        requestAnimationFrame(step);
+        ctx.globalAlpha = 1;
+        requestAnimationFrame(draw);
       }
 
       resize();
       init();
-      step();
+      draw();
 
-      let rAF;
-      window.addEventListener("resize", () => {
-        cancelAnimationFrame(rAF);
-        rAF = requestAnimationFrame(() => { resize(); init(); });
-      }, { passive: true });
-    })();
+      window.addEventListener("resize", () => { resize(); init(); }, { passive:true });
+    });
   </script>
 </body>
 </html>
