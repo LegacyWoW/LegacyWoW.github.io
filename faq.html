@@ -4,53 +4,73 @@
   <meta charset="UTF-8" />
   <title>LegacyWoW — FAQ</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="shared.css" />
+  <style>
+    body{margin:0;font-family:system-ui,Segoe UI,Roboto,Arial;background:#0b0b0b;color:#e8e8e8}
+    header{padding:14px 0;border-bottom:1px solid rgba(255,255,255,.10);background:#070707}
+    .wrap{max-width:1100px;margin:0 auto;padding:0 18px}
+    .top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+    .brand{color:#fff;text-decoration:none;font-weight:900;letter-spacing:.4px;display:flex;align-items:center;gap:12px}
+    .logo{width:40px;height:40px;border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.04);display:flex;align-items:center;justify-content:center}
+    .logo img{width:100%;height:100%;object-fit:cover;display:block}
+    nav{display:flex;gap:10px;flex-wrap:wrap}
+    nav a{color:#fff;text-decoration:none;font-weight:800;font-size:13px;padding:10px 12px;border-radius:14px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.04)}
+    nav a:hover{background:rgba(255,255,255,.10)}
+    main{padding:22px 0}
+    .card{border:1px solid rgba(255,255,255,.10);border-radius:16px;background:rgba(255,255,255,.04);padding:16px}
+    h1{margin:0 0 12px;font-size:26px}
+    h2{margin:16px 0 6px;font-size:15px}
+    p{opacity:.9;line-height:1.5}
+    pre{margin:8px 0 14px;padding:12px;border-radius:14px;border:1px solid rgba(255,255,255,.12);background:rgba(0,0,0,.35)}
+    footer{border-top:1px solid rgba(255,255,255,.08);padding:16px 0;background:#070707;color:rgba(232,232,232,.65);font-size:12.5px}
+  </style>
 </head>
 <body>
-
-<header class="hero-header">
-  <div class="wrap hero">
-    <div>
-      <div class="brandrow">
-        <div class="logo">
-          <img src="assets/logo.png" onerror="this.remove();" />
-        </div>
-        <h1>FAQ</h1>
-      </div>
-
-      <nav class="topnav">
-        <a href="index.html">Home</a>
+  <header>
+    <div class="wrap top">
+      <a class="brand" href="index.html">
+        <div class="logo"><img src="/assets/logo.png" alt="" onerror="this.remove();"></div>
+        <div>LegacyWoW</div>
+      </a>
+      <nav>
         <a href="how-to-play.html">How to Play</a>
         <a href="account.html">Create Account</a>
         <a href="news.html">News</a>
         <a href="rules.html">Rules</a>
+        <a href="faq.html">FAQ</a>
+        <a href="map.html">Map</a>
       </nav>
     </div>
-  </div>
-</header>
+  </header>
 
-<main class="main">
-  <div class="wrap panel">
-    <h3>What client?</h3>
-    <p>World of Warcraft 3.3.5a</p>
+  <main>
+    <div class="wrap">
+      <div class="card">
+        <h1>FAQ</h1>
 
-    <h3>Realmlist?</h3>
-    <pre>set realmlist 25.39.161.60</pre>
+        <h2>What client do I need?</h2>
+        <p>World of Warcraft <b>3.3.5a</b>.</p>
 
-    <h3>How do accounts work?</h3>
-    <p>
-      The site generates an AzerothCore command. An admin pastes it into the worldserver console.
-    </p>
-  </div>
-</main>
+        <h2>What is the progression?</h2>
+        <p>LegacyWoW progresses from <b>Patch 1.0.0 → 3.3.5a</b> with custom content.</p>
 
-<footer class="footer">
-  © <span id="year"></span> LegacyWoW
-</footer>
+        <h2>How do I set my realmlist?</h2>
+        <pre>set realmlist 25.39.161.60</pre>
 
-<script>
-  document.getElementById("year").textContent = new Date().getFullYear();
-</script>
+        <h2>How do I create an account?</h2>
+        <p>
+          Account creation is manual for now. Use:
+        </p>
+        <pre>account create USERNAME PASSWORD</pre>
 
+        <h2>Is this server affiliated with Blizzard?</h2>
+        <p>No. LegacyWoW is a fan project and is not affiliated with Blizzard Entertainment.</p>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="wrap">© <span id="year"></span> LegacyWoW</div>
+  </footer>
+  <script>document.getElementById("year").textContent=new Date().getFullYear();</script>
 </body>
 </html>
