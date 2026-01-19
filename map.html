@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>LegacyWoW — World Map</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Your shared site styling can stay; this file includes its own minimal styling too -->
+  <style>
+    :root{
+      --bg:#0b0b0b;
+      --panel: rgba(0,0,0,.45);
+      --border: rgba(255,255,255,.14);
+      --text:#e8e8e8;
+      --muted: rgba(232,232,232,.85);
+    }
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    /* Header matches your hero vibe */
+    header{
+      padding: 18px 0;
+      border-bottom: 1px solid rgba(255,255,255,.10);
+      background:
+        linear-gradient(180deg, rgba(0,0,0,.25), rgba(0,0,0,.85)),
+        url("assets/hero.jpg");
+      background-size: cover;
+      background-position: center;
+    }
+    .wrap{ max-width:1100px; margin:0 auto; padding:0 18px; }
+    .toprow{
+      display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;
+    }
+    .brand{
+      display:flex; align-items:center; gap:12px; text-decoration:none; color:#fff;
+      font-weight:900; letter-spacing:.4px;
+    }
+    .logo{
+      width:44px; height:44px; border-radius:12px; overflow:hidden;
+      border:1px solid rgba(255,255,255,.18);
+      background: rgba(0,0,0,.35);
+      display:flex; align-items:center; justify-content:center;
+    }
+    .logo img{ width:100%; height:100%; object-fit:cover; display:block; }
+    .logo.fallback::after{ content:"LW"; font-weight:900; opacity:.9; }
+
+    nav{ display:flex; gap:10px; flex-wrap:wrap; }
+    nav a{
+      color:#fff; text-decoration:none; font-weight:800; font-size:13px;
+      padding:10px 12px; border-radius:14px;
+      border:1px solid rgba(255,255,255,.18);
+      background: rgba(0,0,0,.28);
+      backdrop-filter: blur(6px);
+    }
+    nav a:hover{ background: rgba(0,0,0,.45); }
+
+    /* Map layout */
+    .shell{
+      position: relative;
+      height: calc(100vh - 88px);
+      min-height: 560px;
+    }
+    #map{
+      height: 100%;
+      width: 100%;
+      background: #111;
+    }
+
+    /* Floating UI */
+    .panel{
+      position:absolute;
+      top:16px;
+      left:16px;
+      z-index: 999;
+      width: 320px;
+      max-width: calc(100% - 32px);
+      border:1px solid var(--border);
+      background: var(--panel);
+      border-radius:16px;
+      padding:12px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 12px 30px rgba(0,0,0,.35);
+    }
+    .panel h1{
+      margin:0 0 6px;
+      font-size:16px;
+      letter-spacing:.2px;
+    }
+    .panel p{
+      margin:0 0 10px;
+      color: var(--muted);
+      font-size:13px;
+      line-height:1.4;
+    }
+    .row{ display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+    .btn{
+      border:1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.06);
+      color:#fff;
+      border-radius:12px;
+      padding:10px 12px;
+      font-weight:900;
+      cursor:pointer;
+      font-size:13px;
+    }
+    .btn:hover{ background: rgba(255,255,255,.12); }
+    .btn.small{ padding:8px 10px; font-weight:800; }
+    .kbd{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size:12px;
+      opacity:.9;
+      border:1px solid rgba(255,255,255,.16);
+      border-radius:10px;
+      padding:2px 8px;
+      background: rgba(0,0,0,.25);
+    }
+    .hint{
+      margin-top:10px;
+      border-top:1px solid rgba(255,255,255,.10);
+      padding-top:10px;
+      font-size:12.5px;
+      color: rgba(232,232,232,.78);
+      line-height:1.45;
+    }
+
+    /* Leaflet tweaks so controls look fine on dark */
+    .leaflet-control a{
+      background: rgba(0,0,0,.55) !important;
+      color:#fff !important;
+      border-color: rgba(255,255,255,.14) !important;
+    }
+    .leaflet-control a:hover{ background: rgba(0,0,0,.75) !important; }
+    .leaflet-popup-content-wrapper, .leaflet-popup-tip{
+      background: rgba(0,0,0,.80);
+      color:#fff;
+      border:1px solid rgba(255,255,255,.12);
+    }
+  </style>
+
+  <!-- Leaflet -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""
+  />
+  <script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""
+  ></script>
+
+  <!-- Leaflet.draw -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.css" />
+  <script src="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.js"></script>
+</head>
+
+<body>
+  <header>
+    <div class="wrap toprow">
+      <a class="brand" href="index.html">
+        <div class="logo" id="logoBox">
+          <img id="logoImg" src="assets/logo.png" alt="LegacyWoW" onerror="this.remove();" />
+        </div>
+        <div>LegacyWoW — World Map</div>
+      </a>
+
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="how-to-play.html">How to Play</a>
+        <a href="news.html">News</a>
+        <a href="rules.html">Rules</a>
+        <a href="faq.html">FAQ</a>
+        <a href="map.html">Map</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="shell">
+    <div id="map"></div>
+
+    <div class="panel">
+      <h1>Interactive Map</h1>
+      <p>
+        Users can view markers & polygons. Admins can enable edit mode with a URL flag.
+      </p>
+
+      <div class="row">
+        <button class="btn small" id="toggleHelpBtn">Help</button>
+        <button class="btn small" id="exportBtn" title="Admin only">Export GeoJSON</button>
+        <button class="btn small" id="clearBtn" title="Admin only">Clear (local)</button>
+      </div>
+
+      <div class="hint" id="helpBox" style="display:none;">
+        <div><b>Viewer mode:</b> default.</div>
+        <div style="margin-top:6px;">
+          <b>Admin mode:</b> open the map like:
+          <div class="kbd" style="display:inline-block;margin-top:6px;">map.html?admin=1</div>
+        </div>
+        <div style="margin-top:8px;">
+          Draw shapes using the left toolbar, click a shape to rename/change color, then click <b>Export GeoJSON</b>.
+          Upload the exported file to: <span class="kbd">data/overlays.geojson</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="map/app.js"></script>
+</body>
+</html>
