@@ -23,13 +23,13 @@
     a{color:#fff}
     .wrap{max-width:1100px;margin:0 auto;padding:0 18px}
 
-    /* ===== Snow overlay canvas (ALWAYS ON) ===== */
+    /* ===== Snow overlay canvas ===== */
     #snowCanvas{
       position: fixed;
       inset: 0;
       width: 100vw;
       height: 100vh;
-      pointer-events: none; /* doesn't block clicks */
+      pointer-events: none;
       z-index: 99999;
       opacity: 1;
     }
@@ -106,6 +106,7 @@
       padding:12px 14px;
       font-weight:900;
       font-size:13px;
+      cursor:pointer;
     }
     .btn:hover{background: rgba(255,255,255,.12);}
     .btn.primary{
@@ -115,6 +116,11 @@
     .btn.primary:hover{
       background: rgba(60,255,143,.18);
     }
+    .btn.ghost{
+      background: rgba(0,0,0,.28);
+      border-color: rgba(255,255,255,.18);
+    }
+
     .kbd{
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
       font-size:12px;
@@ -172,7 +178,23 @@
       50%{transform:scale(1.4);opacity:.6}
       100%{transform:scale(1);opacity:1}
     }
-    .players{font-size:14px;opacity:.95;margin-top:6px}
+
+    .subline{
+      margin-top: 8px;
+      font-size: 13px;
+      opacity: .85;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      border-radius: 14px;
+      padding: 10px 12px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:space-between;
+    }
+    .subline b{opacity:1}
+    .players{font-size:14px;opacity:.95;margin-top:10px}
     .players span{font-weight:900}
     .updated{margin-top:8px;font-size:12.5px;opacity:.75}
 
@@ -259,15 +281,24 @@
           <a class="btn primary" href="how-to-play.html">Get Started</a>
           <a class="btn" href="downloads.html">Downloads</a>
           <a class="btn" href="map.html">Open World Map</a>
+          <button class="btn ghost" id="snowToggle" type="button">Snow: ON</button>
         </div>
 
         <div class="status-row">
           <div class="status-box">
             <div class="status-title">SERVER STATUS</div>
+
             <div class="status-online">
               <div class="dot"></div>
               ONLINE
             </div>
+
+            <!-- ✅ Realm name -->
+            <div class="subline">
+              <div>Realm: <b>Icecrown</b></div>
+              <div style="opacity:.85;font-size:12.5px;">Client: <b>3.3.5a</b></div>
+            </div>
+
             <div class="players">
               Players Online: <span id="playerCount">---</span>
             </div>
@@ -353,7 +384,9 @@
   <script>
     document.getElementById("year").textContent = new Date().getFullYear();
 
-    // Population simulator
+    // ===========================
+    // Players Online (trend + timestamp)
+    // ===========================
     const MIN_PLAYERS = 500, MAX_PLAYERS = 1850;
     let currentPlayers = Math.floor(Math.random() * (MAX_PLAYERS - MIN_PLAYERS + 1)) + MIN_PLAYERS;
     let trendTarget = Math.floor(Math.random() * (MAX_PLAYERS - MIN_PLAYERS + 1)) + MIN_PLAYERS;
@@ -380,84 +413,103 @@
     playerEl.textContent = currentPlayers.toLocaleString();
     setUpdatedNow();
 
-    (function loop(){
+    (function popLoop(){
       stepPopulation();
-      setTimeout(loop, Math.random() * 3000 + 4000);
+      setTimeout(popLoop, Math.random() * 3000 + 4000);
     })();
 
-    // Snow (strong + always visible)
-    window.addEventListener("load", () => {
-      const canvas = document.getElementById("snowCanvas");
-      const ctx = canvas.getContext("2d");
+    // ===========================
+    // Snow with ON/OFF toggle (saved)
+    // ===========================
+    let snowEnabled = localStorage.getItem("legacywow_snow") !== "off";
 
-      let w = 0, h = 0, dpr = 1;
-      const FLAKES = 240; // heavier so it's obvious
-      const flakes = [];
+    const snowBtn = document.getElementById("snowToggle");
+    const canvas = document.getElementById("snowCanvas");
+    const ctx = canvas.getContext("2d");
 
-      function rand(min, max){ return Math.random() * (max - min) + min; }
+    function setSnowButton(){
+      snowBtn.textContent = snowEnabled ? "Snow: ON" : "Snow: OFF";
+      canvas.style.display = snowEnabled ? "block" : "none";
+    }
 
-      function resize(){
-        dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
-        w = window.innerWidth;
-        h = window.innerHeight;
-        canvas.width = Math.floor(w * dpr);
-        canvas.height = Math.floor(h * dpr);
-        canvas.style.width = w + "px";
-        canvas.style.height = h + "px";
-        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      }
-
-      function makeFlake(){
-        const r = rand(1.2, 4.2);
-        return {
-          x: rand(0, w),
-          y: rand(-h, 0),
-          r,
-          vy: rand(0.8, 2.6) + r * 0.25,
-          vx: rand(-0.4, 0.6),
-          a: rand(0.35, 0.95),
-          wob: rand(0, Math.PI * 2),
-          ws: rand(0.006, 0.02)
-        };
-      }
-
-      function init(){
-        flakes.length = 0;
-        for (let i=0;i<FLAKES;i++) flakes.push(makeFlake());
-      }
-
-      let t = 0;
-      function draw(){
-        t += 0.004;
-        const wind = 0.35 + Math.sin(t) * 0.7;
-
-        ctx.clearRect(0, 0, w, h);
-        for (const f of flakes){
-          f.wob += f.ws;
-
-          f.x += f.vx + wind + Math.sin(f.wob) * 0.35;
-          f.y += f.vy;
-
-          if (f.y > h + 10){ f.y = -10; f.x = rand(0, w); }
-          if (f.x > w + 10) f.x = -10;
-          if (f.x < -10) f.x = w + 10;
-
-          ctx.globalAlpha = f.a;
-          ctx.beginPath();
-          ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
-          ctx.fillStyle = "#ffffff";
-          ctx.fill();
-        }
-        ctx.globalAlpha = 1;
-        requestAnimationFrame(draw);
-      }
-
-      resize();
-      init();
-      draw();
-
-      window.addEventListener("resize", () => { resize(); init(); }, { passive:true });
+    snowBtn.addEventListener("click", () => {
+      snowEnabled = !snowEnabled;
+      localStorage.setItem("legacywow_snow", snowEnabled ? "on" : "off");
+      setSnowButton();
     });
+
+    setSnowButton();
+
+    // Snow engine
+    let w = 0, h = 0, dpr = 1;
+    const FLAKES = 240;
+    const flakes = [];
+    let t = 0;
+
+    function rand(min, max){ return Math.random() * (max - min) + min; }
+
+    function resize(){
+      dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+      w = window.innerWidth;
+      h = window.innerHeight;
+      canvas.width = Math.floor(w * dpr);
+      canvas.height = Math.floor(h * dpr);
+      canvas.style.width = w + "px";
+      canvas.style.height = h + "px";
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+
+    function makeFlake(){
+      const r = rand(1.2, 4.2);
+      return {
+        x: rand(0, w),
+        y: rand(-h, 0),
+        r,
+        vy: rand(0.8, 2.6) + r * 0.25,
+        vx: rand(-0.4, 0.6),
+        a: rand(0.35, 0.95),
+        wob: rand(0, Math.PI * 2),
+        ws: rand(0.006, 0.02)
+      };
+    }
+
+    function initSnow(){
+      flakes.length = 0;
+      for (let i=0;i<FLAKES;i++) flakes.push(makeFlake());
+    }
+
+    function drawSnow(){
+      requestAnimationFrame(drawSnow);
+
+      if (!snowEnabled) return; // ✅ actually stops drawing when OFF
+
+      t += 0.004;
+      const wind = 0.35 + Math.sin(t) * 0.7;
+
+      ctx.clearRect(0, 0, w, h);
+      for (const f of flakes){
+        f.wob += f.ws;
+        f.x += f.vx + wind + Math.sin(f.wob) * 0.35;
+        f.y += f.vy;
+
+        if (f.y > h + 10){ f.y = -10; f.x = rand(0, w); }
+        if (f.x > w + 10) f.x = -10;
+        if (f.x < -10) f.x = w + 10;
+
+        ctx.globalAlpha = f.a;
+        ctx.beginPath();
+        ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
+        ctx.fillStyle = "#ffffff";
+        ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+    }
+
+    window.addEventListener("resize", () => { resize(); initSnow(); }, { passive:true });
+
+    resize();
+    initSnow();
+    drawSnow();
   </script>
 </body>
 </html>
