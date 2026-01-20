@@ -31,7 +31,7 @@
       height: 100vh;
       pointer-events: none;
       z-index: 99999;
-      opacity: 1;
+      opacity: ;
     }
 
     /* Header + hero image (HOME ONLY) */
@@ -387,7 +387,7 @@
     // ===========================
     // Players Online (trend + timestamp)
     // ===========================
-    const MIN_PLAYERS = 0, MAX_PLAYERS = 1;
+    const MIN_PLAYERS = 0, MAX_PLAYERS = 100;
     let currentPlayers = Math.floor(Math.random() * (MAX_PLAYERS - MIN_PLAYERS + 1)) + MIN_PLAYERS;
     let trendTarget = Math.floor(Math.random() * (MAX_PLAYERS - MIN_PLAYERS + 1)) + MIN_PLAYERS;
 
