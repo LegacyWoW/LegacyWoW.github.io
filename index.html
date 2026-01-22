@@ -157,7 +157,17 @@
       text-align:left;
     }
 
-    .status-box,.realm-box{
+    /* second row (single wide box) */
+    .status-row-wide{
+      margin: 14px auto 0;
+      max-width: 980px;
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      text-align:left;
+    }
+
+    .status-box,.realm-box,.info-box{
       padding:18px 20px;
       border-radius:18px;
       border:1px solid rgba(255,255,255,.14);
@@ -172,6 +182,7 @@
       letter-spacing:.6px;
       margin-bottom:10px;
       opacity:.9;
+      text-transform: uppercase;
     }
 
     .status-online{
@@ -206,8 +217,10 @@
       background: rgba(255,255,255,.04);
       display:flex;
       justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
       font-size:13px;
-      opacity:.9;
+      opacity:.92;
     }
 
     .players{
@@ -239,12 +252,64 @@
       letter-spacing:.5px;
       opacity:.7;
       font-weight:900;
+      text-transform: uppercase;
     }
 
     .v{
       margin-top:4px;
       font-size:14px;
       font-weight:900;
+    }
+
+    /* Progress bar */
+    .progress-wrap{
+      margin-top: 12px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      border-radius: 14px;
+      padding: 12px;
+    }
+    .progress-labels{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+      font-size:12.5px;
+      opacity:.85;
+      margin-bottom:10px;
+    }
+    .progress{
+      height: 12px;
+      width: 100%;
+      border-radius: 999px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.35);
+      overflow:hidden;
+    }
+    .progress-fill{
+      height:100%;
+      width: 3%; /* current patch is 1.0.0 (very early) */
+      border-radius: 999px;
+      background: rgba(60,255,143,.85);
+      box-shadow: 0 0 18px rgba(60,255,143,.35);
+    }
+    .milestones{
+      margin-top:10px;
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+      font-size:12px;
+      opacity:.75;
+    }
+    .chip{
+      display:inline-block;
+      padding:4px 8px;
+      border-radius: 10px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.25);
+      font-weight: 900;
+      letter-spacing: .2px;
     }
 
     main{padding:22px 0 36px}
@@ -272,7 +337,7 @@
   <div class="wrap">
     <div class="toprow">
       <a class="brand" href="index.html">
-        <div class="logo"><img src="/assets/logo.png" onerror="this.remove();"></div>
+        <div class="logo"><img src="/assets/logo.png" alt="LegacyWoW" onerror="this.remove();"></div>
         <div>LegacyWoW</div>
       </a>
 
@@ -289,18 +354,21 @@
 
     <div class="hero">
       <h1>Progressive Vanilla → Wrath</h1>
-      <p>LegacyWoW is a long-term progressive server with custom content built on AzerothCore.</p>
+      <p>
+        LegacyWoW is a long-term progressive server with custom content built on AzerothCore.
+      </p>
 
       <div class="hero-row">
         <a class="btn primary" href="how-to-play.html">Get Started</a>
         <a class="btn" href="downloads.html">Downloads</a>
         <a class="btn" href="map.html">World Map</a>
-        <button class="btn ghost" id="snowToggle">Snow: ON</button>
+        <button class="btn ghost" id="snowToggle" type="button">Snow: ON</button>
       </div>
 
+      <!-- Row 1: Status + Realm Info -->
       <div class="status-row">
         <div class="status-box">
-          <div class="status-title">SERVER STATUS</div>
+          <div class="status-title">Server Status</div>
           <div class="status-online"><div class="dot"></div>ONLINE</div>
 
           <div class="subline">
@@ -317,15 +385,49 @@
         </div>
 
         <div class="realm-box">
-          <div class="status-title">REALM INFO</div>
+          <div class="status-title">Realm Info</div>
           <div class="realm-grid">
-            <div class="kv"><div class="k">CLIENT</div><div class="v">3.3.5a</div></div>
-            <div class="kv"><div class="k">PROGRESSION</div><div class="v">1.0.0 → 3.3.5a</div></div>
-            <div class="kv"><div class="k">CORE</div><div class="v">AzerothCore</div></div>
-            <div class="kv"><div class="k">RATES</div><div class="v">XP x2 · Gold x1.5 · Honor x1</div></div>
+            <div class="kv"><div class="k">Client</div><div class="v">3.3.5a</div></div>
+            <div class="kv"><div class="k">Progression</div><div class="v">1.0.0 → 3.3.5a</div></div>
+            <div class="kv"><div class="k">Core</div><div class="v">AzerothCore</div></div>
+            <div class="kv"><div class="k">Rates</div><div class="v">XP x2 · Gold x1.5 · Honor x1</div></div>
           </div>
         </div>
       </div>
+
+      <!-- Row 2: NEW Server Info + Progress Bar -->
+      <div class="status-row-wide">
+        <div class="info-box">
+          <div class="status-title">Server Progress</div>
+
+          <p style="margin:0;color:var(--muted);line-height:1.55;">
+            <b>LegacyWoW (Icecrown)</b> is a progressive realm starting in <b>Patch 1.0.0</b> and advancing through
+            each era up to <b>3.3.5a</b>. After Wrath progression is complete, <b>custom content is planned</b>.
+          </p>
+
+          <div class="progress-wrap">
+            <div class="progress-labels">
+              <div>Current: <b>1.0.0</b> <span class="chip" style="margin-left:8px;">Vanilla</span></div>
+              <div>Goal: <b>3.3.5a</b> <span class="chip" style="margin-left:8px;">Wrath</span></div>
+            </div>
+
+            <div class="progress" aria-label="Progression progress bar">
+              <div class="progress-fill" title="Current progression: very early (Patch 1.0.0)"></div>
+            </div>
+
+            <div class="milestones">
+              <div><span class="chip">1.0.0</span> Vanilla Start</div>
+              <div><span class="chip">2.0.1</span> TBC Start</div>
+              <div><span class="chip">3.0.2</span> Wrath Start</div>
+              <div><span class="chip">3.3.5a</span> Wrath End</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <p style="margin-top:14px;color:var(--muted);font-size:13.5px;">
+        Not affiliated with Blizzard Entertainment.
+      </p>
     </div>
   </div>
 </header>
