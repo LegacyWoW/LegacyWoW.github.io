@@ -4,45 +4,132 @@
   <meta charset="UTF-8" />
   <title>LegacyWoW — How to Play</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <style>
-    body{margin:0;font-family:system-ui,Segoe UI,Roboto,Arial;background:#0b0b0b;color:#e8e8e8}
-    header{padding:14px 0;border-bottom:1px solid rgba(255,255,255,.10);background:#070707}
+    body{
+      margin:0;
+      font-family: system-ui, Segoe UI, Roboto, Arial, sans-serif;
+      background:#0b0b0b;
+      color:#e8e8e8;
+    }
+    header{
+      padding:14px 0;
+      border-bottom:1px solid rgba(255,255,255,.10);
+      background:#070707;
+    }
     .wrap{max-width:1100px;margin:0 auto;padding:0 18px}
-    .top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
-    .brand{color:#fff;text-decoration:none;font-weight:900;letter-spacing:.4px;display:flex;align-items:center;gap:12px}
-    .logo{width:40px;height:40px;border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.04);display:flex;align-items:center;justify-content:center}
-    .logo img{width:100%;height:100%;object-fit:cover;display:block}
+    .top{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+    .brand{
+      color:#fff;
+      text-decoration:none;
+      font-weight:900;
+      letter-spacing:.4px;
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+    .logo{
+      width:40px;
+      height:40px;
+      border-radius:12px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.18);
+      background:rgba(255,255,255,.04);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .logo img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+    }
+
     nav{display:flex;gap:10px;flex-wrap:wrap}
-    nav a{color:#fff;text-decoration:none;font-weight:800;font-size:13px;padding:10px 12px;border-radius:14px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.04)}
+    nav a{
+      color:#fff;
+      text-decoration:none;
+      font-weight:800;
+      font-size:13px;
+      padding:10px 12px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.18);
+      background:rgba(255,255,255,.04);
+    }
     nav a:hover{background:rgba(255,255,255,.10)}
-    main{padding:22px 0}
-    .card{border:1px solid rgba(255,255,255,.10);border-radius:16px;background:rgba(255,255,255,.04);padding:16px}
-    h1{margin:0 0 10px;font-size:26px}
-    h2{margin:16px 0 8px;font-size:16px}
-    p{margin:0 0 10px;opacity:.9;line-height:1.5}
-    pre{margin:8px 0 14px;padding:12px;border-radius:14px;border:1px solid rgba(255,255,255,.12);background:rgba(0,0,0,.35);overflow:auto}
+
+    main{padding:22px 0 36px}
+
+    .card{
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:18px;
+      background:rgba(255,255,255,.04);
+      padding:18px;
+    }
+
+    h1{
+      margin:0 0 14px;
+      font-size:26px;
+    }
+    h2{
+      margin:18px 0 8px;
+      font-size:16px;
+    }
+    p{
+      margin:0 0 10px;
+      line-height:1.55;
+      opacity:.95;
+    }
+    pre{
+      margin:8px 0 14px;
+      padding:12px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(0,0,0,.35);
+      overflow:auto;
+      font-size:13px;
+    }
+
     .btn{
       display:inline-block;
       text-decoration:none;
       border:1px solid rgba(255,255,255,.18);
-      background: rgba(255,255,255,.08);
+      background:rgba(255,255,255,.08);
       color:#fff;
       border-radius:14px;
       padding:10px 12px;
       font-weight:900;
       font-size:13px;
     }
-    .btn:hover{background: rgba(255,255,255,.14);}
-    footer{border-top:1px solid rgba(255,255,255,.08);padding:16px 0;background:#070707;color:rgba(232,232,232,.65);font-size:12.5px}
+    .btn:hover{background:rgba(255,255,255,.14)}
+
+    footer{
+      border-top:1px solid rgba(255,255,255,.08);
+      padding:16px 0;
+      background:#070707;
+      color:rgba(232,232,232,.65);
+      font-size:12.5px;
+    }
   </style>
 </head>
+
 <body>
   <header>
     <div class="wrap top">
       <a class="brand" href="index.html">
-        <div class="logo"><img src="/assets/logo.png" alt="" onerror="this.remove();"></div>
+        <div class="logo">
+          <img src="/assets/logo.png" alt="LegacyWoW" onerror="this.remove();">
+        </div>
         <div>LegacyWoW</div>
       </a>
+
       <nav>
         <a href="how-to-play.html">How to Play</a>
         <a href="downloads.html">Downloads</a>
@@ -59,25 +146,49 @@
     <div class="wrap">
       <div class="card">
         <h1>How to Play</h1>
-        <p>Client: <b>3.3.5a</b> — Progressive content from <b>1.0.0 → 3.3.5a</b> with custom content.</p>
 
-        <p><a class="btn" href="downloads.html">Go to Downloads</a></p>
+        <p>
+          LegacyWoW runs on the <b>3.3.5a</b> client and progresses from
+          <b>Patch 1.0.0 → 3.3.5a</b> with custom content along the way.
+        </p>
+
+        <p>
+          <a class="btn" href="downloads.html">Go to Downloads</a>
+        </p>
 
         <h2>1) Set your realmlist</h2>
         <pre>set realmlist 25.39.161.60</pre>
 
         <h2>2) Create an account</h2>
-        <p>Account creation is manual for now. See <a href="account.html" style="color:#fff;">Create Account</a>.</p>
+        <p>
+          Account creation is manual for now. Visit
+          <a href="account.html" style="color:#fff;">Create Account</a>.
+        </p>
 
-        <h2>3) Launch the game</h2>
-        <p>Start <b>WoWLauncher.exe</b> and hit <b>Play</b> to login.</p>
+        <h2>3) Select optional patches</h2>
+        <p>
+          Start <b>patchmenu.exe</b> to select any optional patches you wish to use,
+          such as HD models, new mounts, or other available features.
+        </p>
+
+        <h2>4) Update and launch the game</h2>
+        <p>
+          Start <b>WoWLauncher.exe</b> to update the game as needed.
+          Once finished, launch <b>wow.exe</b> to begin playing.
+        </p>
+
       </div>
     </div>
   </main>
 
   <footer>
-    <div class="wrap">© <span id="year"></span> LegacyWoW — Not affiliated with Blizzard.</div>
+    <div class="wrap">
+      © <span id="year"></span> LegacyWoW — Not affiliated with Blizzard Entertainment.
+    </div>
   </footer>
-  <script>document.getElementById("year").textContent=new Date().getFullYear();</script>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>
