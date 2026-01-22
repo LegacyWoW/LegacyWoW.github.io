@@ -12,6 +12,7 @@
       --text:#e8e8e8;
       --muted: rgba(232,232,232,.82);
       --card: rgba(255,255,255,.04);
+      --green:#3cff8f;
     }
     *{box-sizing:border-box}
     body{
@@ -23,7 +24,7 @@
     a{color:#fff}
     .wrap{max-width:1100px;margin:0 auto;padding:0 18px}
 
-    /* ===== Snow overlay canvas ===== */
+    /* Snow canvas */
     #snowCanvas{
       position: fixed;
       inset: 0;
@@ -31,76 +32,89 @@
       height: 100vh;
       pointer-events: none;
       z-index: 99999;
-      opacity: ;
     }
 
-    /* Header + hero image (HOME ONLY) */
     header{
-      border-bottom: 1px solid rgba(255,255,255,.10);
+      border-bottom:1px solid rgba(255,255,255,.10);
       background:
         linear-gradient(180deg, rgba(0,0,0,.25), rgba(0,0,0,.88)),
         url("/assets/hero.jpg");
-      background-size: cover;
-      background-position: center;
+      background-size:cover;
+      background-position:center;
     }
-    .toprow{
-      display:flex; justify-content:space-between; align-items:center;
-      gap:12px; flex-wrap:wrap;
-      padding: 16px 0;
-    }
-    .brand{
-      display:flex; align-items:center; gap:12px;
-      text-decoration:none; color:#fff;
-      font-weight:900; letter-spacing:.4px;
-    }
-    .logo{
-      width:44px; height:44px; border-radius:12px; overflow:hidden;
-      border:1px solid rgba(255,255,255,.18);
-      background: rgba(0,0,0,.35);
-      display:flex; align-items:center; justify-content:center;
-    }
-    .logo img{width:100%;height:100%;object-fit:cover;display:block}
 
-    nav{display:flex; gap:10px; flex-wrap:wrap}
-    nav a{
-      color:#fff; text-decoration:none; font-weight:800; font-size:13px;
-      padding:10px 12px; border-radius:14px;
-      border:1px solid rgba(255,255,255,.18);
-      background: rgba(0,0,0,.28);
-      backdrop-filter: blur(6px);
+    .toprow{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+      padding:16px 0;
     }
-    nav a:hover{background: rgba(0,0,0,.45);}
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      text-decoration:none;
+      color:#fff;
+      font-weight:900;
+      letter-spacing:.4px;
+    }
+
+    .logo{
+      width:44px;
+      height:44px;
+      border-radius:12px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.18);
+      background:rgba(0,0,0,.35);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .logo img{width:100%;height:100%;object-fit:cover}
+
+    nav{display:flex;gap:10px;flex-wrap:wrap}
+    nav a{
+      color:#fff;
+      text-decoration:none;
+      font-weight:800;
+      font-size:13px;
+      padding:10px 12px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.18);
+      background:rgba(0,0,0,.28);
+    }
+    nav a:hover{background:rgba(0,0,0,.45)}
 
     .hero{
-      padding: 34px 0 22px;
+      padding:34px 0 22px;
       text-align:center;
     }
     .hero h1{
       margin:0;
-      font-size: 44px;
-      letter-spacing:.2px;
-      line-height: 1.05;
+      font-size:44px;
+      line-height:1.05;
     }
     .hero p{
-      margin: 12px auto 0;
-      max-width: 860px;
-      color: var(--muted);
-      font-size: 15.5px;
-      line-height: 1.5;
+      margin:12px auto 0;
+      max-width:860px;
+      color:var(--muted);
+      font-size:15.5px;
+      line-height:1.5;
     }
 
     .hero-row{
-      margin-top: 18px;
+      margin-top:18px;
       display:flex;
       justify-content:center;
       gap:10px;
       flex-wrap:wrap;
     }
     .btn{
-      display:inline-block;
-      text-decoration:none;
       border:1px solid rgba(255,255,255,.18);
-      background: rgba(255,255,255,.06);
+      background:rgba(255,255,255,.06);
       color:#fff;
       border-radius:14px;
       padding:12px 14px;
@@ -108,70 +122,55 @@
       font-size:13px;
       cursor:pointer;
     }
-    .btn:hover{background: rgba(255,255,255,.12);}
     .btn.primary{
-      background: rgba(60,255,143,.12);
-      border-color: rgba(60,255,143,.25);
-    }
-    .btn.primary:hover{
-      background: rgba(60,255,143,.18);
+      background:rgba(60,255,143,.12);
+      border-color:rgba(60,255,143,.25);
     }
     .btn.ghost{
-      background: rgba(0,0,0,.28);
-      border-color: rgba(255,255,255,.18);
-    }
-
-    .kbd{
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-      font-size:12px;
-      opacity:.95;
-      border:1px solid rgba(255,255,255,.16);
-      border-radius:10px;
-      padding:2px 8px;
-      background: rgba(0,0,0,.25);
-      display:inline-block;
+      background:rgba(0,0,0,.28);
     }
 
     .status-row{
-      margin: 18px auto 0;
-      max-width: 980px;
+      margin:22px auto 0;
+      max-width:980px;
       display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
-      align-items: stretch;
+      grid-template-columns:1fr 1fr;
+      gap:14px;
       text-align:left;
     }
-    .status-box,.realm-box{
-      padding: 18px 20px;
-      border-radius: 18px;
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(0,0,0,.45);
-      backdrop-filter: blur(8px);
-      box-shadow: 0 16px 40px rgba(0,0,0,.45);
+
+    .status-box{
+      padding:18px 20px;
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(0,0,0,.45);
+      backdrop-filter:blur(8px);
+      box-shadow:0 16px 40px rgba(0,0,0,.45);
     }
-    .status-title,.realm-title{
-      font-weight: 900;
-      letter-spacing: .6px;
-      font-size: 13px;
-      opacity: .9;
-      margin-bottom: 10px;
+
+    .status-title{
+      font-weight:900;
+      font-size:13px;
+      margin-bottom:10px;
+      opacity:.9;
     }
+
     .status-online{
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 18px;
-      font-weight: 900;
-      color: #3cff8f;
-      margin-bottom: 6px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-size:18px;
+      font-weight:900;
+      color:var(--green);
     }
+
     .dot{
-      width: 12px;
-      height: 12px;
-      background: #3cff8f;
-      border-radius: 50%;
-      box-shadow: 0 0 12px rgba(60,255,143,.9);
-      animation: pulse 1.8s infinite;
+      width:12px;
+      height:12px;
+      border-radius:50%;
+      background:var(--green);
+      box-shadow:0 0 12px rgba(60,255,143,.9);
+      animation:pulse 1.8s infinite;
     }
     @keyframes pulse{
       0%{transform:scale(1);opacity:1}
@@ -180,336 +179,146 @@
     }
 
     .subline{
-      margin-top: 8px;
-      font-size: 13px;
-      opacity: .85;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.04);
-      border-radius: 14px;
-      padding: 10px 12px;
+      margin-top:10px;
+      font-size:13px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.04);
+      border-radius:14px;
+      padding:10px 12px;
       display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      align-items:center;
       justify-content:space-between;
+      flex-wrap:wrap;
+      gap:8px;
     }
-    .subline b{opacity:1}
-    .players{font-size:14px;opacity:.95;margin-top:10px}
-    .players span{font-weight:900}
-    .updated{margin-top:8px;font-size:12.5px;opacity:.75}
 
-    .realm-grid{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px 14px;
+    .players{
+      margin-top:10px;
+      font-size:14px;
     }
-    .kv{
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.04);
-      border-radius: 14px;
-      padding: 10px 12px;
-    }
-    .k{font-size:11.5px;letter-spacing:.5px;opacity:.72;font-weight:900}
-    .v{margin-top:4px;font-size:14px;font-weight:900;opacity:.98}
-    .v small{font-weight:800;opacity:.75;font-size:12px}
 
-    main{padding: 22px 0 36px;}
+    main{padding:22px 0 36px}
+
     .grid{
       display:grid;
-      grid-template-columns: repeat(12, 1fr);
-      gap: 14px;
-      margin-top: 16px;
+      grid-template-columns:repeat(12,1fr);
+      gap:14px;
     }
     .card{
+      grid-column:span 6;
       border:1px solid rgba(255,255,255,.10);
       border-radius:16px;
-      background: var(--card);
+      background:var(--card);
       padding:16px;
     }
-    .card h2{margin:0 0 8px;font-size:16px;letter-spacing:.2px}
-    .card p{margin:0;color:var(--muted);line-height:1.5;font-size:14px}
-    .span6{grid-column: span 6;}
-    .span4{grid-column: span 4;}
-    .span12{grid-column: span 12;}
-
-    @media (max-width: 900px){
-      .hero h1{font-size:36px;}
-      .span6,.span4{grid-column: span 12;}
-      .status-row{grid-template-columns: 1fr;}
-    }
+    .card h2{margin:0 0 8px;font-size:16px}
+    .card p{margin:0;color:var(--muted)}
 
     footer{
       border-top:1px solid rgba(255,255,255,.08);
       padding:16px 0;
       background:#070707;
-      color:rgba(232,232,232,.65);
       font-size:12.5px;
+      color:rgba(232,232,232,.65);
+      text-align:center;
+    }
+
+    @media (max-width:900px){
+      .status-row{grid-template-columns:1fr}
+      .card{grid-column:span 12}
     }
   </style>
 </head>
 
 <body>
-  <canvas id="snowCanvas" aria-hidden="true"></canvas>
+<canvas id="snowCanvas"></canvas>
 
-  <header>
-    <div class="wrap">
-      <div class="toprow">
-        <a class="brand" href="index.html">
-          <div class="logo"><img src="/assets/logo.png" alt="LegacyWoW" onerror="this.remove();" /></div>
-          <div>LegacyWoW</div>
-        </a>
+<header>
+  <div class="wrap">
+    <div class="toprow">
+      <a class="brand" href="index.html">
+        <div class="logo"><img src="/assets/logo.png" alt="LegacyWoW"></div>
+        <div>LegacyWoW</div>
+      </a>
+      <nav>
+        <a href="how-to-play.html">How to Play</a>
+        <a href="downloads.html">Downloads</a>
+        <a href="account.html">Create Account</a>
+        <a href="news.html">News</a>
+        <a href="rules.html">Rules</a>
+        <a href="faq.html">FAQ</a>
+        <a href="map.html">Map</a>
+      </nav>
+    </div>
 
-        <nav>
-          <a href="how-to-play.html">How to Play</a>
-          <a href="downloads.html">Downloads</a>
-          <a href="account.html">Create Account</a>
-          <a href="news.html">News</a>
-          <a href="rules.html">Rules</a>
-          <a href="faq.html">FAQ</a>
-          <a href="map.html">Map</a>
-        </nav>
+    <div class="hero">
+      <h1>Progressive Vanilla → Wrath</h1>
+      <p>Multiple realms, long-term progression, and custom content built on AzerothCore.</p>
+
+      <div class="hero-row">
+        <a class="btn primary" href="how-to-play.html">Get Started</a>
+        <a class="btn" href="downloads.html">Downloads</a>
+        <a class="btn" href="map.html">World Map</a>
       </div>
 
-      <div class="hero">
-        <h1>Progressive Vanilla → Wrath</h1>
-        <p>
-          LegacyWoW is a progressive server built on <b>AzerothCore</b>, running on the <b>3.3.5a</b> client and
-          progressing from <b>Patch 1.0.0 → 3.3.5a</b> with custom content along the way.
-        </p>
+      <!-- REALM STATUS -->
+      <div class="status-row">
 
-        <div class="hero-row">
-          <a class="btn primary" href="how-to-play.html">Get Started</a>
-          <a class="btn" href="downloads.html">Downloads</a>
-          <a class="btn" href="map.html">Open World Map</a>
-          <button class="btn ghost" id="snowToggle" type="button">Snow: ON</button>
-        </div>
-
-        <div class="status-row">
-          <div class="status-box">
-            <div class="status-title">SERVER STATUS</div>
-
-            <div class="status-online">
-              <div class="dot"></div>
-              ONLINE
-            </div>
-
-            <!-- ✅ Realm name -->
-            <div class="subline">
-              <div>Realm: <b>Icecrown</b></div>
-              <div style="opacity:.85;font-size:12.5px;">Client: <b>3.3.5a</b></div>
-            </div>
-
-            <div class="players">
-              Players Online: <span id="playerCount">---</span>
-            </div>
-            <div class="updated">
-              Last updated: <span id="lastUpdated">---</span>
-            </div>
+        <!-- Icecrown -->
+        <div class="status-box">
+          <div class="status-title">SERVER STATUS</div>
+          <div class="status-online">
+            <div class="dot"></div> ONLINE
           </div>
-
-          <div class="realm-box">
-            <div class="realm-title">REALM INFO</div>
-            <div class="realm-grid">
-              <div class="kv">
-                <div class="k">CLIENT</div>
-                <div class="v">3.3.5a <small>(Wrath client)</small></div>
-              </div>
-              <div class="kv">
-                <div class="k">PROGRESSION</div>
-                <div class="v">1.0.0 → 3.3.5a</div>
-              </div>
-              <div class="kv">
-                <div class="k">CORE</div>
-                <div class="v">AzerothCore</div>
-              </div>
-              <div class="kv">
-                <div class="k">RATES</div>
-                <div class="v">XP x2 · Gold x1.5 · Honor x1</div>
-              </div>
-              <div class="kv" style="grid-column: span 2;">
-                <div class="k">REALMLIST</div>
-                <div class="v"><span class="kbd">set realmlist 25.39.161.60</span></div>
-              </div>
-            </div>
+          <div class="subline">
+            <div>Realm: <b>Icecrown</b></div>
+            <div>Client: <b>3.3.5a</b></div>
+          </div>
+          <div class="players">
+            Current Patch: <b>3.3.5a</b>
           </div>
         </div>
 
-        <p style="margin-top:14px;color:var(--muted);font-size:13.5px;">
-          Not affiliated with Blizzard Entertainment.
-        </p>
+        <!-- Lordaeron -->
+        <div class="status-box">
+          <div class="status-title">SERVER STATUS</div>
+          <div class="status-online">
+            <div class="dot"></div> ONLINE
+          </div>
+          <div class="subline">
+            <div>Realm: <b>Lordaeron</b></div>
+            <div>Client: <b>3.3.5a</b></div>
+          </div>
+          <div class="players">
+            Current Patch: <b>1.0.0</b>
+          </div>
+        </div>
+
       </div>
     </div>
-  </header>
+  </div>
+</header>
 
-  <main>
-    <div class="wrap">
-      <div class="grid">
-        <div class="card span6">
-          <h2>What makes LegacyWoW different</h2>
-          <p>A true long-term progression path with custom content woven into each era.</p>
-        </div>
-        <div class="card span6">
-          <h2>Start playing in minutes</h2>
-          <p>Download the client & launcher, set your realmlist, and log in.</p>
-        </div>
-        <div class="card span4">
-          <h2>Downloads</h2>
-          <p>Get the <a href="downloads.html">Client + Launcher</a>.</p>
-        </div>
-        <div class="card span4">
-          <h2>Interactive world map</h2>
-          <p>Browse points of interest and events on the <a href="map.html">World Map</a>.</p>
-        </div>
-        <div class="card span4">
-          <h2>Rules & FAQ</h2>
-          <p>Read the <a href="rules.html">Rules</a> and <a href="faq.html">FAQ</a>.</p>
-        </div>
-        <div class="card span12">
-          <h2>Quick commands</h2>
-          <p style="margin-bottom:8px;color:var(--muted);">Realmlist:</p>
-          <div class="kbd">set realmlist 25.39.161.60</div>
-          <p style="margin:12px 0 8px;color:var(--muted);">Account creation (manual for now):</p>
-          <div class="kbd">account create USERNAME PASSWORD</div>
-        </div>
+<main>
+  <div class="wrap">
+    <div class="grid">
+      <div class="card">
+        <h2>True progression</h2>
+        <p>Each realm advances at its own pace, preserving the feel of each era.</p>
+      </div>
+      <div class="card">
+        <h2>Custom content</h2>
+        <p>New events, world changes, and features integrated carefully into progression.</p>
       </div>
     </div>
-  </main>
+  </div>
+</main>
 
-  <footer>
-    <div class="wrap">
-      © <span id="year"></span> LegacyWoW — Not affiliated with Blizzard Entertainment.
-    </div>
-  </footer>
+<footer>
+  © <span id="year"></span> LegacyWoW — Not affiliated with Blizzard Entertainment.
+</footer>
 
-  <script>
-    document.getElementById("year").textContent = new Date().getFullYear();
-
-    // ===========================
-    // Players Online (trend + timestamp)
-    // ===========================
-    const MIN_PLAYERS = 80, MAX_PLAYERS = 110;
-    let currentPlayers = Math.floor(Math.random() * (MAX_PLAYERS - MIN_PLAYERS + 1)) + MIN_PLAYERS;
-    let trendTarget = Math.floor(Math.random() * (MAX_PLAYERS - MIN_PLAYERS + 1)) + MIN_PLAYERS;
-
-    const playerEl = document.getElementById("playerCount");
-    const updatedEl = document.getElementById("lastUpdated");
-
-    function formatTime(d){ return d.toLocaleTimeString([], { hour:"2-digit", minute:"2-digit" }); }
-    function clamp(n,min,max){ return Math.max(min, Math.min(max, n)); }
-    function setUpdatedNow(){ updatedEl.textContent = formatTime(new Date()); }
-
-    function stepPopulation(){
-      if (Math.random() < 0.18) trendTarget = Math.floor(Math.random() * (MAX_PLAYERS - MIN_PLAYERS + 1)) + MIN_PLAYERS;
-      const toward = trendTarget - currentPlayers;
-      const drift = Math.sign(toward) * (1 + Math.floor(Math.random() * 6));
-      const noise = Math.floor(Math.random() * 7) - 3;
-      let change = drift + noise;
-      if (Math.abs(toward) < 25) change = Math.floor(Math.random() * 7) - 3;
-      currentPlayers = clamp(currentPlayers + change, MIN_PLAYERS, MAX_PLAYERS);
-      playerEl.textContent = currentPlayers.toLocaleString();
-      setUpdatedNow();
-    }
-
-    playerEl.textContent = currentPlayers.toLocaleString();
-    setUpdatedNow();
-
-    (function popLoop(){
-      stepPopulation();
-      setTimeout(popLoop, Math.random() * 3000 + 4000);
-    })();
-
-    // ===========================
-    // Snow with ON/OFF toggle (saved)
-    // ===========================
-    let snowEnabled = localStorage.getItem("legacywow_snow") !== "off";
-
-    const snowBtn = document.getElementById("snowToggle");
-    const canvas = document.getElementById("snowCanvas");
-    const ctx = canvas.getContext("2d");
-
-    function setSnowButton(){
-      snowBtn.textContent = snowEnabled ? "Snow: ON" : "Snow: OFF";
-      canvas.style.display = snowEnabled ? "block" : "none";
-    }
-
-    snowBtn.addEventListener("click", () => {
-      snowEnabled = !snowEnabled;
-      localStorage.setItem("legacywow_snow", snowEnabled ? "on" : "off");
-      setSnowButton();
-    });
-
-    setSnowButton();
-
-    // Snow engine
-    let w = 0, h = 0, dpr = 1;
-    const FLAKES = 240;
-    const flakes = [];
-    let t = 0;
-
-    function rand(min, max){ return Math.random() * (max - min) + min; }
-
-    function resize(){
-      dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
-      w = window.innerWidth;
-      h = window.innerHeight;
-      canvas.width = Math.floor(w * dpr);
-      canvas.height = Math.floor(h * dpr);
-      canvas.style.width = w + "px";
-      canvas.style.height = h + "px";
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    }
-
-    function makeFlake(){
-      const r = rand(1.2, 4.2);
-      return {
-        x: rand(0, w),
-        y: rand(-h, 0),
-        r,
-        vy: rand(0.8, 2.6) + r * 0.25,
-        vx: rand(-0.4, 0.6),
-        a: rand(0.35, 0.95),
-        wob: rand(0, Math.PI * 2),
-        ws: rand(0.006, 0.02)
-      };
-    }
-
-    function initSnow(){
-      flakes.length = 0;
-      for (let i=0;i<FLAKES;i++) flakes.push(makeFlake());
-    }
-
-    function drawSnow(){
-      requestAnimationFrame(drawSnow);
-
-      if (!snowEnabled) return; // ✅ actually stops drawing when OFF
-
-      t += 0.004;
-      const wind = 0.35 + Math.sin(t) * 0.7;
-
-      ctx.clearRect(0, 0, w, h);
-      for (const f of flakes){
-        f.wob += f.ws;
-        f.x += f.vx + wind + Math.sin(f.wob) * 0.35;
-        f.y += f.vy;
-
-        if (f.y > h + 10){ f.y = -10; f.x = rand(0, w); }
-        if (f.x > w + 10) f.x = -10;
-        if (f.x < -10) f.x = w + 10;
-
-        ctx.globalAlpha = f.a;
-        ctx.beginPath();
-        ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
-        ctx.fillStyle = "#ffffff";
-        ctx.fill();
-      }
-      ctx.globalAlpha = 1;
-    }
-
-    window.addEventListener("resize", () => { resize(); initSnow(); }, { passive:true });
-
-    resize();
-    initSnow();
-    drawSnow();
-  </script>
+<script>
+  document.getElementById("year").textContent = new Date().getFullYear();
+</script>
 </body>
 </html>
