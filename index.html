@@ -12,7 +12,6 @@
       --text:#e8e8e8;
       --muted: rgba(232,232,232,.82);
       --card: rgba(255,255,255,.04);
-      --green:#3cff8f;
     }
     *{box-sizing:border-box}
     body{
@@ -24,7 +23,7 @@
     a{color:#fff}
     .wrap{max-width:1100px;margin:0 auto;padding:0 18px}
 
-    /* Snow canvas */
+    /* ===== Snow overlay ===== */
     #snowCanvas{
       position: fixed;
       inset: 0;
@@ -35,12 +34,12 @@
     }
 
     header{
-      border-bottom:1px solid rgba(255,255,255,.10);
+      border-bottom: 1px solid rgba(255,255,255,.10);
       background:
         linear-gradient(180deg, rgba(0,0,0,.25), rgba(0,0,0,.88)),
         url("/assets/hero.jpg");
-      background-size:cover;
-      background-position:center;
+      background-size: cover;
+      background-position: center;
     }
 
     .toprow{
@@ -49,7 +48,7 @@
       align-items:center;
       gap:12px;
       flex-wrap:wrap;
-      padding:16px 0;
+      padding: 16px 0;
     }
 
     .brand{
@@ -68,14 +67,25 @@
       border-radius:12px;
       overflow:hidden;
       border:1px solid rgba(255,255,255,.18);
-      background:rgba(0,0,0,.35);
+      background: rgba(0,0,0,.35);
       display:flex;
       align-items:center;
       justify-content:center;
     }
-    .logo img{width:100%;height:100%;object-fit:cover}
 
-    nav{display:flex;gap:10px;flex-wrap:wrap}
+    .logo img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+    }
+
+    nav{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
     nav a{
       color:#fff;
       text-decoration:none;
@@ -84,73 +94,82 @@
       padding:10px 12px;
       border-radius:14px;
       border:1px solid rgba(255,255,255,.18);
-      background:rgba(0,0,0,.28);
+      background: rgba(0,0,0,.28);
+      backdrop-filter: blur(6px);
     }
-    nav a:hover{background:rgba(0,0,0,.45)}
+
+    nav a:hover{background: rgba(0,0,0,.45);}
 
     .hero{
-      padding:34px 0 22px;
+      padding: 34px 0 22px;
       text-align:center;
     }
+
     .hero h1{
       margin:0;
-      font-size:44px;
+      font-size: 44px;
       line-height:1.05;
     }
+
     .hero p{
-      margin:12px auto 0;
-      max-width:860px;
-      color:var(--muted);
-      font-size:15.5px;
-      line-height:1.5;
+      margin: 12px auto 0;
+      max-width: 860px;
+      color: var(--muted);
+      font-size: 15.5px;
+      line-height: 1.5;
     }
 
     .hero-row{
-      margin-top:18px;
+      margin-top: 18px;
       display:flex;
       justify-content:center;
       gap:10px;
       flex-wrap:wrap;
     }
+
     .btn{
       border:1px solid rgba(255,255,255,.18);
-      background:rgba(255,255,255,.06);
+      background: rgba(255,255,255,.06);
       color:#fff;
       border-radius:14px;
       padding:12px 14px;
       font-weight:900;
       font-size:13px;
       cursor:pointer;
+      text-decoration:none;
     }
+
     .btn.primary{
-      background:rgba(60,255,143,.12);
-      border-color:rgba(60,255,143,.25);
+      background: rgba(60,255,143,.12);
+      border-color: rgba(60,255,143,.25);
     }
+
     .btn.ghost{
-      background:rgba(0,0,0,.28);
+      background: rgba(0,0,0,.28);
     }
 
     .status-row{
-      margin:22px auto 0;
-      max-width:980px;
+      margin: 18px auto 0;
+      max-width: 980px;
       display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:14px;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
       text-align:left;
     }
 
-    .status-box{
+    .status-box,.realm-box{
       padding:18px 20px;
       border-radius:18px;
       border:1px solid rgba(255,255,255,.14);
-      background:rgba(0,0,0,.45);
-      backdrop-filter:blur(8px);
-      box-shadow:0 16px 40px rgba(0,0,0,.45);
+      background: rgba(0,0,0,.45);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 16px 40px rgba(0,0,0,.45);
     }
 
     .status-title{
-      font-weight:900;
       font-size:13px;
+      font-weight:900;
+      letter-spacing:.6px;
       margin-bottom:10px;
       opacity:.9;
     }
@@ -161,17 +180,18 @@
       gap:10px;
       font-size:18px;
       font-weight:900;
-      color:var(--green);
+      color:#3cff8f;
     }
 
     .dot{
       width:12px;
       height:12px;
+      background:#3cff8f;
       border-radius:50%;
-      background:var(--green);
       box-shadow:0 0 12px rgba(60,255,143,.9);
       animation:pulse 1.8s infinite;
     }
+
     @keyframes pulse{
       0%{transform:scale(1);opacity:1}
       50%{transform:scale(1.4);opacity:.6}
@@ -180,15 +200,14 @@
 
     .subline{
       margin-top:10px;
-      font-size:13px;
-      border:1px solid rgba(255,255,255,.10);
-      background:rgba(255,255,255,.04);
-      border-radius:14px;
       padding:10px 12px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
       display:flex;
       justify-content:space-between;
-      flex-wrap:wrap;
-      gap:8px;
+      font-size:13px;
+      opacity:.9;
     }
 
     .players{
@@ -196,35 +215,52 @@
       font-size:14px;
     }
 
-    main{padding:22px 0 36px}
+    .updated{
+      margin-top:8px;
+      font-size:12.5px;
+      opacity:.75;
+    }
 
-    .grid{
+    .realm-grid{
       display:grid;
-      grid-template-columns:repeat(12,1fr);
-      gap:14px;
+      grid-template-columns:1fr 1fr;
+      gap:10px 14px;
     }
-    .card{
-      grid-column:span 6;
+
+    .kv{
       border:1px solid rgba(255,255,255,.10);
-      border-radius:16px;
-      background:var(--card);
-      padding:16px;
+      background: rgba(255,255,255,.04);
+      border-radius:14px;
+      padding:10px 12px;
     }
-    .card h2{margin:0 0 8px;font-size:16px}
-    .card p{margin:0;color:var(--muted)}
+
+    .k{
+      font-size:11.5px;
+      letter-spacing:.5px;
+      opacity:.7;
+      font-weight:900;
+    }
+
+    .v{
+      margin-top:4px;
+      font-size:14px;
+      font-weight:900;
+    }
+
+    main{padding:22px 0 36px}
 
     footer{
       border-top:1px solid rgba(255,255,255,.08);
       padding:16px 0;
       background:#070707;
       font-size:12.5px;
-      color:rgba(232,232,232,.65);
+      opacity:.75;
       text-align:center;
     }
 
     @media (max-width:900px){
       .status-row{grid-template-columns:1fr}
-      .card{grid-column:span 12}
+      .hero h1{font-size:36px}
     }
   </style>
 </head>
@@ -236,9 +272,10 @@
   <div class="wrap">
     <div class="toprow">
       <a class="brand" href="index.html">
-        <div class="logo"><img src="/assets/logo.png" alt="LegacyWoW"></div>
+        <div class="logo"><img src="/assets/logo.png" onerror="this.remove();"></div>
         <div>LegacyWoW</div>
       </a>
+
       <nav>
         <a href="how-to-play.html">How to Play</a>
         <a href="downloads.html">Downloads</a>
@@ -252,73 +289,116 @@
 
     <div class="hero">
       <h1>Progressive Vanilla → Wrath</h1>
-      <p>Multiple realms, long-term progression, and custom content built on AzerothCore.</p>
+      <p>LegacyWoW is a long-term progressive server with custom content built on AzerothCore.</p>
 
       <div class="hero-row">
         <a class="btn primary" href="how-to-play.html">Get Started</a>
         <a class="btn" href="downloads.html">Downloads</a>
         <a class="btn" href="map.html">World Map</a>
+        <button class="btn ghost" id="snowToggle">Snow: ON</button>
       </div>
 
-      <!-- REALM STATUS -->
       <div class="status-row">
-
-        <!-- Icecrown -->
         <div class="status-box">
           <div class="status-title">SERVER STATUS</div>
-          <div class="status-online">
-            <div class="dot"></div> ONLINE
-          </div>
+          <div class="status-online"><div class="dot"></div>ONLINE</div>
+
           <div class="subline">
             <div>Realm: <b>Icecrown</b></div>
-            <div>Client: <b>3.3.5a</b></div>
+            <div>Patch: <b>1.0.0</b></div>
           </div>
+
           <div class="players">
-            Current Patch: <b>3.3.5a</b>
+            Players Online: <b><span id="playerCount">---</span></b>
+          </div>
+          <div class="updated">
+            Last updated: <span id="lastUpdated">---</span>
           </div>
         </div>
 
-        <!-- Lordaeron -->
-        <div class="status-box">
-          <div class="status-title">SERVER STATUS</div>
-          <div class="status-online">
-            <div class="dot"></div> ONLINE
-          </div>
-          <div class="subline">
-            <div>Realm: <b>Lordaeron</b></div>
-            <div>Client: <b>3.3.5a</b></div>
-          </div>
-          <div class="players">
-            Current Patch: <b>1.0.0</b>
+        <div class="realm-box">
+          <div class="status-title">REALM INFO</div>
+          <div class="realm-grid">
+            <div class="kv"><div class="k">CLIENT</div><div class="v">3.3.5a</div></div>
+            <div class="kv"><div class="k">PROGRESSION</div><div class="v">1.0.0 → 3.3.5a</div></div>
+            <div class="kv"><div class="k">CORE</div><div class="v">AzerothCore</div></div>
+            <div class="kv"><div class="k">RATES</div><div class="v">XP x2 · Gold x1.5 · Honor x1</div></div>
           </div>
         </div>
-
       </div>
     </div>
   </div>
 </header>
 
-<main>
-  <div class="wrap">
-    <div class="grid">
-      <div class="card">
-        <h2>True progression</h2>
-        <p>Each realm advances at its own pace, preserving the feel of each era.</p>
-      </div>
-      <div class="card">
-        <h2>Custom content</h2>
-        <p>New events, world changes, and features integrated carefully into progression.</p>
-      </div>
-    </div>
-  </div>
-</main>
-
 <footer>
-  © <span id="year"></span> LegacyWoW — Not affiliated with Blizzard Entertainment.
+  © <span id="year"></span> LegacyWoW — Not affiliated with Blizzard Entertainment
 </footer>
 
 <script>
   document.getElementById("year").textContent = new Date().getFullYear();
+
+  /* Player fluctuation: 100–200 */
+  const MIN = 100, MAX = 200;
+  let players = Math.floor(Math.random()*(MAX-MIN+1))+MIN;
+  let target = players;
+
+  const pc = document.getElementById("playerCount");
+  const lu = document.getElementById("lastUpdated");
+
+  function tick(){
+    if(Math.random()<0.25){
+      target = Math.floor(Math.random()*(MAX-MIN+1))+MIN;
+    }
+    const diff = target - players;
+    players += Math.sign(diff) * Math.max(1, Math.floor(Math.random()*3));
+    players = Math.max(MIN, Math.min(MAX, players));
+    pc.textContent = players;
+    lu.textContent = new Date().toLocaleTimeString([], {hour:"2-digit", minute:"2-digit"});
+    setTimeout(tick, 3000 + Math.random()*3000);
+  }
+  tick();
+
+  /* Snow toggle */
+  let snowOn = localStorage.getItem("snow") !== "off";
+  const snowBtn = document.getElementById("snowToggle");
+  const canvas = document.getElementById("snowCanvas");
+  const ctx = canvas.getContext("2d");
+  const flakes = [];
+  const COUNT = 200;
+
+  function resize(){
+    canvas.width = innerWidth;
+    canvas.height = innerHeight;
+  }
+  window.addEventListener("resize", resize);
+  resize();
+
+  function make(){
+    return {x:Math.random()*innerWidth,y:Math.random()*innerHeight,r:1+Math.random()*3,v:1+Math.random()*2};
+  }
+  for(let i=0;i<COUNT;i++)flakes.push(make());
+
+  function draw(){
+    requestAnimationFrame(draw);
+    if(!snowOn){ctx.clearRect(0,0,canvas.width,canvas.height);return;}
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle="#fff";
+    for(const f of flakes){
+      f.y+=f.v;
+      if(f.y>innerHeight){f.y=-5;f.x=Math.random()*innerWidth;}
+      ctx.beginPath();
+      ctx.arc(f.x,f.y,f.r,0,Math.PI*2);
+      ctx.fill();
+    }
+  }
+  draw();
+
+  function updateSnow(){
+    snowBtn.textContent = snowOn ? "Snow: ON" : "Snow: OFF";
+    localStorage.setItem("snow", snowOn ? "on" : "off");
+  }
+  snowBtn.onclick=()=>{snowOn=!snowOn;updateSnow();};
+  updateSnow();
 </script>
 </body>
 </html>
