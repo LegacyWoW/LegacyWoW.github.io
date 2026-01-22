@@ -8,10 +8,8 @@
   <style>
     :root{
       --bg:#0b0b0b;
-      --border: rgba(255,255,255,.14);
       --text:#e8e8e8;
       --muted: rgba(232,232,232,.82);
-      --card: rgba(255,255,255,.04);
     }
     *{box-sizing:border-box}
     body{
@@ -56,6 +54,7 @@
       text-decoration:none;
       color:#fff;
       font-weight:900;
+      letter-spacing:.4px;
     }
 
     .logo{
@@ -72,18 +71,21 @@
       padding:10px 12px;border-radius:14px;
       border:1px solid rgba(255,255,255,.18);
       background:rgba(0,0,0,.28);
+      backdrop-filter: blur(6px);
     }
+    nav a:hover{background:rgba(0,0,0,.45)}
 
     .hero{
       padding:34px 0 22px;
       text-align:center;
     }
-    .hero h1{margin:0;font-size:44px}
+    .hero h1{margin:0;font-size:44px;line-height:1.05}
     .hero p{
       margin:12px auto 0;
       max-width:860px;
       color:var(--muted);
       font-size:15.5px;
+      line-height:1.5;
     }
 
     .hero-row{
@@ -128,7 +130,7 @@
       text-align:left;
     }
 
-    .status-box,.realm-box,.info-box{
+    .box{
       padding:18px 20px;
       border-radius:18px;
       border:1px solid rgba(255,255,255,.14);
@@ -137,7 +139,7 @@
       box-shadow:0 16px 40px rgba(0,0,0,.45);
     }
 
-    .status-title{
+    .title{
       font-size:13px;
       font-weight:900;
       letter-spacing:.6px;
@@ -176,7 +178,9 @@
       display:flex;
       justify-content:space-between;
       gap:10px;
+      flex-wrap:wrap;
       font-size:13px;
+      opacity:.92;
     }
 
     .players{margin-top:10px;font-size:14px}
@@ -193,9 +197,10 @@
       border-radius:14px;
       padding:10px 12px;
     }
-    .k{font-size:11.5px;font-weight:900;opacity:.7}
+    .k{font-size:11.5px;font-weight:900;opacity:.7;text-transform:uppercase}
     .v{margin-top:4px;font-size:14px;font-weight:900}
 
+    /* Progress */
     .progress-wrap{
       margin-top:12px;
       border:1px solid rgba(255,255,255,.10);
@@ -203,8 +208,27 @@
       border-radius:14px;
       padding:12px;
     }
+    .progress-labels{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+      font-size:12.5px;
+      opacity:.85;
+      margin-bottom:10px;
+    }
+    .chip{
+      display:inline-block;
+      padding:4px 8px;
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(0,0,0,.25);
+      font-weight:900;
+      letter-spacing:.2px;
+    }
     .progress{
       height:12px;
+      width:100%;
       border-radius:999px;
       border:1px solid rgba(255,255,255,.14);
       background:rgba(0,0,0,.35);
@@ -212,8 +236,19 @@
     }
     .progress-fill{
       height:100%;
-      width:3%;
+      width:3%; /* Patch 1.0.0 = very early */
+      border-radius:999px;
       background:rgba(60,255,143,.85);
+      box-shadow:0 0 18px rgba(60,255,143,.35);
+    }
+    .milestones{
+      margin-top:10px;
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+      font-size:12px;
+      opacity:.78;
     }
 
     footer{
@@ -239,9 +274,10 @@
 <div class="wrap">
   <div class="toprow">
     <a class="brand" href="index.html">
-      <div class="logo"><img src="/assets/logo.png" onerror="this.remove();"></div>
+      <div class="logo"><img src="/assets/logo.png" alt="LegacyWoW" onerror="this.remove();"></div>
       <div>LegacyWoW</div>
     </a>
+
     <nav>
       <a href="how-to-play.html">How to Play</a>
       <a href="downloads.html">Downloads</a>
@@ -255,7 +291,7 @@
 
   <div class="hero">
     <h1>Progressive Vanilla → Wrath</h1>
-    <p>LegacyWoW is a long-term progressive World of Warcraft server with custom systems and open-world conflict.</p>
+    <p>LegacyWoW is a long-term progressive server with custom systems and open-world conflict.</p>
 
     <div class="hero-row">
       <a class="btn primary" href="how-to-play.html">Get Started</a>
@@ -266,19 +302,21 @@
 
     <!-- Row 1 -->
     <div class="status-row">
-      <div class="status-box">
-        <div class="status-title">Server Status</div>
+      <div class="box">
+        <div class="title">Server Status</div>
         <div class="status-online"><div class="dot"></div>ONLINE</div>
+
         <div class="subline">
           <div>Realm: <b>Icecrown</b></div>
           <div>Patch: <b>1.0.0</b></div>
         </div>
+
         <div class="players">Players Online: <b><span id="playerCount">---</span></b></div>
         <div class="updated">Last updated: <span id="lastUpdated">---</span></div>
       </div>
 
-      <div class="realm-box">
-        <div class="status-title">Realm Info</div>
+      <div class="box">
+        <div class="title">Realm Info</div>
         <div class="realm-grid">
           <div class="kv"><div class="k">Client</div><div class="v">3.3.5a</div></div>
           <div class="kv"><div class="k">Progression</div><div class="v">1.0.0 → 3.3.5a</div></div>
@@ -290,31 +328,45 @@
 
     <!-- Row 2 -->
     <div class="status-row-wide">
-      <div class="info-box">
-        <div class="status-title">Server Progress</div>
-        <p>
-          LegacyWoW (Icecrown) begins in <b>Patch 1.0.0</b> and will advance through each expansion
-          until reaching <b>3.3.5a</b>. After Wrath progression is complete,
-          <b>custom content is planned</b>.
+      <div class="box">
+        <div class="title">Server Progress</div>
+        <p style="margin:0;color:var(--muted);line-height:1.55;">
+          <b>LegacyWoW (Icecrown)</b> begins in <b>Patch 1.0.0</b> and will advance through each era up to <b>3.3.5a</b>.
+          After Wrath progression is complete, <b>custom content is planned</b>.
         </p>
+
         <div class="progress-wrap">
-          <div class="progress"><div class="progress-fill"></div></div>
+          <div class="progress-labels">
+            <div>Current: <b>1.0.0</b> <span class="chip" style="margin-left:8px;">Vanilla</span></div>
+            <div>Goal: <b>3.3.5a</b> <span class="chip" style="margin-left:8px;">Wrath</span></div>
+          </div>
+
+          <div class="progress" aria-label="Progression progress bar">
+            <div class="progress-fill" title="Current progression: very early (Patch 1.0.0)"></div>
+          </div>
+
+          <!-- ✅ Timeline labels restored -->
+          <div class="milestones">
+            <div><span class="chip">1.0.0</span> Vanilla Start</div>
+            <div><span class="chip">2.0.1</span> TBC Start</div>
+            <div><span class="chip">3.0.2</span> Wrath Start</div>
+            <div><span class="chip">3.3.5a</span> Wrath End</div>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- Row 3: NEW DESCRIPTION BOX -->
+    <!-- Row 3 -->
     <div class="status-row-wide">
-      <div class="info-box">
-        <div class="status-title">What is LegacyWoW?</div>
-        <p style="line-height:1.6;color:var(--muted);">
+      <div class="box">
+        <div class="title">What is LegacyWoW?</div>
+        <p style="margin:0;color:var(--muted);line-height:1.6;">
           <b>LegacyWoW</b> is a progressive World of Warcraft server that advances naturally through the expansions,
           preserving each era while introducing meaningful custom systems.
         </p>
-        <p style="line-height:1.6;color:var(--muted);margin-top:10px;">
-          In addition to standard progression, LegacyWoW features a unique game mode called
-          <b>Guild War</b>. Guilds compete head-to-head for control of strategic locations throughout the open world
-          of <b>Azeroth</b>, creating persistent conflict, rivalries, and player-driven objectives beyond instanced content.
+        <p style="margin:10px 0 0;color:var(--muted);line-height:1.6;">
+          We also feature a unique open-world game mode called <b>Guild War</b>, where guilds go head-to-head controlling
+          key locations throughout <b>Azeroth</b>—creating persistent conflict, rivalries, and player-driven objectives.
         </p>
       </div>
     </div>
@@ -337,11 +389,16 @@
   const MIN=100, MAX=200;
   let p=Math.floor(Math.random()*(MAX-MIN+1))+MIN;
   let t=p;
+
   const pc=document.getElementById("playerCount");
   const lu=document.getElementById("lastUpdated");
+
   function tick(){
-    if(Math.random()<0.25)t=Math.floor(Math.random()*(MAX-MIN+1))+MIN;
-    p+=Math.sign(t-p)*Math.max(1,Math.floor(Math.random()*3));
+    if(Math.random()<0.25){
+      t=Math.floor(Math.random()*(MAX-MIN+1))+MIN;
+    }
+    const diff=t-p;
+    p+=Math.sign(diff)*Math.max(1,Math.floor(Math.random()*3));
     p=Math.max(MIN,Math.min(MAX,p));
     pc.textContent=p;
     lu.textContent=new Date().toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"});
@@ -355,9 +412,11 @@
   const c=document.getElementById("snowCanvas");
   const x=c.getContext("2d");
   const flakes=[];
-  for(let i=0;i<200;i++)flakes.push({x:Math.random()*innerWidth,y:Math.random()*innerHeight,r:1+Math.random()*3,v:1+Math.random()*2});
+  for(let i=0;i<200;i++) flakes.push({x:Math.random()*innerWidth,y:Math.random()*innerHeight,r:1+Math.random()*3,v:1+Math.random()*2});
+
   function resize(){c.width=innerWidth;c.height=innerHeight}
   addEventListener("resize",resize);resize();
+
   function draw(){
     requestAnimationFrame(draw);
     if(!snowOn){x.clearRect(0,0,c.width,c.height);return;}
@@ -370,8 +429,13 @@
     }
   }
   draw();
-  function sync(){btn.textContent=snowOn?"Snow: ON":"Snow: OFF";localStorage.setItem("snow",snowOn?"on":"off")}
-  btn.onclick=()=>{snowOn=!snowOn;sync()};sync();
+
+  function sync(){
+    btn.textContent=snowOn?"Snow: ON":"Snow: OFF";
+    localStorage.setItem("snow",snowOn?"on":"off");
+  }
+  btn.onclick=()=>{snowOn=!snowOn;sync()};
+  sync();
 </script>
 </body>
 </html>
