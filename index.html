@@ -24,9 +24,7 @@
     a{color:#fff}
 
     .wrap{max-width:1100px;margin:0 auto;padding:0 18px}
-
-    /* Wider container for the progress bar area */
-    .wrap-progress{max-width:1800px;margin:0 auto;padding:0 18px}
+    .wrap-wide{max-width:1400px;margin:0 auto;padding:0 18px}
 
     /* Snow */
     #snowCanvas{
@@ -128,7 +126,6 @@
       gap:14px;
       text-align:left;
     }
-
     .status-row-wide{
       margin:14px auto 0;
       max-width:980px;
@@ -137,11 +134,9 @@
       gap:14px;
       text-align:left;
     }
-
-    /* Progress row uses wrap-progress width */
     .status-row-progress{
       margin:14px auto 0;
-      max-width:1800px;
+      max-width:1400px;
       display:grid;
       grid-template-columns:1fr;
       gap:14px;
@@ -246,16 +241,15 @@
       white-space:nowrap;
     }
 
-    /* Bar + ticks + ALL labels across */
     .timeline{
       position:relative;
+      height:72px;
       width:100%;
-      height:150px; /* room for angled labels */
     }
     .bar{
       position:absolute;
       left:0; right:0;
-      top:26px;
+      top:22px;
       height:12px;
       border-radius:999px;
       border:1px solid rgba(255,255,255,.14);
@@ -273,40 +267,38 @@
 
     .tick{
       position:absolute;
-      top:22px;
+      top:20px;
       width:2px;
-      height:20px;
-      background: rgba(255,255,255,.28);
+      height:16px;
+      background: rgba(255,255,255,.30);
       border-radius:2px;
       transform: translateX(-1px);
     }
     .tick.current{
-      height:26px;
-      top:19px;
+      height:22px;
+      top:17px;
       background: rgba(60,255,143,.95);
       box-shadow: 0 0 16px rgba(60,255,143,.35);
     }
 
-    /* Angled micro-labels so everything fits without a slider */
-    .patch-label{
+    .major-label{
       position:absolute;
-      top:48px;
-      transform: translateX(-50%) rotate(-55deg);
-      transform-origin: top center;
-      font-size:10px;
+      top:44px;
+      transform: translateX(-50%);
+      font-size:12px;
       font-weight:900;
-      opacity:.84;
+      opacity:.85;
       white-space:nowrap;
-      padding:2px 6px;
+      padding:3px 8px;
       border-radius:10px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(0,0,0,.20);
-      pointer-events:auto;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.22);
     }
-    .patch-label.current{
+    /* ✅ "current era" highlight */
+    .major-label.active-era{
       opacity:1;
       border-color: rgba(60,255,143,.55);
-      box-shadow: 0 0 16px rgba(60,255,143,.18);
+      box-shadow: 0 0 16px rgba(60,255,143,.20);
     }
 
     footer{
@@ -321,10 +313,7 @@
     @media(max-width:900px){
       .status-row{grid-template-columns:1fr}
       .hero h1{font-size:36px}
-      /* On small screens, keep layout safe; labels still render but may overlap slightly */
       .status-row-progress{max-width:1100px}
-      .patch-label{font-size:9px}
-      .timeline{height:160px}
     }
   </style>
 </head>
@@ -382,7 +371,7 @@
         <div class="realm-grid">
           <div class="kv"><div class="k">Client</div><div class="v">3.3.5a</div></div>
 
-          <!-- per your rule: do NOT change this progression line -->
+          <!-- keep unchanged -->
           <div class="kv"><div class="k">Progression</div><div class="v">1.0.0 → 3.3.5a</div></div>
 
           <div class="kv"><div class="k">Core</div><div class="v">AzerothCore</div></div>
@@ -390,52 +379,49 @@
         </div>
       </div>
     </div>
-  </div>
-</div>
 
-<!-- Wider progress section -->
-<div class="wrap-progress">
-  <div class="status-row-progress">
-    <div class="box">
-      <div class="title">Server Progress</div>
-      <p style="margin:0;color:var(--muted);line-height:1.55;">
-        <b>LegacyWoW (Icecrown)</b> is a progressive realm that begins in <b>Patch 1.0.0</b> and advances through each era up to <b>3.3.5a</b>.
-        After Wrath progression is complete, <b>custom content is planned</b>.
-      </p>
+    <!-- Row 2 (WIDER) -->
+    <div class="status-row-progress">
+      <div class="box">
+        <div class="title">Server Progress</div>
+        <p style="margin:0;color:var(--muted);line-height:1.55;">
+          <b>LegacyWoW (Icecrown)</b> is a progressive realm that begins in <b>Patch 1.0.0</b> and advances through each era up to <b>3.3.5a</b>.
+          After Wrath progression is complete, <b>custom content is planned</b>.
+        </p>
 
-      <div class="progress-wrap">
-        <div class="progress-labels">
-          <div>Current: <b id="currentPatchLabel">1.1.0</b> <span class="chip" id="currentEraChip" style="margin-left:8px;">Vanilla</span></div>
-          <div>Goal: <b>3.4.0</b> <span class="chip" style="margin-left:8px;">Custom</span></div>
-        </div>
+        <div class="progress-wrap">
+          <div class="progress-labels">
+            <div>Current: <b id="currentPatchLabel">1.1.0</b> <span class="chip" id="currentEraChip" style="margin-left:8px;">Vanilla</span></div>
+            <div>Goal: <b>3.4.0</b> <span class="chip" style="margin-left:8px;">Custom</span></div>
+          </div>
 
-        <div class="timeline" id="timeline">
-          <div class="bar"><div class="bar-fill" id="progressFill"></div></div>
-          <!-- ticks + labels injected by JS -->
+          <div class="timeline" id="timeline">
+            <div class="bar"><div class="bar-fill" id="progressFill"></div></div>
+            <!-- ticks + major labels injected by JS -->
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</div>
 
-<div class="wrap">
-  <div class="status-row-wide">
-    <div class="box">
-      <div class="title">What is LegacyWoW?</div>
-      <p style="margin:0;color:var(--muted);line-height:1.6;">
-        <b>LegacyWoW</b> is a progressive World of Warcraft server that advances naturally through the expansions,
-        preserving each era while introducing meaningful custom systems.
-      </p>
-      <p style="margin:10px 0 0;color:var(--muted);line-height:1.6;">
-        We also feature a unique open-world game mode called <b>Guild War</b>, where guilds go head-to-head controlling
-        key locations throughout <b>Azeroth</b>—creating persistent conflict, rivalries, and player-driven objectives.
-      </p>
+    <!-- Row 3 -->
+    <div class="status-row-wide">
+      <div class="box">
+        <div class="title">What is LegacyWoW?</div>
+        <p style="margin:0;color:var(--muted);line-height:1.6;">
+          <b>LegacyWoW</b> is a progressive World of Warcraft server that advances naturally through the expansions,
+          preserving each era while introducing meaningful custom systems.
+        </p>
+        <p style="margin:10px 0 0;color:var(--muted);line-height:1.6;">
+          We also feature a unique open-world game mode called <b>Guild War</b>, where guilds go head-to-head controlling
+          key locations throughout <b>Azeroth</b>—creating persistent conflict, rivalries, and player-driven objectives.
+        </p>
+      </div>
     </div>
-  </div>
 
-  <p style="margin:14px 0 0;color:var(--muted);font-size:13.5px;text-align:center;">
-    Not affiliated with Blizzard Entertainment.
-  </p>
+    <p style="margin-top:14px;color:var(--muted);font-size:13.5px;">
+      Not affiliated with Blizzard Entertainment.
+    </p>
+  </div>
 </div>
 </header>
 
@@ -451,28 +437,36 @@
 
   // Full patch timeline (your list)
   const PATCHES = [
-    { key:"1.0.0",  label:"1.0.0", era:"Vanilla" },
-    { key:"1.1.0",  label:"1.1.0", era:"Vanilla" },
-    { key:"1.3.3",  label:"1.3.3", era:"Vanilla" },
-    { key:"1.5.2",  label:"1.5.2", era:"Vanilla" },
-    { key:"1.6.2",  label:"1.6.2", era:"Vanilla" },
-    { key:"1.7.1",  label:"1.7.1", era:"Vanilla" },
-    { key:"1.9.4",  label:"1.9.4", era:"Vanilla" },
-    { key:"1.11.2", label:"1.11.2", era:"Vanilla" },
-    { key:"1.12.1", label:"1.12.1", era:"Vanilla" },
+    { key:"1.0.0",  era:"Vanilla" },
+    { key:"1.1.0",  era:"Vanilla" },
+    { key:"1.3.3",  era:"Vanilla" },
+    { key:"1.5.2",  era:"Vanilla" },
+    { key:"1.6.2",  era:"Vanilla" },
+    { key:"1.7.1",  era:"Vanilla" },
+    { key:"1.9.4",  era:"Vanilla" },
+    { key:"1.11.2", era:"Vanilla" },
+    { key:"1.12.1", era:"Vanilla" },
 
-    { key:"2.0.1",  label:"2.0.1 (TBC)", era:"TBC" },
-    { key:"2.1.4",  label:"2.1.4", era:"TBC" },
-    { key:"2.3.3",  label:"2.3.3", era:"TBC" },
-    { key:"2.4.3",  label:"2.4.3", era:"TBC" },
+    { key:"2.0.1",  era:"TBC" },
+    { key:"2.1.4",  era:"TBC" },
+    { key:"2.3.3",  era:"TBC" },
+    { key:"2.4.3",  era:"TBC" },
 
-    { key:"3.0.2",  label:"3.0.2 (WOTLK)", era:"WOTLK" },
-    { key:"3.1.3",  label:"3.1.3", era:"WOTLK" },
-    { key:"3.2.2a", label:"3.2.2a", era:"WOTLK" },
-    { key:"3.3.3",  label:"3.3.3", era:"WOTLK" },
-    { key:"3.3.5a", label:"3.3.5a (end)", era:"WOTLK" },
+    { key:"3.0.2",  era:"WOTLK" },
+    { key:"3.1.3",  era:"WOTLK" },
+    { key:"3.2.2a", era:"WOTLK" },
+    { key:"3.3.3",  era:"WOTLK" },
+    { key:"3.3.5a", era:"WOTLK" },
 
-    { key:"3.4.0",  label:"3.4.0 custom", era:"Custom" }
+    { key:"3.4.0",  era:"Custom" }
+  ];
+
+  // Major label anchors (only these show labels)
+  const MAJORS = [
+    { key:"1.0.0", label:"1.0.0 Vanilla", era:"Vanilla" },
+    { key:"2.0.1", label:"2.0.1 TBC", era:"TBC" },
+    { key:"3.0.2", label:"3.0.2 WOTLK", era:"WOTLK" },
+    { key:"3.4.0", label:"3.4.0 Custom", era:"Custom" }
   ];
 
   // Year
@@ -481,24 +475,26 @@
   // Sync status patch
   document.getElementById("statusPatch").textContent = CURRENT_PATCH;
 
-  // Progress calc
+  // Find current
   const idx = PATCHES.findIndex(p => p.key === CURRENT_PATCH);
   const safeIdx = idx >= 0 ? idx : 0;
+  const currentEra = PATCHES[safeIdx]?.era || "Vanilla";
+
+  // Fill percent
   const totalSteps = PATCHES.length - 1;
   const pct = totalSteps <= 0 ? 0 : (safeIdx / totalSteps) * 100;
 
-  const currentPatchLabelEl = document.getElementById("currentPatchLabel");
-  const currentEraChipEl = document.getElementById("currentEraChip");
+  // Update UI labels
+  document.getElementById("currentPatchLabel").textContent = CURRENT_PATCH;
+  document.getElementById("currentEraChip").textContent = currentEra;
+
   const progressFillEl = document.getElementById("progressFill");
-  const timelineEl = document.getElementById("timeline");
-
-  currentPatchLabelEl.textContent = CURRENT_PATCH;
-  currentEraChipEl.textContent = PATCHES[safeIdx]?.era || "Vanilla";
-
   progressFillEl.style.width = Math.max(2, pct) + "%";
   progressFillEl.title = "Current progression: Patch " + CURRENT_PATCH;
 
-  // Ticks + angled labels across the bar
+  const timelineEl = document.getElementById("timeline");
+
+  // Small ticks for every patch
   for (let i = 0; i < PATCHES.length; i++){
     const leftPct = totalSteps <= 0 ? 0 : (i / totalSteps) * 100;
     const patch = PATCHES[i];
@@ -509,13 +505,22 @@
     tick.style.left = leftPct + "%";
     tick.title = "Patch " + patch.key + " — " + patch.era;
     timelineEl.appendChild(tick);
+  }
 
-    const label = document.createElement("div");
-    label.className = "patch-label" + (isCurrent ? " current" : "");
-    label.style.left = leftPct + "%";
-    label.textContent = patch.label;
-    label.title = "Era: " + patch.era;
-    timelineEl.appendChild(label);
+  // Major labels (✅ highlight current ERA automatically)
+  function indexOfKey(k){ return PATCHES.findIndex(p => p.key === k); }
+
+  for (const m of MAJORS){
+    const mi = indexOfKey(m.key);
+    if (mi < 0) continue;
+
+    const leftPct = totalSteps <= 0 ? 0 : (mi / totalSteps) * 100;
+
+    const lbl = document.createElement("div");
+    lbl.className = "major-label" + (m.era === currentEra ? " active-era" : "");
+    lbl.style.left = leftPct + "%";
+    lbl.textContent = m.label;
+    timelineEl.appendChild(lbl);
   }
 
   // ===========================
