@@ -236,7 +236,7 @@
     }
     .progress-fill{
       height:100%;
-      width:3%; /* Patch 1.0.0 = very early */
+      width:5%; /* Patch 1.1.0 */
       border-radius:999px;
       background:rgba(60,255,143,.85);
       box-shadow:0 0 18px rgba(60,255,143,.35);
@@ -308,7 +308,7 @@
 
         <div class="subline">
           <div>Realm: <b>Icecrown</b></div>
-          <div>Patch: <b>1.0.0</b></div>
+          <div>Patch: <b>1.1.0</b></div>
         </div>
 
         <div class="players">Players Online: <b><span id="playerCount">---</span></b></div>
@@ -319,7 +319,7 @@
         <div class="title">Realm Info</div>
         <div class="realm-grid">
           <div class="kv"><div class="k">Client</div><div class="v">3.3.5a</div></div>
-          <div class="kv"><div class="k">Progression</div><div class="v">1.0.0 → 3.3.5a</div></div>
+          <div class="kv"><div class="k">Progression</div><div class="v">1.1.0 → 3.3.5a</div></div>
           <div class="kv"><div class="k">Core</div><div class="v">AzerothCore</div></div>
           <div class="kv"><div class="k">Rates</div><div class="v">XP x2 · Gold x1.5 · Honor x1</div></div>
         </div>
@@ -331,23 +331,22 @@
       <div class="box">
         <div class="title">Server Progress</div>
         <p style="margin:0;color:var(--muted);line-height:1.55;">
-          <b>LegacyWoW (Icecrown)</b> begins in <b>Patch 1.0.0</b> and will advance through each era up to <b>3.3.5a</b>.
+          <b>LegacyWoW (Icecrown)</b> begins in <b>Patch 1.1.0</b> and will advance through each era up to <b>3.3.5a</b>.
           After Wrath progression is complete, <b>custom content is planned</b>.
         </p>
 
         <div class="progress-wrap">
           <div class="progress-labels">
-            <div>Current: <b>1.0.0</b> <span class="chip" style="margin-left:8px;">Vanilla</span></div>
+            <div>Current: <b>1.1.0</b> <span class="chip" style="margin-left:8px;">Vanilla</span></div>
             <div>Goal: <b>3.3.5a</b> <span class="chip" style="margin-left:8px;">Wrath</span></div>
           </div>
 
-          <div class="progress" aria-label="Progression progress bar">
-            <div class="progress-fill" title="Current progression: very early (Patch 1.0.0)"></div>
+          <div class="progress">
+            <div class="progress-fill"></div>
           </div>
 
-          <!-- ✅ Timeline labels restored -->
           <div class="milestones">
-            <div><span class="chip">1.0.0</span> Vanilla Start</div>
+            <div><span class="chip">1.1.0</span> Vanilla</div>
             <div><span class="chip">2.0.1</span> TBC Start</div>
             <div><span class="chip">3.0.2</span> Wrath Start</div>
             <div><span class="chip">3.3.5a</span> Wrath End</div>
@@ -366,7 +365,7 @@
         </p>
         <p style="margin:10px 0 0;color:var(--muted);line-height:1.6;">
           We also feature a unique open-world game mode called <b>Guild War</b>, where guilds go head-to-head controlling
-          key locations throughout <b>Azeroth</b>—creating persistent conflict, rivalries, and player-driven objectives.
+          key locations throughout <b>Azeroth</b>.
         </p>
       </div>
     </div>
@@ -397,8 +396,7 @@
     if(Math.random()<0.25){
       t=Math.floor(Math.random()*(MAX-MIN+1))+MIN;
     }
-    const diff=t-p;
-    p+=Math.sign(diff)*Math.max(1,Math.floor(Math.random()*3));
+    p+=Math.sign(t-p)*Math.max(1,Math.floor(Math.random()*3));
     p=Math.max(MIN,Math.min(MAX,p));
     pc.textContent=p;
     lu.textContent=new Date().toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"});
