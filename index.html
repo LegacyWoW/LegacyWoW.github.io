@@ -12,7 +12,6 @@
       --muted: rgba(232,232,232,.82);
       --line: rgba(255,255,255,.14);
       --glass: rgba(0,0,0,.45);
-      --chip: rgba(0,0,0,.25);
       --accent: rgba(60,255,143,.85);
     }
     *{box-sizing:border-box}
@@ -23,7 +22,11 @@
       color: var(--text);
     }
     a{color:#fff}
+
+    /* default page width */
     .wrap{max-width:1100px;margin:0 auto;padding:0 18px}
+    /* wider container just for the progress section */
+    .wrap-wide{max-width:1400px;margin:0 auto;padding:0 18px}
 
     /* Snow */
     #snowCanvas{
@@ -133,6 +136,15 @@
       gap:14px;
       text-align:left;
     }
+    /* wider row for progress section only */
+    .status-row-progress{
+      margin:14px auto 0;
+      max-width:1400px;
+      display:grid;
+      grid-template-columns:1fr;
+      gap:14px;
+      text-align:left;
+    }
 
     .box{
       padding:18px 20px;
@@ -226,29 +238,26 @@
       padding:4px 8px;
       border-radius:10px;
       border:1px solid rgba(255,255,255,.14);
-      background:var(--chip);
+      background:rgba(0,0,0,.25);
       font-weight:900;
       letter-spacing:.2px;
       white-space:nowrap;
     }
-
-    /* Horizontal scrolling container (mobile-safe) */
-    .timeline-scroll{
-      overflow-x:auto;
-      padding-bottom:6px; /* room for scrollbar */
+    .chip.current{
+      border-color: rgba(60,255,143,.55);
+      box-shadow: 0 0 18px rgba(60,255,143,.25);
     }
 
-    /* The "canvas" that holds the bar + ticks + labels */
+    /* Bar + ticks + major labels */
     .timeline{
       position:relative;
-      height:66px;              /* space for labels */
-      min-width: 980px;         /* forces horizontal layout instead of wrapping */
+      height:72px;          /* room for major labels */
+      width:100%;
     }
-
     .bar{
       position:absolute;
       left:0; right:0;
-      top:18px;
+      top:22px;
       height:12px;
       border-radius:999px;
       border:1px solid rgba(255,255,255,.14);
@@ -266,35 +275,37 @@
 
     .tick{
       position:absolute;
-      top:14px;                 /* centered on bar */
+      top:20px;
       width:2px;
-      height:20px;
-      background: rgba(255,255,255,.35);
+      height:16px;          /* small ticks */
+      background: rgba(255,255,255,.30);
       border-radius:2px;
       transform: translateX(-1px);
     }
     .tick.current{
+      height:22px;          /* slightly taller for current */
+      top:17px;
       background: rgba(60,255,143,.95);
       box-shadow: 0 0 16px rgba(60,255,143,.35);
     }
 
-    .label{
+    .major-label{
       position:absolute;
-      top:40px;
+      top:44px;
       transform: translateX(-50%);
-      font-size:11px;
+      font-size:12px;
       font-weight:900;
-      opacity:.85;
+      opacity:.9;
       white-space:nowrap;
-      padding:2px 6px;
+      padding:3px 8px;
       border-radius:10px;
-      border:1px solid rgba(255,255,255,.10);
+      border:1px solid rgba(255,255,255,.12);
       background: rgba(0,0,0,.22);
     }
-    .label.current{
-      opacity:1;
+    .major-label.current{
       border-color: rgba(60,255,143,.50);
       box-shadow: 0 0 16px rgba(60,255,143,.18);
+      opacity:1;
     }
 
     footer{
@@ -309,7 +320,7 @@
     @media(max-width:900px){
       .status-row{grid-template-columns:1fr}
       .hero h1{font-size:36px}
-      .timeline{min-width: 980px;} /* keep horizontal; scroll instead */
+      .status-row-progress{max-width:1100px} /* still wider than before, but safe on mobile */
     }
   </style>
 </head>
@@ -376,8 +387,8 @@
       </div>
     </div>
 
-    <!-- Row 2 -->
-    <div class="status-row-wide">
+    <!-- Row 2 (WIDER) -->
+    <div class="status-row-progress">
       <div class="box">
         <div class="title">Server Progress</div>
         <p style="margin:0;color:var(--muted);line-height:1.55;">
@@ -391,12 +402,10 @@
             <div>Goal: <b>3.4.0</b> <span class="chip" style="margin-left:8px;">Custom</span></div>
           </div>
 
-          <!-- ✅ Timeline (bar + ticks + labels across) -->
-          <div class="timeline-scroll">
-            <div class="timeline" id="timeline">
-              <div class="bar"><div class="bar-fill" id="progressFill"></div></div>
-              <!-- ticks + labels injected by JS -->
-            </div>
+          <!-- Major labels + small ticks -->
+          <div class="timeline" id="timeline">
+            <div class="bar"><div class="bar-fill" id="progressFill"></div></div>
+            <!-- ticks + major labels injected by JS -->
           </div>
         </div>
       </div>
@@ -436,43 +445,44 @@
 
   // Full patch timeline (your list)
   const PATCHES = [
-    { key:"1.0.0",  label:"1.0.0", era:"Vanilla" },
-    { key:"1.1.0",  label:"1.1.0", era:"Vanilla" },
-    { key:"1.3.3",  label:"1.3.3", era:"Vanilla" },
-    { key:"1.5.2",  label:"1.5.2", era:"Vanilla" },
-    { key:"1.6.2",  label:"1.6.2", era:"Vanilla" },
-    { key:"1.7.1",  label:"1.7.1", era:"Vanilla" },
-    { key:"1.9.4",  label:"1.9.4", era:"Vanilla" },
-    { key:"1.11.2", label:"1.11.2", era:"Vanilla" },
-    { key:"1.12.1", label:"1.12.1", era:"Vanilla" },
+    { key:"1.0.0",  era:"Vanilla" },
+    { key:"1.1.0",  era:"Vanilla" },
+    { key:"1.3.3",  era:"Vanilla" },
+    { key:"1.5.2",  era:"Vanilla" },
+    { key:"1.6.2",  era:"Vanilla" },
+    { key:"1.7.1",  era:"Vanilla" },
+    { key:"1.9.4",  era:"Vanilla" },
+    { key:"1.11.2", era:"Vanilla" },
+    { key:"1.12.1", era:"Vanilla" },
 
-    { key:"2.0.1",  label:"2.0.1", era:"TBC", tag:"(TBC)" },
-    { key:"2.1.4",  label:"2.1.4", era:"TBC" },
-    { key:"2.3.3",  label:"2.3.3", era:"TBC" },
-    { key:"2.4.3",  label:"2.4.3", era:"TBC" },
+    { key:"2.0.1",  era:"TBC" },
+    { key:"2.1.4",  era:"TBC" },
+    { key:"2.3.3",  era:"TBC" },
+    { key:"2.4.3",  era:"TBC" },
 
-    { key:"3.0.2",  label:"3.0.2", era:"WOTLK", tag:"(WOTLK)" },
-    { key:"3.1.3",  label:"3.1.3", era:"WOTLK" },
-    { key:"3.2.2a", label:"3.2.2a", era:"WOTLK" },
-    { key:"3.3.3",  label:"3.3.3", era:"WOTLK" },
-    { key:"3.3.5a", label:"3.3.5a", era:"WOTLK", tag:"(end)" },
+    { key:"3.0.2",  era:"WOTLK" },
+    { key:"3.1.3",  era:"WOTLK" },
+    { key:"3.2.2a", era:"WOTLK" },
+    { key:"3.3.3",  era:"WOTLK" },
+    { key:"3.3.5a", era:"WOTLK" },
 
-    { key:"3.4.0",  label:"3.4.0", era:"Custom", tag:"custom" }
+    { key:"3.4.0",  era:"Custom" }
   ];
 
-  function escapeHtml(s){
-    return String(s).replace(/[&<>"']/g, c => ({
-      "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
-    }[c]));
-  }
+  // Major label anchors (only these show labels)
+  const MAJORS = [
+    { key:"1.0.0", label:"1.0.0 Vanilla" },
+    { key:"2.0.1", label:"2.0.1 TBC" },
+    { key:"3.0.2", label:"3.0.2 WOTLK" },
+    { key:"3.4.0", label:"3.4.0 Custom" }
+  ];
 
   // Year
   document.getElementById("year").textContent = new Date().getFullYear();
 
-  // Keep the status patch synced
+  // Sync status patch
   document.getElementById("statusPatch").textContent = CURRENT_PATCH;
 
-  // Progress + timeline rendering
   const idx = PATCHES.findIndex(p => p.key === CURRENT_PATCH);
   const safeIdx = idx >= 0 ? idx : 0;
   const totalSteps = PATCHES.length - 1;
@@ -489,8 +499,7 @@
   progressFillEl.style.width = Math.max(2, pct) + "%";
   progressFillEl.title = "Current progression: Patch " + CURRENT_PATCH;
 
-  // Inject ticks + labels across the bar
-  // We place each at left: (i/totalSteps)*100%
+  // Small ticks for every patch (no labels)
   for (let i = 0; i < PATCHES.length; i++){
     const leftPct = totalSteps <= 0 ? 0 : (i / totalSteps) * 100;
     const patch = PATCHES[i];
@@ -501,25 +510,21 @@
     tick.style.left = leftPct + "%";
     tick.title = "Patch " + patch.key + " — " + patch.era;
     timelineEl.appendChild(tick);
-
-    const label = document.createElement("div");
-    label.className = "label" + (isCurrent ? " current" : "");
-    label.style.left = leftPct + "%";
-    const extra = patch.tag ? " " + patch.tag : "";
-    label.textContent = patch.label + extra;
-    timelineEl.appendChild(label);
   }
 
-  // Auto-scroll timeline so current patch is visible on mobile
-  // (only if it overflows)
-  requestAnimationFrame(() => {
-    const scrollParent = timelineEl.parentElement; // timeline-scroll
-    if (!scrollParent) return;
-    const currentLabel = timelineEl.querySelector(".label.current");
-    if (!currentLabel) return;
-    const target = currentLabel.offsetLeft - (scrollParent.clientWidth / 2) + (currentLabel.clientWidth / 2);
-    scrollParent.scrollLeft = Math.max(0, target);
-  });
+  // Major labels
+  function indexOfKey(k){ return PATCHES.findIndex(p => p.key === k); }
+  for (const m of MAJORS){
+    const mi = indexOfKey(m.key);
+    if (mi < 0) continue;
+    const leftPct = totalSteps <= 0 ? 0 : (mi / totalSteps) * 100;
+
+    const lbl = document.createElement("div");
+    lbl.className = "major-label" + (m.key === CURRENT_PATCH ? " current" : "");
+    lbl.style.left = leftPct + "%";
+    lbl.textContent = m.label;
+    timelineEl.appendChild(lbl);
+  }
 
   // ===========================
   // Players: 100–200
