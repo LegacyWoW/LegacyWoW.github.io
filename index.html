@@ -10,6 +10,10 @@
       --bg:#0b0b0b;
       --text:#e8e8e8;
       --muted: rgba(232,232,232,.82);
+      --line: rgba(255,255,255,.14);
+      --glass: rgba(0,0,0,.45);
+      --chip: rgba(0,0,0,.25);
+      --accent: rgba(60,255,143,.85);
     }
     *{box-sizing:border-box}
     body{
@@ -133,8 +137,8 @@
     .box{
       padding:18px 20px;
       border-radius:18px;
-      border:1px solid rgba(255,255,255,.14);
-      background:rgba(0,0,0,.45);
+      border:1px solid var(--line);
+      background:var(--glass);
       backdrop-filter:blur(8px);
       box-shadow:0 16px 40px rgba(0,0,0,.45);
     }
@@ -200,7 +204,7 @@
     .k{font-size:11.5px;font-weight:900;opacity:.7;text-transform:uppercase}
     .v{margin-top:4px;font-size:14px;font-weight:900}
 
-    /* Progress */
+    /* Progress timeline */
     .progress-wrap{
       margin-top:12px;
       border:1px solid rgba(255,255,255,.10);
@@ -222,38 +226,75 @@
       padding:4px 8px;
       border-radius:10px;
       border:1px solid rgba(255,255,255,.14);
-      background:rgba(0,0,0,.25);
+      background:var(--chip);
       font-weight:900;
       letter-spacing:.2px;
       white-space:nowrap;
     }
-    .chip.current{
-      border-color: rgba(60,255,143,.55);
-      box-shadow: 0 0 18px rgba(60,255,143,.25);
+
+    /* Horizontal scrolling container (mobile-safe) */
+    .timeline-scroll{
+      overflow-x:auto;
+      padding-bottom:6px; /* room for scrollbar */
     }
-    .progress{
+
+    /* The "canvas" that holds the bar + ticks + labels */
+    .timeline{
+      position:relative;
+      height:66px;              /* space for labels */
+      min-width: 980px;         /* forces horizontal layout instead of wrapping */
+    }
+
+    .bar{
+      position:absolute;
+      left:0; right:0;
+      top:18px;
       height:12px;
-      width:100%;
       border-radius:999px;
       border:1px solid rgba(255,255,255,.14);
       background:rgba(0,0,0,.35);
       overflow:hidden;
     }
-    .progress-fill{
+    .bar-fill{
       height:100%;
       width: 3%;
       border-radius:999px;
-      background:rgba(60,255,143,.85);
+      background:var(--accent);
       box-shadow:0 0 18px rgba(60,255,143,.35);
       transition: width .5s ease;
     }
-    .milestones{
-      margin-top:10px;
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-      font-size:12px;
-      opacity:.86;
+
+    .tick{
+      position:absolute;
+      top:14px;                 /* centered on bar */
+      width:2px;
+      height:20px;
+      background: rgba(255,255,255,.35);
+      border-radius:2px;
+      transform: translateX(-1px);
+    }
+    .tick.current{
+      background: rgba(60,255,143,.95);
+      box-shadow: 0 0 16px rgba(60,255,143,.35);
+    }
+
+    .label{
+      position:absolute;
+      top:40px;
+      transform: translateX(-50%);
+      font-size:11px;
+      font-weight:900;
+      opacity:.85;
+      white-space:nowrap;
+      padding:2px 6px;
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.22);
+    }
+    .label.current{
+      opacity:1;
+      border-color: rgba(60,255,143,.50);
+      box-shadow: 0 0 16px rgba(60,255,143,.18);
     }
 
     footer{
@@ -268,6 +309,7 @@
     @media(max-width:900px){
       .status-row{grid-template-columns:1fr}
       .hero h1{font-size:36px}
+      .timeline{min-width: 980px;} /* keep horizontal; scroll instead */
     }
   </style>
 </head>
@@ -302,7 +344,7 @@
       <a class="btn primary" href="how-to-play.html">Get Started</a>
       <a class="btn" href="downloads.html">Downloads</a>
       <a class="btn" href="map.html">World Map</a>
-      <button class="btn ghost" id="snowToggle">Snow: ON</button>
+      <button class="btn ghost" id="snowToggle" type="button">Snow: ON</button>
     </div>
 
     <!-- Row 1 -->
@@ -325,7 +367,7 @@
         <div class="realm-grid">
           <div class="kv"><div class="k">Client</div><div class="v">3.3.5a</div></div>
 
-          <!-- DO NOT CHANGE this line unless you want to later -->
+          <!-- Per your instruction: keep this unchanged -->
           <div class="kv"><div class="k">Progression</div><div class="v">1.0.0 → 3.3.5a</div></div>
 
           <div class="kv"><div class="k">Core</div><div class="v">AzerothCore</div></div>
@@ -345,15 +387,17 @@
 
         <div class="progress-wrap">
           <div class="progress-labels">
-            <div>Current: <b id="currentPatchLabel">1.1.0</b> <span class="chip" style="margin-left:8px;">Vanilla</span></div>
+            <div>Current: <b id="currentPatchLabel">1.1.0</b> <span class="chip" id="currentEraChip" style="margin-left:8px;">Vanilla</span></div>
             <div>Goal: <b>3.4.0</b> <span class="chip" style="margin-left:8px;">Custom</span></div>
           </div>
 
-          <div class="progress" aria-label="Progression progress bar">
-            <div class="progress-fill" id="progressFill" title="Current progression"></div>
+          <!-- ✅ Timeline (bar + ticks + labels across) -->
+          <div class="timeline-scroll">
+            <div class="timeline" id="timeline">
+              <div class="bar"><div class="bar-fill" id="progressFill"></div></div>
+              <!-- ticks + labels injected by JS -->
+            </div>
           </div>
-
-          <div class="milestones" id="milestones" aria-label="Progression milestones"></div>
         </div>
       </div>
     </div>
@@ -388,44 +432,33 @@
   // ==========================================================
   // ✅ ONE-LINE UPDATE IN THE FUTURE:
   // ==========================================================
-  const CURRENT_PATCH = "1.1.0";   // <-- Change only this later (e.g. "1.12.1", "2.4.3", "3.3.5a", etc.)
+  const CURRENT_PATCH = "1.1.0"; // change only this later
 
   // Full patch timeline (your list)
   const PATCHES = [
-    { key:"1.0.0", label:"1.0.0", era:"Vanilla" },
-    { key:"1.1.0", label:"1.1.0", era:"Vanilla" },
-    { key:"1.3.3", label:"1.3.3", era:"Vanilla" },
-    { key:"1.5.2", label:"1.5.2", era:"Vanilla" },
-    { key:"1.6.2", label:"1.6.2", era:"Vanilla" },
-    { key:"1.7.1", label:"1.7.1", era:"Vanilla" },
-    { key:"1.9.4", label:"1.9.4", era:"Vanilla" },
+    { key:"1.0.0",  label:"1.0.0", era:"Vanilla" },
+    { key:"1.1.0",  label:"1.1.0", era:"Vanilla" },
+    { key:"1.3.3",  label:"1.3.3", era:"Vanilla" },
+    { key:"1.5.2",  label:"1.5.2", era:"Vanilla" },
+    { key:"1.6.2",  label:"1.6.2", era:"Vanilla" },
+    { key:"1.7.1",  label:"1.7.1", era:"Vanilla" },
+    { key:"1.9.4",  label:"1.9.4", era:"Vanilla" },
     { key:"1.11.2", label:"1.11.2", era:"Vanilla" },
     { key:"1.12.1", label:"1.12.1", era:"Vanilla" },
 
-    { key:"2.0.1", label:"2.0.1 (TBC)", era:"TBC" },
-    { key:"2.1.4", label:"2.1.4", era:"TBC" },
-    { key:"2.3.3", label:"2.3.3", era:"TBC" },
-    { key:"2.4.3", label:"2.4.3", era:"TBC" },
+    { key:"2.0.1",  label:"2.0.1", era:"TBC", tag:"(TBC)" },
+    { key:"2.1.4",  label:"2.1.4", era:"TBC" },
+    { key:"2.3.3",  label:"2.3.3", era:"TBC" },
+    { key:"2.4.3",  label:"2.4.3", era:"TBC" },
 
-    { key:"3.0.2", label:"3.0.2 (WOTLK)", era:"WOTLK" },
-    { key:"3.1.3", label:"3.1.3", era:"WOTLK" },
+    { key:"3.0.2",  label:"3.0.2", era:"WOTLK", tag:"(WOTLK)" },
+    { key:"3.1.3",  label:"3.1.3", era:"WOTLK" },
     { key:"3.2.2a", label:"3.2.2a", era:"WOTLK" },
-    { key:"3.3.3", label:"3.3.3", era:"WOTLK" },
-    { key:"3.3.5a", label:"3.3.5a (WOTLK end)", era:"WOTLK" },
+    { key:"3.3.3",  label:"3.3.3", era:"WOTLK" },
+    { key:"3.3.5a", label:"3.3.5a", era:"WOTLK", tag:"(end)" },
 
-    { key:"3.4.0", label:"3.4.0 custom", era:"Custom" }
+    { key:"3.4.0",  label:"3.4.0", era:"Custom", tag:"custom" }
   ];
-
-  // --- Apply year
-  document.getElementById("year").textContent = new Date().getFullYear();
-
-  // --- Update status patch text too (so it stays in sync)
-  document.getElementById("statusPatch").textContent = CURRENT_PATCH;
-
-  // --- Build milestones + highlight current
-  const milestonesEl = document.getElementById("milestones");
-  const currentLabelEl = document.getElementById("currentPatchLabel");
-  const progressFillEl = document.getElementById("progressFill");
 
   function escapeHtml(s){
     return String(s).replace(/[&<>"']/g, c => ({
@@ -433,24 +466,60 @@
     }[c]));
   }
 
+  // Year
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  // Keep the status patch synced
+  document.getElementById("statusPatch").textContent = CURRENT_PATCH;
+
+  // Progress + timeline rendering
   const idx = PATCHES.findIndex(p => p.key === CURRENT_PATCH);
   const safeIdx = idx >= 0 ? idx : 0;
   const totalSteps = PATCHES.length - 1;
-
-  // Fill percent = position along the timeline
   const pct = totalSteps <= 0 ? 0 : (safeIdx / totalSteps) * 100;
+
+  const currentPatchLabelEl = document.getElementById("currentPatchLabel");
+  const currentEraChipEl = document.getElementById("currentEraChip");
+  const progressFillEl = document.getElementById("progressFill");
+  const timelineEl = document.getElementById("timeline");
+
+  currentPatchLabelEl.textContent = CURRENT_PATCH;
+  currentEraChipEl.textContent = PATCHES[safeIdx]?.era || "Vanilla";
 
   progressFillEl.style.width = Math.max(2, pct) + "%";
   progressFillEl.title = "Current progression: Patch " + CURRENT_PATCH;
 
-  currentLabelEl.textContent = CURRENT_PATCH;
+  // Inject ticks + labels across the bar
+  // We place each at left: (i/totalSteps)*100%
+  for (let i = 0; i < PATCHES.length; i++){
+    const leftPct = totalSteps <= 0 ? 0 : (i / totalSteps) * 100;
+    const patch = PATCHES[i];
+    const isCurrent = patch.key === CURRENT_PATCH;
 
-  // Render chips
-  milestonesEl.innerHTML = PATCHES.map((p, i) => {
-    const cls = (p.key === CURRENT_PATCH) ? "chip current" : "chip";
-    const title = "Era: " + p.era;
-    return `<span class="${cls}" title="${escapeHtml(title)}">${escapeHtml(p.label)}</span>`;
-  }).join("");
+    const tick = document.createElement("div");
+    tick.className = "tick" + (isCurrent ? " current" : "");
+    tick.style.left = leftPct + "%";
+    tick.title = "Patch " + patch.key + " — " + patch.era;
+    timelineEl.appendChild(tick);
+
+    const label = document.createElement("div");
+    label.className = "label" + (isCurrent ? " current" : "");
+    label.style.left = leftPct + "%";
+    const extra = patch.tag ? " " + patch.tag : "";
+    label.textContent = patch.label + extra;
+    timelineEl.appendChild(label);
+  }
+
+  // Auto-scroll timeline so current patch is visible on mobile
+  // (only if it overflows)
+  requestAnimationFrame(() => {
+    const scrollParent = timelineEl.parentElement; // timeline-scroll
+    if (!scrollParent) return;
+    const currentLabel = timelineEl.querySelector(".label.current");
+    if (!currentLabel) return;
+    const target = currentLabel.offsetLeft - (scrollParent.clientWidth / 2) + (currentLabel.clientWidth / 2);
+    scrollParent.scrollLeft = Math.max(0, target);
+  });
 
   // ===========================
   // Players: 100–200
@@ -462,7 +531,7 @@
   const pc=document.getElementById("playerCount");
   const lu=document.getElementById("lastUpdated");
 
-  function tick(){
+  function tickPlayers(){
     if(Math.random()<0.25){
       t=Math.floor(Math.random()*(MAX-MIN+1))+MIN;
     }
@@ -471,9 +540,9 @@
     p=Math.max(MIN,Math.min(MAX,p));
     pc.textContent=p;
     lu.textContent=new Date().toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"});
-    setTimeout(tick,3000+Math.random()*3000);
+    setTimeout(tickPlayers,3000+Math.random()*3000);
   }
-  tick();
+  tickPlayers();
 
   // ===========================
   // Snow toggle
@@ -488,8 +557,8 @@
   function resize(){c.width=innerWidth;c.height=innerHeight}
   addEventListener("resize",resize);resize();
 
-  function draw(){
-    requestAnimationFrame(draw);
+  function drawSnow(){
+    requestAnimationFrame(drawSnow);
     if(!snowOn){x.clearRect(0,0,c.width,c.height);return;}
     x.clearRect(0,0,c.width,c.height);
     x.fillStyle="#fff";
@@ -499,14 +568,14 @@
       x.beginPath();x.arc(f.x,f.y,f.r,0,Math.PI*2);x.fill();
     }
   }
-  draw();
+  drawSnow();
 
-  function sync(){
+  function syncSnow(){
     btn.textContent=snowOn?"Snow: ON":"Snow: OFF";
     localStorage.setItem("snow",snowOn?"on":"off");
   }
-  btn.onclick=()=>{snowOn=!snowOn;sync()};
-  sync();
+  btn.onclick=()=>{snowOn=!snowOn;syncSnow()};
+  syncSnow();
 </script>
 </body>
 </html>
