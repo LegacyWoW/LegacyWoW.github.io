@@ -14,13 +14,13 @@
       --glass: rgba(0,0,0,.45);
 
       /* Era colors */
-      --vanilla: rgba(214, 176,  70, .85); /* gold */
-      --tbc:     rgba( 60, 255, 143, .85); /* green */
-      --wotlk:   rgba(140, 205, 255, .85); /* frosty blue */
-      --custom:  rgba(180, 120, 255, .80); /* arcane purple */
+      --vanilla: rgba(214, 176,  70, .90); /* gold */
+      --tbc:     rgba( 60, 255, 143, .90); /* green */
+      --wotlk:   rgba(140, 205, 255, .90); /* frosty blue */
+      --custom:  rgba(180, 120, 255, .85); /* arcane purple */
 
-      /* UI accents */
-      --accent: rgba(60,255,143,.95); /* current patch highlight */
+      /* Current patch highlight */
+      --accent: rgba(60,255,143,.95);
     }
 
     *{box-sizing:border-box}
@@ -144,10 +144,10 @@
       text-align:left;
     }
 
-    /* Make progress section wider (no scrollbar needed) */
+    /* Progress wider */
     .status-row-progress{
       margin:14px auto 0;
-      max-width:1400px;   /* wider */
+      max-width:1400px;
       width:100%;
       display:grid;
       grid-template-columns:1fr;
@@ -256,10 +256,11 @@
     /* Timeline */
     .timeline{
       position:relative;
-      height:78px;         /* room for current patch label + majors */
+      height:78px;
       width:100%;
     }
 
+    /* Base bar is neutral */
     .bar{
       position:absolute;
       left:0; right:0;
@@ -267,14 +268,22 @@
       height:12px;
       border-radius:999px;
       border:1px solid rgba(255,255,255,.14);
+      background:rgba(0,0,0,.35);
       overflow:hidden;
+    }
+
+    /* Fill reveals era colors and is clipped to progress width */
+    .bar-fill{
+      height:100%;
+      width: 3%;
+      border-radius:999px;
+      transition: width .5s ease;
 
       /* segment stop vars set by JS */
       --vanEnd: 40%;
       --tbcEnd: 65%;
       --wotlkEnd: 95%;
 
-      /* colored segments */
       background:
         linear-gradient(90deg,
           var(--vanilla) 0%,
@@ -286,36 +295,28 @@
           var(--custom) var(--wotlkEnd),
           var(--custom) 100%
         );
-      box-shadow: inset 0 0 0 999px rgba(0,0,0,.25); /* darken slightly so text pops */
+
+      /* a slight glow so the fill reads */
+      box-shadow: 0 0 18px rgba(255,255,255,.06);
     }
 
-    /* a subtle "progress sheen" over the segmented bar */
-    .bar-fill{
-      height:100%;
-      width: 3%;
-      border-radius:999px;
-      background: rgba(255,255,255,.18);
-      box-shadow: 0 0 18px rgba(255,255,255,.08);
-      transition: width .5s ease;
-    }
-
+    /* ticks */
     .tick{
       position:absolute;
       top:26px;
       width:2px;
-      height:16px; /* small ticks */
+      height:16px;
       background: rgba(255,255,255,.32);
       border-radius:2px;
       transform: translateX(-1px);
     }
     .tick.current{
-      height:24px;  /* taller */
+      height:24px;
       top:22px;
       background: var(--accent);
       box-shadow: 0 0 16px rgba(60,255,143,.35);
     }
 
-    /* Major labels (static) */
     .major-label{
       position:absolute;
       top:52px;
@@ -330,7 +331,6 @@
       background: rgba(0,0,0,.22);
     }
 
-    /* Current patch label pinned above the bar at its tick */
     .current-patch-label{
       position:absolute;
       top:0px;
@@ -417,10 +417,7 @@
         <div class="title">Realm Info</div>
         <div class="realm-grid">
           <div class="kv"><div class="k">Client</div><div class="v">3.3.5a</div></div>
-
-          <!-- keep unchanged per your instruction -->
           <div class="kv"><div class="k">Progression</div><div class="v">1.0.0 → 3.3.5a</div></div>
-
           <div class="kv"><div class="k">Core</div><div class="v">AzerothCore</div></div>
           <div class="kv"><div class="k">Rates</div><div class="v">XP x2 · Gold x1.5 · Honor x1</div></div>
         </div>
@@ -446,7 +443,6 @@
             <div class="bar" id="bar">
               <div class="bar-fill" id="progressFill"></div>
             </div>
-            <!-- ticks + majors + current patch label injected by JS -->
           </div>
         </div>
       </div>
@@ -518,10 +514,9 @@
     { key:"3.4.0", label:"3.4.0 Custom" }
   ];
 
-  // ----- Helpers
   function indexOfKey(k){ return PATCHES.findIndex(p => p.key === k); }
 
-  // ----- Basic UI
+  // Basic UI
   document.getElementById("year").textContent = new Date().getFullYear();
   document.getElementById("statusPatch").textContent = CURRENT_PATCH;
 
@@ -535,33 +530,31 @@
   document.getElementById("currentPatchLabel").textContent = CURRENT_PATCH;
   document.getElementById("currentEraChip").textContent = currentEra;
 
-  // ----- Set era segment boundaries on the bar (as percentages)
-  // Boundaries by LAST patch of each era:
-  const vanillaEnd = indexOfKey("1.12.1"); // last vanilla patch in your list
-  const tbcEnd     = indexOfKey("2.4.3");  // last tbc patch
-  const wotlkEnd   = indexOfKey("3.3.5a"); // last wotlk patch
+  // Set era segment boundaries on the FILL (so colors only appear as you progress)
+  const vanillaEnd = indexOfKey("1.12.1");
+  const tbcEnd     = indexOfKey("2.4.3");
+  const wotlkEnd   = indexOfKey("3.3.5a");
 
-  const barEl = document.getElementById("bar");
+  const fillEl = document.getElementById("progressFill");
+  const barEl = document.getElementById("bar"); // not required now, but kept if you want later
 
   function toPct(i){
     if (totalSteps <= 0) return 0;
     return (i / totalSteps) * 100;
-    }
-  // Segment stops are "where the next era begins"
-  // So: Vanilla 0 -> vanillaEnd, TBC -> tbcEnd, WOTLK -> wotlkEnd, Custom -> end
-  barEl.style.setProperty("--vanEnd",  toPct(vanillaEnd) + "%");
-  barEl.style.setProperty("--tbcEnd",  toPct(tbcEnd) + "%");
-  barEl.style.setProperty("--wotlkEnd",toPct(wotlkEnd) + "%");
+  }
 
-  // ----- Progress sheen (to current patch)
-  const fillEl = document.getElementById("progressFill");
+  fillEl.style.setProperty("--vanEnd",  toPct(vanillaEnd) + "%");
+  fillEl.style.setProperty("--tbcEnd",  toPct(tbcEnd) + "%");
+  fillEl.style.setProperty("--wotlkEnd",toPct(wotlkEnd) + "%");
+
+  // Progress width
   fillEl.style.width = Math.max(2, pct) + "%";
   fillEl.title = "Current progression: Patch " + CURRENT_PATCH;
 
-  // ----- Render ticks + labels
+  // Render ticks + labels
   const timelineEl = document.getElementById("timeline");
 
-  // 1) ticks for every patch
+  // ticks
   for (let i = 0; i < PATCHES.length; i++){
     const leftPct = totalSteps <= 0 ? 0 : (i / totalSteps) * 100;
     const patch = PATCHES[i];
@@ -574,14 +567,14 @@
     timelineEl.appendChild(tick);
   }
 
-  // 2) current patch label above the bar at current position
+  // current patch label above the bar
   const currentLabel = document.createElement("div");
   currentLabel.className = "current-patch-label";
-  currentLabel.style.left = (totalSteps <= 0 ? 0 : pct) + "%";
+  currentLabel.style.left = pct + "%";
   currentLabel.textContent = CURRENT_PATCH;
   timelineEl.appendChild(currentLabel);
 
-  // 3) major labels
+  // major labels
   for (const m of MAJORS){
     const mi = indexOfKey(m.key);
     if (mi < 0) continue;
