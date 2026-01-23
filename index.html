@@ -260,7 +260,6 @@
       width:100%;
     }
 
-    /* Base bar is neutral */
     .bar{
       position:absolute;
       left:0; right:0;
@@ -272,35 +271,40 @@
       overflow:hidden;
     }
 
-    /* Fill reveals era colors and is clipped to progress width */
+    /* Fill reveals era colors (only within progress) */
     .bar-fill{
       height:100%;
       width: 3%;
       border-radius:999px;
       transition: width .5s ease;
 
-      /* segment stop vars set by JS */
-      --vanEnd: 40%;
-      --tbcEnd: 65%;
-      --wotlkEnd: 95%;
+      /* segment start vars set by JS */
+      --tbcStart: 0%;
+      --wotlkStart: 0%;
+      --customStart: 0%;
 
       background:
         linear-gradient(90deg,
+          /* Vanilla from 0 -> TBC start */
           var(--vanilla) 0%,
-          var(--vanilla) var(--vanEnd),
-          var(--tbc) var(--vanEnd),
-          var(--tbc) var(--tbcEnd),
-          var(--wotlk) var(--tbcEnd),
-          var(--wotlk) var(--wotlkEnd),
-          var(--custom) var(--wotlkEnd),
+          var(--vanilla) var(--tbcStart),
+
+          /* TBC from tbcStart -> wotlkStart */
+          var(--tbc) var(--tbcStart),
+          var(--tbc) var(--wotlkStart),
+
+          /* WOTLK from wotlkStart -> customStart */
+          var(--wotlk) var(--wotlkStart),
+          var(--wotlk) var(--customStart),
+
+          /* Custom from customStart -> end */
+          var(--custom) var(--customStart),
           var(--custom) 100%
         );
 
-      /* a slight glow so the fill reads */
       box-shadow: 0 0 18px rgba(255,255,255,.06);
     }
 
-    /* ticks */
     .tick{
       position:absolute;
       top:26px;
@@ -398,7 +402,6 @@
       <button class="btn ghost" id="snowToggle" type="button">Snow: ON</button>
     </div>
 
-    <!-- Row 1 -->
     <div class="status-row">
       <div class="box">
         <div class="title">Server Status</div>
@@ -424,7 +427,6 @@
       </div>
     </div>
 
-    <!-- Row 2 (WIDER) -->
     <div class="status-row-progress">
       <div class="box">
         <div class="title">Server Progress</div>
@@ -440,7 +442,7 @@
           </div>
 
           <div class="timeline" id="timeline">
-            <div class="bar" id="bar">
+            <div class="bar">
               <div class="bar-fill" id="progressFill"></div>
             </div>
           </div>
@@ -448,7 +450,6 @@
       </div>
     </div>
 
-    <!-- Row 3 -->
     <div class="status-row-wide">
       <div class="box">
         <div class="title">What is LegacyWoW?</div>
@@ -475,12 +476,9 @@
 </footer>
 
 <script>
-  // ==========================================================
-  // ✅ ONE-LINE UPDATE IN THE FUTURE:
-  // ==========================================================
-  const CURRENT_PATCH = "1.1.0"; // change only this later
+  // ✅ Change only this later
+  const CURRENT_PATCH = "1.1.0";
 
-  // Full patch timeline (your list)
   const PATCHES = [
     { key:"1.0.0",  era:"Vanilla" },
     { key:"1.1.0",  era:"Vanilla" },
@@ -506,7 +504,6 @@
     { key:"3.4.0",  era:"Custom" }
   ];
 
-  // Major anchors (labels only)
   const MAJORS = [
     { key:"1.0.0", label:"1.0.0 Vanilla" },
     { key:"2.0.1", label:"2.0.1 TBC" },
@@ -515,8 +512,11 @@
   ];
 
   function indexOfKey(k){ return PATCHES.findIndex(p => p.key === k); }
+  function toPct(i, totalSteps){
+    if (totalSteps <= 0) return 0;
+    return (i / totalSteps) * 100;
+  }
 
-  // Basic UI
   document.getElementById("year").textContent = new Date().getFullYear();
   document.getElementById("statusPatch").textContent = CURRENT_PATCH;
 
@@ -525,38 +525,31 @@
   const currentEra = PATCHES[safeIdx]?.era || "Vanilla";
 
   const totalSteps = PATCHES.length - 1;
-  const pct = totalSteps <= 0 ? 0 : (safeIdx / totalSteps) * 100;
+  const pct = toPct(safeIdx, totalSteps);
 
   document.getElementById("currentPatchLabel").textContent = CURRENT_PATCH;
   document.getElementById("currentEraChip").textContent = currentEra;
 
-  // Set era segment boundaries on the FILL (so colors only appear as you progress)
-  const vanillaEnd = indexOfKey("1.12.1");
-  const tbcEnd     = indexOfKey("2.4.3");
-  const wotlkEnd   = indexOfKey("3.3.5a");
+  // ✅ Correct era ranges (by STARTS):
+  const tbcStartIdx    = indexOfKey("2.0.1"); // Vanilla ends right before this
+  const wotlkStartIdx  = indexOfKey("3.0.2"); // TBC ends right before this
+  const customStartIdx = indexOfKey("3.4.0"); // WOTLK ends right before this
 
   const fillEl = document.getElementById("progressFill");
-  const barEl = document.getElementById("bar"); // not required now, but kept if you want later
 
-  function toPct(i){
-    if (totalSteps <= 0) return 0;
-    return (i / totalSteps) * 100;
-  }
+  fillEl.style.setProperty("--tbcStart", toPct(tbcStartIdx, totalSteps) + "%");
+  fillEl.style.setProperty("--wotlkStart", toPct(wotlkStartIdx, totalSteps) + "%");
+  fillEl.style.setProperty("--customStart", toPct(customStartIdx, totalSteps) + "%");
 
-  fillEl.style.setProperty("--vanEnd",  toPct(vanillaEnd) + "%");
-  fillEl.style.setProperty("--tbcEnd",  toPct(tbcEnd) + "%");
-  fillEl.style.setProperty("--wotlkEnd",toPct(wotlkEnd) + "%");
-
-  // Progress width
+  // progress width
   fillEl.style.width = Math.max(2, pct) + "%";
   fillEl.title = "Current progression: Patch " + CURRENT_PATCH;
 
-  // Render ticks + labels
   const timelineEl = document.getElementById("timeline");
 
   // ticks
   for (let i = 0; i < PATCHES.length; i++){
-    const leftPct = totalSteps <= 0 ? 0 : (i / totalSteps) * 100;
+    const leftPct = toPct(i, totalSteps);
     const patch = PATCHES[i];
     const isCurrent = patch.key === CURRENT_PATCH;
 
@@ -567,7 +560,7 @@
     timelineEl.appendChild(tick);
   }
 
-  // current patch label above the bar
+  // current patch label above bar
   const currentLabel = document.createElement("div");
   currentLabel.className = "current-patch-label";
   currentLabel.style.left = pct + "%";
@@ -579,8 +572,7 @@
     const mi = indexOfKey(m.key);
     if (mi < 0) continue;
 
-    const leftPct = totalSteps <= 0 ? 0 : (mi / totalSteps) * 100;
-
+    const leftPct = toPct(mi, totalSteps);
     const lbl = document.createElement("div");
     lbl.className = "major-label";
     lbl.style.left = leftPct + "%";
