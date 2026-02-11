@@ -4,7 +4,7 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "Darnassus (Contested)",
+        "title": "Darnassus",
         "color": "#ffffff",
         "category": "neutral",
         "icon": "city"
@@ -20,9 +20,9 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "Darnassus",
-        "color": "#ffffff",
-        "category": "neutral"
+        "title": "Darnassus (Knights of Menethil)",
+        "color": "#0000ff",
+        "category": "alliance"
       },
       "geometry": {
         "type": "Polygon",
@@ -135,7 +135,7 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "Undercity (Contested)",
+        "title": "Undercity",
         "color": "#ffffff",
         "category": "neutral",
         "icon": "city"
@@ -151,9 +151,9 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "Undercity",
-        "color": "#ffffff",
-        "category": "neutral"
+        "title": "Undercity (Ashen Reclamation)",
+        "color": "#ff0000",
+        "category": "horde"
       },
       "geometry": {
         "type": "Polygon",
