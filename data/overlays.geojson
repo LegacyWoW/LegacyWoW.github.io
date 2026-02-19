@@ -135,7 +135,7 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "Undercity",
+        "title": "Undercity - DESTROYED",
         "color": "#ffffff",
         "category": "neutral",
         "icon": "city"
@@ -151,8 +151,8 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "Undercity (Ashen Reclamation)",
-        "color": "#ff0000",
+        "title": "Undercity - DESTROYED",
+        "color": "#000000",
         "category": "horde"
       },
       "geometry": {
