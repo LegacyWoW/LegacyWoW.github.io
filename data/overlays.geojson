@@ -483,9 +483,9 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "Dolanaar (Outpost)",
-        "color": "#ffffff",
-        "category": "neutral"
+        "title": "Dolanaar (Legion of the Dead)",
+        "color": "#0000ff",
+        "category": "alliance"
       },
       "geometry": {
         "type": "Polygon",
