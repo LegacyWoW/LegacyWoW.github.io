@@ -250,8 +250,8 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "Goldshire (Outpost)",
-        "color": "#ffffff",
+        "title": "Goldshire (Fórsaí Cosanta Elwynn)",
+        "color": "#0000ff",
         "category": "neutral"
       },
       "geometry": {
