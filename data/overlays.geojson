@@ -748,9 +748,9 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "Refuge Point (Contested)",
-        "color": "#ffffff",
-        "category": "neutral"
+        "title": "Refuge Point (Legion of the Dead)",
+        "color": "#0000ff",
+        "category": "alliance"
       },
       "geometry": {
         "type": "Polygon",
