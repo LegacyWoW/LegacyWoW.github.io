@@ -6,7 +6,7 @@
       "properties": {
         "title": "Darnassus",
         "color": "#ffffff",
-        "category": "neutral",
+        "category": "alliance",
         "icon": "city"
       },
       "geometry": {
@@ -137,7 +137,7 @@
       "properties": {
         "title": "Undercity - DESTROYED",
         "color": "#ffffff",
-        "category": "neutral",
+        "category": "horde",
         "icon": "city"
       },
       "geometry": {
@@ -562,9 +562,9 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "Tarren Mill (Contested)",
-        "color": "#ffffff",
-        "category": "neutral"
+        "title": "Tarren Mill (Black Rose)",
+        "color": "#ff0000",
+        "category": "horde"
       },
       "geometry": {
         "type": "Polygon",
@@ -641,9 +641,9 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "Southshore (Contested)",
-        "color": "#ffffff",
-        "category": "neutral"
+        "title": "Southshore (Knights of Menethil)",
+        "color": "#0000ff",
+        "category": "alliance"
       },
       "geometry": {
         "type": "Polygon",
@@ -811,9 +811,9 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "Hammerfell (Contested)",
-        "color": "#ffffff",
-        "category": "neutral"
+        "title": "Hammerfall (Black Rose)",
+        "color": "#ff0000",
+        "category": "horde"
       },
       "geometry": {
         "type": "Polygon",
