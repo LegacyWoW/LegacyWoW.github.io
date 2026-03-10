@@ -1,176 +1,52 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>LegacyWoW World Map</title>
+ />
+  <script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""
+  ></script>
 
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-
-<style>
-
-body{
-margin:0;
-background:#0b0b0b;
-color:white;
-font-family:Arial;
-}
-
-#map{
-height:90vh;
-width:100%;
-}
-
-#mapControls{
-padding:10px;
-background:#111;
-border-bottom:1px solid #333;
-}
-
-select{
-padding:6px;
-font-size:14px;
-}
-
-</style>
+  <!-- Leaflet.draw -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.css" />
+  <script src="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.js"></script>
 </head>
 
 <body>
+  <header>
+    <div class="wrap toprow">
+      <a class="brand" href="index.html">
+        <div class="logo">
+          <img src="/assets/logo.png" alt="LegacyWoW" onerror="this.remove();" />
+        </div>
+        <div>LegacyWoW — World Map</div>
+      </a>
 
-<div id="mapControls">
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="how-to-play.html">How to Play</a>
+        <a href="news.html">News</a>
+        <a href="rules.html">Rules</a>
+        <a href="faq.html">FAQ</a>
+        <a href="map.html">Map</a>
+      </nav>
+    </div>
+  </header>
 
-Select Map:
+  <div class="shell">
+    <div id="map"></div>
 
-<select id="mapSelector">
-<option value="worldmap">Azeroth</option>
-<option value="outland">Outland</option>
-<option value="northrend">Northrend</option>
-</select>
+    <!-- Admin-only controls (hidden unless ?admin=1) -->
+    <div class="adminbar" id="adminBar">
+      <button class="btn" id="exportBtn">Export</button>
+      <button class="btn" id="clearBtn">Clear</button>
+    </div>
+  </div>
 
-</div>
+  <script src="/map/app.js"></script>
 
-<div id="map"></div>
-
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
-<script>
-
-const adminMode = window.location.search.includes("admin=1")
-
-let currentMapName = "worldmap"
-
-const maps = {
-
-worldmap:{
-image:"assets/worldmap.jpg",
-width:8192,
-height:4096
-},
-
-outland:{
-image:"assets/outland.jpg",
-width:4096,
-height:4096
-},
-
-northrend:{
-image:"assets/northrend.jpg",
-width:4096,
-height:4096
-}
-
-}
-
-let map
-let imageLayer
-let drawnItems
-
-function loadMarkers(){
-
-drawnItems.clearLayers()
-
-const saved = localStorage.getItem("mapData_"+currentMapName)
-
-if(saved){
-
-const data = JSON.parse(saved)
-
-L.geoJSON(data).eachLayer(layer=>{
-drawnItems.addLayer(layer)
-})
-
-}
-
-}
-
-function saveMarkers(){
-
-if(!adminMode) return
-
-const data = drawnItems.toGeoJSON()
-
-localStorage.setItem(
-"mapData_"+currentMapName,
-JSON.stringify(data)
-)
-
-}
-
-function initMap(){
-
-const config = maps[currentMapName]
-
-map = L.map("map",{
-crs:L.CRS.Simple,
-minZoom:-5
-})
-
-const bounds = [[0,0],[config.height,config.width]]
-
-imageLayer = L.imageOverlay(config.image,bounds).addTo(map)
-
-map.fitBounds(bounds)
-
-drawnItems = new L.FeatureGroup()
-
-map.addLayer(drawnItems)
-
-loadMarkers()
-
-if(adminMode){
-
-map.on("click",function(e){
-
-const name = prompt("Marker name:")
-
-if(!name) return
-
-const marker = L.marker(e.latlng)
-
-marker.bindPopup(name)
-
-drawnItems.addLayer(marker)
-
-saveMarkers()
-
-})
-
-}
-
-}
-
-initMap()
-
-document.getElementById("mapSelector").addEventListener("change",function(){
-
-currentMapName = this.value
-
-map.remove()
-
-initMap()
-
-})
-
-</script>
-
+  <script>
+    const isAdmin = new URLSearchParams(location.search).get("admin") === "1";
+    const adminBar = document.getElementById("adminBar");
+    if (!isAdmin && adminBar) adminBar.style.display = "none";
+  </script>
 </body>
 </html>
