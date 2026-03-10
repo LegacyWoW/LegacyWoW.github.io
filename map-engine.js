@@ -7,7 +7,7 @@ const icons = {
     battle:"/assets/icons/battle.png"
 };
 
-function initMap(canvasId,imgSrc,mapKey){
+function initMap(canvasId,imgSrc,mapKey,isAdmin){
     const canvas = document.getElementById(canvasId);
     const ctx = canvas.getContext("2d");
 
@@ -15,26 +15,30 @@ function initMap(canvasId,imgSrc,mapKey){
     img.src = imgSrc;
 
     img.onload = () => {
-        const maxW = 1200, maxH = 800;
-        const scale = Math.min(maxW/img.width, maxH/img.height);
+        const maxW = 800, maxH = 800;
+        const scale = Math.min(maxW / img.width, maxH / img.height);
 
-        canvas.width = img.width*scale;
-        canvas.height = img.height*scale;
+        canvas.width = img.width * scale;
+        canvas.height = img.height * scale;
 
         maps[mapKey] = {
             canvas, ctx, img, scale,
             polygons:[], markers:[], currentPolygon:[],
-            tool:null, currentColor:"#ffff00", currentIcon:"city"
+            tool:null, currentColor:"#ffff00", currentIcon:"city", admin:isAdmin
         };
 
         drawMap(mapKey);
 
-        canvas.addEventListener("click",(e)=>{
-            const adminDiv = document.getElementById(mapKey+"Admin");
-            if(adminDiv && adminDiv.style.display==="flex"){
+        // Only allow clicks if admin
+        if(isAdmin){
+            canvas.addEventListener("click",(e)=>{
                 handleClick(mapKey,e);
-            }
-        });
+            });
+        }
+    };
+
+    img.onerror = ()=>{
+        console.error("Failed to load image:",imgSrc);
     };
 }
 
@@ -65,7 +69,7 @@ function drawMap(mapKey){
     map.ctx.clearRect(0,0,map.canvas.width,map.canvas.height);
     map.ctx.drawImage(map.img,0,0,map.canvas.width,map.canvas.height);
 
-    // Polygons
+    // Draw polygons
     map.polygons.forEach(poly=>{
         map.ctx.beginPath();
         map.ctx.moveTo(poly.points[0].x*map.scale,poly.points[0].y*map.scale);
@@ -81,7 +85,7 @@ function drawMap(mapKey){
         map.ctx.stroke();
     });
 
-    // Markers
+    // Draw markers
     map.markers.forEach(marker=>{
         const ic = new Image();
         ic.src = icons[marker.icon];
@@ -90,5 +94,3 @@ function drawMap(mapKey){
         map.ctx.fillText(marker.name,marker.x*map.scale+12,marker.y*map.scale+4);
     });
 }
-
-function saveAll(){ console.log("Save maps to server...",maps); }
