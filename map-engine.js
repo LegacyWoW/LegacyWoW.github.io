@@ -11,9 +11,13 @@ const maps={}
 function createMap(canvasId,miniId,imageSrc,mapKey){
 
 const canvas=document.getElementById(canvasId)
-const ctx=canvas.getContext("2d")
+canvas.width = window.innerWidth * 0.9  // make map bigger
+canvas.height = window.innerHeight * 0.8
 
+const ctx=canvas.getContext("2d")
 const mini=document.getElementById(miniId)
+mini.width = canvas.width / 5
+mini.height = canvas.height / 5
 const mctx=mini.getContext("2d")
 
 const img=new Image()
@@ -29,7 +33,7 @@ let startY=0
 
 let markers=[]
 let polygons=[]
-let drawingPoly=[]
+let currentPoly=[]
 
 maps[mapKey]={markers,polygons}
 
@@ -40,34 +44,22 @@ img.onload=()=>draw()
 function draw(){
 
 ctx.clearRect(0,0,canvas.width,canvas.height)
-
 ctx.save()
 ctx.translate(offsetX,offsetY)
 ctx.scale(zoom,zoom)
-
-ctx.drawImage(img,0,0)
+ctx.drawImage(img,0,0,canvas.width/zoom,canvas.height/zoom)
 
 drawPolygons()
 drawMarkers()
 drawCurrentPoly()
 ctx.restore()
-
 drawMini()
-
 }
 
 function drawPolygons(){
-
 polygons.forEach(p=>{
-
-let fillColor="#00ffff"
-if(p.faction==="alliance") fillColor="rgba(0,150,255,0.35)"
-else if(p.faction==="horde") fillColor="rgba(200,0,0,0.35)"
-else fillColor=p.color||"rgba(200,200,200,0.35)"
-
-ctx.fillStyle=fillColor
-ctx.globalAlpha=0.35
-
+ctx.fillStyle = p.color || "#00ffff"
+ctx.globalAlpha = 0.35
 ctx.beginPath()
 p.points.forEach((pt,i)=>{
 if(i===0) ctx.moveTo(pt.x,pt.y)
@@ -75,54 +67,45 @@ else ctx.lineTo(pt.x,pt.y)
 })
 ctx.closePath()
 ctx.fill()
-
-ctx.globalAlpha=1
-ctx.strokeStyle=p.color||"#fff"
+ctx.globalAlpha = 1
+ctx.strokeStyle = p.color || "#fff"
 ctx.stroke()
-
 if(p.name){
 ctx.fillStyle="white"
 ctx.font="16px Arial"
 ctx.fillText(p.name,p.points[0].x,p.points[0].y)
 }
-
 })
 }
 
+function drawCurrentPoly(){
+if(currentPoly.length===0) return
+ctx.strokeStyle="yellow"
+ctx.lineWidth=2
+ctx.beginPath()
+currentPoly.forEach((p,i)=>{
+if(i===0) ctx.moveTo(p.x,p.y)
+else ctx.lineTo(p.x,p.y)
+})
+ctx.stroke()
+}
+
 function drawMarkers(){
-
 markers.forEach(m=>{
-
 let icon="🏙"
-
 if(m.icon==="city") icon="🏙"
 if(m.icon==="fort") icon="🏰"
-if(m.icon==="tower") icon="🏯" // Medieval tower
+if(m.icon==="tower") icon="🏯"
 if(m.icon==="house") icon="🏠"
 if(m.icon==="battle") icon="⚔"
-
 ctx.font="22px serif"
 ctx.fillText(icon,m.x-10,m.y+8)
-
 if(m.name){
 ctx.font="13px Arial"
 ctx.fillStyle="white"
 ctx.fillText(m.name,m.x+12,m.y)
 }
-
 })
-
-}
-
-function drawCurrentPoly(){
-if(drawingPoly.length===0) return
-ctx.strokeStyle="yellow"
-ctx.beginPath()
-drawingPoly.forEach((p,i)=>{
-if(i===0) ctx.moveTo(p.x,p.y)
-else ctx.lineTo(p.x,p.y)
-})
-ctx.stroke()
 }
 
 canvas.addEventListener("mousedown",e=>{
@@ -141,28 +124,24 @@ draw()
 return
 }
 if(tool==="polygon"){
-drawingPoly.push({x,y})
+currentPoly.push({x,y})
 draw()
 return
 }
 }
 
-if(tool==="pan" || !isAdmin){
 dragging=true
 startX=e.clientX
 startY=e.clientY
-}
-
 })
 
 canvas.addEventListener("dblclick",()=>{
 if(!isAdmin) return
-if(drawingPoly.length>2){
+if(currentPoly.length>2){
 const name=prompt("Territory name")
 const color=document.getElementById("polyColor").value
-const faction=prompt("Faction (neutral/alliance/horde)","neutral")
-polygons.push({points:[...drawingPoly],name,color,faction})
-drawingPoly=[]
+polygons.push({points:[...currentPoly],name,color})
+currentPoly=[]
 save()
 draw()
 }
@@ -181,7 +160,7 @@ canvas.addEventListener("mouseup",()=>dragging=false)
 
 canvas.addEventListener("wheel",e=>{
 e.preventDefault()
-const scale = e.deltaY < 0 ? 1.12 : 0.88
+const scale = e.deltaY<0?1.12:0.88
 const rect=canvas.getBoundingClientRect()
 const mx=e.clientX-rect.left
 const my=e.clientY-rect.top
@@ -190,8 +169,8 @@ const worldY=(my-offsetY)/zoom
 zoom*=scale
 if(zoom<0.08) zoom=0.08
 if(zoom>10) zoom=10
-offsetX = mx - worldX*zoom
-offsetY = my - worldY*zoom
+offsetX=mx - worldX*zoom
+offsetY=my - worldY*zoom
 draw()
 })
 
@@ -199,7 +178,6 @@ canvas.addEventListener("click",e=>{
 const rect=canvas.getBoundingClientRect()
 const x=(e.clientX-rect.left-offsetX)/zoom
 const y=(e.clientY-rect.top-offsetY)/zoom
-
 markers.forEach(m=>{
 const dist=Math.hypot(m.x-x,m.y-y)
 if(dist<12) showCityPanel(m)
@@ -217,14 +195,13 @@ panel.style.bottom="30px"
 panel.style.background="#111"
 panel.style.border="1px solid #444"
 panel.style.padding="15px"
-panel.style.width="240px"
+panel.style.width="260px"
 panel.style.zIndex=9999
 document.body.appendChild(panel)
 }
 panel.innerHTML=`<b>${city.name}</b><br><br>
 Guild Owner: ${city.guild||"None"}<br>
-Battle Status: ${city.status||"Peaceful"}<br>
-Faction: ${city.faction||"Neutral"}`
+Battle Status: ${city.status||"Peaceful"}`
 }
 
 function drawMini(){
@@ -238,32 +215,25 @@ mctx.strokeStyle="red"
 mctx.strokeRect(viewX,viewY,viewW,viewH)
 }
 
-function save(){
-if(!isAdmin) return
+function save(){ if(!isAdmin) return
 fetch("/map-save.php",{
 method:"POST",
 headers:{'Content-Type':'application/json'},
-body:JSON.stringify({
-map:mapKey,
-markers,
-polygons
-})
+body:JSON.stringify({map:mapKey,markers,polygons})
 })
 }
 
 function loadFromServer(){
 fetch("/map-data/"+mapKey+".json")
 .then(r=>r.json())
-.then(data=>{
-markers=data.markers||[]
-polygons=data.polygons||[]
-draw()
-}).catch(()=>{})
+.then(data=>{markers=data.markers||[];polygons=data.polygons||[];draw()})
+.catch(()=>{})
 }
 
 }
 
 function saveAll(){
+if(!isAdmin) return
 Object.keys(maps).forEach(k=>{
 fetch("/map-save.php",{
 method:"POST",
