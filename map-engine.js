@@ -1,4 +1,4 @@
-const isAdmin = new URLSearchParams(location.search).get("admin") === "1"
+const isAdmin = new URLSearchParams(location.search).get("admin") === "1";
 
 let tool="pan"
 let currentIcon="city"
@@ -49,17 +49,7 @@ ctx.drawImage(img,0,0)
 
 drawPolygons()
 drawMarkers()
-
-if(drawingPoly.length>0){
-ctx.strokeStyle="yellow"
-ctx.beginPath()
-drawingPoly.forEach((p,i)=>{
-if(i===0) ctx.moveTo(p.x,p.y)
-else ctx.lineTo(p.x,p.y)
-})
-ctx.stroke()
-}
-
+drawCurrentPoly()
 ctx.restore()
 
 drawMini()
@@ -70,21 +60,24 @@ function drawPolygons(){
 
 polygons.forEach(p=>{
 
-ctx.fillStyle=p.color
+let fillColor="#00ffff"
+if(p.faction==="alliance") fillColor="rgba(0,150,255,0.35)"
+else if(p.faction==="horde") fillColor="rgba(200,0,0,0.35)"
+else fillColor=p.color||"rgba(200,200,200,0.35)"
+
+ctx.fillStyle=fillColor
 ctx.globalAlpha=0.35
 
 ctx.beginPath()
-
 p.points.forEach((pt,i)=>{
 if(i===0) ctx.moveTo(pt.x,pt.y)
 else ctx.lineTo(pt.x,pt.y)
 })
-
 ctx.closePath()
 ctx.fill()
 
 ctx.globalAlpha=1
-ctx.strokeStyle=p.color
+ctx.strokeStyle=p.color||"#fff"
 ctx.stroke()
 
 if(p.name){
@@ -94,7 +87,6 @@ ctx.fillText(p.name,p.points[0].x,p.points[0].y)
 }
 
 })
-
 }
 
 function drawMarkers(){
@@ -105,7 +97,7 @@ let icon="🏙"
 
 if(m.icon==="city") icon="🏙"
 if(m.icon==="fort") icon="🏰"
-if(m.icon==="tower") icon="🪖"
+if(m.icon==="tower") icon="🏯" // Medieval tower
 if(m.icon==="house") icon="🏠"
 if(m.icon==="battle") icon="⚔"
 
@@ -122,190 +114,132 @@ ctx.fillText(m.name,m.x+12,m.y)
 
 }
 
+function drawCurrentPoly(){
+if(drawingPoly.length===0) return
+ctx.strokeStyle="yellow"
+ctx.beginPath()
+drawingPoly.forEach((p,i)=>{
+if(i===0) ctx.moveTo(p.x,p.y)
+else ctx.lineTo(p.x,p.y)
+})
+ctx.stroke()
+}
+
 canvas.addEventListener("mousedown",e=>{
-
 const rect=canvas.getBoundingClientRect()
-
 const x=(e.clientX-rect.left-offsetX)/zoom
 const y=(e.clientY-rect.top-offsetY)/zoom
 
 if(isAdmin){
-
 if(tool==="marker"){
-
 const name=prompt("City / Location name")
 const guild=prompt("Guild owner")
 const status=prompt("Battle status")
-
-markers.push({
-x,y,
-name,
-guild,
-status,
-icon:currentIcon
-})
-
+markers.push({x,y,name,guild,status,icon:currentIcon})
 save()
 draw()
 return
-
 }
-
 if(tool==="polygon"){
-
 drawingPoly.push({x,y})
 draw()
 return
-
 }
-
 }
 
 if(tool==="pan" || !isAdmin){
-
 dragging=true
 startX=e.clientX
 startY=e.clientY
-
 }
 
 })
 
 canvas.addEventListener("dblclick",()=>{
-
 if(!isAdmin) return
-
 if(drawingPoly.length>2){
-
 const name=prompt("Territory name")
 const color=document.getElementById("polyColor").value
-
-polygons.push({
-points:[...drawingPoly],
-name,
-color
-})
-
+const faction=prompt("Faction (neutral/alliance/horde)","neutral")
+polygons.push({points:[...drawingPoly],name,color,faction})
 drawingPoly=[]
 save()
 draw()
-
 }
-
 })
 
 canvas.addEventListener("mousemove",e=>{
-
 if(!dragging) return
-
 offsetX += e.clientX-startX
 offsetY += e.clientY-startY
-
 startX=e.clientX
 startY=e.clientY
-
 draw()
-
 })
 
 canvas.addEventListener("mouseup",()=>dragging=false)
 
 canvas.addEventListener("wheel",e=>{
-
 e.preventDefault()
-
 const scale = e.deltaY < 0 ? 1.12 : 0.88
-
 const rect=canvas.getBoundingClientRect()
-
-const mouseX=e.clientX-rect.left
-const mouseY=e.clientY-rect.top
-
-const worldX=(mouseX-offsetX)/zoom
-const worldY=(mouseY-offsetY)/zoom
-
+const mx=e.clientX-rect.left
+const my=e.clientY-rect.top
+const worldX=(mx-offsetX)/zoom
+const worldY=(my-offsetY)/zoom
 zoom*=scale
-
 if(zoom<0.08) zoom=0.08
 if(zoom>10) zoom=10
-
-offsetX = mouseX - worldX*zoom
-offsetY = mouseY - worldY*zoom
-
+offsetX = mx - worldX*zoom
+offsetY = my - worldY*zoom
 draw()
-
 })
 
 canvas.addEventListener("click",e=>{
-
-if(isAdmin) return
-
 const rect=canvas.getBoundingClientRect()
-
 const x=(e.clientX-rect.left-offsetX)/zoom
 const y=(e.clientY-rect.top-offsetY)/zoom
 
 markers.forEach(m=>{
-
 const dist=Math.hypot(m.x-x,m.y-y)
-
-if(dist<12){
-
-showCityPanel(m)
-
-}
-
+if(dist<12) showCityPanel(m)
 })
-
 })
 
 function showCityPanel(city){
-
 let panel=document.getElementById("cityPanel")
-
 if(!panel){
-
 panel=document.createElement("div")
 panel.id="cityPanel"
-
 panel.style.position="fixed"
 panel.style.right="30px"
 panel.style.bottom="30px"
 panel.style.background="#111"
 panel.style.border="1px solid #444"
 panel.style.padding="15px"
-panel.style.width="220px"
+panel.style.width="240px"
 panel.style.zIndex=9999
-
 document.body.appendChild(panel)
-
 }
-
-panel.innerHTML = `<b>${city.name}</b><br><br>
-Guild Owner: ${city.guild || "None"}<br>
-Battle Status: ${city.status || "Peaceful"}`
-
+panel.innerHTML=`<b>${city.name}</b><br><br>
+Guild Owner: ${city.guild||"None"}<br>
+Battle Status: ${city.status||"Peaceful"}<br>
+Faction: ${city.faction||"Neutral"}`
 }
 
 function drawMini(){
-
 mctx.clearRect(0,0,mini.width,mini.height)
-
 mctx.drawImage(img,0,0,mini.width,mini.height)
-
 const viewW=canvas.width/(img.width*zoom)*mini.width
 const viewH=canvas.height/(img.height*zoom)*mini.height
-
 const viewX=(-offsetX/(img.width*zoom))*mini.width
 const viewY=(-offsetY/(img.height*zoom))*mini.height
-
 mctx.strokeStyle="red"
 mctx.strokeRect(viewX,viewY,viewW,viewH)
-
 }
 
 function save(){
-
+if(!isAdmin) return
 fetch("/map-save.php",{
 method:"POST",
 headers:{'Content-Type':'application/json'},
@@ -315,36 +249,27 @@ markers,
 polygons
 })
 })
-
 }
 
 function loadFromServer(){
-
 fetch("/map-data/"+mapKey+".json")
 .then(r=>r.json())
 .then(data=>{
 markers=data.markers||[]
 polygons=data.polygons||[]
 draw()
-})
-.catch(()=>{})
-
+}).catch(()=>{})
 }
 
 }
 
 function saveAll(){
-
 Object.keys(maps).forEach(k=>{
-
 fetch("/map-save.php",{
 method:"POST",
 headers:{'Content-Type':'application/json'},
 body:JSON.stringify(maps[k])
 })
-
 })
-
 alert("Maps saved")
-
 }
