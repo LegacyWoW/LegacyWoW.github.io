@@ -10,36 +10,27 @@ const icons = {
 function initMap(canvasId,imgSrc,mapKey,isAdmin){
     const canvas = document.getElementById(canvasId);
     const ctx = canvas.getContext("2d");
-
     const img = new Image();
     img.src = imgSrc;
 
     img.onload = () => {
+        // Scale canvas to fit max 800x800
         const maxW = 800, maxH = 800;
         const scale = Math.min(maxW / img.width, maxH / img.height);
-
         canvas.width = img.width * scale;
         canvas.height = img.height * scale;
 
-        maps[mapKey] = {
-            canvas, ctx, img, scale,
-            polygons:[], markers:[], currentPolygon:[],
-            tool:null, currentColor:"#ffff00", currentIcon:"city", admin:isAdmin
-        };
+        maps[mapKey] = { canvas, ctx, img, scale, polygons:[], markers:[], currentPolygon:[], tool:null, currentColor:"#ffff00", currentIcon:"city", admin:isAdmin };
 
         drawMap(mapKey);
 
-        // Only allow clicks if admin
+        // Admin-only clicks
         if(isAdmin){
-            canvas.addEventListener("click",(e)=>{
-                handleClick(mapKey,e);
-            });
+            canvas.addEventListener("click", (e)=>{ handleClick(mapKey,e); });
         }
     };
 
-    img.onerror = ()=>{
-        console.error("Failed to load image:",imgSrc);
-    };
+    img.onerror = () => console.error("Failed to load image:", imgSrc);
 }
 
 function setTool(tool,mapKey){ maps[mapKey].tool = tool; }
