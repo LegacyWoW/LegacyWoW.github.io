@@ -40,28 +40,6 @@ text-decoration:none;
 font-weight:bold;
 }
 
-.logo{
-width:40px;
-height:40px;
-overflow:hidden;
-border-radius:10px;
-}
-
-.logo img{
-width:100%;
-height:100%;
-object-fit:cover;
-}
-
-.brand{
-display:flex;
-align-items:center;
-gap:10px;
-color:white;
-text-decoration:none;
-font-weight:bold;
-}
-
 .map-tabs{
 display:flex;
 gap:10px;
@@ -127,11 +105,8 @@ border-radius:6px;
 <header>
 <div class="wrap toprow">
 
-<a class="brand" href="index.html">
-<div class="logo">
-<img src="/assets/logo.png" onerror="this.remove();">
-</div>
-<div>LegacyWoW Maps</div>
+<a href="index.html" style="color:white;text-decoration:none;font-weight:bold">
+LegacyWoW Maps
 </a>
 
 <nav>
@@ -150,7 +125,7 @@ border-radius:6px;
 
 <div class="map-tabs">
 
-<button class="map-btn active" onclick="switchMap('world')">
+<button class="map-btn active" onclick="switchMap('azeroth')">
 World Map
 </button>
 
@@ -166,77 +141,166 @@ Northrend
 
 <div id="mapContainer">
 
-<div id="world" class="map active"></div>
+<div id="azeroth" class="map active"></div>
 <div id="outland" class="map"></div>
 <div id="northrend" class="map"></div>
 
 </div>
 
 <div class="adminbar" id="adminBar">
-<button class="btn" id="exportBtn">Export</button>
-<button class="btn" id="clearBtn">Clear</button>
+<button class="btn" onclick="exportMap()">Export</button>
+<button class="btn" onclick="clearMap()">Clear</button>
 </div>
 
 </div>
-
-<script src="/map/app.js"></script>
 
 <script>
 
-let maps = {}
+const isAdmin = new URLSearchParams(location.search).get("admin") === "1"
 
-function initMap(id,image){
+const maps = {}
+const drawnItems = {}
 
-if(maps[id]) return
+function createMap(id,image){
 
-maps[id] = L.map(id,{
+const map = L.map(id,{
 crs:L.CRS.Simple,
 minZoom:-2
 })
 
 const bounds=[[0,0],[4096,4096]]
 
-L.imageOverlay(image,bounds).addTo(maps[id])
+L.imageOverlay(image,bounds).addTo(map)
+map.fitBounds(bounds)
 
-maps[id].fitBounds(bounds)
+const drawn = new L.FeatureGroup()
+map.addLayer(drawn)
+
+maps[id]=map
+drawnItems[id]=drawn
+
+if(isAdmin){
+
+const drawControl = new L.Control.Draw({
+edit:{
+featureGroup:drawn
+},
+draw:{
+polygon:true,
+marker:true,
+rectangle:true,
+circle:false,
+polyline:false
+}
+})
+
+map.addControl(drawControl)
+
+map.on(L.Draw.Event.CREATED,function(e){
+
+const layer=e.layer
+
+if(e.layerType==="marker"){
+const name=prompt("Marker name?")
+if(name) layer.bindPopup(name)
+}
+
+drawn.addLayer(layer)
+
+saveMap(id)
+
+})
+
+map.on(L.Draw.Event.EDITED,()=>saveMap(id))
+map.on(L.Draw.Event.DELETED,()=>saveMap(id))
+
+}
+
+loadMap(id)
 
 }
 
 function switchMap(id){
 
-document.querySelectorAll(".map").forEach(m=>{
-m.classList.remove("active")
-})
-
-document.querySelectorAll(".map-btn").forEach(b=>{
-b.classList.remove("active")
-})
-
+document.querySelectorAll(".map").forEach(m=>m.classList.remove("active"))
 document.getElementById(id).classList.add("active")
+
+document.querySelectorAll(".map-btn").forEach(b=>b.classList.remove("active"))
 event.target.classList.add("active")
 
-if(id==="world"){
-initMap("world","/assets/worldmap.jpg")
-}
+if(!maps[id]){
 
-if(id==="outland"){
-initMap("outland","/assets/outland.jpg")
-}
-
-if(id==="northrend"){
-initMap("northrend","/assets/northrend.jpg")
-}
+if(id==="azeroth") createMap(id,"/assets/worldmap.jpg")
+if(id==="outland") createMap(id,"/assets/outland.jpg")
+if(id==="northrend") createMap(id,"/assets/northrend.jpg")
 
 }
 
-initMap("world","/assets/worldmap.jpg")
+setTimeout(()=>maps[id].invalidateSize(),100)
 
-const isAdmin = new URLSearchParams(location.search).get("admin") === "1"
+}
 
-const adminBar = document.getElementById("adminBar")
+function saveMap(id){
 
-if (!isAdmin && adminBar)
-adminBar.style.display = "none"
+const data=drawnItems[id].toGeoJSON()
+
+localStorage.setItem("map_"+id,JSON.stringify(data))
+
+}
+
+function loadMap(id){
+
+const data=localStorage.getItem("map_"+id)
+
+if(!data) return
+
+const geo=JSON.parse(data)
+
+L.geoJSON(geo,{
+onEachFeature:(feature,layer)=>{
+if(feature.properties && feature.properties.popup){
+layer.bindPopup(feature.properties.popup)
+}
+}
+}).addTo(drawnItems[id])
+
+}
+
+function exportMap(){
+
+const id=getActiveMap()
+
+const data=localStorage.getItem("map_"+id)
+
+alert(data)
+
+}
+
+function clearMap(){
+
+const id=getActiveMap()
+
+if(!confirm("Clear this map?")) return
+
+drawnItems[id].clearLayers()
+
+localStorage.removeItem("map_"+id)
+
+}
+
+function getActiveMap(){
+
+if(document.getElementById("azeroth").classList.contains("active")) return "azeroth"
+if(document.getElementById("outland").classList.contains("active")) return "outland"
+return "northrend"
+
+}
+
+if(!isAdmin){
+document.getElementById("adminBar").style.display="none"
+}
+
+createMap("azeroth","/assets/worldmap.jpg")
 
 </script>
 
