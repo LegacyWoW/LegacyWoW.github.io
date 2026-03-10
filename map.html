@@ -12,7 +12,6 @@ header nav a { color:white; margin:0 10px; text-decoration:none; }
 .map-box { position:relative; background:#222; border:2px solid #444; width:800px; height:800px; }
 canvas { display:block; width:100%; height:100%; background:#000; }
 .admin-tools { position:absolute; top:10px; left:10px; background:rgba(0,0,0,0.7); padding:10px; border:1px solid #555; display:flex; flex-direction:column; gap:5px; }
-#cityPanel { font-size:14px; background:#111; padding:5px; position:absolute; top:10px; right:10px; display:none; border:1px solid #555; }
 </style>
 </head>
 <body>
@@ -32,22 +31,16 @@ canvas { display:block; width:100%; height:100%; background:#000; }
 
 <div class="map-container">
 
+  <!-- World Map -->
   <div class="map-box">
     <canvas id="worldMap"></canvas>
     <div id="worldAdmin" class="admin-tools" style="display:none;"></div>
-    <div id="cityPanel"></div>
   </div>
 
+  <!-- Outland Map -->
   <div class="map-box">
     <canvas id="outlandMap"></canvas>
     <div id="outlandAdmin" class="admin-tools" style="display:none;"></div>
-    <div id="cityPanel"></div>
-  </div>
-
-  <div class="map-box">
-    <canvas id="northrendMap"></canvas>
-    <div id="northrendAdmin" class="admin-tools" style="display:none;"></div>
-    <div id="cityPanel"></div>
   </div>
 
 </div>
@@ -59,7 +52,6 @@ const admin = new URLSearchParams(location.search).get("admin") === "1";
 window.onload = function(){
     initMap("worldMap","/assets/worldmap.jpg","world",admin);
     initMap("outlandMap","/assets/outland.jpg","outland",admin);
-    initMap("northrendMap","/assets/northrend.jpg","northrend",admin);
 };
 </script>
 
