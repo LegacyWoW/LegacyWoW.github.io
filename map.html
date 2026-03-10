@@ -3,182 +3,98 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>LegacyWoW Maps</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<title>LegacyWoW — Interactive Map</title>
 <style>
-
-body{
-margin:0;
-background:#0b0b0b;
-color:white;
-font-family:Arial, Helvetica, sans-serif;
-}
-
-header{
-background:#111;
-padding:15px 0;
-border-bottom:1px solid #333;
-}
-
-.wrap{
-max-width:1300px;
-margin:auto;
-padding:0 20px;
-}
-
-nav a{
-color:white;
-margin-right:15px;
-text-decoration:none;
-font-weight:bold;
-}
-
-nav a:hover{
-color:#66d9ff;
-}
-
-.map-section{
-margin:40px 0;
-}
-
-.map-title{
-font-size:22px;
-margin-bottom:10px;
-font-weight:bold;
-}
-
-.map-container{
-position:relative;
-border:2px solid #333;
-border-radius:6px;
-overflow:hidden;
-}
-
-canvas{
-display:block;
-background:#000;
-cursor:crosshair;
-width:100%;
-height:700px;
-}
-
-.toolbar{
-position:absolute;
-top:10px;
-left:10px;
-background:rgba(0,0,0,0.75);
-padding:8px;
-border-radius:6px;
-display:flex;
-gap:6px;
-flex-wrap:wrap;
-}
-
-.toolbtn{
-background:#222;
-border:1px solid #444;
-color:white;
-padding:6px 10px;
-cursor:pointer;
-font-size:12px;
-}
-
-.toolbtn:hover{
-background:#444;
-}
-
-.minimap{
-position:absolute;
-bottom:10px;
-right:10px;
-width:180px;
-height:180px;
-border:2px solid #555;
-background:#000;
-opacity:.85;
-}
-
+  body { margin:0; background:#0a0a0a; color:#fff; font-family:Arial,sans-serif; }
+  header { background:#111; padding:10px; display:flex; align-items:center; }
+  header .logo img { height:50px; margin-right:10px; }
+  header nav a { color:white; margin:0 10px; text-decoration:none; }
+  .map-container { display:flex; flex-wrap:wrap; justify-content:center; padding:20px; gap:20px; }
+  .map-box { position:relative; background:#222; border:2px solid #444; }
+  canvas { display:block; background:#000; }
+  .admin-tools { position:absolute; top:10px; left:10px; background:rgba(0,0,0,0.7); padding:10px; border:1px solid #555; display:flex; flex-direction:column; gap:5px; }
+  #cityPanel { font-size:14px; }
 </style>
-
 </head>
-
 <body>
 
 <header>
-<div class="wrap">
-<nav>
-<a href="index.html">Home</a>
-<a href="how-to-play.html">How to Play</a>
-<a href="news.html">News</a>
-<a href="rules.html">Rules</a>
-<a href="faq.html">FAQ</a>
-<a href="map.html">Map</a>
-</nav>
-</div>
+  <div class="logo"><img src="/assets/logo.png" alt="LegacyWoW"></div>
+  <div style="flex:1">LegacyWoW — Interactive Maps</div>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="how-to-play.html">How to Play</a>
+    <a href="news.html">News</a>
+    <a href="rules.html">Rules</a>
+    <a href="faq.html">FAQ</a>
+    <a href="map.html">Map</a>
+  </nav>
 </header>
 
-<div class="wrap">
-
-<!-- AZEROTH -->
-
-<div class="map-section">
-<div class="map-title">Azeroth World Map</div>
-
 <div class="map-container">
+  <div class="map-box">
+    <canvas id="worldMap" width="1200" height="800"></canvas>
+    <canvas id="worldMini" width="300" height="200" style="position:absolute; top:10px; right:10px; border:1px solid #555;"></canvas>
+    <div id="worldAdmin" class="admin-tools" style="display:none;">
+      <label>Polygon color: <input type="color" id="polyColor" value="#ffff00"></label>
+      <button onclick="setTool('polygon')">Polygon Tool</button>
+      <button onclick="setTool('marker')">Marker Tool</button>
+      <button onclick="saveAll()">Save All</button>
+      <button onclick="setIcon('city')">City</button>
+      <button onclick="setIcon('fort')">Fort</button>
+      <button onclick="setIcon('tower')">Tower</button>
+      <button onclick="setIcon('house')">House</button>
+      <button onclick="setIcon('battle')">Battle</button>
+    </div>
+  </div>
 
-<div class="toolbar">
-<button class="toolbtn" onclick="setTool('pan')">Pan</button>
-<button class="toolbtn" onclick="setTool('polygon')">Polygon</button>
-<button class="toolbtn" onclick="setTool('marker')">Marker</button>
+  <div class="map-box">
+    <canvas id="outlandMap" width="1200" height="800"></canvas>
+    <canvas id="outlandMini" width="300" height="200" style="position:absolute; top:10px; right:10px; border:1px solid #555;"></canvas>
+    <div id="outlandAdmin" class="admin-tools" style="display:none;">
+      <label>Polygon color: <input type="color" id="polyColor" value="#00ff00"></label>
+      <button onclick="setTool('polygon')">Polygon Tool</button>
+      <button onclick="setTool('marker')">Marker Tool</button>
+      <button onclick="saveAll()">Save All</button>
+      <button onclick="setIcon('city')">City</button>
+      <button onclick="setIcon('fort')">Fort</button>
+      <button onclick="setIcon('tower')">Tower</button>
+      <button onclick="setIcon('house')">House</button>
+      <button onclick="setIcon('battle')">Battle</button>
+    </div>
+  </div>
 
-<button class="toolbtn" onclick="setIcon('city')">City</button> <button class="toolbtn" onclick="setIcon('fort')">Fort</button> <button class="toolbtn" onclick="setIcon('tower')">Tower</button> <button class="toolbtn" onclick="setIcon('house')">House</button> <button class="toolbtn" onclick="setIcon('battle')">Battle</button>
-
-<input type="color" id="polyColor">
-
-<button class="toolbtn" onclick="saveAll()">Save</button>
-
+  <div class="map-box">
+    <canvas id="northrendMap" width="1200" height="800"></canvas>
+    <canvas id="northrendMini" width="300" height="200" style="position:absolute; top:10px; right:10px; border:1px solid #555;"></canvas>
+    <div id="northrendAdmin" class="admin-tools" style="display:none;">
+      <label>Polygon color: <input type="color" id="polyColor" value="#00ffff"></label>
+      <button onclick="setTool('polygon')">Polygon Tool</button>
+      <button onclick="setTool('marker')">Marker Tool</button>
+      <button onclick="saveAll()">Save All</button>
+      <button onclick="setIcon('city')">City</button>
+      <button onclick="setIcon('fort')">Fort</button>
+      <button onclick="setIcon('tower')">Tower</button>
+      <button onclick="setIcon('house')">House</button>
+      <button onclick="setIcon('battle')">Battle</button>
+    </div>
+  </div>
 </div>
 
-<canvas id="map_azeroth" width="1600" height="800"></canvas> <canvas class="minimap" id="mini_azeroth"></canvas>
-
-</div>
-</div>
-
-<!-- OUTLAND -->
-
-<div class="map-section">
-<div class="map-title">Outland</div>
-
-<div class="map-container">
-
-<canvas id="map_outland" width="1600" height="800"></canvas> <canvas class="minimap" id="mini_outland"></canvas>
-
-</div>
-</div>
-
-<!-- NORTHREND -->
-
-<div class="map-section">
-<div class="map-title">Northrend</div>
-
-<div class="map-container">
-
-<canvas id="map_northrend" width="1600" height="800"></canvas> <canvas class="minimap" id="mini_northrend"></canvas>
-
-</div>
-</div>
-
-</div>
-
-<script src="/map-engine.js"></script>
+<script src="/map/map-engine.js"></script>
 
 <script>
+  const admin = new URLSearchParams(location.search).get("admin") === "1";
 
-createMap("map_azeroth","mini_azeroth","/assets/worldmap.jpg","azeroth")
-createMap("map_outland","mini_outland","/assets/outland.jpg","outland")
-createMap("map_northrend","mini_northrend","/assets/northrend.jpg","northrend")
+  if (admin) {
+    document.getElementById("worldAdmin").style.display = "flex";
+    document.getElementById("outlandAdmin").style.display = "flex";
+    document.getElementById("northrendAdmin").style.display = "flex";
+  }
 
+  createMap("worldMap","worldMini","/assets/worldmap.jpg","world");
+  createMap("outlandMap","outlandMini","/assets/outland.jpg","outland");
+  createMap("northrendMap","northrendMini","/assets/northrend.jpg","northrend");
 </script>
 
 </body>
