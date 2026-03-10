@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>LegacyWoW — World Map</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    :root{
+      --bg:#0b0b0b;
+      --border: rgba(255,255,255,.14);
+      --text:#e8e8e8;
+    }
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    header{
+      padding: 14px 0;
+      border-bottom: 1px solid rgba(255,255,255,.10);
+      background: #070707;
+    }
+    .wrap{ max-width:1100px; margin:0 auto; padding:0 18px; }
+    .toprow{
+      display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;
+    }
+    .brand{
+      display:flex; align-items:center; gap:12px; text-decoration:none; color:#fff;
+      font-weight:900; letter-spacing:.4px;
+    }
+    .logo{
+      width:40px; height:40px; border-radius:12px; overflow:hidden;
+      border:1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.04);
+      display:flex; align-items:center; justify-content:center;
+    }
+    .logo img{ width:100%; height:100%; object-fit:cover; display:block; }
+
+    nav{ display:flex; gap:10px; flex-wrap:wrap; }
+    nav a{
+      color:#fff; text-decoration:none; font-weight:800; font-size:13px;
+      padding:10px 12px; border-radius:14px;
+      border:1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.04);
+    }
+    nav a:hover{ background: rgba(255,255,255,.10); }
+
+    .shell{
+      position: relative;
+      height: calc(100vh - 72px);
+      min-height: 560px;
+    }
+    #map{
+      height: 100%;
+      width: 100%;
+      background: #111;
+    }
+
+    /* Admin-only top-right bar */
+    .adminbar{
+      position:absolute;
+      top:16px;
+      right:16px;
+      z-index: 999;
+      display:flex;
+      gap:10px;
+      align-items:center;
+      padding:10px;
+      border-radius:14px;
+      border:1px solid var(--border);
+      background: rgba(0,0,0,.45);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 12px 30px rgba(0,0,0,.35);
+    }
+    .btn{
+      border:1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.06);
+      color:#fff;
+      border-radius:12px;
+      padding:10px 12px;
+      font-weight:900;
+      cursor:pointer;
+      font-size:13px;
+    }
+    .btn:hover{ background: rgba(255,255,255,.12); }
+
+    /* ✅ IMPORTANT: don't wipe Leaflet-draw icons */
+    .leaflet-control a{
+      background-color: rgba(0,0,0,.55) !important;
+      color:#fff !important;
+      border-color: rgba(255,255,255,.14) !important;
+    }
+    .leaflet-control a:hover{ background-color: rgba(0,0,0,.75) !important; }
+
+    .leaflet-popup-content-wrapper, .leaflet-popup-tip{
+      background: rgba(0,0,0,.80);
+      color:#fff;
+      border:1px solid rgba(255,255,255,.12);
+    }
+  </style>
+
+  <!-- Leaflet -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""
+  />
+  <script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""
+  ></script>
+
+  <!-- Leaflet.draw -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.css" />
+  <script src="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.js"></script>
+</head>
+
+<body>
+  <header>
+    <div class="wrap toprow">
+      <a class="brand" href="index.html">
+        <div class="logo">
+          <img src="/assets/logo.png" alt="LegacyWoW" onerror="this.remove();" />
+        </div>
+        <div>LegacyWoW — World Map</div>
+      </a>
+
+<nav>
+<a href="index.html">Home</a>
+<a href="how-to-play.html">How to Play</a>
+<a href="news.html">News</a>
+<a href="rules.html">Rules</a>
+<a href="faq.html">FAQ</a>
+<a href="map.html?map=world">Azeroth War Map</a>
+<a href="map.html?map=outland">Outland War Map</a>
+<a href="map.html?map=northrend">Northrend War Map</a>
+</nav>
+    </div>
+  </header>
+
+  <div class="shell">
+    <div id="map"></div>
+
+    <!-- Admin-only controls (hidden unless ?admin=1) -->
+    <div class="adminbar" id="adminBar">
+      <button class="btn" id="exportBtn">Export</button>
+      <button class="btn" id="clearBtn">Clear</button>
+    </div>
+  </div>
+
+  <script src="/map/app.js"></script>
+
+  <script>
+    const isAdmin = new URLSearchParams(location.search).get("admin") === "1";
+    const adminBar = document.getElementById("adminBar");
+    if (!isAdmin && adminBar) adminBar.style.display = "none";
+  </script>
+</body>
+</html>
