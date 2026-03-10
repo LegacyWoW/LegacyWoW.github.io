@@ -8,18 +8,18 @@ function setTool(tool) { if (isAdmin) currentTool = tool; }
 function setIcon(icon) { if (isAdmin) currentIcon = icon; }
 
 function createMap(canvasId, miniId, imageSrc, mapKey) {
-
-```
 const canvas = document.getElementById(canvasId);
 const ctx = canvas.getContext("2d");
 
+```
 const mini = document.getElementById(miniId);
 const mctx = mini.getContext("2d");
 
 const img = new Image();
 img.src = imageSrc;
 
-let zoom = 1;
+// OG zoom/pan
+let scale = 1;
 let offsetX = 0;
 let offsetY = 0;
 
@@ -29,7 +29,7 @@ let startY = 0;
 
 let markers = [];
 let polygons = [];
-let drawingPoly = [];
+let currentPoly = [];
 
 maps[mapKey] = { markers, polygons };
 
@@ -39,18 +39,16 @@ img.onload = () => draw();
 
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-
     ctx.save();
     ctx.translate(offsetX, offsetY);
-    ctx.scale(zoom, zoom);
-
-    ctx.drawImage(img, 0, 0);
+    ctx.scale(scale, scale);
+    ctx.drawImage(img, 0, 0, img.width, img.height);
 
     drawPolygons();
     drawMarkers();
     drawCurrentPoly();
-
     ctx.restore();
+
     drawMini();
 }
 
@@ -58,14 +56,12 @@ function drawPolygons() {
     polygons.forEach(p => {
         ctx.fillStyle = p.color || "rgba(200,200,200,0.35)";
         ctx.beginPath();
-        p.points.forEach((pt, i) => {
-            if (i === 0) ctx.moveTo(pt.x, pt.y);
-            else ctx.lineTo(pt.x, pt.y);
-        });
+        p.points.forEach((pt, i) => i === 0 ? ctx.moveTo(pt.x, pt.y) : ctx.lineTo(pt.x, pt.y));
         ctx.closePath();
         ctx.fill();
         ctx.strokeStyle = p.color || "#fff";
         ctx.stroke();
+
         if (p.name) {
             ctx.fillStyle = "white";
             ctx.font = "16px Arial";
@@ -75,23 +71,19 @@ function drawPolygons() {
 }
 
 function drawCurrentPoly() {
-    if (drawingPoly.length === 0) return;
+    if (currentPoly.length === 0) return;
     ctx.strokeStyle = "yellow";
     ctx.lineWidth = 2;
     ctx.beginPath();
-    drawingPoly.forEach((p, i) => {
-        if (i === 0) ctx.moveTo(p.x, p.y);
-        else ctx.lineTo(p.x, p.y);
-    });
+    currentPoly.forEach((pt, i) => i === 0 ? ctx.moveTo(pt.x, pt.y) : ctx.lineTo(pt.x, pt.y));
     ctx.stroke();
 }
 
 function drawMarkers() {
     markers.forEach(m => {
         let icon = "🏙";
-        if (m.icon === "city") icon = "🏙";
         if (m.icon === "fort") icon = "🏰";
-        if (m.icon === "tower") icon = "🏯"; // medieval tower
+        if (m.icon === "tower") icon = "🏯";
         if (m.icon === "house") icon = "🏠";
         if (m.icon === "battle") icon = "⚔";
 
@@ -108,8 +100,8 @@ function drawMarkers() {
 
 canvas.addEventListener("mousedown", e => {
     const rect = canvas.getBoundingClientRect();
-    const x = (e.clientX - rect.left - offsetX) / zoom;
-    const y = (e.clientY - rect.top - offsetY) / zoom;
+    const x = (e.clientX - rect.left - offsetX) / scale;
+    const y = (e.clientY - rect.top - offsetY) / scale;
 
     if (isAdmin) {
         if (currentTool === "marker") {
@@ -123,7 +115,7 @@ canvas.addEventListener("mousedown", e => {
         }
 
         if (currentTool === "polygon") {
-            drawingPoly.push({ x, y });
+            currentPoly.push({ x, y });
             draw();
             return;
         }
@@ -136,11 +128,11 @@ canvas.addEventListener("mousedown", e => {
 
 canvas.addEventListener("dblclick", () => {
     if (!isAdmin) return;
-    if (drawingPoly.length > 2) {
+    if (currentPoly.length > 2) {
         const name = prompt("Territory name");
         const color = document.getElementById("polyColor").value;
-        polygons.push({ points: [...drawingPoly], name, color });
-        drawingPoly = [];
+        polygons.push({ points: [...currentPoly], name, color });
+        currentPoly = [];
         save();
         draw();
     }
@@ -157,32 +149,31 @@ canvas.addEventListener("mousemove", e => {
 
 canvas.addEventListener("mouseup", () => dragging = false);
 
-// OG-style zoom
+// OG-style pointer zoom (zoom centered at cursor)
 canvas.addEventListener("wheel", e => {
     e.preventDefault();
-    const zoomFactor = e.deltaY < 0 ? 1.15 : 0.85;
     const rect = canvas.getBoundingClientRect();
-    const mouseX = e.clientX - rect.left;
-    const mouseY = e.clientY - rect.top;
-    const worldX = (mouseX - offsetX) / zoom;
-    const worldY = (mouseY - offsetY) / zoom;
-    zoom *= zoomFactor;
-    if (zoom < 0.1) zoom = 0.1;
-    if (zoom > 10) zoom = 10;
-    offsetX = mouseX - worldX * zoom;
-    offsetY = mouseY - worldY * zoom;
+    const mx = e.clientX - rect.left;
+    const my = e.clientY - rect.top;
+    const wx = (mx - offsetX) / scale;
+    const wy = (my - offsetY) / scale;
+    const factor = e.deltaY < 0 ? 1.15 : 0.85;
+    scale *= factor;
+    if (scale < 0.1) scale = 0.1;
+    if (scale > 10) scale = 10;
+    offsetX = mx - wx * scale;
+    offsetY = my - wy * scale;
     draw();
 });
 
-// player click cities
+// click markers for info
 canvas.addEventListener("click", e => {
-    if (isAdmin) return; // admin uses tools
+    if (isAdmin) return; 
     const rect = canvas.getBoundingClientRect();
-    const x = (e.clientX - rect.left - offsetX) / zoom;
-    const y = (e.clientY - rect.top - offsetY) / zoom;
+    const x = (e.clientX - rect.left - offsetX) / scale;
+    const y = (e.clientY - rect.top - offsetY) / scale;
     markers.forEach(m => {
-        const dist = Math.hypot(m.x - x, m.y - y);
-        if (dist < 12) showCityPanel(m);
+        if (Math.hypot(m.x - x, m.y - y) < 12) showCityPanel(m);
     });
 });
 
@@ -202,25 +193,24 @@ function showCityPanel(city) {
         document.body.appendChild(panel);
     }
     panel.innerHTML = `
-    <b>${city.name}</b><br><br>
-    Guild Owner: ${city.guild || "None"}<br>
-    Battle Status: ${city.status || "Peaceful"}
+        <b>${city.name}</b><br><br>
+        Guild Owner: ${city.guild || "None"}<br>
+        Battle Status: ${city.status || "Peaceful"}
     `;
 }
 
 function drawMini() {
     mctx.clearRect(0, 0, mini.width, mini.height);
     mctx.drawImage(img, 0, 0, mini.width, mini.height);
-    const viewW = canvas.width / (img.width * zoom) * mini.width;
-    const viewH = canvas.height / (img.height * zoom) * mini.height;
-    const viewX = (-offsetX / (img.width * zoom)) * mini.width;
-    const viewY = (-offsetY / (img.height * zoom)) * mini.height;
+    const vw = canvas.width / (img.width * scale) * mini.width;
+    const vh = canvas.height / (img.height * scale) * mini.height;
+    const vx = (-offsetX / (img.width * scale)) * mini.width;
+    const vy = (-offsetY / (img.height * scale)) * mini.height;
     mctx.strokeStyle = "red";
-    mctx.strokeRect(viewX, viewY, viewW, viewH);
+    mctx.strokeRect(vx, vy, vw, vh);
 }
 
-function save() {
-    if (!isAdmin) return;
+function save() { if (!isAdmin) return;
     fetch("/map-save.php", {
         method: "POST",
         headers: { 'Content-Type': 'application/json' },
@@ -238,8 +228,7 @@ function loadFromServer() {
 
 }
 
-function saveAll() {
-if (!isAdmin) return;
+function saveAll() { if (!isAdmin) return;
 Object.keys(maps).forEach(k => {
 fetch("/map-save.php", {
 method: "POST",
