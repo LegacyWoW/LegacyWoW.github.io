@@ -2,7 +2,13 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>LegacyWoW — World Map</title>
+  <title>LegacyWoW — Outland</title>
+...
+L.imageOverlay('/assets/outland.jpg', bounds).addTo(map);
+...
+localStorage.setItem("map_outland", JSON.stringify(drawn.toGeoJSON()));
+...
+const data=localStorage.getItem("map_outland");
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <style>
