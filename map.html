@@ -33,8 +33,8 @@
 
 <div class="map-container">
   <div class="map-box">
-    <canvas id="worldMap" width="1200" height="800"></canvas>
-    <canvas id="worldMini" width="300" height="200" style="position:absolute; top:10px; right:10px; border:1px solid #555;"></canvas>
+    <canvas id="worldMap"></canvas>
+    <canvas id="worldMini" style="position:absolute; top:10px; right:10px; border:1px solid #555;"></canvas>
     <div id="worldAdmin" class="admin-tools" style="display:none;">
       <label>Polygon color: <input type="color" id="polyColor" value="#ffff00"></label>
       <button onclick="setTool('polygon')">Polygon Tool</button>
@@ -49,8 +49,8 @@
   </div>
 
   <div class="map-box">
-    <canvas id="outlandMap" width="1200" height="800"></canvas>
-    <canvas id="outlandMini" width="300" height="200" style="position:absolute; top:10px; right:10px; border:1px solid #555;"></canvas>
+    <canvas id="outlandMap"></canvas>
+    <canvas id="outlandMini" style="position:absolute; top:10px; right:10px; border:1px solid #555;"></canvas>
     <div id="outlandAdmin" class="admin-tools" style="display:none;">
       <label>Polygon color: <input type="color" id="polyColor" value="#00ff00"></label>
       <button onclick="setTool('polygon')">Polygon Tool</button>
@@ -65,8 +65,8 @@
   </div>
 
   <div class="map-box">
-    <canvas id="northrendMap" width="1200" height="800"></canvas>
-    <canvas id="northrendMini" width="300" height="200" style="position:absolute; top:10px; right:10px; border:1px solid #555;"></canvas>
+    <canvas id="northrendMap"></canvas>
+    <canvas id="northrendMini" style="position:absolute; top:10px; right:10px; border:1px solid #555;"></canvas>
     <div id="northrendAdmin" class="admin-tools" style="display:none;">
       <label>Polygon color: <input type="color" id="polyColor" value="#00ffff"></label>
       <button onclick="setTool('polygon')">Polygon Tool</button>
@@ -92,9 +92,22 @@
     document.getElementById("northrendAdmin").style.display = "flex";
   }
 
-  createMap("worldMap","worldMini","/assets/worldmap.jpg","world");
-  createMap("outlandMap","outlandMini","/assets/outland.jpg","outland");
-  createMap("northrendMap","northrendMini","/assets/northrend.jpg","northrend");
+  // Preload images and set canvas sizes dynamically
+  function initMap(canvasId, miniId, imgSrc, mapKey) {
+      const canvas = document.getElementById(canvasId);
+      const mini = document.getElementById(miniId);
+      const img = new Image();
+      img.src = imgSrc;
+      img.onload = () => {
+          canvas.width = img.width;
+          canvas.height = img.height;
+          createMap(canvasId, miniId, imgSrc, mapKey);
+      }
+  }
+
+  initMap("worldMap","worldMini","/assets/worldmap.jpg","world");
+  initMap("outlandMap","outlandMini","/assets/outland.jpg","outland");
+  initMap("northrendMap","northrendMini","/assets/northrend.jpg","northrend");
 </script>
 
 </body>
