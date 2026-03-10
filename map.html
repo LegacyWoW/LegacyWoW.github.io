@@ -67,11 +67,12 @@ height:700px;
 position:absolute;
 top:10px;
 left:10px;
-background:rgba(0,0,0,0.7);
+background:rgba(0,0,0,0.75);
 padding:8px;
 border-radius:6px;
 display:flex;
 gap:6px;
+flex-wrap:wrap;
 }
 
 .toolbtn{
@@ -87,6 +88,17 @@ font-size:12px;
 background:#444;
 }
 
+.minimap{
+position:absolute;
+bottom:10px;
+right:10px;
+width:180px;
+height:180px;
+border:2px solid #555;
+background:#000;
+opacity:.85;
+}
+
 </style>
 
 </head>
@@ -95,7 +107,6 @@ background:#444;
 
 <header>
 <div class="wrap">
-
 <nav>
 <a href="index.html">Home</a>
 <a href="how-to-play.html">How to Play</a>
@@ -104,7 +115,6 @@ background:#444;
 <a href="faq.html">FAQ</a>
 <a href="map.html">Map</a>
 </nav>
-
 </div>
 </header>
 
@@ -113,18 +123,24 @@ background:#444;
 <!-- AZEROTH -->
 
 <div class="map-section">
-
 <div class="map-title">Azeroth World Map</div>
 
 <div class="map-container">
 
 <div class="toolbar">
-<button class="toolbtn" onclick="setTool('marker')">Marker</button>
-<button class="toolbtn" onclick="setTool('polygon')">Polygon</button>
 <button class="toolbtn" onclick="setTool('pan')">Pan</button>
+<button class="toolbtn" onclick="setTool('polygon')">Polygon</button>
+<button class="toolbtn" onclick="setTool('marker')">Marker</button>
+
+<button class="toolbtn" onclick="setIcon('city')">City</button> <button class="toolbtn" onclick="setIcon('fort')">Fort</button> <button class="toolbtn" onclick="setIcon('tower')">Tower</button> <button class="toolbtn" onclick="setIcon('house')">House</button> <button class="toolbtn" onclick="setIcon('battle')">Battle</button>
+
+<input type="color" id="polyColor">
+
+<button class="toolbtn" onclick="saveAll()">Save</button>
+
 </div>
 
-<canvas id="map_azeroth" width="1400" height="700"></canvas>
+<canvas id="map_azeroth" width="1600" height="800"></canvas> <canvas class="minimap" id="mini_azeroth"></canvas>
 
 </div>
 </div>
@@ -132,12 +148,11 @@ background:#444;
 <!-- OUTLAND -->
 
 <div class="map-section">
-
 <div class="map-title">Outland</div>
 
 <div class="map-container">
 
-<canvas id="map_outland" width="1400" height="700"></canvas>
+<canvas id="map_outland" width="1600" height="800"></canvas> <canvas class="minimap" id="mini_outland"></canvas>
 
 </div>
 </div>
@@ -145,12 +160,11 @@ background:#444;
 <!-- NORTHREND -->
 
 <div class="map-section">
-
 <div class="map-title">Northrend</div>
 
 <div class="map-container">
 
-<canvas id="map_northrend" width="1400" height="700"></canvas>
+<canvas id="map_northrend" width="1600" height="800"></canvas> <canvas class="minimap" id="mini_northrend"></canvas>
 
 </div>
 </div>
@@ -161,9 +175,9 @@ background:#444;
 
 <script>
 
-createMap("map_azeroth","/assets/worldmap.jpg","azeroth")
-createMap("map_outland","/assets/outland.jpg","outland")
-createMap("map_northrend","/assets/northrend.jpg","northrend")
+createMap("map_azeroth","mini_azeroth","/assets/worldmap.jpg","azeroth")
+createMap("map_outland","mini_outland","/assets/outland.jpg","outland")
+createMap("map_northrend","mini_northrend","/assets/northrend.jpg","northrend")
 
 </script>
 
