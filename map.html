@@ -1,46 +1,34 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>LegacyWoW World Maps</title>
+<meta charset="UTF-8">
+<title>LegacyWoW World Map</title>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 
 <style>
 
 body{
+margin:0;
 background:#0b0b0b;
 color:white;
 font-family:Arial;
-text-align:center;
-margin:0;
 }
 
-#mapContainer{
-width:90%;
-max-width:1200px;
-margin:auto;
-position:relative;
-}
-
-#mapImage{
+#map{
+height:90vh;
 width:100%;
-display:block;
 }
 
-.marker{
-position:absolute;
-transform:translate(-50%,-50%);
-font-size:26px;
-cursor:pointer;
+#mapControls{
+padding:10px;
+background:#111;
+border-bottom:1px solid #333;
 }
 
-.controls{
-margin:20px;
-}
-
-button{
-padding:10px 16px;
-margin:4px;
-font-weight:bold;
-cursor:pointer;
+select{
+padding:6px;
+font-size:14px;
 }
 
 </style>
@@ -48,109 +36,139 @@ cursor:pointer;
 
 <body>
 
-<h1>LegacyWoW World Maps</h1>
+<div id="mapControls">
 
-<div class="controls">
+Select Map:
 
-<button onclick="switchMap('world')">Azeroth</button>
-<button onclick="switchMap('outland')">Outland</button>
-<button onclick="switchMap('northrend')">Northrend</button>
-
-</div>
-
-<div id="mapContainer">
-
-<img id="mapImage" src="assets/worldmap.jpg">
+<select id="mapSelector">
+<option value="worldmap">Azeroth</option>
+<option value="outland">Outland</option>
+<option value="northrend">Northrend</option>
+</select>
 
 </div>
+
+<div id="map"></div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <script>
 
-const ADMIN = new URLSearchParams(window.location.search).get("admin") === "1";
+const adminMode = window.location.search.includes("admin=1")
 
-let currentMap = "world";
+let currentMapName = "worldmap"
 
 const maps = {
 
-world:"assets/worldmap.jpg",
-outland:"assets/outland.jpg",
-northrend:"assets/northrend.jpg"
+worldmap:{
+image:"assets/worldmap.jpg",
+width:8192,
+height:4096
+},
 
-};
+outland:{
+image:"assets/outland.jpg",
+width:4096,
+height:4096
+},
+
+northrend:{
+image:"assets/northrend.jpg",
+width:4096,
+height:4096
+}
+
+}
+
+let map
+let imageLayer
+let drawnItems
 
 function loadMarkers(){
 
-document.querySelectorAll(".marker").forEach(m=>m.remove());
+drawnItems.clearLayers()
 
-let markers = JSON.parse(localStorage.getItem("mapMarkers_"+currentMap)) || [];
+const saved = localStorage.getItem("mapData_"+currentMapName)
 
-markers.forEach((m,i)=>{
+if(saved){
 
-createMarker(m.x,m.y,m.name,m.icon,i);
+const data = JSON.parse(saved)
 
-});
-
-}
-
-function saveMarkers(list){
-
-localStorage.setItem("mapMarkers_"+currentMap,JSON.stringify(list));
+L.geoJSON(data).eachLayer(layer=>{
+drawnItems.addLayer(layer)
+})
 
 }
 
-function createMarker(x,y,name,icon,index){
+}
 
-let marker=document.createElement("div");
+function saveMarkers(){
 
-marker.className="marker";
+if(!adminMode) return
 
-marker.style.left=x+"%";
-marker.style.top=y+"%";
+const data = drawnItems.toGeoJSON()
 
-marker.innerHTML=icon;
-
-marker.title=name;
-
-document.getElementById("mapContainer").appendChild(marker);
+localStorage.setItem(
+"mapData_"+currentMapName,
+JSON.stringify(data)
+)
 
 }
 
-function switchMap(map){
+function initMap(){
 
-currentMap=map;
+const config = maps[currentMapName]
 
-document.getElementById("mapImage").src = maps[map];
+map = L.map("map",{
+crs:L.CRS.Simple,
+minZoom:-5
+})
 
-setTimeout(loadMarkers,200);
+const bounds = [[0,0],[config.height,config.width]]
+
+imageLayer = L.imageOverlay(config.image,bounds).addTo(map)
+
+map.fitBounds(bounds)
+
+drawnItems = new L.FeatureGroup()
+
+map.addLayer(drawnItems)
+
+loadMarkers()
+
+if(adminMode){
+
+map.on("click",function(e){
+
+const name = prompt("Marker name:")
+
+if(!name) return
+
+const marker = L.marker(e.latlng)
+
+marker.bindPopup(name)
+
+drawnItems.addLayer(marker)
+
+saveMarkers()
+
+})
 
 }
 
-document.getElementById("mapContainer").addEventListener("click",function(e){
+}
 
-if(!ADMIN)return;
+initMap()
 
-const rect=this.getBoundingClientRect();
+document.getElementById("mapSelector").addEventListener("change",function(){
 
-let x=((e.clientX-rect.left)/rect.width)*100;
-let y=((e.clientY-rect.top)/rect.height)*100;
+currentMapName = this.value
 
-let name=prompt("Marker Name:");
+map.remove()
 
-if(!name)return;
+initMap()
 
-let icon=prompt("Icon (⚔️ 🏰 🏠 📍 etc):","📍");
-
-let markers = JSON.parse(localStorage.getItem("mapMarkers_"+currentMap)) || [];
-
-markers.push({x,y,name,icon});
-
-saveMarkers(markers);
-
-loadMarkers();
-
-});
-
-loadMarkers();
+})
 
 </script>
 
