@@ -15,7 +15,6 @@ function initMap(canvasId,imgSrc,mapKey){
     img.src = imgSrc;
 
     img.onload = () => {
-        // Max canvas size
         const maxW = 1200, maxH = 800;
         const scale = Math.min(maxW/img.width, maxH/img.height);
 
