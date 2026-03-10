@@ -1,52 +1,244 @@
- />
-  <script
-    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-    crossorigin=""
-  ></script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>LegacyWoW Maps</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- Leaflet.draw -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.css" />
-  <script src="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.css"/>
+<script src="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.js"></script>
+
+<style>
+
+body{
+margin:0;
+background:#0b0b0b;
+color:white;
+font-family:Arial;
+}
+
+.wrap{
+max-width:1200px;
+margin:auto;
+padding:10px;
+}
+
+.toprow{
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+nav a{
+color:white;
+margin-right:10px;
+text-decoration:none;
+font-weight:bold;
+}
+
+.logo{
+width:40px;
+height:40px;
+overflow:hidden;
+border-radius:10px;
+}
+
+.logo img{
+width:100%;
+height:100%;
+object-fit:cover;
+}
+
+.brand{
+display:flex;
+align-items:center;
+gap:10px;
+color:white;
+text-decoration:none;
+font-weight:bold;
+}
+
+.map-tabs{
+display:flex;
+gap:10px;
+margin:20px 0;
+}
+
+.map-btn{
+padding:10px 16px;
+border:none;
+background:#222;
+color:white;
+border-radius:6px;
+cursor:pointer;
+font-weight:bold;
+}
+
+.map-btn.active{
+background:#3cff8f;
+color:black;
+}
+
+#mapContainer{
+width:100%;
+height:75vh;
+border:2px solid #333;
+border-radius:8px;
+overflow:hidden;
+}
+
+.map{
+width:100%;
+height:100%;
+display:none;
+}
+
+.map.active{
+display:block;
+}
+
+.adminbar{
+position:absolute;
+top:120px;
+right:20px;
+z-index:9999;
+display:flex;
+gap:10px;
+}
+
+.btn{
+padding:8px 14px;
+border:none;
+background:#333;
+color:white;
+cursor:pointer;
+border-radius:6px;
+}
+
+</style>
 </head>
 
 <body>
-  <header>
-    <div class="wrap toprow">
-      <a class="brand" href="index.html">
-        <div class="logo">
-          <img src="/assets/logo.png" alt="LegacyWoW" onerror="this.remove();" />
-        </div>
-        <div>LegacyWoW — World Map</div>
-      </a>
 
-      <nav>
-        <a href="index.html">Home</a>
-        <a href="how-to-play.html">How to Play</a>
-        <a href="news.html">News</a>
-        <a href="rules.html">Rules</a>
-        <a href="faq.html">FAQ</a>
-        <a href="map.html">Map</a>
-      </nav>
-    </div>
-  </header>
+<header>
+<div class="wrap toprow">
 
-  <div class="shell">
-    <div id="map"></div>
+<a class="brand" href="index.html">
+<div class="logo">
+<img src="/assets/logo.png" onerror="this.remove();">
+</div>
+<div>LegacyWoW Maps</div>
+</a>
 
-    <!-- Admin-only controls (hidden unless ?admin=1) -->
-    <div class="adminbar" id="adminBar">
-      <button class="btn" id="exportBtn">Export</button>
-      <button class="btn" id="clearBtn">Clear</button>
-    </div>
-  </div>
+<nav>
+<a href="index.html">Home</a>
+<a href="how-to-play.html">How to Play</a>
+<a href="news.html">News</a>
+<a href="rules.html">Rules</a>
+<a href="faq.html">FAQ</a>
+<a href="map.html">Map</a>
+</nav>
 
-  <script src="/map/app.js"></script>
+</div>
+</header>
 
-  <script>
-    const isAdmin = new URLSearchParams(location.search).get("admin") === "1";
-    const adminBar = document.getElementById("adminBar");
-    if (!isAdmin && adminBar) adminBar.style.display = "none";
-  </script>
+<div class="wrap">
+
+<div class="map-tabs">
+
+<button class="map-btn active" onclick="switchMap('world')">
+World Map
+</button>
+
+<button class="map-btn" onclick="switchMap('outland')">
+Outland
+</button>
+
+<button class="map-btn" onclick="switchMap('northrend')">
+Northrend
+</button>
+
+</div>
+
+<div id="mapContainer">
+
+<div id="world" class="map active"></div>
+<div id="outland" class="map"></div>
+<div id="northrend" class="map"></div>
+
+</div>
+
+<div class="adminbar" id="adminBar">
+<button class="btn" id="exportBtn">Export</button>
+<button class="btn" id="clearBtn">Clear</button>
+</div>
+
+</div>
+
+<script src="/map/app.js"></script>
+
+<script>
+
+let maps = {}
+
+function initMap(id,image){
+
+if(maps[id]) return
+
+maps[id] = L.map(id,{
+crs:L.CRS.Simple,
+minZoom:-2
+})
+
+const bounds=[[0,0],[4096,4096]]
+
+L.imageOverlay(image,bounds).addTo(maps[id])
+
+maps[id].fitBounds(bounds)
+
+}
+
+function switchMap(id){
+
+document.querySelectorAll(".map").forEach(m=>{
+m.classList.remove("active")
+})
+
+document.querySelectorAll(".map-btn").forEach(b=>{
+b.classList.remove("active")
+})
+
+document.getElementById(id).classList.add("active")
+event.target.classList.add("active")
+
+if(id==="world"){
+initMap("world","/assets/worldmap.jpg")
+}
+
+if(id==="outland"){
+initMap("outland","/assets/outland.jpg")
+}
+
+if(id==="northrend"){
+initMap("northrend","/assets/northrend.jpg")
+}
+
+}
+
+initMap("world","/assets/worldmap.jpg")
+
+const isAdmin = new URLSearchParams(location.search).get("admin") === "1"
+
+const adminBar = document.getElementById("adminBar")
+
+if (!isAdmin && adminBar)
+adminBar.style.display = "none"
+
+</script>
+
 </body>
 </html>
