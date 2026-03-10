@@ -2,7 +2,7 @@ const maps = {};
 const icons = {
     city:"/assets/icons/city.png",
     fort:"/assets/icons/fort.png",
-    tower:"/assets/icons/tower.png",  // Medieval tower
+    tower:"/assets/icons/tower.png",
     house:"/assets/icons/house.png",
     battle:"/assets/icons/battle.png"
 };
@@ -13,9 +13,12 @@ function initMap(canvasId,imgSrc,mapKey){
 
     const img = new Image();
     img.src = imgSrc;
-    img.onload = ()=>{
-        // Scale image to fit canvas nicely
-        const scale = Math.min(1200/img.width, 800/img.height);
+
+    img.onload = () => {
+        // Scale image to fit 1200x800 max
+        const maxW = 1200, maxH = 800;
+        const scale = Math.min(maxW/img.width, maxH/img.height);
+
         canvas.width = img.width*scale;
         canvas.height = img.height*scale;
 
@@ -24,19 +27,26 @@ function initMap(canvasId,imgSrc,mapKey){
             polygons:[], markers:[], currentPolygon:[],
             tool:null, currentColor:"#ffff00", currentIcon:"city"
         };
+
         drawMap(mapKey);
 
         // Admin click events
-        canvas.addEventListener("click",(e)=>{if(document.getElementById(mapKey+"Admin").style.display==="flex") handleClick(mapKey,e)});
+        canvas.addEventListener("click",(e)=>{
+            const adminDiv = document.getElementById(mapKey+"Admin");
+            if(adminDiv && adminDiv.style.display==="flex"){
+                handleClick(mapKey,e);
+            }
+        });
     };
 }
 
-function setTool(tool){
-    for(const key in maps) maps[key].tool = tool;
+function setTool(tool,mapKey){
+    maps[mapKey].tool = tool;
 }
-function setIcon(icon){
-    for(const key in maps) maps[key].currentIcon = icon;
+function setIcon(icon,mapKey){
+    maps[mapKey].currentIcon = icon;
 }
+
 function handleClick(mapKey,e){
     const map = maps[mapKey];
     const rect = map.canvas.getBoundingClientRect();
@@ -52,6 +62,7 @@ function handleClick(mapKey,e){
     } else if(map.tool==="marker"){
         map.markers.push({x,y,icon:map.currentIcon,name:"New Marker"});
     }
+
     drawMap(mapKey);
 }
 
@@ -64,21 +75,23 @@ function drawMap(mapKey){
     map.polygons.forEach(poly=>{
         map.ctx.beginPath();
         map.ctx.moveTo(poly.points[0].x*map.scale,poly.points[0].y*map.scale);
-        for(let i=1;i<poly.points.length;i++) map.ctx.lineTo(poly.points[i].x*map.scale,poly.points[i].y*map.scale);
+        for(let i=1;i<poly.points.length;i++){
+            map.ctx.lineTo(poly.points[i].x*map.scale,poly.points[i].y*map.scale);
+        }
         map.ctx.closePath();
-        map.ctx.fillStyle=poly.color;
-        map.ctx.globalAlpha=0.5;
+        map.ctx.fillStyle = poly.color;
+        map.ctx.globalAlpha = 0.5;
         map.ctx.fill();
-        map.ctx.globalAlpha=1.0;
-        map.ctx.strokeStyle="#fff";
+        map.ctx.globalAlpha = 1.0;
+        map.ctx.strokeStyle = "#fff";
         map.ctx.stroke();
     });
 
     // Draw markers
     map.markers.forEach(marker=>{
         const ic = new Image();
-        ic.src=icons[marker.icon];
-        ic.onload=()=>{ map.ctx.drawImage(ic,marker.x*map.scale-12,marker.y*map.scale-12,24,24); }
+        ic.src = icons[marker.icon];
+        ic.onload = ()=>{ map.ctx.drawImage(ic,marker.x*map.scale-12,marker.y*map.scale-12,24,24); }
         map.ctx.fillStyle="#fff";
         map.ctx.fillText(marker.name,marker.x*map.scale+12,marker.y*map.scale+4);
     });
