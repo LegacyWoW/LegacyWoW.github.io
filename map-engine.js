@@ -1,128 +1,89 @@
 const maps = {};
+const icons = {
+    city:"/assets/icons/city.png",
+    fort:"/assets/icons/fort.png",
+    tower:"/assets/icons/tower.png",  // Medieval tower
+    house:"/assets/icons/house.png",
+    battle:"/assets/icons/battle.png"
+};
 
-function createMap(canvasId, miniId, imgSrc, mapKey) {
-const canvas = document.getElementById(canvasId);
-const mini = document.getElementById(miniId);
-const ctx = canvas.getContext("2d");
-const miniCtx = mini.getContext("2d");
+function initMap(canvasId,imgSrc,mapKey){
+    const canvas = document.getElementById(canvasId);
+    const ctx = canvas.getContext("2d");
 
-```
-const img = new Image();
-img.src = imgSrc;
+    const img = new Image();
+    img.src = imgSrc;
+    img.onload = ()=>{
+        // Scale image to fit canvas nicely
+        const scale = Math.min(1200/img.width, 800/img.height);
+        canvas.width = img.width*scale;
+        canvas.height = img.height*scale;
 
-img.onload = () => {
-    // Resize canvas to image dimensions if needed
-    if(canvas.width !== img.width) canvas.width = img.width;
-    if(canvas.height !== img.height) canvas.height = img.height;
+        maps[mapKey] = {
+            canvas, ctx, img, scale,
+            polygons:[], markers:[], currentPolygon:[],
+            tool:null, currentColor:"#ffff00", currentIcon:"city"
+        };
+        drawMap(mapKey);
 
-    // Draw main map
-    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-
-    // Draw mini-map
-    const miniScale = 0.25;
-    mini.width = canvas.width * miniScale;
-    mini.height = canvas.height * miniScale;
-    miniCtx.drawImage(img, 0, 0, mini.width, mini.height);
-
-    // Initialize map state
-    maps[mapKey] = {
-        canvas, ctx, img,
-        mini, miniCtx,
-        polygons: [],
-        markers: [],
-        tool: null,
-        currentPolygon: [],
-        currentColor: "#ffff00",
-        currentIcon: "city"
+        // Admin click events
+        canvas.addEventListener("click",(e)=>{if(document.getElementById(mapKey+"Admin").style.display==="flex") handleClick(mapKey,e)});
     };
+}
 
-    // Attach event listeners for admin tools
-    if(document.getElementById(mapKey + "Admin")?.style.display === "flex") {
-        canvas.addEventListener("click", (e) => handleCanvasClick(mapKey, e));
+function setTool(tool){
+    for(const key in maps) maps[key].tool = tool;
+}
+function setIcon(icon){
+    for(const key in maps) maps[key].currentIcon = icon;
+}
+function handleClick(mapKey,e){
+    const map = maps[mapKey];
+    const rect = map.canvas.getBoundingClientRect();
+    const x = (e.clientX - rect.left)/map.scale;
+    const y = (e.clientY - rect.top)/map.scale;
+
+    if(map.tool==="polygon"){
+        map.currentPolygon.push({x,y});
+        if(e.detail===2 && map.currentPolygon.length>2){
+            map.polygons.push({points:map.currentPolygon,color:map.currentColor});
+            map.currentPolygon=[];
+        }
+    } else if(map.tool==="marker"){
+        map.markers.push({x,y,icon:map.currentIcon,name:"New Marker"});
     }
-}
-```
-
+    drawMap(mapKey);
 }
 
-function setTool(tool) {
-// Set tool for all maps
-for(const key in maps) maps[key].tool = tool;
-}
+function drawMap(mapKey){
+    const map = maps[mapKey];
+    map.ctx.clearRect(0,0,map.canvas.width,map.canvas.height);
+    map.ctx.drawImage(map.img,0,0,map.canvas.width,map.canvas.height);
 
-function setIcon(icon) {
-for(const key in maps) maps[key].currentIcon = icon;
-}
-
-function handleCanvasClick(mapKey, e) {
-const map = maps[mapKey];
-const rect = map.canvas.getBoundingClientRect();
-const x = e.clientX - rect.left;
-const y = e.clientY - rect.top;
-
-```
-if(map.tool === "polygon") {
-    map.currentPolygon.push({x,y});
-    // If double-click, finish polygon
-    if(map.currentPolygon.length > 2 && e.detail === 2){
-        map.polygons.push({
-            points: map.currentPolygon,
-            color: map.currentColor
-        });
-        map.currentPolygon = [];
-        redrawMap(mapKey);
-    }
-} else if(map.tool === "marker") {
-    map.markers.push({
-        x,y,
-        icon: map.currentIcon,
-        name: "New Marker"
+    // Draw polygons
+    map.polygons.forEach(poly=>{
+        map.ctx.beginPath();
+        map.ctx.moveTo(poly.points[0].x*map.scale,poly.points[0].y*map.scale);
+        for(let i=1;i<poly.points.length;i++) map.ctx.lineTo(poly.points[i].x*map.scale,poly.points[i].y*map.scale);
+        map.ctx.closePath();
+        map.ctx.fillStyle=poly.color;
+        map.ctx.globalAlpha=0.5;
+        map.ctx.fill();
+        map.ctx.globalAlpha=1.0;
+        map.ctx.strokeStyle="#fff";
+        map.ctx.stroke();
     });
-    redrawMap(mapKey);
-}
-```
 
-}
-
-function redrawMap(mapKey) {
-const map = maps[mapKey];
-const {ctx, img} = map;
-ctx.clearRect(0,0,map.canvas.width,map.canvas.height);
-ctx.drawImage(img, 0,0,map.canvas.width,map.canvas.height);
-
-```
-// Draw polygons
-map.polygons.forEach(poly=>{
-    ctx.beginPath();
-    ctx.moveTo(poly.points[0].x, poly.points[0].y);
-    for(let i=1;i<poly.points.length;i++){
-        ctx.lineTo(poly.points[i].x, poly.points[i].y);
-    }
-    ctx.closePath();
-    ctx.fillStyle = poly.color;
-    ctx.globalAlpha = 0.5;
-    ctx.fill();
-    ctx.globalAlpha = 1.0;
-    ctx.strokeStyle = "#fff";
-    ctx.stroke();
-});
-
-// Draw markers
-map.markers.forEach(marker=>{
-    ctx.fillStyle = "#ff0";
-    ctx.beginPath();
-    ctx.arc(marker.x, marker.y, 10, 0, 2*Math.PI);
-    ctx.fill();
-    ctx.strokeStyle = "#000";
-    ctx.stroke();
-    ctx.fillStyle = "#000";
-    ctx.fillText(marker.name, marker.x + 12, marker.y + 4);
-});
-```
-
+    // Draw markers
+    map.markers.forEach(marker=>{
+        const ic = new Image();
+        ic.src=icons[marker.icon];
+        ic.onload=()=>{ map.ctx.drawImage(ic,marker.x*map.scale-12,marker.y*map.scale-12,24,24); }
+        map.ctx.fillStyle="#fff";
+        map.ctx.fillText(marker.name,marker.x*map.scale+12,marker.y*map.scale+4);
+    });
 }
 
-function saveAll() {
-console.log("Saving maps...", maps);
-// Implement server-side save here
+function saveAll(){
+    console.log("Save maps to server...",maps);
 }
