@@ -1,162 +1,158 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <title>LegacyWoW — World Map</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>LegacyWoW World Maps</title>
 
-  <style>
-    :root{
-      --bg:#0b0b0b;
-      --border: rgba(255,255,255,.14);
-      --text:#e8e8e8;
-    }
-    body{
-      margin:0;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-    }
+<style>
 
-    header{
-      padding: 14px 0;
-      border-bottom: 1px solid rgba(255,255,255,.10);
-      background: #070707;
-    }
-    .wrap{ max-width:1100px; margin:0 auto; padding:0 18px; }
-    .toprow{
-      display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;
-    }
-    .brand{
-      display:flex; align-items:center; gap:12px; text-decoration:none; color:#fff;
-      font-weight:900; letter-spacing:.4px;
-    }
-    .logo{
-      width:40px; height:40px; border-radius:12px; overflow:hidden;
-      border:1px solid rgba(255,255,255,.18);
-      background: rgba(255,255,255,.04);
-      display:flex; align-items:center; justify-content:center;
-    }
-    .logo img{ width:100%; height:100%; object-fit:cover; display:block; }
+body{
+background:#0b0b0b;
+color:white;
+font-family:Arial;
+text-align:center;
+margin:0;
+}
 
-    nav{ display:flex; gap:10px; flex-wrap:wrap; }
-    nav a{
-      color:#fff; text-decoration:none; font-weight:800; font-size:13px;
-      padding:10px 12px; border-radius:14px;
-      border:1px solid rgba(255,255,255,.18);
-      background: rgba(255,255,255,.04);
-    }
-    nav a:hover{ background: rgba(255,255,255,.10); }
+#mapContainer{
+width:90%;
+max-width:1200px;
+margin:auto;
+position:relative;
+}
 
-    .shell{
-      position: relative;
-      height: calc(100vh - 72px);
-      min-height: 560px;
-    }
-    #map{
-      height: 100%;
-      width: 100%;
-      background: #111;
-    }
+#mapImage{
+width:100%;
+display:block;
+}
 
-    /* Admin-only top-right bar */
-    .adminbar{
-      position:absolute;
-      top:16px;
-      right:16px;
-      z-index: 999;
-      display:flex;
-      gap:10px;
-      align-items:center;
-      padding:10px;
-      border-radius:14px;
-      border:1px solid var(--border);
-      background: rgba(0,0,0,.45);
-      backdrop-filter: blur(10px);
-      box-shadow: 0 12px 30px rgba(0,0,0,.35);
-    }
-    .btn{
-      border:1px solid rgba(255,255,255,.18);
-      background: rgba(255,255,255,.06);
-      color:#fff;
-      border-radius:12px;
-      padding:10px 12px;
-      font-weight:900;
-      cursor:pointer;
-      font-size:13px;
-    }
-    .btn:hover{ background: rgba(255,255,255,.12); }
+.marker{
+position:absolute;
+transform:translate(-50%,-50%);
+font-size:26px;
+cursor:pointer;
+}
 
-    /* ✅ IMPORTANT: don't wipe Leaflet-draw icons */
-    .leaflet-control a{
-      background-color: rgba(0,0,0,.55) !important;
-      color:#fff !important;
-      border-color: rgba(255,255,255,.14) !important;
-    }
-    .leaflet-control a:hover{ background-color: rgba(0,0,0,.75) !important; }
+.controls{
+margin:20px;
+}
 
-    .leaflet-popup-content-wrapper, .leaflet-popup-tip{
-      background: rgba(0,0,0,.80);
-      color:#fff;
-      border:1px solid rgba(255,255,255,.12);
-    }
-  </style>
+button{
+padding:10px 16px;
+margin:4px;
+font-weight:bold;
+cursor:pointer;
+}
 
-  <!-- Leaflet -->
-  <link
-    rel="stylesheet"
-    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-    crossorigin=""
-  />
-  <script
-    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-    crossorigin=""
-  ></script>
-
-  <!-- Leaflet.draw -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.css" />
-  <script src="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.js"></script>
+</style>
 </head>
 
 <body>
-  <header>
-    <div class="wrap toprow">
-      <a class="brand" href="index.html">
-        <div class="logo">
-          <img src="/assets/logo.png" alt="LegacyWoW" onerror="this.remove();" />
-        </div>
-        <div>LegacyWoW — World Map</div>
-      </a>
 
-      <nav>
-        <a href="index.html">Home</a>
-        <a href="how-to-play.html">How to Play</a>
-        <a href="news.html">News</a>
-        <a href="rules.html">Rules</a>
-        <a href="faq.html">FAQ</a>
-        <a href="map.html">Map</a>
-      </nav>
-    </div>
-  </header>
+<h1>LegacyWoW World Maps</h1>
 
-  <div class="shell">
-    <div id="map"></div>
+<div class="controls">
 
-    <!-- Admin-only controls (hidden unless ?admin=1) -->
-    <div class="adminbar" id="adminBar">
-      <button class="btn" id="exportBtn">Export</button>
-      <button class="btn" id="clearBtn">Clear</button>
-    </div>
-  </div>
+<button onclick="switchMap('world')">Azeroth</button>
+<button onclick="switchMap('outland')">Outland</button>
+<button onclick="switchMap('northrend')">Northrend</button>
 
-  <script src="/map/app.js"></script>
+</div>
 
-  <script>
-    const isAdmin = new URLSearchParams(location.search).get("admin") === "1";
-    const adminBar = document.getElementById("adminBar");
-    if (!isAdmin && adminBar) adminBar.style.display = "none";
-  </script>
+<div id="mapContainer">
+
+<img id="mapImage" src="assets/worldmap.jpg">
+
+</div>
+
+<script>
+
+const ADMIN = new URLSearchParams(window.location.search).get("admin") === "1";
+
+let currentMap = "world";
+
+const maps = {
+
+world:"assets/worldmap.jpg",
+outland:"assets/outland.jpg",
+northrend:"assets/northrend.jpg"
+
+};
+
+function loadMarkers(){
+
+document.querySelectorAll(".marker").forEach(m=>m.remove());
+
+let markers = JSON.parse(localStorage.getItem("mapMarkers_"+currentMap)) || [];
+
+markers.forEach((m,i)=>{
+
+createMarker(m.x,m.y,m.name,m.icon,i);
+
+});
+
+}
+
+function saveMarkers(list){
+
+localStorage.setItem("mapMarkers_"+currentMap,JSON.stringify(list));
+
+}
+
+function createMarker(x,y,name,icon,index){
+
+let marker=document.createElement("div");
+
+marker.className="marker";
+
+marker.style.left=x+"%";
+marker.style.top=y+"%";
+
+marker.innerHTML=icon;
+
+marker.title=name;
+
+document.getElementById("mapContainer").appendChild(marker);
+
+}
+
+function switchMap(map){
+
+currentMap=map;
+
+document.getElementById("mapImage").src = maps[map];
+
+setTimeout(loadMarkers,200);
+
+}
+
+document.getElementById("mapContainer").addEventListener("click",function(e){
+
+if(!ADMIN)return;
+
+const rect=this.getBoundingClientRect();
+
+let x=((e.clientX-rect.left)/rect.width)*100;
+let y=((e.clientY-rect.top)/rect.height)*100;
+
+let name=prompt("Marker Name:");
+
+if(!name)return;
+
+let icon=prompt("Icon (⚔️ 🏰 🏠 📍 etc):","📍");
+
+let markers = JSON.parse(localStorage.getItem("mapMarkers_"+currentMap)) || [];
+
+markers.push({x,y,name,icon});
+
+saveMarkers(markers);
+
+loadMarkers();
+
+});
+
+loadMarkers();
+
+</script>
+
 </body>
 </html>
