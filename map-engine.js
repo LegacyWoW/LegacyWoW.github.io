@@ -15,7 +15,7 @@ function initMap(canvasId,imgSrc,mapKey){
     img.src = imgSrc;
 
     img.onload = () => {
-        // Scale image to fit 1200x800 max
+        // Max canvas size
         const maxW = 1200, maxH = 800;
         const scale = Math.min(maxW/img.width, maxH/img.height);
 
@@ -30,7 +30,6 @@ function initMap(canvasId,imgSrc,mapKey){
 
         drawMap(mapKey);
 
-        // Admin click events
         canvas.addEventListener("click",(e)=>{
             const adminDiv = document.getElementById(mapKey+"Admin");
             if(adminDiv && adminDiv.style.display==="flex"){
@@ -40,12 +39,8 @@ function initMap(canvasId,imgSrc,mapKey){
     };
 }
 
-function setTool(tool,mapKey){
-    maps[mapKey].tool = tool;
-}
-function setIcon(icon,mapKey){
-    maps[mapKey].currentIcon = icon;
-}
+function setTool(tool,mapKey){ maps[mapKey].tool = tool; }
+function setIcon(icon,mapKey){ maps[mapKey].currentIcon = icon; }
 
 function handleClick(mapKey,e){
     const map = maps[mapKey];
@@ -71,7 +66,7 @@ function drawMap(mapKey){
     map.ctx.clearRect(0,0,map.canvas.width,map.canvas.height);
     map.ctx.drawImage(map.img,0,0,map.canvas.width,map.canvas.height);
 
-    // Draw polygons
+    // Polygons
     map.polygons.forEach(poly=>{
         map.ctx.beginPath();
         map.ctx.moveTo(poly.points[0].x*map.scale,poly.points[0].y*map.scale);
@@ -87,7 +82,7 @@ function drawMap(mapKey){
         map.ctx.stroke();
     });
 
-    // Draw markers
+    // Markers
     map.markers.forEach(marker=>{
         const ic = new Image();
         ic.src = icons[marker.icon];
@@ -97,6 +92,4 @@ function drawMap(mapKey){
     });
 }
 
-function saveAll(){
-    console.log("Save maps to server...",maps);
-}
+function saveAll(){ console.log("Save maps to server...",maps); }
