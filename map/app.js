@@ -15,6 +15,8 @@ const IMAGE_HEIGHT = 1000;
 const IMAGE_WIDTH  = 1800;
 
 const IMAGE_URL = "/assets/worldmap.jpg";
+const IMAGE_URL = "/assets/outland.jpg";
+const IMAGE_URL = "/assets/northrend.jpg";
 const DATA_URL  = "/data/overlays.geojson";
 
 // Inject marker CSS
