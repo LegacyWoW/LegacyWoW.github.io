@@ -2,17 +2,17 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>LegacyWoW — Guild War Maps</title>
+<title>LegacyWoW — Interactive Maps</title>
 <style>
-  body { margin:0; background:#0a0a0a; color:#fff; font-family:Arial,sans-serif; }
-  header { background:#111; padding:10px; display:flex; align-items:center; }
-  header .logo img { height:50px; margin-right:10px; }
-  header nav a { color:white; margin:0 10px; text-decoration:none; }
-  .map-container { display:flex; flex-wrap:wrap; justify-content:center; padding:20px; gap:20px; }
-  .map-box { position:relative; background:#222; border:2px solid #444; width:1200px; height:800px; }
-  canvas { display:block; width:100%; height:100%; background:#000; }
-  .admin-tools { position:absolute; top:10px; left:10px; background:rgba(0,0,0,0.7); padding:10px; border:1px solid #555; display:flex; flex-direction:column; gap:5px; }
-  #cityPanel { font-size:14px; background:#111; padding:5px; position:absolute; top:10px; right:10px; display:none; border:1px solid #555; }
+body { margin:0; background:#0a0a0a; color:#fff; font-family:Arial,sans-serif; }
+header { background:#111; padding:10px; display:flex; align-items:center; }
+header .logo img { height:50px; margin-right:10px; }
+header nav a { color:white; margin:0 10px; text-decoration:none; }
+.map-container { display:flex; flex-wrap:wrap; justify-content:center; padding:20px; gap:20px; }
+.map-box { position:relative; background:#222; border:2px solid #444; width:1200px; height:800px; }
+canvas { display:block; width:100%; height:100%; background:#000; }
+.admin-tools { position:absolute; top:10px; left:10px; background:rgba(0,0,0,0.7); padding:10px; border:1px solid #555; display:flex; flex-direction:column; gap:5px; }
+#cityPanel { font-size:14px; background:#111; padding:5px; position:absolute; top:10px; right:10px; display:none; border:1px solid #555; }
 </style>
 </head>
 <body>
@@ -34,15 +34,47 @@
   <div class="map-box">
     <canvas id="worldMap"></canvas>
     <div id="worldAdmin" class="admin-tools" style="display:none;">
-      <label>Polygon color: <input type="color" id="polyColor" value="#ffff00"></label>
-      <button onclick="setTool('polygon')">Polygon Tool</button>
-      <button onclick="setTool('marker')">Marker Tool</button>
+      <label>Polygon color: <input type="color" id="worldPolyColor" value="#ffff00"></label>
+      <button onclick="setTool('polygon','world')">Polygon Tool</button>
+      <button onclick="setTool('marker','world')">Marker Tool</button>
       <button onclick="saveAll()">Save All</button>
-      <button onclick="setIcon('city')">City</button>
-      <button onclick="setIcon('fort')">Fort</button>
-      <button onclick="setIcon('tower')">Tower</button>
-      <button onclick="setIcon('house')">House</button>
-      <button onclick="setIcon('battle')">Battle</button>
+      <button onclick="setIcon('city','world')">City</button>
+      <button onclick="setIcon('fort','world')">Fort</button>
+      <button onclick="setIcon('tower','world')">Tower</button>
+      <button onclick="setIcon('house','world')">House</button>
+      <button onclick="setIcon('battle','world')">Battle</button>
+    </div>
+    <div id="cityPanel"></div>
+  </div>
+
+  <div class="map-box">
+    <canvas id="outlandMap"></canvas>
+    <div id="outlandAdmin" class="admin-tools" style="display:none;">
+      <label>Polygon color: <input type="color" id="outlandPolyColor" value="#00ff00"></label>
+      <button onclick="setTool('polygon','outland')">Polygon Tool</button>
+      <button onclick="setTool('marker','outland')">Marker Tool</button>
+      <button onclick="saveAll()">Save All</button>
+      <button onclick="setIcon('city','outland')">City</button>
+      <button onclick="setIcon('fort','outland')">Fort</button>
+      <button onclick="setIcon('tower','outland')">Tower</button>
+      <button onclick="setIcon('house','outland')">House</button>
+      <button onclick="setIcon('battle','outland')">Battle</button>
+    </div>
+    <div id="cityPanel"></div>
+  </div>
+
+  <div class="map-box">
+    <canvas id="northrendMap"></canvas>
+    <div id="northrendAdmin" class="admin-tools" style="display:none;">
+      <label>Polygon color: <input type="color" id="northrendPolyColor" value="#00ffff"></label>
+      <button onclick="setTool('polygon','northrend')">Polygon Tool</button>
+      <button onclick="setTool('marker','northrend')">Marker Tool</button>
+      <button onclick="saveAll()">Save All</button>
+      <button onclick="setIcon('city','northrend')">City</button>
+      <button onclick="setIcon('fort','northrend')">Fort</button>
+      <button onclick="setIcon('tower','northrend')">Tower</button>
+      <button onclick="setIcon('house','northrend')">House</button>
+      <button onclick="setIcon('battle','northrend')">Battle</button>
     </div>
     <div id="cityPanel"></div>
   </div>
@@ -51,13 +83,17 @@
 <script src="/map/map-engine.js"></script>
 <script>
   const admin = new URLSearchParams(location.search).get("admin") === "1";
+
   if(admin){
       document.getElementById("worldAdmin").style.display = "flex";
+      document.getElementById("outlandAdmin").style.display = "flex";
+      document.getElementById("northrendAdmin").style.display = "flex";
   }
 
-  // Initialize map after DOM loads
   window.onload = function(){
       initMap("worldMap","/assets/worldmap.jpg","world");
+      initMap("outlandMap","/assets/outland.jpg","outland");
+      initMap("northrendMap","/assets/northrend.jpg","northrend");
   }
 </script>
 
