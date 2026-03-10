@@ -1,240 +1,128 @@
-const isAdmin = new URLSearchParams(location.search).get("admin") === "1";
-
 const maps = {};
-let currentTool = "pan";
-let currentIcon = "city";
 
-function setTool(tool) { if (isAdmin) currentTool = tool; }
-function setIcon(icon) { if (isAdmin) currentIcon = icon; }
-
-function createMap(canvasId, miniId, imageSrc, mapKey) {
+function createMap(canvasId, miniId, imgSrc, mapKey) {
 const canvas = document.getElementById(canvasId);
-const ctx = canvas.getContext("2d");
-
-```
 const mini = document.getElementById(miniId);
-const mctx = mini.getContext("2d");
+const ctx = canvas.getContext("2d");
+const miniCtx = mini.getContext("2d");
 
+```
 const img = new Image();
-img.src = imageSrc;
+img.src = imgSrc;
 
-// OG zoom/pan
-let scale = 1;
-let offsetX = 0;
-let offsetY = 0;
+img.onload = () => {
+    // Resize canvas to image dimensions if needed
+    if(canvas.width !== img.width) canvas.width = img.width;
+    if(canvas.height !== img.height) canvas.height = img.height;
 
-let dragging = false;
-let startX = 0;
-let startY = 0;
+    // Draw main map
+    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
-let markers = [];
-let polygons = [];
-let currentPoly = [];
+    // Draw mini-map
+    const miniScale = 0.25;
+    mini.width = canvas.width * miniScale;
+    mini.height = canvas.height * miniScale;
+    miniCtx.drawImage(img, 0, 0, mini.width, mini.height);
 
-maps[mapKey] = { markers, polygons };
+    // Initialize map state
+    maps[mapKey] = {
+        canvas, ctx, img,
+        mini, miniCtx,
+        polygons: [],
+        markers: [],
+        tool: null,
+        currentPolygon: [],
+        currentColor: "#ffff00",
+        currentIcon: "city"
+    };
 
-loadFromServer();
-
-img.onload = () => draw();
-
-function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.save();
-    ctx.translate(offsetX, offsetY);
-    ctx.scale(scale, scale);
-    ctx.drawImage(img, 0, 0, img.width, img.height);
-
-    drawPolygons();
-    drawMarkers();
-    drawCurrentPoly();
-    ctx.restore();
-
-    drawMini();
-}
-
-function drawPolygons() {
-    polygons.forEach(p => {
-        ctx.fillStyle = p.color || "rgba(200,200,200,0.35)";
-        ctx.beginPath();
-        p.points.forEach((pt, i) => i === 0 ? ctx.moveTo(pt.x, pt.y) : ctx.lineTo(pt.x, pt.y));
-        ctx.closePath();
-        ctx.fill();
-        ctx.strokeStyle = p.color || "#fff";
-        ctx.stroke();
-
-        if (p.name) {
-            ctx.fillStyle = "white";
-            ctx.font = "16px Arial";
-            ctx.fillText(p.name, p.points[0].x, p.points[0].y);
-        }
-    });
-}
-
-function drawCurrentPoly() {
-    if (currentPoly.length === 0) return;
-    ctx.strokeStyle = "yellow";
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    currentPoly.forEach((pt, i) => i === 0 ? ctx.moveTo(pt.x, pt.y) : ctx.lineTo(pt.x, pt.y));
-    ctx.stroke();
-}
-
-function drawMarkers() {
-    markers.forEach(m => {
-        let icon = "🏙";
-        if (m.icon === "fort") icon = "🏰";
-        if (m.icon === "tower") icon = "🏯";
-        if (m.icon === "house") icon = "🏠";
-        if (m.icon === "battle") icon = "⚔";
-
-        ctx.font = "22px serif";
-        ctx.fillText(icon, m.x - 10, m.y + 8);
-
-        if (m.name) {
-            ctx.font = "13px Arial";
-            ctx.fillStyle = "white";
-            ctx.fillText(m.name, m.x + 12, m.y);
-        }
-    });
-}
-
-canvas.addEventListener("mousedown", e => {
-    const rect = canvas.getBoundingClientRect();
-    const x = (e.clientX - rect.left - offsetX) / scale;
-    const y = (e.clientY - rect.top - offsetY) / scale;
-
-    if (isAdmin) {
-        if (currentTool === "marker") {
-            const name = prompt("City / Location name");
-            const guild = prompt("Guild owner");
-            const status = prompt("Battle status");
-            markers.push({ x, y, name, guild, status, icon: currentIcon });
-            save();
-            draw();
-            return;
-        }
-
-        if (currentTool === "polygon") {
-            currentPoly.push({ x, y });
-            draw();
-            return;
-        }
+    // Attach event listeners for admin tools
+    if(document.getElementById(mapKey + "Admin")?.style.display === "flex") {
+        canvas.addEventListener("click", (e) => handleCanvasClick(mapKey, e));
     }
-
-    dragging = true;
-    startX = e.clientX;
-    startY = e.clientY;
-});
-
-canvas.addEventListener("dblclick", () => {
-    if (!isAdmin) return;
-    if (currentPoly.length > 2) {
-        const name = prompt("Territory name");
-        const color = document.getElementById("polyColor").value;
-        polygons.push({ points: [...currentPoly], name, color });
-        currentPoly = [];
-        save();
-        draw();
-    }
-});
-
-canvas.addEventListener("mousemove", e => {
-    if (!dragging) return;
-    offsetX += e.clientX - startX;
-    offsetY += e.clientY - startY;
-    startX = e.clientX;
-    startY = e.clientY;
-    draw();
-});
-
-canvas.addEventListener("mouseup", () => dragging = false);
-
-// OG-style pointer zoom (zoom centered at cursor)
-canvas.addEventListener("wheel", e => {
-    e.preventDefault();
-    const rect = canvas.getBoundingClientRect();
-    const mx = e.clientX - rect.left;
-    const my = e.clientY - rect.top;
-    const wx = (mx - offsetX) / scale;
-    const wy = (my - offsetY) / scale;
-    const factor = e.deltaY < 0 ? 1.15 : 0.85;
-    scale *= factor;
-    if (scale < 0.1) scale = 0.1;
-    if (scale > 10) scale = 10;
-    offsetX = mx - wx * scale;
-    offsetY = my - wy * scale;
-    draw();
-});
-
-// click markers for info
-canvas.addEventListener("click", e => {
-    if (isAdmin) return; 
-    const rect = canvas.getBoundingClientRect();
-    const x = (e.clientX - rect.left - offsetX) / scale;
-    const y = (e.clientY - rect.top - offsetY) / scale;
-    markers.forEach(m => {
-        if (Math.hypot(m.x - x, m.y - y) < 12) showCityPanel(m);
-    });
-});
-
-function showCityPanel(city) {
-    let panel = document.getElementById("cityPanel");
-    if (!panel) {
-        panel = document.createElement("div");
-        panel.id = "cityPanel";
-        panel.style.position = "fixed";
-        panel.style.right = "30px";
-        panel.style.bottom = "30px";
-        panel.style.background = "#111";
-        panel.style.border = "1px solid #444";
-        panel.style.padding = "15px";
-        panel.style.width = "260px";
-        panel.style.zIndex = 9999;
-        document.body.appendChild(panel);
-    }
-    panel.innerHTML = `
-        <b>${city.name}</b><br><br>
-        Guild Owner: ${city.guild || "None"}<br>
-        Battle Status: ${city.status || "Peaceful"}
-    `;
-}
-
-function drawMini() {
-    mctx.clearRect(0, 0, mini.width, mini.height);
-    mctx.drawImage(img, 0, 0, mini.width, mini.height);
-    const vw = canvas.width / (img.width * scale) * mini.width;
-    const vh = canvas.height / (img.height * scale) * mini.height;
-    const vx = (-offsetX / (img.width * scale)) * mini.width;
-    const vy = (-offsetY / (img.height * scale)) * mini.height;
-    mctx.strokeStyle = "red";
-    mctx.strokeRect(vx, vy, vw, vh);
-}
-
-function save() { if (!isAdmin) return;
-    fetch("/map-save.php", {
-        method: "POST",
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ map: mapKey, markers, polygons })
-    });
-}
-
-function loadFromServer() {
-    fetch("/map-data/" + mapKey + ".json")
-        .then(r => r.json())
-        .then(data => { markers = data.markers || []; polygons = data.polygons || []; draw(); })
-        .catch(() => { });
 }
 ```
 
 }
 
-function saveAll() { if (!isAdmin) return;
-Object.keys(maps).forEach(k => {
-fetch("/map-save.php", {
-method: "POST",
-headers: { 'Content-Type': 'application/json' },
-body: JSON.stringify(maps[k])
+function setTool(tool) {
+// Set tool for all maps
+for(const key in maps) maps[key].tool = tool;
+}
+
+function setIcon(icon) {
+for(const key in maps) maps[key].currentIcon = icon;
+}
+
+function handleCanvasClick(mapKey, e) {
+const map = maps[mapKey];
+const rect = map.canvas.getBoundingClientRect();
+const x = e.clientX - rect.left;
+const y = e.clientY - rect.top;
+
+```
+if(map.tool === "polygon") {
+    map.currentPolygon.push({x,y});
+    // If double-click, finish polygon
+    if(map.currentPolygon.length > 2 && e.detail === 2){
+        map.polygons.push({
+            points: map.currentPolygon,
+            color: map.currentColor
+        });
+        map.currentPolygon = [];
+        redrawMap(mapKey);
+    }
+} else if(map.tool === "marker") {
+    map.markers.push({
+        x,y,
+        icon: map.currentIcon,
+        name: "New Marker"
+    });
+    redrawMap(mapKey);
+}
+```
+
+}
+
+function redrawMap(mapKey) {
+const map = maps[mapKey];
+const {ctx, img} = map;
+ctx.clearRect(0,0,map.canvas.width,map.canvas.height);
+ctx.drawImage(img, 0,0,map.canvas.width,map.canvas.height);
+
+```
+// Draw polygons
+map.polygons.forEach(poly=>{
+    ctx.beginPath();
+    ctx.moveTo(poly.points[0].x, poly.points[0].y);
+    for(let i=1;i<poly.points.length;i++){
+        ctx.lineTo(poly.points[i].x, poly.points[i].y);
+    }
+    ctx.closePath();
+    ctx.fillStyle = poly.color;
+    ctx.globalAlpha = 0.5;
+    ctx.fill();
+    ctx.globalAlpha = 1.0;
+    ctx.strokeStyle = "#fff";
+    ctx.stroke();
 });
+
+// Draw markers
+map.markers.forEach(marker=>{
+    ctx.fillStyle = "#ff0";
+    ctx.beginPath();
+    ctx.arc(marker.x, marker.y, 10, 0, 2*Math.PI);
+    ctx.fill();
+    ctx.strokeStyle = "#000";
+    ctx.stroke();
+    ctx.fillStyle = "#000";
+    ctx.fillText(marker.name, marker.x + 12, marker.y + 4);
 });
-alert("Maps saved");
+```
+
+}
+
+function saveAll() {
+console.log("Saving maps...", maps);
+// Implement server-side save here
 }
