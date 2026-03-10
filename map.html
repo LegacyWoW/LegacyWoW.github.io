@@ -1,19 +1,18 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>LegacyWoW — Interactive Maps</title>
+<title>LegacyWoW — Guild War Maps</title>
 <style>
   body { margin:0; background:#0a0a0a; color:#fff; font-family:Arial,sans-serif; }
   header { background:#111; padding:10px; display:flex; align-items:center; }
   header .logo img { height:50px; margin-right:10px; }
   header nav a { color:white; margin:0 10px; text-decoration:none; }
   .map-container { display:flex; flex-wrap:wrap; justify-content:center; padding:20px; gap:20px; }
-  .map-box { position:relative; background:#222; border:2px solid #444; }
-  canvas { display:block; max-width:100%; height:auto; background:#000; }
+  .map-box { position:relative; background:#222; border:2px solid #444; width:1200px; height:800px; }
+  canvas { display:block; width:100%; height:100%; background:#000; }
   .admin-tools { position:absolute; top:10px; left:10px; background:rgba(0,0,0,0.7); padding:10px; border:1px solid #555; display:flex; flex-direction:column; gap:5px; }
-  #cityPanel { font-size:14px; }
+  #cityPanel { font-size:14px; background:#111; padding:5px; position:absolute; top:10px; right:10px; display:none; border:1px solid #555; }
 </style>
 </head>
 <body>
@@ -33,8 +32,7 @@
 
 <div class="map-container">
   <div class="map-box">
-    <canvas id="worldMap" width="1200" height="800"></canvas>
-    <canvas id="worldMini" width="300" height="200" style="position:absolute; top:10px; right:10px; border:1px solid #555;"></canvas>
+    <canvas id="worldMap"></canvas>
     <div id="worldAdmin" class="admin-tools" style="display:none;">
       <label>Polygon color: <input type="color" id="polyColor" value="#ffff00"></label>
       <button onclick="setTool('polygon')">Polygon Tool</button>
@@ -46,76 +44,21 @@
       <button onclick="setIcon('house')">House</button>
       <button onclick="setIcon('battle')">Battle</button>
     </div>
-  </div>
-
-  <div class="map-box">
-    <canvas id="outlandMap" width="1200" height="800"></canvas>
-    <canvas id="outlandMini" width="300" height="200" style="position:absolute; top:10px; right:10px; border:1px solid #555;"></canvas>
-    <div id="outlandAdmin" class="admin-tools" style="display:none;">
-      <label>Polygon color: <input type="color" id="polyColor" value="#00ff00"></label>
-      <button onclick="setTool('polygon')">Polygon Tool</button>
-      <button onclick="setTool('marker')">Marker Tool</button>
-      <button onclick="saveAll()">Save All</button>
-      <button onclick="setIcon('city')">City</button>
-      <button onclick="setIcon('fort')">Fort</button>
-      <button onclick="setIcon('tower')">Tower</button>
-      <button onclick="setIcon('house')">House</button>
-      <button onclick="setIcon('battle')">Battle</button>
-    </div>
-  </div>
-
-  <div class="map-box">
-    <canvas id="northrendMap" width="1200" height="800"></canvas>
-    <canvas id="northrendMini" width="300" height="200" style="position:absolute; top:10px; right:10px; border:1px solid #555;"></canvas>
-    <div id="northrendAdmin" class="admin-tools" style="display:none;">
-      <label>Polygon color: <input type="color" id="polyColor" value="#00ffff"></label>
-      <button onclick="setTool('polygon')">Polygon Tool</button>
-      <button onclick="setTool('marker')">Marker Tool</button>
-      <button onclick="saveAll()">Save All</button>
-      <button onclick="setIcon('city')">City</button>
-      <button onclick="setIcon('fort')">Fort</button>
-      <button onclick="setIcon('tower')">Tower</button>
-      <button onclick="setIcon('house')">House</button>
-      <button onclick="setIcon('battle')">Battle</button>
-    </div>
+    <div id="cityPanel"></div>
   </div>
 </div>
 
 <script src="/map/map-engine.js"></script>
-
 <script>
   const admin = new URLSearchParams(location.search).get("admin") === "1";
-
-  if (admin) {
-    document.getElementById("worldAdmin").style.display = "flex";
-    document.getElementById("outlandAdmin").style.display = "flex";
-    document.getElementById("northrendAdmin").style.display = "flex";
+  if(admin){
+      document.getElementById("worldAdmin").style.display = "flex";
   }
 
-  function initMap(canvasId, miniId, imgSrc, mapKey, displayWidth=1200, displayHeight=800) {
-      const canvas = document.getElementById(canvasId);
-      const mini = document.getElementById(miniId);
-      const img = new Image();
-      img.src = imgSrc;
-      img.onload = () => {
-          // Scale down large images to fit display width/height
-          const scaleX = displayWidth / img.width;
-          const scaleY = displayHeight / img.height;
-          const scale = Math.min(scaleX, scaleY);
-
-          canvas.width = img.width * scale;
-          canvas.height = img.height * scale;
-
-          mini.width = canvas.width / 4;
-          mini.height = canvas.height / 4;
-
-          createMap(canvasId, miniId, imgSrc, mapKey);
-      }
+  // Initialize map after DOM loads
+  window.onload = function(){
+      initMap("worldMap","/assets/worldmap.jpg","world");
   }
-
-  initMap("worldMap","worldMini","/assets/worldmap.jpg","world",1200,800);
-  initMap("outlandMap","outlandMini","/assets/outland.jpg","outland",1200,800);
-  initMap("northrendMap","northrendMini","/assets/northrend.jpg","northrend",1200,800);
 </script>
 
 </body>
