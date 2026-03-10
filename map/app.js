@@ -7,8 +7,7 @@
 // Loads:  /data/overlays.geojson
 // Image:  /assets/worldmap.jpg
 // =======================================================
-const params = new URLSearchParams(window.location.search);
-const mapType = params.get("map") || "world";
+
 const ADMIN = new URLSearchParams(window.location.search).get("admin") === "1";
 
 // --- IMPORTANT: DO NOT CHANGE AFTER YOU START PLACING MARKERS ---
