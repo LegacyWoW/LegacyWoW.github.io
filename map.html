@@ -1,19 +1,16 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <title>LegacyWoW World Map</title>
 
 <style>
-
 body{
 margin:0;
 background:#0b0b0b;
 color:white;
 font-family:Arial;
 }
-
 .topbar{
 background:#111;
 padding:12px 25px;
@@ -21,13 +18,11 @@ display:flex;
 gap:25px;
 border-bottom:1px solid #333;
 }
-
 .topbar a{
 color:white;
 text-decoration:none;
 font-weight:bold;
 }
-
 .map-container{
 display:flex;
 justify-content:center;
@@ -35,7 +30,6 @@ flex-wrap:wrap;
 gap:40px;
 padding:30px;
 }
-
 .map-box{
 position:relative;
 width:1200px;
@@ -43,7 +37,6 @@ border:2px solid #444;
 background:#1b1b1b;
 padding:10px;
 }
-
 canvas{
 display:block;
 width:100%;
@@ -51,9 +44,7 @@ height:auto;
 background:black;
 cursor:grab;
 }
-
 /* ADMIN PANEL */
-
 .legend{
 position:absolute;
 top:10px;
@@ -66,7 +57,6 @@ flex-direction:column;
 gap:6px;
 font-size:13px;
 }
-
 .legend button{
 background:#333;
 border:1px solid #555;
@@ -74,7 +64,6 @@ color:white;
 cursor:pointer;
 padding:4px;
 }
-
 .city-panel{
 position:absolute;
 bottom:20px;
@@ -85,9 +74,7 @@ padding:12px;
 display:none;
 width:220px;
 }
-
 </style>
-
 </head>
 
 <body>
@@ -104,17 +91,11 @@ width:220px;
 <div class="map-container">
 
 <div class="map-box">
-
 <canvas id="worldMap"></canvas>
-
 <div class="legend" id="worldLegend">
-
 <b>Admin Tools</b>
-
 <button onclick="setTool('polygon','world')">Draw Territory</button>
-
 <button onclick="setTool('marker','world')">Place Marker</button>
-
 <select onchange="setIcon(this.value,'world')">
 <option value="city">City</option>
 <option value="town">Town</option>
@@ -122,32 +103,19 @@ width:220px;
 <option value="battle">Battle</option>
 <option value="tower">Tower</option>
 </select>
-
-<input type="color" value="#ffff00"
-onchange="setColor(this.value,'world')">
-
+<input type="color" value="#ffff00" onchange="setColor(this.value,'world')">
 <button onclick="finishPolygon('world')">Finish Territory</button>
-
 <button onclick="saveMap('world')">Save Map</button>
-
 </div>
-
 <div class="city-panel" id="cityPanel"></div>
-
 </div>
 
 <div class="map-box">
-
 <canvas id="outlandMap"></canvas>
-
 <div class="legend" id="outlandLegend">
-
 <b>Admin Tools</b>
-
 <button onclick="setTool('polygon','outland')">Draw Territory</button>
-
 <button onclick="setTool('marker','outland')">Place Marker</button>
-
 <select onchange="setIcon(this.value,'outland')">
 <option value="city">City</option>
 <option value="town">Town</option>
@@ -155,36 +123,23 @@ onchange="setColor(this.value,'world')">
 <option value="battle">Battle</option>
 <option value="tower">Tower</option>
 </select>
-
-<input type="color" value="#ffff00"
-onchange="setColor(this.value,'outland')">
-
+<input type="color" value="#ffff00" onchange="setColor(this.value,'outland')">
 <button onclick="finishPolygon('outland')">Finish Territory</button>
-
 <button onclick="saveMap('outland')">Save Map</button>
-
 </div>
-
 </div>
 
 </div>
 
 <script src="map-engine.js"></script>
-
 <script>
-
 const admin=new URLSearchParams(location.search).get("admin")==="1"
-
 if(!admin){
-
 document.getElementById("worldLegend").style.display="none"
 document.getElementById("outlandLegend").style.display="none"
-
 }
-
 initMap("worldMap","../assets/worldmap.jpg","world",admin)
 initMap("outlandMap","../assets/outland.jpg","outland",admin)
-
 </script>
 
 </body>
