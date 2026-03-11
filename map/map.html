@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>AshenWoW Interactive Maps</title>
+<title>LegacyWoW Interactive Map</title>
 
 <style>
 
@@ -14,13 +14,12 @@ color:white;
 font-family:Arial;
 }
 
-/* TOP NAV BAR */
+/* TOP NAV */
 
 .topbar{
 background:#111;
 padding:10px 20px;
 display:flex;
-align-items:center;
 gap:25px;
 border-bottom:1px solid #333;
 }
@@ -32,16 +31,16 @@ font-weight:bold;
 }
 
 .topbar a:hover{
-color:#f3c969;
+color:#e7c26b;
 }
 
-/* MAP LAYOUT */
+/* MAP AREA */
 
 .map-container{
 display:flex;
 justify-content:center;
-flex-wrap:wrap;
 gap:40px;
+flex-wrap:wrap;
 padding:30px;
 }
 
@@ -66,10 +65,10 @@ left:10px;
 background:rgba(0,0,0,.75);
 border:1px solid #555;
 padding:10px;
-font-size:13px;
 display:flex;
 flex-direction:column;
 gap:6px;
+font-size:13px;
 }
 
 .legend button{
@@ -79,12 +78,6 @@ border:1px solid #666;
 padding:4px 6px;
 cursor:pointer;
 }
-
-.legend input{
-width:100%;
-}
-
-/* ZOOM */
 
 .zoom{
 position:absolute;
@@ -98,33 +91,9 @@ flex-direction:column;
 background:#222;
 color:white;
 border:1px solid #555;
-font-size:18px;
 width:32px;
 height:32px;
-}
-
-/* CITY INFO PANEL */
-
-.city-panel{
-position:absolute;
-bottom:20px;
-left:20px;
-background:#111;
-border:1px solid #555;
-padding:10px;
-display:none;
-width:200px;
-}
-
-/* MINIMAP */
-
-.minimap{
-position:absolute;
-bottom:10px;
-left:10px;
-border:1px solid #555;
-background:black;
-opacity:.9;
+font-size:18px;
 }
 
 </style>
@@ -148,10 +117,6 @@ opacity:.9;
 
 <canvas id="worldMap"></canvas>
 
-<canvas class="minimap" id="worldMini" width="200" height="200"></canvas>
-
-<div class="city-panel" id="cityPanel"></div>
-
 <div class="legend" id="worldLegend">
 
 <b>Admin Tools</b>
@@ -160,16 +125,9 @@ opacity:.9;
 
 <label>Color</label> <input type="color" onchange="setColor(this.value,'world')" value="#ffff00">
 
-<label>Icon</label> <select onchange="setIcon(this.value,'world')">
-
-<option value="city">City</option>
-<option value="fort">Fort</option>
-<option value="tower">Tower</option>
-<option value="house">House</option>
-<option value="battle">Battle</option>
-</select>
-
 <button onclick="finishPolygon('world')">Finish Territory</button>
+
+<button onclick="saveMap('world')">Save Map</button>
 
 </div>
 
@@ -184,8 +142,6 @@ opacity:.9;
 
 <canvas id="outlandMap"></canvas>
 
-<canvas class="minimap" id="outlandMini" width="200" height="200"></canvas>
-
 <div class="legend" id="outlandLegend">
 
 <b>Admin Tools</b>
@@ -194,16 +150,9 @@ opacity:.9;
 
 <label>Color</label> <input type="color" onchange="setColor(this.value,'outland')" value="#ffff00">
 
-<label>Icon</label> <select onchange="setIcon(this.value,'outland')">
-
-<option value="city">City</option>
-<option value="fort">Fort</option>
-<option value="tower">Tower</option>
-<option value="house">House</option>
-<option value="battle">Battle</option>
-</select>
-
 <button onclick="finishPolygon('outland')">Finish Territory</button>
+
+<button onclick="saveMap('outland')">Save Map</button>
 
 </div>
 
@@ -227,8 +176,8 @@ document.getElementById("worldLegend").style.display="none";
 document.getElementById("outlandLegend").style.display="none";
 }
 
-initMap("worldMap","../assets/worldmap.jpg","world",admin,"worldMini");
-initMap("outlandMap","../assets/outland.jpg","outland",admin,"outlandMini");
+initMap("worldMap","../assets/worldmap.jpg","world",admin);
+initMap("outlandMap","../assets/outland.jpg","outland",admin);
 
 </script>
 
