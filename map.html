@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>LegacyWoW — Maps</title>
+  <title>LegacyWoW — World Map</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <style>
@@ -49,18 +49,14 @@
     nav a:hover{ background: rgba(255,255,255,.10); }
 
     .shell{
-      display:flex;
-      justify-content:space-around;
-      flex-wrap:wrap;
-      padding:20px;
-      gap:20px;
-    }
-    .mapContainer{
       position: relative;
-      width: 550px;
-      height: 550px;
+      height: calc(100vh - 72px);
+      min-height: 560px;
+    }
+    #map{
+      height: 100%;
+      width: 100%;
       background: #111;
-      border:1px solid rgba(255,255,255,.14);
     }
 
     /* Admin-only top-right bar */
@@ -91,7 +87,7 @@
     }
     .btn:hover{ background: rgba(255,255,255,.12); }
 
-    /* Leaflet draw tweaks */
+    /* ✅ IMPORTANT: don't wipe Leaflet-draw icons */
     .leaflet-control a{
       background-color: rgba(0,0,0,.55) !important;
       color:#fff !important;
@@ -131,8 +127,9 @@
         <div class="logo">
           <img src="/assets/logo.png" alt="LegacyWoW" onerror="this.remove();" />
         </div>
-        <div>LegacyWoW — Maps</div>
+        <div>LegacyWoW — World Map</div>
       </a>
+
       <nav>
         <a href="index.html">Home</a>
         <a href="how-to-play.html">How to Play</a>
@@ -145,38 +142,21 @@
   </header>
 
   <div class="shell">
-    <!-- World Map -->
-    <div class="mapContainer" id="worldMapContainer">
-      <div id="worldMap"></div>
-      <div class="adminbar" id="worldAdminBar">
-        <button class="btn" id="exportWorld">Export</button>
-        <button class="btn" id="clearWorld">Clear</button>
-      </div>
-    </div>
+    <div id="map"></div>
 
-    <!-- Outland Map -->
-    <div class="mapContainer" id="outlandMapContainer">
-      <div id="outlandMap"></div>
-      <div class="adminbar" id="outlandAdminBar">
-        <button class="btn" id="exportOutland">Export</button>
-        <button class="btn" id="clearOutland">Clear</button>
-      </div>
+    <!-- Admin-only controls (hidden unless ?admin=1) -->
+    <div class="adminbar" id="adminBar">
+      <button class="btn" id="exportBtn">Export</button>
+      <button class="btn" id="clearBtn">Clear</button>
     </div>
   </div>
 
   <script src="/map/app.js"></script>
 
   <script>
-    const isAdmin = new URLSearchParams(location.search).get("admin")==="1";
-
-    if(!isAdmin){
-      document.getElementById("worldAdminBar").style.display="none";
-      document.getElementById("outlandAdminBar").style.display="none";
-    }
-
-    // Initialize both maps using your original app.js functions
-    initMap("worldMap","/assets/worldmap.jpg","worldMap",isAdmin);
-    initMap("outlandMap","/assets/outland.jpg","outlandMap",isAdmin);
+    const isAdmin = new URLSearchParams(location.search).get("admin") === "1";
+    const adminBar = document.getElementById("adminBar");
+    if (!isAdmin && adminBar) adminBar.style.display = "none";
   </script>
 </body>
 </html>
