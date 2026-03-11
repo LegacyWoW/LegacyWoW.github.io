@@ -9,11 +9,45 @@
   header { background: #222; padding: 10px; display: flex; align-items: center; }
   header a { color: #eee; margin-right: 15px; text-decoration: none; }
   #mapsContainer { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; padding: 20px; }
-  .mapBox { position: relative; border: 2px solid #555; background: #000; overflow: hidden; }
-  canvas { display: block; }
-  #cityPanel { position: absolute; top: 20px; right: 20px; background: rgba(0,0,0,0.8); padding: 10px; border: 1px solid #888; display: none; z-index: 10; }
-  .adminControls { position: absolute; bottom: 20px; left: 20px; background: rgba(0,0,0,0.8); padding: 10px; border: 1px solid #888; display: none; z-index: 10; }
-  .adminControls button, .adminControls input { margin: 5px; }
+
+  /* Fixed map box size */
+  .mapBox { 
+    position: relative; 
+    border: 2px solid #555; 
+    background: #000; 
+    overflow: hidden; 
+    width: 800px;   /* fixed width */
+    height: 600px;  /* fixed height */
+  }
+
+  canvas { 
+    display: block; 
+    width: 100%;    /* scale canvas to fit container */
+    height: 100%; 
+  }
+
+  #cityPanel, #cityPanelOutland { 
+    position: absolute; 
+    top: 20px; 
+    right: 20px; 
+    background: rgba(0,0,0,0.8); 
+    padding: 10px; 
+    border: 1px solid #888; 
+    display: none; 
+    z-index: 10; 
+  }
+
+  .adminControls { 
+    position: absolute; 
+    bottom: 20px; 
+    left: 20px; 
+    background: rgba(0,0,0,0.8); 
+    padding: 10px; 
+    border: 1px solid #888; 
+    display: none; 
+    z-index: 10; 
+  }
+  .adminControls button, .adminControls input, .adminControls select { margin: 5px; }
 </style>
 </head>
 <body>
@@ -80,7 +114,6 @@
 <script>
   const isAdmin = new URLSearchParams(location.search).get("admin") === "1";
 
-  // Show admin controls only if admin
   if (isAdmin) {
     document.getElementById('worldAdmin').style.display = 'block';
     document.getElementById('outlandAdmin').style.display = 'block';
