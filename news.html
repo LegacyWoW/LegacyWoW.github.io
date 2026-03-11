@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -8,61 +9,75 @@
 <style>
 body{
 margin:0;
-font-family:system-ui,Segoe UI,Roboto,Arial,sans-serif;
+font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
 background:#0b0b0b;
 color:#e8e8e8;
 }
 
 header{
-border-bottom:1px solid rgba(255,255,255,.10);
+border-bottom:1px solid rgba(255,255,255,.1);
 background:#070707;
 }
 
-.wrap{max-width:1100px;margin:auto;padding:0 18px}
+.wrap{
+max-width:1100px;
+margin:auto;
+padding:0 18px;
+}
 
 .top{
 display:flex;
 justify-content:space-between;
 align-items:center;
-padding:16px 0;
 flex-wrap:wrap;
+padding:16px 0;
+gap:12px;
 }
 
 .brand{
-color:#fff;
-text-decoration:none;
 font-weight:900;
+letter-spacing:.4px;
+color:white;
+text-decoration:none;
 font-size:20px;
 }
 
-nav{display:flex;gap:10px;flex-wrap:wrap}
+nav{
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+}
 
 nav a{
-color:#fff;
+color:white;
 text-decoration:none;
-font-weight:800;
 font-size:13px;
+font-weight:800;
 padding:10px 12px;
 border-radius:14px;
 border:1px solid rgba(255,255,255,.18);
 background:rgba(255,255,255,.04);
 }
 
-nav a:hover{background:rgba(255,255,255,.10)}
+nav a:hover{
+background:rgba(255,255,255,.1);
+}
 
-main{padding:28px 0}
+main{
+padding:30px 0 40px;
+}
 
 .news-card{
-border:1px solid rgba(255,255,255,.10);
-border-radius:18px;
 background:rgba(255,255,255,.04);
+border:1px solid rgba(255,255,255,.1);
+border-radius:18px;
 padding:20px;
 margin-bottom:18px;
 }
 
 .news-date{
 font-size:12px;
-opacity:.7;
+opacity:.65;
 margin-bottom:6px;
 }
 
@@ -77,15 +92,20 @@ line-height:1.6;
 opacity:.95;
 }
 
+ul{
+margin:10px 0 10px 18px;
+}
+
 footer{
 border-top:1px solid rgba(255,255,255,.08);
 padding:16px 0;
 background:#070707;
 font-size:12px;
 text-align:center;
-opacity:.75;
+opacity:.7;
 }
 </style>
+
 </head>
 
 <body>
@@ -93,7 +113,9 @@ opacity:.75;
 <header>
 <div class="wrap top">
 
-<a class="brand" href="index.html">LegacyWoW</a>
+<a class="brand" href="index.html">
+LegacyWoW
+</a>
 
 <nav>
 <a href="index.html">Home</a>
@@ -110,34 +132,80 @@ opacity:.75;
 <main>
 <div class="wrap">
 
-<!-- NEW ARTICLE -->
+<!-- NEWEST ARTICLE -->
+
 <div class="news-card">
 
 <div class="news-date">March 11, 2026</div>
 
-<div class="news-title">Guild War Update & Server Improvements</div>
+<div class="news-title">Guild War Expansion & Stability Improvements</div>
 
 <div class="news-body">
 
+Guild War continues to expand across Azeroth.
+
 <p>
-Today's update introduces several improvements to <strong>Guild War</strong> and overall server stability.
+<b>Two additional outposts</b> have now been added to the Guild War system,
+bringing even more contested territory to the open world.
 </p>
 
 <ul>
-<li>Two new <strong>Outpost locations</strong> have been added to Guild War.</li>
-<li>Server <strong>latency and stability improvements</strong> have been implemented.</li>
-<li>Several <strong>quality-of-life adjustments</strong> have been made to the LegacyWoW website.</li>
+<li>2 new capturable Guild War outposts</li>
+<li>Expanded territory control opportunities for guilds</li>
 </ul>
 
 <p>
-These updates continue expanding the Guild War experience while improving performance across the realm.
+We have also deployed several technical improvements across the project.
+</p>
+
+<ul>
+<li>Server stability improvements related to latency</li>
+<li>Network optimizations for smoother gameplay</li>
+<li>Quality-of-life adjustments made to the LegacyWoW website</li>
+</ul>
+
+<p>
+Thank you to everyone participating in testing and Guild War battles across Azeroth.
+More updates are on the way.
 </p>
 
 </div>
+
 </div>
 
+<!-- MARCH 1 ARTICLE -->
 
-<!-- PREVIOUS ARTICLE -->
+<div class="news-card">
+
+<div class="news-date">March 1, 2026</div>
+
+<div class="news-title">Guild War Expansion & Server Stability Updates</div>
+
+<div class="news-body">
+
+Guild War continues to evolve across Azeroth.
+
+<p>
+<b>Six additional outposts</b> have now been added to the Guild War system.
+These locations expand the battlefield for guilds competing for territory.
+</p>
+
+<ul>
+<li>6 new capturable outpost locations</li>
+<li>Expanded Guild War control across Azeroth</li>
+</ul>
+
+<p>
+In addition, major backend improvements were implemented to improve server stability
+and enhance world phasing performance.
+</p>
+
+</div>
+
+</div>
+
+<!-- JAN 26 ARTICLE -->
+
 <div class="news-card">
 
 <div class="news-date">January 26, 2026</div>
@@ -146,25 +214,23 @@ These updates continue expanding the Guild War experience while improving perfor
 
 <div class="news-body">
 
-<p>
-Two capital cities have been added to the <strong>Guild War</strong> system:
-</p>
+Two major capitals have been added to <b>Guild War</b>.
 
 <ul>
-<li><strong>Darnassus</strong></li>
-<li><strong>Undercity</strong></li>
+<li><b>Darnassus</b></li>
+<li><b>Undercity</b></li>
 </ul>
 
 <p>
-These cities are now <strong>contested and capturable</strong> by any guild enrolled in Guild War.
-Prepare your forces and claim control of Azeroth.
+These cities are now fully contested and capturable by any guild enrolled in Guild War.
 </p>
 
 </div>
+
 </div>
 
+<!-- JAN 22 ARTICLE -->
 
-<!-- PREVIOUS ARTICLE -->
 <div class="news-card">
 
 <div class="news-date">January 22, 2026</div>
@@ -173,17 +239,32 @@ Prepare your forces and claim control of Azeroth.
 
 <div class="news-body">
 
-<p>
-The LegacyWoW stress test has concluded successfully.
-</p>
+The stress test has concluded successfully.
 
-<p>
-Closed Alpha has begun with <strong>500 invited players</strong> testing the progressive world as the server begins its journey through the original patches of World of Warcraft.
-</p>
+Closed Alpha is now open for the first <b>500 invited players</b>.
+Thank you to everyone who helped test the server.
 
 </div>
+
 </div>
 
+<!-- JAN 15 ARTICLE -->
+
+<div class="news-card">
+
+<div class="news-date">January 15, 2026</div>
+
+<div class="news-title">Welcome to LegacyWoW</div>
+
+<div class="news-body">
+
+LegacyWoW is a progressive server beginning in <b>Patch 1.0.0</b> and advancing through the expansions toward <b>Wrath of the Lich King</b>.
+
+The server also features the custom <b>Guild War</b> system where guilds fight for control of locations across the world.
+
+</div>
+
+</div>
 
 </div>
 </main>
@@ -193,7 +274,7 @@ Closed Alpha has begun with <strong>500 invited players</strong> testing the pro
 </footer>
 
 <script>
-document.getElementById("year").textContent=new Date().getFullYear();
+document.getElementById("year").textContent = new Date().getFullYear();
 </script>
 
 </body>
