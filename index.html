@@ -12,16 +12,33 @@
       --muted: rgba(232,232,232,.82);
       --line: rgba(255,255,255,.14);
       --glass: rgba(0,0,0,.45);
+
+      /* Frosty blue theme */
       --iceA: rgba(140, 205, 255, .90);
       --iceB: rgba(80,  170, 255, .85);
+
+      /* Current patch highlight */
       --accent: rgba(80, 170, 255, .98);
     }
 
     *{box-sizing:border-box}
-    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--text);}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
     a{color:#fff}
+
     .wrap{max-width:1100px;margin:0 auto;padding:0 18px}
-    #snowCanvas{position:fixed;inset:0;pointer-events:none;z-index:99999;}
+
+    /* Snow */
+    #snowCanvas{
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 99999;
+    }
 
     header{
       border-bottom:1px solid rgba(255,255,255,.10);
@@ -32,52 +49,171 @@
       background-position:center;
     }
 
-    .toprow{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:16px 0;}
-    .brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:#fff;font-weight:900;letter-spacing:.4px;}
-    .logo{width:44px;height:44px;border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,.18);background:rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;}
+    .toprow{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+      padding:16px 0;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      text-decoration:none;
+      color:#fff;
+      font-weight:900;
+      letter-spacing:.4px;
+    }
+
+    .logo{
+      width:44px;height:44px;border-radius:12px;overflow:hidden;
+      border:1px solid rgba(255,255,255,.18);
+      background:rgba(0,0,0,.35);
+      display:flex;align-items:center;justify-content:center;
+    }
     .logo img{width:100%;height:100%;object-fit:cover}
+
     nav{display:flex;gap:10px;flex-wrap:wrap}
-    nav a{color:#fff;text-decoration:none;font-weight:800;font-size:13px;padding:10px 12px;border-radius:14px;border:1px solid rgba(255,255,255,.18);background:rgba(0,0,0,.28);backdrop-filter: blur(6px);}
+    nav a{
+      color:#fff;text-decoration:none;font-weight:800;font-size:13px;
+      padding:10px 12px;border-radius:14px;
+      border:1px solid rgba(255,255,255,.18);
+      background:rgba(0,0,0,.28);
+      backdrop-filter: blur(6px);
+    }
     nav a:hover{background:rgba(0,0,0,.45)}
 
-    .hero{padding:34px 0 22px;text-align:center;}
+    .hero{
+      padding:34px 0 22px;
+      text-align:center;
+    }
     .hero h1{margin:0;font-size:44px;line-height:1.05}
-    .hero p{margin:12px auto 0;max-width:860px;color:var(--muted);font-size:15.5px;line-height:1.5;}
-    .hero-row{margin-top:18px;display:flex;justify-content:center;gap:10px;flex-wrap:wrap;}
-    .btn{border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);color:#fff;border-radius:14px;padding:12px 14px;font-weight:900;font-size:13px;cursor:pointer;text-decoration:none;}
-    .btn.primary{background:rgba(80,170,255,.12);border-color:rgba(80,170,255,.25);}
+    .hero p{
+      margin:12px auto 0;
+      max-width:860px;
+      color:var(--muted);
+      font-size:15.5px;
+      line-height:1.5;
+    }
+
+    .hero-row{
+      margin-top:18px;
+      display:flex;
+      justify-content:center;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .btn{
+      border:1px solid rgba(255,255,255,.18);
+      background:rgba(255,255,255,.06);
+      color:#fff;
+      border-radius:14px;
+      padding:12px 14px;
+      font-weight:900;
+      font-size:13px;
+      cursor:pointer;
+      text-decoration:none;
+    }
+    .btn.primary{
+      background:rgba(80,170,255,.12);
+      border-color:rgba(80,170,255,.25);
+    }
     .btn.ghost{background:rgba(0,0,0,.28)}
 
-    .status-row{margin:18px auto 0;max-width:980px;display:grid;grid-template-columns:1fr 1fr;gap:14px;text-align:left;}
-    .status-row-wide{margin:14px auto 0;max-width:980px;display:grid;grid-template-columns:1fr;gap:14px;text-align:left;}
-    .status-row-progress{margin:14px auto 0;max-width:1400px;width:100%;display:grid;grid-template-columns:1fr;gap:14px;text-align:left;}
-    .box{padding:18px 20px;border-radius:18px;border:1px solid var(--line);background:var(--glass);backdrop-filter:blur(8px);box-shadow:0 16px 40px rgba(0,0,0,.45);}
-    .title{font-size:13px;font-weight:900;letter-spacing:.6px;margin-bottom:10px;opacity:.9;text-transform:uppercase;}
-    .status-online{display:flex;align-items:center;gap:10px;font-size:18px;font-weight:900;color:rgba(140,205,255,.95);}
-    .dot{width:12px;height:12px;border-radius:50%;background:rgba(140,205,255,.95);box-shadow:0 0 12px rgba(140,205,255,.7);animation:pulse 1.8s infinite;}
-    @keyframes pulse{0%{transform:scale(1);opacity:1}50%{transform:scale(1.4);opacity:.6}100%{transform:scale(1);opacity:1}}
-    .subline{margin-top:10px;padding:10px 12px;border-radius:14px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:13px;opacity:.92;}
-    .players{margin-top:10px;font-size:14px}
-    .updated{margin-top:8px;font-size:12.5px;opacity:.75}
-    .realm-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px 14px;}
-    .kv{border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);border-radius:14px;padding:10px 12px;}
-    .k{font-size:11.5px;font-weight:900;opacity:.7;text-transform:uppercase}
-    .v{margin-top:4px;font-size:14px;font-weight:900}
-    .progress-wrap{margin-top:12px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);border-radius:14px;padding:12px;}
-    .progress-labels{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:12.5px;opacity:.85;margin-bottom:10px;}
-    .chip{display:inline-block;padding:4px 8px;border-radius:10px;border:1px solid rgba(255,255,255,.14);background:rgba(0,0,0,.25);font-weight:900;letter-spacing:.2px;white-space:nowrap;}
-    .timeline{position:relative;height:78px;width:100%;}
-    .bar{position:absolute;left:0;right:0;top:28px;height:12px;border-radius:999px;border:1px solid rgba(255,255,255,.14);background:rgba(0,0,0,.35);overflow:hidden;}
-    .bar-fill{height:100%;width:3%;border-radius:999px;position:relative;transition: width .5s ease;background: linear-gradient(90deg,var(--iceA),var(--iceB));box-shadow:0 0 18px rgba(140,205,255,.18), inset 0 0 8px rgba(255,255,255,.12);}
-    .bar-fill::before{content:"";position:absolute;inset:-20px;background:linear-gradient(110deg, rgba(255,255,255,0) 0%, rgba(255,255,255,.18) 18%, rgba(255,255,255,0) 36%);transform: translateX(-60%);animation: shimmer 2.4s linear infinite;pointer-events:none;opacity:.85;}
-    .bar-fill::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 20% 40%, rgba(255,255,255,.12) 0 2px, rgba(255,255,255,0) 3px),radial-gradient(circle at 65% 55%, rgba(255,255,255,.10) 0 1.5px, rgba(255,255,255,0) 3px),radial-gradient(circle at 85% 25%, rgba(255,255,255,.09) 0 1.5px, rgba(255,255,255,0) 3px);opacity:.55;mix-blend-mode: screen;pointer-events:none;}
-    @keyframes shimmer{0%{transform: translateX(-70%)}100%{transform: translateX(70%)}}
-    .tick{position:absolute;top:26px;width:2px;height:16px;background: rgba(255,255,255,.32);border-radius:2px;transform: translateX(-1px);}
-    .tick.current{height:24px;top:22px;background: var(--accent);box-shadow: 0 0 16px rgba(80,170,255,.45);}
-    .major-label{position:absolute;top:52px;transform: translateX(-50%);font-size:12px;font-weight:900;opacity:.88;white-space:nowrap;padding:3px 8px;border-radius:10px;border:1px solid rgba(255,255,255,.12);background: rgba(0,0,0,.22);}
-    .current-patch-label{position:absolute;top:0px;transform: translateX(-50%);font-size:12px;font-weight:900;white-space:nowrap;padding:3px 8px;border-radius:10px;border:1px solid rgba(80,170,255,.65);background: rgba(0,0,0,.30);box-shadow: 0 0 16px rgba(80,170,255,.18);color:#fff;}
-    footer{border-top:1px solid rgba(255,255,255,.08);padding:16px 0;background:#070707;font-size:12.5px;opacity:.75;text-align:center;}
-    @media(max-width:900px){.status-row{grid-template-columns:1fr}.hero h1{font-size:36px}.status-row-progress{max-width:1100px}.major-label{font-size:11px}.current-patch-label{font-size:11px}}
+    .status-row{
+      margin:18px auto 0;
+      max-width:980px;
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:14px;
+      text-align:left;
+    }
+
+    .status-row-wide{
+      margin:14px auto 0;
+      max-width:980px;
+      display:grid;
+      grid-template-columns:1fr;
+      gap:14px;
+      text-align:left;
+    }
+
+    .status-row-progress{
+      margin:14px auto 0;
+      max-width:1400px;
+      width:100%;
+      display:grid;
+      grid-template-columns:1fr;
+      gap:14px;
+      text-align:left;
+    }
+
+    .box{
+      padding:18px 20px;
+      border-radius:18px;
+      border:1px solid var(--line);
+      background:var(--glass);
+      backdrop-filter:blur(8px);
+      box-shadow:0 16px 40px rgba(0,0,0,.45);
+    }
+
+    .title{
+      font-size:13px;
+      font-weight:900;
+      letter-spacing:.6px;
+      margin-bottom:10px;
+      opacity:.9;
+      text-transform:uppercase;
+    }
+
+    footer{
+      border-top:1px solid rgba(255,255,255,.08);
+      padding:16px 0;
+      background:#070707;
+      font-size:12.5px;
+      opacity:.75;
+      text-align:center;
+    }
+
+    /* War Maps Section */
+    .war-maps{
+      padding:40px 18px;
+      max-width:1100px;
+      margin:0 auto;
+      color:#fff;
+    }
+    .war-maps h2{margin-bottom:20px;}
+    .war-maps-row{
+      display:flex;
+      gap:20px;
+      flex-wrap:wrap;
+    }
+    .war-map-box{
+      flex:1;
+      min-width:250px;
+      text-align:center;
+      text-decoration:none;
+      color:#fff;
+    }
+    .war-map-box div{
+      background:#111;
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:12px;
+      padding:20px;
+    }
+    .war-map-box img{
+      width:100%;
+      border-radius:8px;
+      margin-top:10px;
+    }
+
+    @media(max-width:900px){
+      .hero h1{font-size:36px}
+    }
   </style>
 </head>
 
@@ -85,52 +221,99 @@
 <canvas id="snowCanvas"></canvas>
 
 <header>
-  <div class="wrap">
-    <div class="toprow">
-      <a class="brand" href="index.html">
-        <div class="logo"><img src="/assets/logo.png" alt="LegacyWoW" onerror="this.remove();"></div>
-        <div>LegacyWoW</div>
-      </a>
+<div class="wrap">
+  <div class="toprow">
+    <a class="brand" href="index.html">
+      <div class="logo"><img src="/assets/logo.png" alt="LegacyWoW" onerror="this.remove();"></div>
+      <div>LegacyWoW</div>
+    </a>
 
-      <nav>
-        <a href="how-to-play.html">How to Play</a>
-        <a href="downloads.html">Downloads</a>
-        <a href="account.html">Create Account</a>
-        <a href="news.html">News</a>
-        <a href="rules.html">Rules</a>
-        <a href="faq.html">FAQ</a>
-        <a href="map.html">Azeroth Map</a>
-        <a href="map2.html">Outland Map</a>
-      </nav>
+    <nav>
+      <a href="how-to-play.html">How to Play</a>
+      <a href="downloads.html">Downloads</a>
+      <a href="account.html">Create Account</a>
+      <a href="news.html">News</a>
+      <a href="rules.html">Rules</a>
+      <a href="faq.html">FAQ</a>
+      <a href="map.html">Map</a>
+    </nav>
+  </div>
+
+  <div class="hero">
+    <h1>Progressive Vanilla → Wrath</h1>
+    <p>LegacyWoW is a long-term progressive server with custom systems and open-world conflict.</p>
+
+    <div class="hero-row">
+      <a class="btn primary" href="how-to-play.html">Get Started</a>
+      <a class="btn" href="downloads.html">Downloads</a>
+      <a class="btn" href="map.html">World Map</a>
+      <button class="btn ghost" id="snowToggle" type="button">Snow: ON</button>
     </div>
+  </div>
+</div>
+</header>
 
-    <div class="hero">
-      <h1>Progressive Vanilla → Wrath</h1>
-      <p>LegacyWoW is a long-term progressive server with custom systems and open-world conflict.</p>
-
-      <div class="hero-row">
-        <a class="btn primary" href="how-to-play.html">Get Started</a>
-        <a class="btn" href="downloads.html">Downloads</a>
-        <a class="btn" href="map.html">World Map</a>
-        <button class="btn ghost" id="snowToggle" type="button">Snow: ON</button>
+<!-- ======= New War Maps Section ======= -->
+<section class="war-maps">
+  <h2>War Maps</h2>
+  <div class="war-maps-row">
+    <a href="map.html" class="war-map-box">
+      <div>
+        <h3>Azeroth War Map</h3>
+        <img src="assets/azeroth_thumbnail.png" alt="Azeroth Map">
       </div>
+    </a>
 
-      <!-- ========================= WAR MAPS ========================= -->
-      <section style="padding:40px 0;max-width:1100px;margin:40px auto 0;color:#fff;">
-        <h2 style="margin-bottom:20px;">War Maps</h2>
-        <div style="display:flex;gap:20px;flex-wrap:wrap;justify-content:center;">
-          <a href="map.html" style="flex:1;min-width:250px;text-align:center;text-decoration:none;color:#fff;">
-            <div style="background:#111;border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:20px;">
-              <h3>Azeroth War Map</h3>
-              <img src="assets/azeroth_thumbnail.png" alt="Azeroth Map" style="width:100%;border-radius:8px;margin-top:10px;">
-            </div>
-          </a>
-          <a href="map2.html" style="flex:1;min-width:250px;text-align:center;text-decoration:none;color:#fff;">
-            <div style="background:#111;border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:20px;">
-              <h3>Outland War Map</h3>
-              <img src="assets/outland_thumbnail.png" alt="Outland Map" style="width:100%;border-radius:8px;margin-top:10px;">
-            </div>
-          </a>
-        </div>
-      </section>
-      <!-- ========================= END WAR MAPS ========================= -->
+    <a href="map2.html" class="war-map-box">
+      <div>
+        <h3>Outland War Map</h3>
+        <img src="assets/outland_thumbnail.png" alt="Outland Map">
+      </div>
+    </a>
+  </div>
+</section>
+<!-- =================================== -->
+
+<footer>
+  © <span id="year"></span> LegacyWoW — Not affiliated with Blizzard Entertainment
+</footer>
+
+<script>
+  // ==============================
+  // Same scripts from old index.html
+  // ==============================
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  // ===== Snow toggle logic =====
+  let snowOn=localStorage.getItem("snow")!=="off";
+  const btn=document.getElementById("snowToggle");
+  const c=document.getElementById("snowCanvas");
+  const x=c.getContext("2d");
+  const flakes=[];
+  for(let i=0;i<200;i++) flakes.push({x:Math.random()*innerWidth,y:Math.random()*innerHeight,r:1+Math.random()*3,v:1+Math.random()*2});
+
+  function resize(){c.width=innerWidth;c.height=innerHeight}
+  addEventListener("resize",resize);resize();
+
+  function drawSnow(){
+    requestAnimationFrame(drawSnow);
+    if(!snowOn){x.clearRect(0,0,c.width,c.height);return;}
+    x.clearRect(0,0,c.width,c.height);
+    x.fillStyle="#fff";
+    for(const f of flakes){
+      f.y+=f.v;
+      if(f.y>innerHeight){f.y=-5;f.x=Math.random()*innerWidth;}
+      x.beginPath();x.arc(f.x,f.y,f.r,0,Math.PI*2);x.fill();
+    }
+  }
+  drawSnow();
+
+  function syncSnow(){
+    btn.textContent=snowOn?"Snow: ON":"Snow: OFF";
+    localStorage.setItem("snow",snowOn?"on":"off");
+  }
+  btn.onclick=()=>{snowOn=!snowOn;syncSnow()};
+  syncSnow();
+</script>
+</body>
+</html>
