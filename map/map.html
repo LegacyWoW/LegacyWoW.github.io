@@ -2,126 +2,134 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>LegacyWoW Maps</title>
-<link rel="stylesheet" href="/assets/style.css">
+<title>LegacyWoW — Maps</title>
+<link rel="stylesheet" href="/assets/map-style.css">
 <style>
-  body { background: #111; color: #eee; font-family: Arial, sans-serif; margin: 0; }
-  header { background: #222; padding: 10px; display: flex; align-items: center; }
-  header a { color: #eee; margin-right: 15px; text-decoration: none; }
-  #mapsContainer { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; padding: 20px; }
-
-  /* Fixed map box size */
+  body { margin:0; font-family: Arial, sans-serif; background:#111; color:#fff; }
+  header { background:#222; padding:10px; display:flex; align-items:center; justify-content:space-between; }
+  header a { color:#fff; text-decoration:none; margin-right:15px; }
   .mapBox { 
     position: relative; 
     border: 2px solid #555; 
-    background: #000; 
     overflow: hidden; 
-    width: 1000px;   /* fixed width */
-    height: 750px;  /* fixed height */
+    width: 1100px; 
+    height: 850px; 
+    margin: 20px auto; 
+    background:#000;
   }
-
-  canvas { 
-    display: block; 
-    width: 100%;    /* scale canvas to fit container */
-    height: 100%; 
+  .minimap {
+    position: absolute;
+    top:10px;
+    right:10px;
+    width:200px;
+    height:200px;
+    border:2px solid #888;
+    background:#222;
+    z-index:1000;
   }
-
-  #cityPanel, #cityPanelOutland { 
-    position: absolute; 
-    top: 20px; 
-    right: 20px; 
-    background: rgba(0,0,0,0.8); 
-    padding: 10px; 
-    border: 1px solid #888; 
-    display: none; 
-    z-index: 10; 
+  .cityPanel {
+    position:absolute;
+    background:#222;
+    padding:8px;
+    border:1px solid #fff;
+    display:none;
+    z-index:2000;
+    pointer-events:none;
   }
-
-  .adminControls { 
-    position: absolute; 
-    bottom: 20px; 
-    left: 20px; 
-    background: rgba(0,0,0,0.8); 
-    padding: 10px; 
-    border: 1px solid #888; 
-    display: none; 
-    z-index: 10; 
+  #adminControls {
+    text-align:center;
+    margin:10px;
   }
-  .adminControls button, .adminControls input, .adminControls select { margin: 5px; }
+  #adminControls button, select, input { margin:5px; }
 </style>
 </head>
 <body>
 <header>
-  <a href="index.html">Back to LegacyWoW</a>
-  <div>LegacyWoW Maps</div>
+  <a href="index.html">← Back to LegacyWoW Home</a>
+  <nav>
+    <a href="how-to-play.html">How to Play</a>
+    <a href="news.html">News</a>
+    <a href="map.html">Map</a>
+  </nav>
 </header>
 
-<div id="mapsContainer">
-  <div class="mapBox" id="worldMapBox">
-    <canvas id="worldMap"></canvas>
-    <div id="cityPanel"></div>
-    <div class="adminControls" id="worldAdmin">
-      <label>Tool: 
-        <select onchange="setTool(this.value,'world')">
-          <option value="">None</option>
-          <option value="marker">Marker</option>
-          <option value="polygon">Polygon</option>
-        </select>
-      </label>
-      <label>Icon: 
-        <select onchange="setIcon(this.value,'world')">
-          <option value="city">City</option>
-          <option value="town">Town</option>
-          <option value="fort">Fort</option>
-          <option value="battle">Battle</option>
-          <option value="tower">Tower</option>
-        </select>
-      </label>
-      <label>Color: <input type="color" onchange="setColor(this.value,'world')" value="#ff0"></label>
-      <button onclick="finishPolygon('world')">Finish Polygon</button>
-      <button onclick="saveMap('world')">Save Map</button>
-    </div>
-  </div>
+<div class="mapBox" id="worldMapBox">
+  <canvas id="worldMapCanvas" width="1100" height="850"></canvas>
+  <div class="minimap" id="worldMinimap"></div>
+  <div class="cityPanel" id="cityInfoPanel"></div>
+</div>
 
-  <div class="mapBox" id="outlandMapBox">
-    <canvas id="outlandMap"></canvas>
-    <div id="cityPanelOutland"></div>
-    <div class="adminControls" id="outlandAdmin">
-      <label>Tool: 
-        <select onchange="setTool(this.value,'outland')">
-          <option value="">None</option>
-          <option value="marker">Marker</option>
-          <option value="polygon">Polygon</option>
-        </select>
-      </label>
-      <label>Icon: 
-        <select onchange="setIcon(this.value,'outland')">
-          <option value="city">City</option>
-          <option value="town">Town</option>
-          <option value="fort">Fort</option>
-          <option value="battle">Battle</option>
-          <option value="tower">Tower</option>
-        </select>
-      </label>
-      <label>Color: <input type="color" onchange="setColor(this.value,'outland')" value="#ff0"></label>
-      <button onclick="finishPolygon('outland')">Finish Polygon</button>
-      <button onclick="saveMap('outland')">Save Map</button>
-    </div>
-  </div>
+<div class="mapBox" id="outlandMapBox">
+  <canvas id="outlandMapCanvas" width="1100" height="850"></canvas>
+  <div class="minimap" id="outlandMinimap"></div>
+  <div class="cityPanel" id="cityInfoPanel2"></div>
+</div>
+
+<div id="adminControls" style="display:none;">
+  <button onclick="setTool('marker','worldMap')">Marker</button>
+  <button onclick="setTool('polygon','worldMap')">Polygon</button>
+  <select onchange="setIcon(this.value,'worldMap')">
+    <option value="city">City</option>
+    <option value="town">Town</option>
+    <option value="fort">Fort</option>
+    <option value="battle">Battle</option>
+    <option value="tower">Tower</option>
+  </select>
+  <input type="color" onchange="setColor(this.value,'worldMap')" value="#ff0">
+  <button onclick="finishPolygon('worldMap')">Finish Polygon</button>
+  <button onclick="saveMap('worldMap')">Save Map</button>
 </div>
 
 <script src="/map/map-engine.js"></script>
 <script>
   const isAdmin = new URLSearchParams(location.search).get("admin") === "1";
-
-  if (isAdmin) {
-    document.getElementById('worldAdmin').style.display = 'block';
-    document.getElementById('outlandAdmin').style.display = 'block';
-  }
+  if(isAdmin) document.getElementById('adminControls').style.display='block';
 
   // Initialize maps
-  initMap("worldMap","/assets/worldmap.jpg","world",isAdmin);
-  initMap("outlandMap","/assets/outland.jpg","outland",isAdmin);
+  initMap('worldMapCanvas','/assets/worldmap.jpg','worldMap',isAdmin);
+  initMap('outlandMapCanvas','/assets/outland.jpg','outlandMap',isAdmin);
+
+  // Example city data
+  const cities = [
+    {map:'worldMap',x:200,y:300,name:'Stormwind',owner:'Alliance',influence:80,status:'Safe'},
+    {map:'worldMap',x:500,y:400,name:'Orgrimmar',owner:'Horde',influence:70,status:'Under Attack'},
+    {map:'outlandMap',x:300,y:250,name:'Shattrath',owner:'Neutral',influence:50,status:'Peaceful'}
+  ];
+
+  // Display city panels
+  function showCityPanel(city,e){
+    const panel = document.getElementById(city.map==='worldMap'?'cityInfoPanel':'cityInfoPanel2');
+    panel.style.left = e.clientX+10+'px';
+    panel.style.top = e.clientY+10+'px';
+    panel.innerHTML = `<b>${city.name}</b><br>Owner: ${city.owner}<br>Influence: ${city.influence}%<br>Status: ${city.status}`;
+    panel.style.display='block';
+  }
+
+  function hideCityPanels(){
+    document.getElementById('cityInfoPanel').style.display='none';
+    document.getElementById('cityInfoPanel2').style.display='none';
+  }
+
+  // Draw city markers
+  function drawCities(){
+    cities.forEach(c=>{
+      const mapObj = maps[c.map];
+      const ctx = mapObj.ctx;
+      const icon = new Image();
+      icon.src = markerIcons['city'];
+      icon.onload = ()=>ctx.drawImage(icon,c.x*mapObj.zoom+mapObj.panX-16,c.y*mapObj.zoom+mapObj.panY-16,32,32);
+
+      // Add hover
+      mapObj.canvas.addEventListener('mousemove', e=>{
+        const x = (e.clientX - mapObj.canvas.getBoundingClientRect().left - mapObj.panX)/mapObj.zoom;
+        const y = (e.clientY - mapObj.canvas.getBoundingClientRect().top - mapObj.panY)/mapObj.zoom;
+        if(Math.abs(x-c.x)<16 && Math.abs(y-c.y)<16) showCityPanel(c,e);
+        else hideCityPanels();
+      });
+    });
+  }
+
+  drawCities();
 </script>
 </body>
 </html>
