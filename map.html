@@ -12,7 +12,7 @@
     position: relative; 
     border: 2px solid #555; 
     overflow: hidden; 
-    width: 1150px; 
+    width: 1200px; 
     height: 900px; 
     margin: 20px auto; 
     background:#000;
@@ -26,10 +26,7 @@
     z-index:2000;
     pointer-events:none;
   }
-  #adminControls {
-    text-align:center;
-    margin:10px;
-  }
+  #adminControls { text-align:center; margin:10px; }
   #adminControls button, select, input { margin:5px; }
 </style>
 </head>
@@ -44,12 +41,12 @@
 </header>
 
 <div class="mapBox" id="worldMapBox">
-  <canvas id="worldMapCanvas" width="1150" height="900"></canvas>
+  <canvas id="worldMapCanvas" width="1200" height="900"></canvas>
   <div class="cityPanel" id="cityInfoPanel"></div>
 </div>
 
 <div class="mapBox" id="outlandMapBox">
-  <canvas id="outlandMapCanvas" width="1150" height="900"></canvas>
+  <canvas id="outlandMapCanvas" width="1200" height="900"></canvas>
   <div class="cityPanel" id="cityInfoPanel2"></div>
 </div>
 
@@ -101,7 +98,7 @@ const mapLoadCenter = ()=>{
 maps['worldMap'].img.onload = mapLoadCenter;
 maps['outlandMap'].img.onload = mapLoadCenter;
 
-// Correct drag for zoomed maps
+// Correct drag for admins with zoom scaling
 function setupDrag(mapKey){
   const map = maps[mapKey];
   let dragging=false, lastX=0, lastY=0;
@@ -115,12 +112,15 @@ function setupDrag(mapKey){
 
   map.canvas.addEventListener('mousemove', e=>{
     if(!dragging) return;
-    const dx = (e.clientX - lastX) / map.zoom;  // scale by zoom
-    const dy = (e.clientY - lastY) / map.zoom;
-    map.panX += dx * map.zoom;
-    map.panY += dy * map.zoom;
+    const dx = (e.clientX - lastX)/map.zoom;
+    const dy = (e.clientY - lastY)/map.zoom;
+
+    map.panX += dx*map.zoom;
+    map.panY += dy*map.zoom;
+
     lastX = e.clientX;
     lastY = e.clientY;
+
     drawMap(mapKey);
     drawCities();
     drawPolygons(mapKey);
@@ -133,7 +133,7 @@ function setupDrag(mapKey){
 setupDrag('worldMap');
 setupDrag('outlandMap');
 
-// Example cities
+// Example city data
 const cities=[
   {map:'worldMap',x:200,y:300,name:'Stormwind',owner:'Alliance',influence:80,status:'Safe'},
   {map:'worldMap',x:500,y:400,name:'Orgrimmar',owner:'Horde',influence:70,status:'Under Attack'},
@@ -170,17 +170,16 @@ function drawCities(){
   });
 }
 
-// Editable polygons for admins
+// Enable polygon editing for admins on both maps
 function enablePolygonEditing(mapKey){
   if(!isAdmin) return;
   const map = maps[mapKey];
-  map.editPolygons = true; // map-engine.js should respect this
-  map.namePolygons = true; // enable naming
+  map.editPolygons = true;       // Allow creating/editing polygons
+  map.namePolygons = true;       // Prompt for name on finish
 }
 
 enablePolygonEditing('worldMap');
 enablePolygonEditing('outlandMap');
-
 </script>
 </body>
 </html>
