@@ -6,12 +6,13 @@ const canvas=document.getElementById(canvasId)
 const ctx=canvas.getContext("2d")
 
 const img=new Image()
-img.src=imgSrc
 
 img.onload=()=>{
 
-canvas.width=1000
-canvas.height=1000
+/* match canvas to real image size */
+
+canvas.width=img.width
+canvas.height=img.height
 
 maps[key]={
 canvas,
@@ -33,7 +34,7 @@ admin:isAdmin
 
 drawMap(key)
 
-/* MOUSE WHEEL ZOOM */
+/* mouse wheel zoom */
 
 canvas.addEventListener("wheel",e=>{
 
@@ -46,7 +47,7 @@ drawMap(key)
 
 })
 
-/* DRAG PAN */
+/* drag pan */
 
 canvas.addEventListener("mousedown",e=>{
 
@@ -86,45 +87,11 @@ canvas.addEventListener("click",e=>handleClick(e,key))
 
 }
 
-}
+/* load image AFTER handlers are defined */
 
-function handleClick(e,key){
-
-const map=maps[key]
-
-const rect=map.canvas.getBoundingClientRect()
-
-const x=(e.clientX-rect.left-map.offsetX)/map.zoom
-const y=(e.clientY-rect.top-map.offsetY)/map.zoom
-
-if(map.tool==="marker"){
-
-map.markers.push({x,y})
+img.src=imgSrc
 
 }
-
-if(map.tool==="polygon"){
-
-map.current.push({x,y})
-
-}
-
-drawMap(key)
-
-}
-
-function drawMap(key){
-
-const map=maps[key]
-
-map.ctx.clearRect(0,0,map.canvas.width,map.canvas.height)
-
-map.ctx.save()
-
-map.ctx.translate(map.offsetX,map.offsetY)
-map.ctx.scale(map.zoom,map.zoom)
-
-map.ctx.drawImage(map.img,0,0)
 
 /* EXISTING TERRITORIES */
 
