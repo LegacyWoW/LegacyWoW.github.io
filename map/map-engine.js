@@ -14,40 +14,55 @@ function initMap(canvasId, imgSrc, key, isAdmin) {
   const img = new Image();
 
   img.onload = () => {
-    // Make canvas size match image exactly
+    // Canvas matches image size
     canvas.width = img.width;
     canvas.height = img.height;
 
     maps[key] = {
-      canvas, ctx, img,
-      zoom: 1, offsetX: 0, offsetY: 0,
-      drag: false, dragStartX: 0, dragStartY: 0,
-      markers: [], polygons: [], current: [],
-      tool: null, icon: "city", color: "#ffff00",
-      admin: isAdmin, selectedPolygon: null
+      canvas,
+      ctx,
+      img,
+      zoom: 1,
+      offsetX: 0,
+      offsetY: 0,
+      drag: false,
+      dragStartX: 0,
+      dragStartY: 0,
+      markers: [],
+      polygons: [],
+      current: [],
+      tool: null,
+      icon: "city",
+      color: "#ffff00",
+      admin: isAdmin
     };
 
     drawMap(key);
 
-    // Zoom with mouse wheel (centered)
+    // Zoom with mouse wheel (clamped)
     canvas.addEventListener("wheel", e => {
       e.preventDefault();
-      const rect = canvas.getBoundingClientRect();
       const map = maps[key];
+      const rect = canvas.getBoundingClientRect();
       const mouseX = (e.clientX - rect.left - map.offsetX) / map.zoom;
       const mouseY = (e.clientY - rect.top - map.offsetY) / map.zoom;
 
       const zoomFactor = 1.15;
-      map.zoom *= e.deltaY < 0 ? zoomFactor : 1 / zoomFactor;
+      let newZoom = map.zoom * (e.deltaY < 0 ? zoomFactor : 1 / zoomFactor);
 
-      // adjust offset so zoom centers on mouse
+      // Clamp zoom between 1 and 5
+      newZoom = Math.max(1, Math.min(5, newZoom));
+
+      map.zoom = newZoom;
+
+      // Offset so zoom centers on mouse
       map.offsetX = e.clientX - rect.left - mouseX * map.zoom;
       map.offsetY = e.clientY - rect.top - mouseY * map.zoom;
 
       drawMap(key);
     });
 
-    // Drag panning
+    // Dragging
     canvas.addEventListener("mousedown", e => {
       maps[key].drag = true;
       maps[key].dragStartX = e.clientX;
@@ -58,7 +73,7 @@ function initMap(canvasId, imgSrc, key, isAdmin) {
     canvas.addEventListener("mousemove", e => {
       const map = maps[key];
       if (!map.drag) return;
-      const speed = 10;
+      const speed = 10; // increased drag speed
       map.offsetX += (e.clientX - map.dragStartX) * speed;
       map.offsetY += (e.clientY - map.dragStartY) * speed;
       map.dragStartX = e.clientX;
@@ -66,6 +81,7 @@ function initMap(canvasId, imgSrc, key, isAdmin) {
       drawMap(key);
     });
 
+    // Click handling
     canvas.addEventListener("click", e => handleClick(e, key));
   };
 
@@ -76,11 +92,13 @@ function handleClick(e, key) {
   const map = maps[key];
   const rect = map.canvas.getBoundingClientRect();
 
-  // Correct coordinates for CSS scaling
+  // Adjust for CSS scaling + pan/zoom
   const scaleX = map.canvas.width / rect.width;
   const scaleY = map.canvas.height / rect.height;
   const x = (e.clientX - rect.left) * scaleX - map.offsetX;
   const y = (e.clientY - rect.top) * scaleY - map.offsetY;
+
+  if (!map.admin) return; // Only admin can edit
 
   if (map.tool === "polygon") {
     map.current.push({ x, y });
@@ -89,8 +107,12 @@ function handleClick(e, key) {
   if (map.tool === "marker") {
     const name = prompt("Enter marker name:", "City");
     map.markers.push({
-      x, y, type: map.icon, name,
-      owner: "Neutral", influence: "0%", status: "Peace"
+      x, y,
+      type: map.icon,
+      name,
+      owner: "Neutral",
+      influence: "0%",
+      status: "Peace"
     });
   }
 
@@ -103,7 +125,7 @@ function checkCityClick(x, y, key) {
   const map = maps[key];
   let clicked = false;
 
-  map.markers.forEach(m => {
+  map.markers.forEach((m, idx) => {
     if (Math.hypot(m.x - x, m.y - y) < 20) {
       clicked = true;
       panel.style.display = "block";
@@ -112,12 +134,11 @@ function checkCityClick(x, y, key) {
         "Owner: " + m.owner + "<br>" +
         "Influence: " + m.influence + "<br>" +
         "Status: " + m.status +
-        "<br><button onclick='deleteMarker(\"" + key + "\"," + map.markers.indexOf(m) + ")'>Delete</button>";
+        "<br><button onclick='deleteMarker(\"" + key + "\"," + idx + ")'>Delete</button>";
     }
   });
 
   map.polygons.forEach((p, idx) => {
-    // Simple bounding box click for polygon deletion
     const xs = p.points.map(pt => pt.x);
     const ys = p.points.map(pt => pt.y);
     const minX = Math.min(...xs), maxX = Math.max(...xs);
@@ -159,7 +180,7 @@ function drawMap(key) {
     map.ctx.lineWidth = 2;
     map.ctx.stroke();
 
-    // Draw points
+    // Draw polygon points
     p.points.forEach(pt => {
       map.ctx.beginPath();
       map.ctx.arc(pt.x, pt.y, 10, 0, Math.PI * 2);
@@ -168,7 +189,7 @@ function drawMap(key) {
     });
   });
 
-  // Draw current polygon being drawn
+  // Current polygon being drawn
   if (map.current.length > 0) {
     map.ctx.beginPath();
     map.ctx.moveTo(map.current[0].x, map.current[0].y);
@@ -195,7 +216,7 @@ function drawMap(key) {
   map.ctx.restore();
 }
 
-// Polygon functions
+// Tools
 function setTool(tool, key) { maps[key].tool = tool; }
 function setIcon(icon, key) { maps[key].icon = icon; }
 function setColor(color, key) { maps[key].color = color; }
