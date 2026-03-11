@@ -1,20 +1,9 @@
-const maps={}
+const maps = {}
 
-const icons={
-city:"../assets/icons/city.png",
-fort:"../assets/icons/fort.png",
-tower:"../assets/icons/tower.png",
-house:"../assets/icons/house.png",
-battle:"../assets/icons/battle.png"
-}
-
-function initMap(canvasId,imgSrc,key,isAdmin,miniId){
+function initMap(canvasId,imgSrc,key,isAdmin){
 
 const canvas=document.getElementById(canvasId)
 const ctx=canvas.getContext("2d")
-
-const mini=document.getElementById(miniId)
-const mctx=mini.getContext("2d")
 
 const img=new Image()
 img.src=imgSrc
@@ -25,46 +14,63 @@ canvas.width=1000
 canvas.height=1000
 
 maps[key]={
-canvas,ctx,img,
+canvas,
+ctx,
+img,
 zoom:1,
 offsetX:0,
 offsetY:0,
 drag:false,
+dragStartX:0,
+dragStartY:0,
 markers:[],
 polygons:[],
 current:[],
 tool:null,
 color:"#ffff00",
-icon:"city",
-admin:isAdmin,
-mini,mctx
+admin:isAdmin
 }
 
 drawMap(key)
+
+/* MOUSE WHEEL ZOOM */
 
 canvas.addEventListener("wheel",e=>{
 
 e.preventDefault()
 
-if(e.deltaY<0) zoomMap(key,1.1)
-else zoomMap(key,.9)
+if(e.deltaY<0) maps[key].zoom*=1.1
+else maps[key].zoom*=0.9
+
+drawMap(key)
 
 })
+
+/* DRAG PAN */
 
 canvas.addEventListener("mousedown",e=>{
+
 maps[key].drag=true
+maps[key].dragStartX=e.clientX
+maps[key].dragStartY=e.clientY
+
 })
 
-canvas.addEventListener("mouseup",e=>{
+canvas.addEventListener("mouseup",()=>{
+
 maps[key].drag=false
+
 })
 
 canvas.addEventListener("mousemove",e=>{
 
 if(maps[key].drag){
 
-maps[key].offsetX+=e.movementX
-maps[key].offsetY+=e.movementY
+maps[key].offsetX += e.clientX - maps[key].dragStartX
+maps[key].offsetY += e.clientY - maps[key].dragStartY
+
+maps[key].dragStartX = e.clientX
+maps[key].dragStartY = e.clientY
 
 drawMap(key)
 
@@ -93,13 +99,7 @@ const y=(e.clientY-rect.top-map.offsetY)/map.zoom
 
 if(map.tool==="marker"){
 
-map.markers.push({
-x,y,
-icon:map.icon,
-name:"City",
-owner:"Neutral",
-battle:"Peace"
-})
+map.markers.push({x,y})
 
 }
 
@@ -126,23 +126,24 @@ map.ctx.scale(map.zoom,map.zoom)
 
 map.ctx.drawImage(map.img,0,0)
 
-/* POLYGONS */
+/* EXISTING TERRITORIES */
 
-map.polygons.forEach(p=>{
+map.polygons.forEach(poly=>{
 
 map.ctx.beginPath()
-map.ctx.moveTo(p.points[0].x,p.points[0].y)
 
-for(let i=1;i<p.points.length;i++){
+map.ctx.moveTo(poly.points[0].x,poly.points[0].y)
 
-map.ctx.lineTo(p.points[i].x,p.points[i].y)
+for(let i=1;i<poly.points.length;i++){
+
+map.ctx.lineTo(poly.points[i].x,poly.points[i].y)
 
 }
 
 map.ctx.closePath()
 
 map.ctx.globalAlpha=.35
-map.ctx.fillStyle=p.color
+map.ctx.fillStyle=poly.color
 map.ctx.fill()
 
 map.ctx.globalAlpha=1
@@ -151,42 +152,54 @@ map.ctx.stroke()
 
 })
 
+/* CURRENT POLYGON PREVIEW */
+
+if(map.current.length>0){
+
+map.ctx.beginPath()
+
+map.ctx.moveTo(map.current[0].x,map.current[0].y)
+
+for(let i=1;i<map.current.length;i++){
+
+map.ctx.lineTo(map.current[i].x,map.current[i].y)
+
+}
+
+/* DRAW POINTS */
+
+map.current.forEach(p=>{
+
+map.ctx.beginPath()
+map.ctx.arc(p.x,p.y,4,0,Math.PI*2)
+map.ctx.fillStyle="red"
+map.ctx.fill()
+
+})
+
+map.ctx.strokeStyle="yellow"
+map.ctx.stroke()
+
+}
+
 /* MARKERS */
 
 map.markers.forEach(m=>{
 
-const icon=new Image()
-icon.src=icons[m.icon]
-
-map.ctx.drawImage(icon,m.x-12,m.y-12,24,24)
+map.ctx.beginPath()
+map.ctx.arc(m.x,m.y,6,0,Math.PI*2)
+map.ctx.fillStyle="white"
+map.ctx.fill()
 
 })
 
 map.ctx.restore()
-
-drawMini(key)
-
-}
-
-function drawMini(key){
-
-const map=maps[key]
-
-map.mctx.clearRect(0,0,200,200)
-
-map.mctx.drawImage(map.img,0,0,200,200)
 
 }
 
 function setTool(tool,key){
 
 maps[key].tool=tool
-
-}
-
-function setIcon(icon,key){
-
-maps[key].icon=icon
 
 }
 
@@ -215,10 +228,28 @@ drawMap(key)
 
 }
 
+/* SAVE */
+
+function saveMap(key){
+
+const data=JSON.stringify(maps[key].polygons,null,2)
+
+const blob=new Blob([data],{type:"application/json"})
+
+const a=document.createElement("a")
+
+a.href=URL.createObjectURL(blob)
+a.download=key+"_territories.json"
+
+a.click()
+
+}
+
+/* BUTTON ZOOM */
+
 function zoomMap(key,amount){
 
 maps[key].zoom*=amount
-
 drawMap(key)
 
 }
