@@ -1,202 +1,200 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>LegacyWoW — News</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8">
+<title>LegacyWoW — News</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
-    body{
-      margin:0;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      background:#0b0b0b;
-      color:#e8e8e8;
-    }
+<style>
+body{
+margin:0;
+font-family:system-ui,Segoe UI,Roboto,Arial,sans-serif;
+background:#0b0b0b;
+color:#e8e8e8;
+}
 
-    header{
-      border-bottom:1px solid rgba(255,255,255,.10);
-      background:#070707;
-    }
+header{
+border-bottom:1px solid rgba(255,255,255,.10);
+background:#070707;
+}
 
-    .wrap{max-width:1100px;margin:0 auto;padding:0 18px}
+.wrap{max-width:1100px;margin:auto;padding:0 18px}
 
-    .top{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:12px;
-      flex-wrap:wrap;
-      padding:16px 0;
-    }
+.top{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:16px 0;
+flex-wrap:wrap;
+}
 
-    .brand{
-      text-decoration:none;
-      color:#fff;
-      font-weight:900;
-      letter-spacing:.4px;
-      font-size:18px;
-    }
+.brand{
+color:#fff;
+text-decoration:none;
+font-weight:900;
+font-size:20px;
+}
 
-    nav{display:flex;gap:10px;flex-wrap:wrap}
-    nav a{
-      color:#fff;
-      text-decoration:none;
-      font-weight:800;
-      font-size:13px;
-      padding:10px 12px;
-      border-radius:14px;
-      border:1px solid rgba(255,255,255,.18);
-      background:rgba(255,255,255,.04);
-    }
-    nav a:hover{background:rgba(255,255,255,.10)}
+nav{display:flex;gap:10px;flex-wrap:wrap}
 
-    main{padding:28px 0 36px}
+nav a{
+color:#fff;
+text-decoration:none;
+font-weight:800;
+font-size:13px;
+padding:10px 12px;
+border-radius:14px;
+border:1px solid rgba(255,255,255,.18);
+background:rgba(255,255,255,.04);
+}
 
-    .news-card{
-      border:1px solid rgba(255,255,255,.10);
-      border-radius:18px;
-      background:rgba(255,255,255,.04);
-      padding:18px 20px;
-      margin-bottom:16px;
-    }
+nav a:hover{background:rgba(255,255,255,.10)}
 
-    .news-date{
-      font-size:12px;
-      opacity:.7;
-      margin-bottom:6px;
-    }
+main{padding:28px 0}
 
-    .news-title{
-      font-size:20px;
-      font-weight:900;
-      margin:0 0 10px;
-    }
+.news-card{
+border:1px solid rgba(255,255,255,.10);
+border-radius:18px;
+background:rgba(255,255,255,.04);
+padding:20px;
+margin-bottom:18px;
+}
 
-    .news-body{
-      line-height:1.6;
-      opacity:.95;
-    }
+.news-date{
+font-size:12px;
+opacity:.7;
+margin-bottom:6px;
+}
 
-    ul{
-      margin:10px 0 0 18px;
-    }
+.news-title{
+font-size:20px;
+font-weight:900;
+margin-bottom:10px;
+}
 
-    footer{
-      border-top:1px solid rgba(255,255,255,.08);
-      padding:16px 0;
-      background:#070707;
-      font-size:12.5px;
-      opacity:.75;
-      text-align:center;
-    }
-  </style>
+.news-body{
+line-height:1.6;
+opacity:.95;
+}
+
+footer{
+border-top:1px solid rgba(255,255,255,.08);
+padding:16px 0;
+background:#070707;
+font-size:12px;
+text-align:center;
+opacity:.75;
+}
+</style>
 </head>
 
 <body>
-<header>
-  <div class="wrap top">
-    <a class="brand" href="index.html">LegacyWoW</a>
 
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="how-to-play.html">How to Play</a>
-      <a href="downloads.html">Downloads</a>
-      <a href="account.html">Create Account</a>
-      <a href="news.html">News</a>
-      <a href="map.html">Map</a>
-    </nav>
-  </div>
+<header>
+<div class="wrap top">
+
+<a class="brand" href="index.html">LegacyWoW</a>
+
+<nav>
+<a href="index.html">Home</a>
+<a href="how-to-play.html">How to Play</a>
+<a href="downloads.html">Downloads</a>
+<a href="account.html">Create Account</a>
+<a href="news.html">News</a>
+<a href="map.html">Map</a>
+</nav>
+
+</div>
 </header>
 
 <main>
-  <div class="wrap">
-<!-- 🔥 NEW ARTICLE -->
+<div class="wrap">
+
+<!-- NEW ARTICLE -->
 <div class="news-card">
-  <div class="news-date">March 1, 2026</div>
-  <h2 class="news-title">Guild War Expansion & Stability Improvements</h2>
-  <div class="news-body">
 
-    <p>
-      Major updates have arrived for <b>Guild War</b> and overall server performance.
-    </p>
+<div class="news-date">March 11, 2026</div>
 
-    <ul>
-      <li><b>Outposts Expanded</b> — 6 new capturable locations have been added across Azeroth.</li>
-      <li><b>Phasing Improvements</b> — Significant refinements to world phasing and event transitions.</li>
-      <li><b>Server Stability</b> — Core optimizations implemented for smoother performance and reduced latency.</li>
-    </ul>
+<div class="news-title">Guild War Update & Server Improvements</div>
 
-    <p>
-      These updates strengthen open-world conflict while improving reliability during large-scale Guild War battles.
-      More refinements and competitive features are planned as progression continues.
-    </p>
+<div class="news-body">
 
-  </div>
+<p>
+Today's update introduces several improvements to <strong>Guild War</strong> and overall server stability.
+</p>
+
+<ul>
+<li>Two new <strong>Outpost locations</strong> have been added to Guild War.</li>
+<li>Server <strong>latency and stability improvements</strong> have been implemented.</li>
+<li>Several <strong>quality-of-life adjustments</strong> have been made to the LegacyWoW website.</li>
+</ul>
+
+<p>
+These updates continue expanding the Guild War experience while improving performance across the realm.
+</p>
+
 </div>
-    <!-- Previous Articles -->
-    <div class="news-card">
-      <div class="news-date">February 20, 2026</div>
-      <h2 class="news-title">TBC Launch & Guild War Expansion</h2>
-      <div class="news-body">
-        <b>Patch 2.0.1 is now LIVE!</b> The Burning Crusade era has officially begun on Icecrown.
-        Players can now enter <b>Outland</b> and begin their journey beyond the Dark Portal.
-        
-        <p style="margin-top:10px;">
-          Guild War has also received major updates:
-        </p>
+</div>
 
-        <ul>
-          <li>Outposts are now active and capturable in Guild War</li>
-          <li>Additional world objectives available across Azeroth and Outland</li>
-          <li>Expanded control rewards for participating guilds</li>
-        </ul>
 
-        <p style="margin-top:10px;">
-          To support the growing realm, the player cap has been increased to <b>750 players</b>.
-        </p>
+<!-- PREVIOUS ARTICLE -->
+<div class="news-card">
 
-        <p>
-          The war continues — prepare your guild, step through the Dark Portal,
-          and claim your dominance in Outland.
-        </p>
-      </div>
-    </div>
+<div class="news-date">January 26, 2026</div>
 
-    
+<div class="news-title">New Guild War Locations Now Live</div>
 
-    <div class="news-card">
-      <div class="news-date">January 26, 2026</div>
-      <h2 class="news-title">New Guild War Locations Now Live</h2>
-      <div class="news-body">
-        Two major capitals have been added to <b>Guild War</b>:
+<div class="news-body">
 
-        <ul>
-          <li><b>Darnassus</b></li>
-          <li><b>Undercity</b></li>
-        </ul>
+<p>
+Two capital cities have been added to the <strong>Guild War</strong> system:
+</p>
 
-        These cities are fully contested and capturable by any enrolled guild.
-      </div>
-    </div>
+<ul>
+<li><strong>Darnassus</strong></li>
+<li><strong>Undercity</strong></li>
+</ul>
 
-    <div class="news-card">
-      <div class="news-date">January 22, 2026</div>
-      <h2 class="news-title">Closed Alpha Begins</h2>
-      <div class="news-body">
-        The stress test concluded successfully. Closed Alpha began for the first
-        500 players.
-      </div>
-    </div>
+<p>
+These cities are now <strong>contested and capturable</strong> by any guild enrolled in Guild War.
+Prepare your forces and claim control of Azeroth.
+</p>
 
-  </div>
+</div>
+</div>
+
+
+<!-- PREVIOUS ARTICLE -->
+<div class="news-card">
+
+<div class="news-date">January 22, 2026</div>
+
+<div class="news-title">Closed Alpha Begins</div>
+
+<div class="news-body">
+
+<p>
+The LegacyWoW stress test has concluded successfully.
+</p>
+
+<p>
+Closed Alpha has begun with <strong>500 invited players</strong> testing the progressive world as the server begins its journey through the original patches of World of Warcraft.
+</p>
+
+</div>
+</div>
+
+
+</div>
 </main>
 
 <footer>
-  © <span id="year"></span> LegacyWoW — Not affiliated with Blizzard Entertainment
+© <span id="year"></span> LegacyWoW — Not affiliated with Blizzard Entertainment
 </footer>
 
 <script>
-  document.getElementById("year").textContent = new Date().getFullYear();
+document.getElementById("year").textContent=new Date().getFullYear();
 </script>
+
 </body>
 </html>
