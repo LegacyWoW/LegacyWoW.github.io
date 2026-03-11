@@ -1,179 +1,182 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>LegacyWoW — Maps</title>
-<link rel="stylesheet" href="/assets/map-style.css">
-<style>
-body { margin:0; font-family: Arial, sans-serif; background:#111; color:#fff; }
-header { background:#222; padding:10px; display:flex; align-items:center; justify-content:space-between; }
-header a { color:#fff; text-decoration:none; margin-right:15px; }
-.mapBox { position: relative; border: 2px solid #555; overflow: hidden; width: 1200px; height: 900px; margin:20px auto; background:#000; }
-.cityPanel { position:absolute; background:#222; padding:8px; border:1px solid #fff; display:none; z-index:2000; pointer-events:none; }
-.adminControls { position:absolute; top:10px; right:10px; background: rgba(0,0,0,0.8); padding:10px; z-index:1000; display:none; }
-.adminControls button, select, input { margin:5px; }
-</style>
+  <meta charset="UTF-8" />
+  <title>LegacyWoW — Maps</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    :root{
+      --bg:#0b0b0b;
+      --border: rgba(255,255,255,.14);
+      --text:#e8e8e8;
+    }
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    header{
+      padding: 14px 0;
+      border-bottom: 1px solid rgba(255,255,255,.10);
+      background: #070707;
+    }
+    .wrap{ max-width:1100px; margin:0 auto; padding:0 18px; }
+    .toprow{
+      display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;
+    }
+    .brand{
+      display:flex; align-items:center; gap:12px; text-decoration:none; color:#fff;
+      font-weight:900; letter-spacing:.4px;
+    }
+    .logo{
+      width:40px; height:40px; border-radius:12px; overflow:hidden;
+      border:1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.04);
+      display:flex; align-items:center; justify-content:center;
+    }
+    .logo img{ width:100%; height:100%; object-fit:cover; display:block; }
+
+    nav{ display:flex; gap:10px; flex-wrap:wrap; }
+    nav a{
+      color:#fff; text-decoration:none; font-weight:800; font-size:13px;
+      padding:10px 12px; border-radius:14px;
+      border:1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.04);
+    }
+    nav a:hover{ background: rgba(255,255,255,.10); }
+
+    .shell{
+      display:flex;
+      justify-content:space-around;
+      flex-wrap:wrap;
+      padding:20px;
+      gap:20px;
+    }
+    .mapContainer{
+      position: relative;
+      width: 550px;
+      height: 550px;
+      background: #111;
+      border:1px solid rgba(255,255,255,.14);
+    }
+
+    /* Admin-only top-right bar */
+    .adminbar{
+      position:absolute;
+      top:16px;
+      right:16px;
+      z-index: 999;
+      display:flex;
+      gap:10px;
+      align-items:center;
+      padding:10px;
+      border-radius:14px;
+      border:1px solid var(--border);
+      background: rgba(0,0,0,.45);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 12px 30px rgba(0,0,0,.35);
+    }
+    .btn{
+      border:1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.06);
+      color:#fff;
+      border-radius:12px;
+      padding:10px 12px;
+      font-weight:900;
+      cursor:pointer;
+      font-size:13px;
+    }
+    .btn:hover{ background: rgba(255,255,255,.12); }
+
+    /* Leaflet draw tweaks */
+    .leaflet-control a{
+      background-color: rgba(0,0,0,.55) !important;
+      color:#fff !important;
+      border-color: rgba(255,255,255,.14) !important;
+    }
+    .leaflet-control a:hover{ background-color: rgba(0,0,0,.75) !important; }
+
+    .leaflet-popup-content-wrapper, .leaflet-popup-tip{
+      background: rgba(0,0,0,.80);
+      color:#fff;
+      border:1px solid rgba(255,255,255,.12);
+    }
+  </style>
+
+  <!-- Leaflet -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""
+  />
+  <script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""
+  ></script>
+
+  <!-- Leaflet.draw -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.css" />
+  <script src="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.js"></script>
 </head>
+
 <body>
-<header>
-  <a href="index.html">← Back to LegacyWoW Home</a>
-  <nav>
-    <a href="how-to-play.html">How to Play</a>
-    <a href="news.html">News</a>
-    <a href="map.html">Map</a>
-  </nav>
-</header>
+  <header>
+    <div class="wrap toprow">
+      <a class="brand" href="index.html">
+        <div class="logo">
+          <img src="/assets/logo.png" alt="LegacyWoW" onerror="this.remove();" />
+        </div>
+        <div>LegacyWoW — Maps</div>
+      </a>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="how-to-play.html">How to Play</a>
+        <a href="news.html">News</a>
+        <a href="rules.html">Rules</a>
+        <a href="faq.html">FAQ</a>
+        <a href="map.html">Map</a>
+      </nav>
+    </div>
+  </header>
 
-<div class="mapBox" id="worldMapBox">
-  <canvas id="worldMapCanvas" width="1200" height="900"></canvas>
-  <div class="cityPanel" id="cityInfoPanel"></div>
-  <div class="adminControls" id="adminControlsWorld">
-    <button onclick="setTool('marker','worldMap')">Marker</button>
-    <button onclick="setTool('polygon','worldMap')">Polygon</button>
-    <select onchange="setIcon(this.value,'worldMap')">
-      <option value="city">City</option>
-      <option value="town">Town</option>
-      <option value="fort">Fort</option>
-      <option value="battle">Battle</option>
-      <option value="tower">Tower</option>
-    </select>
-    <input type="color" onchange="setColor(this.value,'worldMap')" value="#ff0">
-    <button onclick="finishPolygon('worldMap')">Finish Polygon</button>
-    <button onclick="exportMap('worldMap')">Export</button>
+  <div class="shell">
+    <!-- World Map -->
+    <div class="mapContainer" id="worldMapContainer">
+      <div id="worldMap"></div>
+      <div class="adminbar" id="worldAdminBar">
+        <button class="btn" id="exportWorld">Export</button>
+        <button class="btn" id="clearWorld">Clear</button>
+      </div>
+    </div>
+
+    <!-- Outland Map -->
+    <div class="mapContainer" id="outlandMapContainer">
+      <div id="outlandMap"></div>
+      <div class="adminbar" id="outlandAdminBar">
+        <button class="btn" id="exportOutland">Export</button>
+        <button class="btn" id="clearOutland">Clear</button>
+      </div>
+    </div>
   </div>
-</div>
 
-<div class="mapBox" id="outlandMapBox">
-  <canvas id="outlandMapCanvas" width="1200" height="900"></canvas>
-  <div class="cityPanel" id="cityInfoPanel2"></div>
-  <div class="adminControls" id="adminControlsOutland">
-    <button onclick="setTool('marker','outlandMap')">Marker</button>
-    <button onclick="setTool('polygon','outlandMap')">Polygon</button>
-    <select onchange="setIcon(this.value,'outlandMap')">
-      <option value="city">City</option>
-      <option value="town">Town</option>
-      <option value="fort">Fort</option>
-      <option value="battle">Battle</option>
-      <option value="tower">Tower</option>
-    </select>
-    <input type="color" onchange="setColor(this.value,'outlandMap')" value="#ff0">
-    <button onclick="finishPolygon('outlandMap')">Finish Polygon</button>
-    <button onclick="exportMap('outlandMap')">Export</button>
-  </div>
-</div>
+  <script src="/map/app.js"></script>
 
-<script src="/map/map-engine.js"></script>
-<script>
-const isAdmin = new URLSearchParams(location.search).get("admin")==='1';
-if(isAdmin){
-  document.getElementById('adminControlsWorld').style.display='block';
-  document.getElementById('adminControlsOutland').style.display='block';
-}
+  <script>
+    const isAdmin = new URLSearchParams(location.search).get("admin")==="1";
 
-// Initialize maps
-initMap('worldMapCanvas','/assets/worldmap.jpg','worldMap',isAdmin);
-initMap('outlandMapCanvas','/assets/outland.jpg','outlandMap',isAdmin);
+    if(!isAdmin){
+      document.getElementById("worldAdminBar").style.display="none";
+      document.getElementById("outlandAdminBar").style.display="none";
+    }
 
-// Center maps on load
-function centerMap(mapKey){
-  const map = maps[mapKey];
-  const canvas = map.canvas;
-  const img = map.img;
-
-  const zoomX = canvas.width / img.width;
-  const zoomY = canvas.height / img.height;
-  map.zoom = Math.min(zoomX, zoomY);
-
-  map.panX = (canvas.width - img.width*map.zoom)/2;
-  map.panY = (canvas.height - img.height*map.zoom)/2;
-
-  drawMap(mapKey);
-}
-
-maps['worldMap'].img.onload = ()=>{
-  centerMap('worldMap');
-  centerMap('outlandMap');
-}
-
-// Correct drag calculation per map
-function setupDrag(mapKey){
-  const map = maps[mapKey];
-  let dragging=false;
-  let lastMouseX=0,lastMouseY=0;
-
-  map.canvas.addEventListener('mousedown', e=>{
-    if(!isAdmin) return;
-    dragging=true;
-    const rect = map.canvas.getBoundingClientRect();
-    lastMouseX = e.clientX - rect.left;
-    lastMouseY = e.clientY - rect.top;
-  });
-
-  map.canvas.addEventListener('mousemove', e=>{
-    if(!dragging) return;
-    const rect = map.canvas.getBoundingClientRect();
-    const mouseX = e.clientX - rect.left;
-    const mouseY = e.clientY - rect.top;
-
-    // Calculate delta properly with zoom
-    const dx = (mouseX - lastMouseX);
-    const dy = (mouseY - lastMouseY);
-
-    map.panX += dx;
-    map.panY += dy;
-
-    lastMouseX = mouseX;
-    lastMouseY = mouseY;
-
-    drawMap(mapKey);
-    drawCities();
-    drawPolygons(mapKey);
-  });
-
-  map.canvas.addEventListener('mouseup', ()=>dragging=false);
-  map.canvas.addEventListener('mouseleave', ()=>dragging=false);
-}
-
-setupDrag('worldMap');
-setupDrag('outlandMap');
-
-// Polygon naming and export
-function finishPolygon(mapKey){
-  const map = maps[mapKey];
-  if(!map.currentPolygon || map.currentPolygon.length<3) return;
-  const name = prompt("Enter polygon name:");
-  map.currentPolygon.name = name || "Unnamed";
-  map.polygons.push(map.currentPolygon);
-  map.currentPolygon = [];
-  drawPolygons(mapKey);
-}
-
-function exportMap(mapKey){
-  const map = maps[mapKey];
-  const geojson = {
-    type: "FeatureCollection",
-    features: map.polygons.map(p=>({
-      type:"Feature",
-      properties:{name:p.name,color:p.color},
-      geometry:{type:"Polygon",coordinates:[p.points]}
-    }))
-  };
-  const blob = new Blob([JSON.stringify(geojson,null,2)],{type:"application/json"});
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = "overlays.geojson";
-  a.click();
-}
-
-// Enable polygons for admins
-function enablePolygonEditing(mapKey){
-  if(!isAdmin) return;
-  const map = maps[mapKey];
-  map.editPolygons = true;
-  map.namePolygons = true;
-}
-enablePolygonEditing('worldMap');
-enablePolygonEditing('outlandMap');
-</script>
+    // Initialize both maps using your original app.js functions
+    initMap("worldMap","/assets/worldmap.jpg","worldMap",isAdmin);
+    initMap("outlandMap","/assets/outland.jpg","outlandMap",isAdmin);
+  </script>
 </body>
 </html>
