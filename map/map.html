@@ -5,29 +5,37 @@
 <title>LegacyWoW — Maps</title>
 <link rel="stylesheet" href="/assets/map-style.css">
 <style>
-  body { margin:0; font-family: Arial, sans-serif; background:#111; color:#fff; }
-  header { background:#222; padding:10px; display:flex; align-items:center; justify-content:space-between; }
-  header a { color:#fff; text-decoration:none; margin-right:15px; }
-  .mapBox { 
-    position: relative; 
-    border: 2px solid #555; 
-    overflow: hidden; 
-    width: 1200px; 
-    height: 900px; 
-    margin: 20px auto; 
-    background:#000;
-  }
-  .cityPanel {
-    position:absolute;
-    background:#222;
-    padding:8px;
-    border:1px solid #fff;
-    display:none;
-    z-index:2000;
-    pointer-events:none;
-  }
-  #adminControls { text-align:center; margin:10px; }
-  #adminControls button, select, input { margin:5px; }
+body { margin:0; font-family: Arial, sans-serif; background:#111; color:#fff; }
+header { background:#222; padding:10px; display:flex; align-items:center; justify-content:space-between; }
+header a { color:#fff; text-decoration:none; margin-right:15px; }
+.mapBox { 
+  position: relative; 
+  border: 2px solid #555; 
+  overflow: hidden; 
+  width: 1200px; 
+  height: 900px; 
+  margin: 20px auto; 
+  background:#000;
+}
+.cityPanel {
+  position:absolute;
+  background:#222;
+  padding:8px;
+  border:1px solid #fff;
+  display:none;
+  z-index:2000;
+  pointer-events:none;
+}
+.adminControls {
+  position:absolute;
+  top:10px;
+  right:10px;
+  background: rgba(0,0,0,0.8);
+  padding:10px;
+  z-index:1000;
+  display:none;
+}
+.adminControls button, select, input { margin:5px; }
 </style>
 </head>
 <body>
@@ -40,35 +48,53 @@
   </nav>
 </header>
 
+<!-- WORLD MAP -->
 <div class="mapBox" id="worldMapBox">
   <canvas id="worldMapCanvas" width="1200" height="900"></canvas>
   <div class="cityPanel" id="cityInfoPanel"></div>
+  <div class="adminControls" id="adminControlsWorld">
+    <button onclick="setTool('marker','worldMap')">Marker</button>
+    <button onclick="setTool('polygon','worldMap')">Polygon</button>
+    <select onchange="setIcon(this.value,'worldMap')">
+      <option value="city">City</option>
+      <option value="town">Town</option>
+      <option value="fort">Fort</option>
+      <option value="battle">Battle</option>
+      <option value="tower">Tower</option>
+    </select>
+    <input type="color" onchange="setColor(this.value,'worldMap')" value="#ff0">
+    <button onclick="finishPolygon('worldMap')">Finish Polygon</button>
+    <button onclick="saveMap('worldMap')">Save Map</button>
+  </div>
 </div>
 
+<!-- OUTLAND MAP -->
 <div class="mapBox" id="outlandMapBox">
   <canvas id="outlandMapCanvas" width="1200" height="900"></canvas>
   <div class="cityPanel" id="cityInfoPanel2"></div>
-</div>
-
-<div id="adminControls" style="display:none;">
-  <button onclick="setTool('marker','worldMap')">Marker</button>
-  <button onclick="setTool('polygon','worldMap')">Polygon</button>
-  <select onchange="setIcon(this.value,'worldMap')">
-    <option value="city">City</option>
-    <option value="town">Town</option>
-    <option value="fort">Fort</option>
-    <option value="battle">Battle</option>
-    <option value="tower">Tower</option>
-  </select>
-  <input type="color" onchange="setColor(this.value,'worldMap')" value="#ff0">
-  <button onclick="finishPolygon('worldMap')">Finish Polygon</button>
-  <button onclick="saveMap('worldMap')">Save Map</button>
+  <div class="adminControls" id="adminControlsOutland">
+    <button onclick="setTool('marker','outlandMap')">Marker</button>
+    <button onclick="setTool('polygon','outlandMap')">Polygon</button>
+    <select onchange="setIcon(this.value,'outlandMap')">
+      <option value="city">City</option>
+      <option value="town">Town</option>
+      <option value="fort">Fort</option>
+      <option value="battle">Battle</option>
+      <option value="tower">Tower</option>
+    </select>
+    <input type="color" onchange="setColor(this.value,'outlandMap')" value="#ff0">
+    <button onclick="finishPolygon('outlandMap')">Finish Polygon</button>
+    <button onclick="saveMap('outlandMap')">Save Map</button>
+  </div>
 </div>
 
 <script src="/map/map-engine.js"></script>
 <script>
-const isAdmin = new URLSearchParams(location.search).get("admin") === "1";
-if(isAdmin) document.getElementById('adminControls').style.display='block';
+const isAdmin = new URLSearchParams(location.search).get("admin")==='1';
+if(isAdmin){
+  document.getElementById('adminControlsWorld').style.display='block';
+  document.getElementById('adminControlsOutland').style.display='block';
+}
 
 // Initialize maps
 initMap('worldMapCanvas','/assets/worldmap.jpg','worldMap',isAdmin);
@@ -98,10 +124,11 @@ const mapLoadCenter = ()=>{
 maps['worldMap'].img.onload = mapLoadCenter;
 maps['outlandMap'].img.onload = mapLoadCenter;
 
-// Correct drag for admins with zoom scaling
+// Drag setup for each map independently
 function setupDrag(mapKey){
   const map = maps[mapKey];
-  let dragging=false, lastX=0, lastY=0;
+  let dragging=false;
+  let lastX=0,lastY=0;
 
   map.canvas.addEventListener('mousedown', e=>{
     if(!isAdmin) return;
@@ -112,15 +139,12 @@ function setupDrag(mapKey){
 
   map.canvas.addEventListener('mousemove', e=>{
     if(!dragging) return;
-    const dx = (e.clientX - lastX)/map.zoom;
-    const dy = (e.clientY - lastY)/map.zoom;
-
+    const dx = (e.clientX-lastX)/map.zoom;
+    const dy = (e.clientY-lastY)/map.zoom;
     map.panX += dx*map.zoom;
     map.panY += dy*map.zoom;
-
-    lastX = e.clientX;
-    lastY = e.clientY;
-
+    lastX=e.clientX;
+    lastY=e.clientY;
     drawMap(mapKey);
     drawCities();
     drawPolygons(mapKey);
@@ -133,7 +157,7 @@ function setupDrag(mapKey){
 setupDrag('worldMap');
 setupDrag('outlandMap');
 
-// Example city data
+// Example cities
 const cities=[
   {map:'worldMap',x:200,y:300,name:'Stormwind',owner:'Alliance',influence:80,status:'Safe'},
   {map:'worldMap',x:500,y:400,name:'Orgrimmar',owner:'Horde',influence:70,status:'Under Attack'},
@@ -170,16 +194,17 @@ function drawCities(){
   });
 }
 
-// Enable polygon editing for admins on both maps
+// Enable polygons for both maps
 function enablePolygonEditing(mapKey){
   if(!isAdmin) return;
   const map = maps[mapKey];
-  map.editPolygons = true;       // Allow creating/editing polygons
-  map.namePolygons = true;       // Prompt for name on finish
+  map.editPolygons = true;
+  map.namePolygons = true;
 }
 
 enablePolygonEditing('worldMap');
 enablePolygonEditing('outlandMap');
+
 </script>
 </body>
 </html>
