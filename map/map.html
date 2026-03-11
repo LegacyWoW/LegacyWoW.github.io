@@ -12,8 +12,8 @@
     position: relative; 
     border: 2px solid #555; 
     overflow: hidden; 
-    width: 1100px; 
-    height: 850px; 
+    width: 1150px; 
+    height: 900px; 
     margin: 20px auto; 
     background:#000;
   }
@@ -44,12 +44,12 @@
 </header>
 
 <div class="mapBox" id="worldMapBox">
-  <canvas id="worldMapCanvas" width="1100" height="850"></canvas>
+  <canvas id="worldMapCanvas" width="1150" height="900"></canvas>
   <div class="cityPanel" id="cityInfoPanel"></div>
 </div>
 
 <div class="mapBox" id="outlandMapBox">
-  <canvas id="outlandMapCanvas" width="1100" height="850"></canvas>
+  <canvas id="outlandMapCanvas" width="1150" height="900"></canvas>
   <div class="cityPanel" id="cityInfoPanel2"></div>
 </div>
 
@@ -98,9 +98,37 @@
     centerMap('outlandMap');
   }
 
-  // Wait until images are loaded
   maps['worldMap'].img.onload = mapLoadCenter;
   maps['outlandMap'].img.onload = mapLoadCenter;
+
+  // Click-and-drag with proper speed for admins
+  function setupDrag(mapKey){
+    const map = maps[mapKey];
+    let dragging = false;
+    let lastX = 0, lastY = 0;
+
+    map.canvas.addEventListener('mousedown', (e)=>{
+      if(!isAdmin && mapKey!=='worldMap' && mapKey!=='outlandMap') return;
+      dragging=true; lastX=e.clientX; lastY=e.clientY;
+    });
+
+    map.canvas.addEventListener('mousemove', (e)=>{
+      if(!dragging) return;
+      const dx = (e.clientX - lastX);
+      const dy = (e.clientY - lastY);
+      map.panX += dx;
+      map.panY += dy;
+      lastX = e.clientX; lastY = e.clientY;
+      drawMap(mapKey);
+      drawCities();
+    });
+
+    map.canvas.addEventListener('mouseup', ()=>dragging=false);
+    map.canvas.addEventListener('mouseleave', ()=>dragging=false);
+  }
+
+  setupDrag('worldMap');
+  setupDrag('outlandMap');
 
   // Example city data
   const cities = [
@@ -109,7 +137,6 @@
     {map:'outlandMap',x:300,y:250,name:'Shattrath',owner:'Neutral',influence:50,status:'Peaceful'}
   ];
 
-  // Display city panels
   function showCityPanel(city,e){
     const panel = document.getElementById(city.map==='worldMap'?'cityInfoPanel':'cityInfoPanel2');
     panel.style.left = e.clientX+10+'px';
@@ -123,7 +150,6 @@
     document.getElementById('cityInfoPanel2').style.display='none';
   }
 
-  // Draw city markers
   function drawCities(){
     cities.forEach(c=>{
       const mapObj = maps[c.map];
@@ -142,6 +168,16 @@
   }
 
   drawCities();
+
+  // Enable polygon editing for admins
+  function enablePolygonEditing(mapKey){
+    if(!isAdmin) return;
+    const map = maps[mapKey];
+    map.editPolygons = true; // your map-engine.js should respect this flag
+  }
+
+  enablePolygonEditing('worldMap');
+  enablePolygonEditing('outlandMap');
 </script>
 </body>
 </html>
