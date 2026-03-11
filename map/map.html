@@ -17,16 +17,6 @@
     margin: 20px auto; 
     background:#000;
   }
-  .minimap {
-    position: absolute;
-    top:10px;
-    right:10px;
-    width:200px;
-    height:200px;
-    border:2px solid #888;
-    background:#222;
-    z-index:1000;
-  }
   .cityPanel {
     position:absolute;
     background:#222;
@@ -55,13 +45,11 @@
 
 <div class="mapBox" id="worldMapBox">
   <canvas id="worldMapCanvas" width="1100" height="850"></canvas>
-  <div class="minimap" id="worldMinimap"></div>
   <div class="cityPanel" id="cityInfoPanel"></div>
 </div>
 
 <div class="mapBox" id="outlandMapBox">
   <canvas id="outlandMapCanvas" width="1100" height="850"></canvas>
-  <div class="minimap" id="outlandMinimap"></div>
   <div class="cityPanel" id="cityInfoPanel2"></div>
 </div>
 
@@ -88,6 +76,31 @@
   // Initialize maps
   initMap('worldMapCanvas','/assets/worldmap.jpg','worldMap',isAdmin);
   initMap('outlandMapCanvas','/assets/outland.jpg','outlandMap',isAdmin);
+
+  // Center maps on load
+  function centerMap(mapKey){
+    const map = maps[mapKey];
+    const canvas = map.canvas;
+    const img = map.img;
+
+    const zoomX = canvas.width / img.width;
+    const zoomY = canvas.height / img.height;
+    map.zoom = Math.min(zoomX, zoomY);
+
+    map.panX = (canvas.width - img.width*map.zoom)/2;
+    map.panY = (canvas.height - img.height*map.zoom)/2;
+
+    drawMap(mapKey);
+  }
+
+  mapLoadCenter = ()=> {
+    centerMap('worldMap');
+    centerMap('outlandMap');
+  }
+
+  // Wait until images are loaded
+  maps['worldMap'].img.onload = mapLoadCenter;
+  maps['outlandMap'].img.onload = mapLoadCenter;
 
   // Example city data
   const cities = [
@@ -119,7 +132,6 @@
       icon.src = markerIcons['city'];
       icon.onload = ()=>ctx.drawImage(icon,c.x*mapObj.zoom+mapObj.panX-16,c.y*mapObj.zoom+mapObj.panY-16,32,32);
 
-      // Add hover
       mapObj.canvas.addEventListener('mousemove', e=>{
         const x = (e.clientX - mapObj.canvas.getBoundingClientRect().left - mapObj.panX)/mapObj.zoom;
         const y = (e.clientY - mapObj.canvas.getBoundingClientRect().top - mapObj.panY)/mapObj.zoom;
