@@ -3,23 +3,46 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>LegacyWoW Maps</title>
+<title>AshenWoW Interactive Maps</title>
 
 <style>
 
 body{
-background:#0a0a0a;
+margin:0;
+background:#0b0b0b;
 color:white;
 font-family:Arial;
-margin:0;
 }
+
+/* TOP NAV BAR */
+
+.topbar{
+background:#111;
+padding:10px 20px;
+display:flex;
+align-items:center;
+gap:25px;
+border-bottom:1px solid #333;
+}
+
+.topbar a{
+color:white;
+text-decoration:none;
+font-weight:bold;
+}
+
+.topbar a:hover{
+color:#f3c969;
+}
+
+/* MAP LAYOUT */
 
 .map-container{
 display:flex;
 justify-content:center;
+flex-wrap:wrap;
 gap:40px;
 padding:30px;
-flex-wrap:wrap;
 }
 
 .map-box{
@@ -31,8 +54,10 @@ padding:10px;
 
 canvas{
 background:black;
-cursor:crosshair;
+cursor:grab;
 }
+
+/* ADMIN PANEL */
 
 .legend{
 position:absolute;
@@ -59,6 +84,8 @@ cursor:pointer;
 width:100%;
 }
 
+/* ZOOM */
+
 .zoom{
 position:absolute;
 bottom:10px;
@@ -76,11 +103,44 @@ width:32px;
 height:32px;
 }
 
+/* CITY INFO PANEL */
+
+.city-panel{
+position:absolute;
+bottom:20px;
+left:20px;
+background:#111;
+border:1px solid #555;
+padding:10px;
+display:none;
+width:200px;
+}
+
+/* MINIMAP */
+
+.minimap{
+position:absolute;
+bottom:10px;
+left:10px;
+border:1px solid #555;
+background:black;
+opacity:.9;
+}
+
 </style>
 
 </head>
 
 <body>
+
+<div class="topbar">
+<a href="../index.html">Home</a>
+<a href="../news.html">News</a>
+<a href="../how-to-play.html">How to Play</a>
+<a href="../rules.html">Rules</a>
+<a href="../faq.html">FAQ</a>
+<a href="map.html">World Map</a>
+</div>
 
 <div class="map-container">
 
@@ -88,7 +148,12 @@ height:32px;
 
 <canvas id="worldMap"></canvas>
 
+<canvas class="minimap" id="worldMini" width="200" height="200"></canvas>
+
+<div class="city-panel" id="cityPanel"></div>
+
 <div class="legend" id="worldLegend">
+
 <b>Admin Tools</b>
 
 <button onclick="setTool('marker','world')">Add Marker</button> <button onclick="setTool('polygon','world')">Draw Territory</button>
@@ -119,7 +184,10 @@ height:32px;
 
 <canvas id="outlandMap"></canvas>
 
+<canvas class="minimap" id="outlandMini" width="200" height="200"></canvas>
+
 <div class="legend" id="outlandLegend">
+
 <b>Admin Tools</b>
 
 <button onclick="setTool('marker','outland')">Add Marker</button> <button onclick="setTool('polygon','outland')">Draw Territory</button>
@@ -159,8 +227,8 @@ document.getElementById("worldLegend").style.display="none";
 document.getElementById("outlandLegend").style.display="none";
 }
 
-initMap("worldMap","../assets/worldmap.jpg","world",admin);
-initMap("outlandMap","../assets/outland.jpg","outland",admin);
+initMap("worldMap","../assets/worldmap.jpg","world",admin,"worldMini");
+initMap("outlandMap","../assets/outland.jpg","outland",admin,"outlandMini");
 
 </script>
 
