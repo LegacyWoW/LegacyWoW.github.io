@@ -2,145 +2,93 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>LegacyWoW World Map</title>
-
+<title>LegacyWoW Maps</title>
+<link rel="stylesheet" href="/assets/style.css">
 <style>
-body{
-margin:0;
-background:#0b0b0b;
-color:white;
-font-family:Arial;
-}
-.topbar{
-background:#111;
-padding:12px 25px;
-display:flex;
-gap:25px;
-border-bottom:1px solid #333;
-}
-.topbar a{
-color:white;
-text-decoration:none;
-font-weight:bold;
-}
-.map-container{
-display:flex;
-justify-content:center;
-flex-wrap:wrap;
-gap:40px;
-padding:30px;
-}
-.map-box{
-position:relative;
-width:1200px;
-border:2px solid #444;
-background:#1b1b1b;
-padding:10px;
-}
-canvas{
-display:block;
-width:100%;
-height:auto;
-background:black;
-cursor:grab;
-}
-/* ADMIN PANEL */
-.legend{
-position:absolute;
-top:10px;
-left:10px;
-background:rgba(0,0,0,.8);
-padding:10px;
-border:1px solid #666;
-display:flex;
-flex-direction:column;
-gap:6px;
-font-size:13px;
-}
-.legend button{
-background:#333;
-border:1px solid #555;
-color:white;
-cursor:pointer;
-padding:4px;
-}
-.city-panel{
-position:absolute;
-bottom:20px;
-left:20px;
-background:#111;
-border:1px solid #555;
-padding:12px;
-display:none;
-width:220px;
-}
+  body { background: #111; color: #eee; font-family: Arial, sans-serif; margin: 0; }
+  header { background: #222; padding: 10px; display: flex; align-items: center; }
+  header a { color: #eee; margin-right: 15px; text-decoration: none; }
+  #mapsContainer { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; padding: 20px; }
+  .mapBox { position: relative; border: 2px solid #555; background: #000; overflow: hidden; }
+  canvas { display: block; }
+  #cityPanel { position: absolute; top: 20px; right: 20px; background: rgba(0,0,0,0.8); padding: 10px; border: 1px solid #888; display: none; z-index: 10; }
+  .adminControls { position: absolute; bottom: 20px; left: 20px; background: rgba(0,0,0,0.8); padding: 10px; border: 1px solid #888; display: none; z-index: 10; }
+  .adminControls button, .adminControls input { margin: 5px; }
 </style>
 </head>
-
 <body>
+<header>
+  <a href="index.html">Back to LegacyWoW</a>
+  <div>LegacyWoW Maps</div>
+</header>
 
-<div class="topbar">
-<a href="../index.html">Home</a>
-<a href="../news.html">News</a>
-<a href="../how-to-play.html">How to Play</a>
-<a href="../rules.html">Rules</a>
-<a href="../faq.html">FAQ</a>
-<a href="map.html">World Map</a>
+<div id="mapsContainer">
+  <div class="mapBox" id="worldMapBox">
+    <canvas id="worldMap"></canvas>
+    <div id="cityPanel"></div>
+    <div class="adminControls" id="worldAdmin">
+      <label>Tool: 
+        <select onchange="setTool(this.value,'world')">
+          <option value="">None</option>
+          <option value="marker">Marker</option>
+          <option value="polygon">Polygon</option>
+        </select>
+      </label>
+      <label>Icon: 
+        <select onchange="setIcon(this.value,'world')">
+          <option value="city">City</option>
+          <option value="town">Town</option>
+          <option value="fort">Fort</option>
+          <option value="battle">Battle</option>
+          <option value="tower">Tower</option>
+        </select>
+      </label>
+      <label>Color: <input type="color" onchange="setColor(this.value,'world')" value="#ff0"></label>
+      <button onclick="finishPolygon('world')">Finish Polygon</button>
+      <button onclick="saveMap('world')">Save Map</button>
+    </div>
+  </div>
+
+  <div class="mapBox" id="outlandMapBox">
+    <canvas id="outlandMap"></canvas>
+    <div id="cityPanelOutland"></div>
+    <div class="adminControls" id="outlandAdmin">
+      <label>Tool: 
+        <select onchange="setTool(this.value,'outland')">
+          <option value="">None</option>
+          <option value="marker">Marker</option>
+          <option value="polygon">Polygon</option>
+        </select>
+      </label>
+      <label>Icon: 
+        <select onchange="setIcon(this.value,'outland')">
+          <option value="city">City</option>
+          <option value="town">Town</option>
+          <option value="fort">Fort</option>
+          <option value="battle">Battle</option>
+          <option value="tower">Tower</option>
+        </select>
+      </label>
+      <label>Color: <input type="color" onchange="setColor(this.value,'outland')" value="#ff0"></label>
+      <button onclick="finishPolygon('outland')">Finish Polygon</button>
+      <button onclick="saveMap('outland')">Save Map</button>
+    </div>
+  </div>
 </div>
 
-<div class="map-container">
-
-<div class="map-box">
-<canvas id="worldMap"></canvas>
-<div class="legend" id="worldLegend">
-<b>Admin Tools</b>
-<button onclick="setTool('polygon','world')">Draw Territory</button>
-<button onclick="setTool('marker','world')">Place Marker</button>
-<select onchange="setIcon(this.value,'world')">
-<option value="city">City</option>
-<option value="town">Town</option>
-<option value="fort">Fort</option>
-<option value="battle">Battle</option>
-<option value="tower">Tower</option>
-</select>
-<input type="color" value="#ffff00" onchange="setColor(this.value,'world')">
-<button onclick="finishPolygon('world')">Finish Territory</button>
-<button onclick="saveMap('world')">Save Map</button>
-</div>
-<div class="city-panel" id="cityPanel"></div>
-</div>
-
-<div class="map-box">
-<canvas id="outlandMap"></canvas>
-<div class="legend" id="outlandLegend">
-<b>Admin Tools</b>
-<button onclick="setTool('polygon','outland')">Draw Territory</button>
-<button onclick="setTool('marker','outland')">Place Marker</button>
-<select onchange="setIcon(this.value,'outland')">
-<option value="city">City</option>
-<option value="town">Town</option>
-<option value="fort">Fort</option>
-<option value="battle">Battle</option>
-<option value="tower">Tower</option>
-</select>
-<input type="color" value="#ffff00" onchange="setColor(this.value,'outland')">
-<button onclick="finishPolygon('outland')">Finish Territory</button>
-<button onclick="saveMap('outland')">Save Map</button>
-</div>
-</div>
-
-</div>
-
-<script src="map-engine.js"></script>
+<script src="/map/map-engine.js"></script>
 <script>
-const admin=new URLSearchParams(location.search).get("admin")==="1"
-if(!admin){
-document.getElementById("worldLegend").style.display="none"
-document.getElementById("outlandLegend").style.display="none"
-}
-initMap("worldMap","../assets/worldmap.jpg","world",admin)
-initMap("outlandMap","../assets/outland.jpg","outland",admin)
-</script>
+  const isAdmin = new URLSearchParams(location.search).get("admin") === "1";
 
+  // Show admin controls only if admin
+  if (isAdmin) {
+    document.getElementById('worldAdmin').style.display = 'block';
+    document.getElementById('outlandAdmin').style.display = 'block';
+  }
+
+  // Initialize maps
+  initMap("worldMap","/assets/worldmap.jpg","world",isAdmin);
+  initMap("outlandMap","/assets/outland.jpg","outland",isAdmin);
+</script>
 </body>
 </html>
