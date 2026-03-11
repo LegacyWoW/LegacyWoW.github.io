@@ -13,9 +13,11 @@
       --line: rgba(255,255,255,.14);
       --glass: rgba(0,0,0,.45);
 
+      /* Frosty blue theme */
       --iceA: rgba(140, 205, 255, .90);
       --iceB: rgba(80,  170, 255, .85);
 
+      /* Current patch highlight */
       --accent: rgba(80, 170, 255, .98);
     }
 
@@ -168,27 +170,212 @@
       text-transform:uppercase;
     }
 
-    .map-tabs{
+    .status-online{
       display:flex;
-      justify-content:center;
-      gap:20px;
-      margin:20px 0 0;
-      flex-wrap:wrap;
-    }
-    .map-tabs a{
-      display:inline-block;
-      padding:12px 18px;
-      border-radius:14px;
-      border:1px solid rgba(255,255,255,.18);
-      background:rgba(0,0,0,.28);
+      align-items:center;
+      gap:10px;
+      font-size:18px;
       font-weight:900;
-      text-decoration:none;
-      color:#fff;
-      transition: 0.2s;
+      color:rgba(140,205,255,.95);
     }
-    .map-tabs a:hover{
-      background:rgba(80,170,255,.18);
-      border-color:rgba(80,170,255,.25);
+
+    .dot{
+      width:12px;height:12px;border-radius:50%;
+      background:rgba(140,205,255,.95);
+      box-shadow:0 0 12px rgba(140,205,255,.7);
+      animation:pulse 1.8s infinite;
+    }
+    @keyframes pulse{
+      0%{transform:scale(1);opacity:1}
+      50%{transform:scale(1.4);opacity:.6}
+      100%{transform:scale(1);opacity:1}
+    }
+
+    .subline{
+      margin-top:10px;
+      padding:10px 12px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.04);
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+      font-size:13px;
+      opacity:.92;
+    }
+
+    .players{margin-top:10px;font-size:14px}
+    .updated{margin-top:8px;font-size:12.5px;opacity:.75}
+
+    .realm-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px 14px;
+    }
+    .kv{
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.04);
+      border-radius:14px;
+      padding:10px 12px;
+    }
+    .k{font-size:11.5px;font-weight:900;opacity:.7;text-transform:uppercase}
+    .v{margin-top:4px;font-size:14px;font-weight:900}
+
+    .progress-wrap{
+      margin-top:12px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.04);
+      border-radius:14px;
+      padding:12px;
+    }
+    .progress-labels{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+      font-size:12.5px;
+      opacity:.85;
+      margin-bottom:10px;
+    }
+    .chip{
+      display:inline-block;
+      padding:4px 8px;
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(0,0,0,.25);
+      font-weight:900;
+      letter-spacing:.2px;
+      white-space:nowrap;
+    }
+
+    .timeline{
+      position:relative;
+      height:78px;
+      width:100%;
+    }
+
+    .bar{
+      position:absolute;
+      left:0; right:0;
+      top:28px;
+      height:12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(0,0,0,.35);
+      overflow:hidden;
+    }
+
+    /* ✅ Blue fill + icy shimmer */
+    .bar-fill{
+      height:100%;
+      width: 3%;
+      border-radius:999px;
+      position:relative;
+      transition: width .5s ease;
+
+      background: linear-gradient(90deg, var(--iceA), var(--iceB));
+      box-shadow:
+        0 0 18px rgba(140,205,255,.18),
+        inset 0 0 8px rgba(255,255,255,.12);
+    }
+
+    /* Shimmer overlay */
+    .bar-fill::before{
+      content:"";
+      position:absolute;
+      inset:-20px;
+      background:
+        linear-gradient(110deg,
+          rgba(255,255,255,0) 0%,
+          rgba(255,255,255,.18) 18%,
+          rgba(255,255,255,0) 36%
+        );
+      transform: translateX(-60%);
+      animation: shimmer 2.4s linear infinite;
+      pointer-events:none;
+      opacity:.85;
+    }
+
+    /* Subtle "ice grain" overlay */
+    .bar-fill::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        radial-gradient(circle at 20% 40%, rgba(255,255,255,.12) 0 2px, rgba(255,255,255,0) 3px),
+        radial-gradient(circle at 65% 55%, rgba(255,255,255,.10) 0 1.5px, rgba(255,255,255,0) 3px),
+        radial-gradient(circle at 85% 25%, rgba(255,255,255,.09) 0 1.5px, rgba(255,255,255,0) 3px);
+      opacity:.55;
+      mix-blend-mode: screen;
+      pointer-events:none;
+    }
+
+    @keyframes shimmer{
+      0%{transform: translateX(-70%)}
+      100%{transform: translateX(70%)}
+    }
+
+    .tick{
+      position:absolute;
+      top:26px;
+      width:2px;
+      height:16px;
+      background: rgba(255,255,255,.32);
+      border-radius:2px;
+      transform: translateX(-1px);
+    }
+    .tick.current{
+      height:24px;
+      top:22px;
+      background: var(--accent);
+      box-shadow: 0 0 16px rgba(80,170,255,.45);
+    }
+
+    .major-label{
+      position:absolute;
+      top:52px;
+      transform: translateX(-50%);
+      font-size:12px;
+      font-weight:900;
+      opacity:.88;
+      white-space:nowrap;
+      padding:3px 8px;
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.22);
+    }
+
+    .current-patch-label{
+      position:absolute;
+      top:0px;
+      transform: translateX(-50%);
+      font-size:12px;
+      font-weight:900;
+      white-space:nowrap;
+      padding:3px 8px;
+      border-radius:10px;
+      border:1px solid rgba(80,170,255,.65);
+      background: rgba(0,0,0,.30);
+      box-shadow: 0 0 16px rgba(80,170,255,.18);
+      color:#fff;
+    }
+
+    footer{
+      border-top:1px solid rgba(255,255,255,.08);
+      padding:16px 0;
+      background:#070707;
+      font-size:12.5px;
+      opacity:.75;
+      text-align:center;
+    }
+
+    @media(max-width:900px){
+      .status-row{grid-template-columns:1fr}
+      .hero h1{font-size:36px}
+      .status-row-progress{max-width:1100px}
+      .major-label{font-size:11px}
+      .current-patch-label{font-size:11px}
     }
   </style>
 </head>
@@ -212,6 +399,7 @@
       <a href="rules.html">Rules</a>
       <a href="faq.html">FAQ</a>
       <a href="map.html">Map</a>
+      <a href="map2.html">Map</a>
     </nav>
   </div>
 
@@ -285,12 +473,6 @@
           We also feature a unique open-world game mode called <b>Guild War</b>, where guilds go head-to-head controlling
           key locations throughout <b>Azeroth</b>—creating persistent conflict, rivalries, and player-driven objectives.
         </p>
-
-        <!-- ✅ MAP TABS -->
-        <div class="map-tabs">
-          <a href="map.html">Azeroth War Map</a>
-          <a href="map2.html">Outland War Map</a>
-        </div>
       </div>
     </div>
 
@@ -306,6 +488,7 @@
 </footer>
 
 <script>
+  // ✅ Change only this later
   const CURRENT_PATCH = "2.1.4";
 
   const PATCHES = [
@@ -362,6 +545,7 @@
 
   const timelineEl = document.getElementById("timeline");
 
+  // ticks
   for (let i = 0; i < PATCHES.length; i++){
     const leftPct = toPct(i, totalSteps);
     const patch = PATCHES[i];
@@ -374,12 +558,14 @@
     timelineEl.appendChild(tick);
   }
 
+  // current patch label above bar
   const currentLabel = document.createElement("div");
   currentLabel.className = "current-patch-label";
   currentLabel.style.left = pct + "%";
   currentLabel.textContent = CURRENT_PATCH;
   timelineEl.appendChild(currentLabel);
 
+  // major labels
   for (const m of MAJORS){
     const mi = indexOfKey(m.key);
     if (mi < 0) continue;
@@ -392,6 +578,9 @@
     timelineEl.appendChild(lbl);
   }
 
+  // ===========================
+  // Players: 350 - 500
+  // ===========================
   const MIN=500, MAX=750;
   let p=Math.floor(Math.random()*(MAX-MIN+1))+MIN;
   let t=p;
@@ -412,6 +601,9 @@
   }
   tickPlayers();
 
+  // ===========================
+  // Snow toggle
+  // ===========================
   let snowOn=localStorage.getItem("snow")!=="off";
   const btn=document.getElementById("snowToggle");
   const c=document.getElementById("snowCanvas");
