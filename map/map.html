@@ -70,114 +70,117 @@
 
 <script src="/map/map-engine.js"></script>
 <script>
-  const isAdmin = new URLSearchParams(location.search).get("admin") === "1";
-  if(isAdmin) document.getElementById('adminControls').style.display='block';
+const isAdmin = new URLSearchParams(location.search).get("admin") === "1";
+if(isAdmin) document.getElementById('adminControls').style.display='block';
 
-  // Initialize maps
-  initMap('worldMapCanvas','/assets/worldmap.jpg','worldMap',isAdmin);
-  initMap('outlandMapCanvas','/assets/outland.jpg','outlandMap',isAdmin);
+// Initialize maps
+initMap('worldMapCanvas','/assets/worldmap.jpg','worldMap',isAdmin);
+initMap('outlandMapCanvas','/assets/outland.jpg','outlandMap',isAdmin);
 
-  // Center maps on load
-  function centerMap(mapKey){
-    const map = maps[mapKey];
-    const canvas = map.canvas;
-    const img = map.img;
+// Center maps
+function centerMap(mapKey){
+  const map = maps[mapKey];
+  const canvas = map.canvas;
+  const img = map.img;
 
-    const zoomX = canvas.width / img.width;
-    const zoomY = canvas.height / img.height;
-    map.zoom = Math.min(zoomX, zoomY);
+  const zoomX = canvas.width / img.width;
+  const zoomY = canvas.height / img.height;
+  map.zoom = Math.min(zoomX, zoomY);
 
-    map.panX = (canvas.width - img.width*map.zoom)/2;
-    map.panY = (canvas.height - img.height*map.zoom)/2;
+  map.panX = (canvas.width - img.width*map.zoom)/2;
+  map.panY = (canvas.height - img.height*map.zoom)/2;
 
-    drawMap(mapKey);
-  }
+  drawMap(mapKey);
+}
 
-  mapLoadCenter = ()=> {
-    centerMap('worldMap');
-    centerMap('outlandMap');
-  }
+const mapLoadCenter = ()=>{
+  centerMap('worldMap');
+  centerMap('outlandMap');
+}
 
-  maps['worldMap'].img.onload = mapLoadCenter;
-  maps['outlandMap'].img.onload = mapLoadCenter;
+maps['worldMap'].img.onload = mapLoadCenter;
+maps['outlandMap'].img.onload = mapLoadCenter;
 
-  // Click-and-drag with proper speed for admins
-  function setupDrag(mapKey){
-    const map = maps[mapKey];
-    let dragging = false;
-    let lastX = 0, lastY = 0;
+// Correct drag for zoomed maps
+function setupDrag(mapKey){
+  const map = maps[mapKey];
+  let dragging=false, lastX=0, lastY=0;
 
-    map.canvas.addEventListener('mousedown', (e)=>{
-      if(!isAdmin && mapKey!=='worldMap' && mapKey!=='outlandMap') return;
-      dragging=true; lastX=e.clientX; lastY=e.clientY;
-    });
-
-    map.canvas.addEventListener('mousemove', (e)=>{
-      if(!dragging) return;
-      const dx = (e.clientX - lastX);
-      const dy = (e.clientY - lastY);
-      map.panX += dx;
-      map.panY += dy;
-      lastX = e.clientX; lastY = e.clientY;
-      drawMap(mapKey);
-      drawCities();
-    });
-
-    map.canvas.addEventListener('mouseup', ()=>dragging=false);
-    map.canvas.addEventListener('mouseleave', ()=>dragging=false);
-  }
-
-  setupDrag('worldMap');
-  setupDrag('outlandMap');
-
-  // Example city data
-  const cities = [
-    {map:'worldMap',x:200,y:300,name:'Stormwind',owner:'Alliance',influence:80,status:'Safe'},
-    {map:'worldMap',x:500,y:400,name:'Orgrimmar',owner:'Horde',influence:70,status:'Under Attack'},
-    {map:'outlandMap',x:300,y:250,name:'Shattrath',owner:'Neutral',influence:50,status:'Peaceful'}
-  ];
-
-  function showCityPanel(city,e){
-    const panel = document.getElementById(city.map==='worldMap'?'cityInfoPanel':'cityInfoPanel2');
-    panel.style.left = e.clientX+10+'px';
-    panel.style.top = e.clientY+10+'px';
-    panel.innerHTML = `<b>${city.name}</b><br>Owner: ${city.owner}<br>Influence: ${city.influence}%<br>Status: ${city.status}`;
-    panel.style.display='block';
-  }
-
-  function hideCityPanels(){
-    document.getElementById('cityInfoPanel').style.display='none';
-    document.getElementById('cityInfoPanel2').style.display='none';
-  }
-
-  function drawCities(){
-    cities.forEach(c=>{
-      const mapObj = maps[c.map];
-      const ctx = mapObj.ctx;
-      const icon = new Image();
-      icon.src = markerIcons['city'];
-      icon.onload = ()=>ctx.drawImage(icon,c.x*mapObj.zoom+mapObj.panX-16,c.y*mapObj.zoom+mapObj.panY-16,32,32);
-
-      mapObj.canvas.addEventListener('mousemove', e=>{
-        const x = (e.clientX - mapObj.canvas.getBoundingClientRect().left - mapObj.panX)/mapObj.zoom;
-        const y = (e.clientY - mapObj.canvas.getBoundingClientRect().top - mapObj.panY)/mapObj.zoom;
-        if(Math.abs(x-c.x)<16 && Math.abs(y-c.y)<16) showCityPanel(c,e);
-        else hideCityPanels();
-      });
-    });
-  }
-
-  drawCities();
-
-  // Enable polygon editing for admins
-  function enablePolygonEditing(mapKey){
+  map.canvas.addEventListener('mousedown', e=>{
     if(!isAdmin) return;
-    const map = maps[mapKey];
-    map.editPolygons = true; // your map-engine.js should respect this flag
-  }
+    dragging=true;
+    lastX=e.clientX;
+    lastY=e.clientY;
+  });
 
-  enablePolygonEditing('worldMap');
-  enablePolygonEditing('outlandMap');
+  map.canvas.addEventListener('mousemove', e=>{
+    if(!dragging) return;
+    const dx = (e.clientX - lastX) / map.zoom;  // scale by zoom
+    const dy = (e.clientY - lastY) / map.zoom;
+    map.panX += dx * map.zoom;
+    map.panY += dy * map.zoom;
+    lastX = e.clientX;
+    lastY = e.clientY;
+    drawMap(mapKey);
+    drawCities();
+    drawPolygons(mapKey);
+  });
+
+  map.canvas.addEventListener('mouseup', ()=>dragging=false);
+  map.canvas.addEventListener('mouseleave', ()=>dragging=false);
+}
+
+setupDrag('worldMap');
+setupDrag('outlandMap');
+
+// Example cities
+const cities=[
+  {map:'worldMap',x:200,y:300,name:'Stormwind',owner:'Alliance',influence:80,status:'Safe'},
+  {map:'worldMap',x:500,y:400,name:'Orgrimmar',owner:'Horde',influence:70,status:'Under Attack'},
+  {map:'outlandMap',x:300,y:250,name:'Shattrath',owner:'Neutral',influence:50,status:'Peaceful'}
+];
+
+function showCityPanel(city,e){
+  const panel = document.getElementById(city.map==='worldMap'?'cityInfoPanel':'cityInfoPanel2');
+  panel.style.left = e.clientX+10+'px';
+  panel.style.top = e.clientY+10+'px';
+  panel.innerHTML = `<b>${city.name}</b><br>Owner: ${city.owner}<br>Influence: ${city.influence}%<br>Status: ${city.status}`;
+  panel.style.display='block';
+}
+
+function hideCityPanels(){
+  document.getElementById('cityInfoPanel').style.display='none';
+  document.getElementById('cityInfoPanel2').style.display='none';
+}
+
+function drawCities(){
+  cities.forEach(c=>{
+    const mapObj = maps[c.map];
+    const ctx = mapObj.ctx;
+    const icon = new Image();
+    icon.src = markerIcons['city'];
+    icon.onload = ()=>ctx.drawImage(icon,c.x*mapObj.zoom+mapObj.panX-16,c.y*mapObj.zoom+mapObj.panY-16,32,32);
+
+    mapObj.canvas.addEventListener('mousemove', e=>{
+      const x = (e.clientX - mapObj.canvas.getBoundingClientRect().left - mapObj.panX)/mapObj.zoom;
+      const y = (e.clientY - mapObj.canvas.getBoundingClientRect().top - mapObj.panY)/mapObj.zoom;
+      if(Math.abs(x-c.x)<16 && Math.abs(y-c.y)<16) showCityPanel(c,e);
+      else hideCityPanels();
+    });
+  });
+}
+
+// Editable polygons for admins
+function enablePolygonEditing(mapKey){
+  if(!isAdmin) return;
+  const map = maps[mapKey];
+  map.editPolygons = true; // map-engine.js should respect this
+  map.namePolygons = true; // enable naming
+}
+
+enablePolygonEditing('worldMap');
+enablePolygonEditing('outlandMap');
+
 </script>
 </body>
 </html>
