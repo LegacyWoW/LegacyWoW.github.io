@@ -14,51 +14,40 @@ function initMap(canvasId, imgSrc, key, isAdmin) {
   const img = new Image();
 
   img.onload = () => {
+    // Make canvas size match image exactly
     canvas.width = img.width;
     canvas.height = img.height;
 
     maps[key] = {
-      canvas,
-      ctx,
-      img,
-      zoom: 1,
-      offsetX: 0,
-      offsetY: 0,
-      drag: false,
-      dragStartX: 0,
-      dragStartY: 0,
-      markers: [],
-      polygons: [],
-      current: [],
-      tool: null,
-      icon: "city",
-      color: "#ffff00",
-      admin: isAdmin,
-      selectedPolygon: null
+      canvas, ctx, img,
+      zoom: 1, offsetX: 0, offsetY: 0,
+      drag: false, dragStartX: 0, dragStartY: 0,
+      markers: [], polygons: [], current: [],
+      tool: null, icon: "city", color: "#ffff00",
+      admin: isAdmin, selectedPolygon: null
     };
 
     drawMap(key);
 
-    // Mouse wheel zoom
+    // Zoom with mouse wheel (centered)
     canvas.addEventListener("wheel", e => {
       e.preventDefault();
-      const zoomFactor = 1.15;
-      // Zoom centered on mouse pointer
       const rect = canvas.getBoundingClientRect();
-      const mouseX = (e.clientX - rect.left - maps[key].offsetX) / maps[key].zoom;
-      const mouseY = (e.clientY - rect.top - maps[key].offsetY) / maps[key].zoom;
+      const map = maps[key];
+      const mouseX = (e.clientX - rect.left - map.offsetX) / map.zoom;
+      const mouseY = (e.clientY - rect.top - map.offsetY) / map.zoom;
 
-      if (e.deltaY < 0) maps[key].zoom *= zoomFactor;
-      else maps[key].zoom /= zoomFactor;
+      const zoomFactor = 1.15;
+      map.zoom *= e.deltaY < 0 ? zoomFactor : 1 / zoomFactor;
 
-      // Adjust offset so zoom centers on mouse
-      maps[key].offsetX = e.clientX - rect.left - mouseX * maps[key].zoom;
-      maps[key].offsetY = e.clientY - rect.top - mouseY * maps[key].zoom;
+      // adjust offset so zoom centers on mouse
+      map.offsetX = e.clientX - rect.left - mouseX * map.zoom;
+      map.offsetY = e.clientY - rect.top - mouseY * map.zoom;
 
       drawMap(key);
     });
 
-    // Drag pan
+    // Drag panning
     canvas.addEventListener("mousedown", e => {
       maps[key].drag = true;
       maps[key].dragStartX = e.clientX;
@@ -67,17 +56,16 @@ function initMap(canvasId, imgSrc, key, isAdmin) {
     canvas.addEventListener("mouseup", () => maps[key].drag = false);
     canvas.addEventListener("mouseleave", () => maps[key].drag = false);
     canvas.addEventListener("mousemove", e => {
-      if (maps[key].drag) {
-        const speed = 10; // increased drag speed
-        maps[key].offsetX += (e.clientX - maps[key].dragStartX) * speed;
-        maps[key].offsetY += (e.clientY - maps[key].dragStartY) * speed;
-        maps[key].dragStartX = e.clientX;
-        maps[key].dragStartY = e.clientY;
-        drawMap(key);
-      }
+      const map = maps[key];
+      if (!map.drag) return;
+      const speed = 10;
+      map.offsetX += (e.clientX - map.dragStartX) * speed;
+      map.offsetY += (e.clientY - map.dragStartY) * speed;
+      map.dragStartX = e.clientX;
+      map.dragStartY = e.clientY;
+      drawMap(key);
     });
 
-    // Click handling
     canvas.addEventListener("click", e => handleClick(e, key));
   };
 
@@ -88,22 +76,21 @@ function handleClick(e, key) {
   const map = maps[key];
   const rect = map.canvas.getBoundingClientRect();
 
-  // Correct coordinate calculation
-  const x = (e.clientX - rect.left - map.offsetX) / map.zoom;
-  const y = (e.clientY - rect.top - map.offsetY) / map.zoom;
+  // Correct coordinates for CSS scaling
+  const scaleX = map.canvas.width / rect.width;
+  const scaleY = map.canvas.height / rect.height;
+  const x = (e.clientX - rect.left) * scaleX - map.offsetX;
+  const y = (e.clientY - rect.top) * scaleY - map.offsetY;
 
   if (map.tool === "polygon") {
     map.current.push({ x, y });
   }
 
   if (map.tool === "marker") {
+    const name = prompt("Enter marker name:", "City");
     map.markers.push({
-      x, y,
-      type: map.icon,
-      name: "City",
-      owner: "Neutral",
-      influence: "0%",
-      status: "Peace"
+      x, y, type: map.icon, name,
+      owner: "Neutral", influence: "0%", status: "Peace"
     });
   }
 
@@ -114,20 +101,35 @@ function handleClick(e, key) {
 function checkCityClick(x, y, key) {
   const panel = document.getElementById("cityPanel");
   const map = maps[key];
-
   let clicked = false;
 
   map.markers.forEach(m => {
-    const dx = m.x - x;
-    const dy = m.y - y;
-    if (Math.sqrt(dx * dx + dy * dy) < 20) {
+    if (Math.hypot(m.x - x, m.y - y) < 20) {
+      clicked = true;
       panel.style.display = "block";
       panel.innerHTML =
         "<b>" + m.name + "</b><br>" +
         "Owner: " + m.owner + "<br>" +
         "Influence: " + m.influence + "<br>" +
-        "Status: " + m.status;
+        "Status: " + m.status +
+        "<br><button onclick='deleteMarker(\"" + key + "\"," + map.markers.indexOf(m) + ")'>Delete</button>";
+    }
+  });
+
+  map.polygons.forEach((p, idx) => {
+    // Simple bounding box click for polygon deletion
+    const xs = p.points.map(pt => pt.x);
+    const ys = p.points.map(pt => pt.y);
+    const minX = Math.min(...xs), maxX = Math.max(...xs);
+    const minY = Math.min(...ys), maxY = Math.max(...ys);
+    if (x >= minX && x <= maxX && y >= minY && y <= maxY) {
       clicked = true;
+      panel.style.display = "block";
+      panel.innerHTML =
+        "<b>Polygon</b><br>" +
+        "Color: " + p.color +
+        "<br><button onclick='deletePolygon(\"" + key + "\"," + idx + ")'>Delete</button>" +
+        "<br><button onclick='renamePolygon(\"" + key + "\"," + idx + ")'>Rename</button>";
     }
   });
 
@@ -141,26 +143,23 @@ function drawMap(key) {
   map.ctx.translate(map.offsetX, map.offsetY);
   map.ctx.scale(map.zoom, map.zoom);
 
-  // draw map image
   map.ctx.drawImage(map.img, 0, 0);
 
-  // draw polygons
+  // Draw polygons
   map.polygons.forEach(p => {
     map.ctx.beginPath();
     map.ctx.moveTo(p.points[0].x, p.points[0].y);
-    for (let i = 1; i < p.points.length; i++) {
-      map.ctx.lineTo(p.points[i].x, p.points[i].y);
-    }
+    for (let i = 1; i < p.points.length; i++) map.ctx.lineTo(p.points[i].x, p.points[i].y);
     map.ctx.closePath();
-    map.ctx.globalAlpha = 0.35;
     map.ctx.fillStyle = p.color;
+    map.ctx.globalAlpha = 0.35;
     map.ctx.fill();
     map.ctx.globalAlpha = 1;
     map.ctx.strokeStyle = "white";
     map.ctx.lineWidth = 2;
     map.ctx.stroke();
 
-    // draw polygon points for editing
+    // Draw points
     p.points.forEach(pt => {
       map.ctx.beginPath();
       map.ctx.arc(pt.x, pt.y, 10, 0, Math.PI * 2);
@@ -169,18 +168,15 @@ function drawMap(key) {
     });
   });
 
-  // current polygon being drawn
+  // Draw current polygon being drawn
   if (map.current.length > 0) {
     map.ctx.beginPath();
     map.ctx.moveTo(map.current[0].x, map.current[0].y);
-    for (let i = 1; i < map.current.length; i++) {
-      map.ctx.lineTo(map.current[i].x, map.current[i].y);
-    }
+    for (let i = 1; i < map.current.length; i++) map.ctx.lineTo(map.current[i].x, map.current[i].y);
     map.ctx.strokeStyle = "yellow";
     map.ctx.lineWidth = 3;
     map.ctx.stroke();
 
-    // draw points
     map.current.forEach(p => {
       map.ctx.beginPath();
       map.ctx.arc(p.x, p.y, 10, 0, Math.PI * 2);
@@ -189,7 +185,7 @@ function drawMap(key) {
     });
   }
 
-  // draw markers
+  // Draw markers
   map.markers.forEach(m => {
     const icon = new Image();
     icon.src = icons[m.type];
@@ -199,7 +195,7 @@ function drawMap(key) {
   map.ctx.restore();
 }
 
-// polygon tool functions
+// Polygon functions
 function setTool(tool, key) { maps[key].tool = tool; }
 function setIcon(icon, key) { maps[key].icon = icon; }
 function setColor(color, key) { maps[key].color = color; }
@@ -207,10 +203,29 @@ function setColor(color, key) { maps[key].color = color; }
 function finishPolygon(key) {
   const map = maps[key];
   if (map.current.length > 2) {
-    map.polygons.push({ points: [...map.current], color: map.color });
+    const name = prompt("Enter polygon name:", "Territory");
+    map.polygons.push({ points: [...map.current], color: map.color, name });
     map.current = [];
     drawMap(key);
   }
+}
+
+function deleteMarker(key, index) {
+  maps[key].markers.splice(index, 1);
+  drawMap(key);
+  document.getElementById("cityPanel").style.display = "none";
+}
+
+function deletePolygon(key, index) {
+  maps[key].polygons.splice(index, 1);
+  drawMap(key);
+  document.getElementById("cityPanel").style.display = "none";
+}
+
+function renamePolygon(key, index) {
+  const newName = prompt("Enter new polygon name:", maps[key].polygons[index].name);
+  if (newName) maps[key].polygons[index].name = newName;
+  drawMap(key);
 }
 
 function saveMap(key) {
