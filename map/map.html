@@ -8,33 +8,9 @@
 body { margin:0; font-family: Arial, sans-serif; background:#111; color:#fff; }
 header { background:#222; padding:10px; display:flex; align-items:center; justify-content:space-between; }
 header a { color:#fff; text-decoration:none; margin-right:15px; }
-.mapBox { 
-  position: relative; 
-  border: 2px solid #555; 
-  overflow: hidden; 
-  width: 1200px; 
-  height: 900px; 
-  margin: 20px auto; 
-  background:#000;
-}
-.cityPanel {
-  position:absolute;
-  background:#222;
-  padding:8px;
-  border:1px solid #fff;
-  display:none;
-  z-index:2000;
-  pointer-events:none;
-}
-.adminControls {
-  position:absolute;
-  top:10px;
-  right:10px;
-  background: rgba(0,0,0,0.8);
-  padding:10px;
-  z-index:1000;
-  display:none;
-}
+.mapBox { position: relative; border: 2px solid #555; overflow: hidden; width: 1200px; height: 900px; margin:20px auto; background:#000; }
+.cityPanel { position:absolute; background:#222; padding:8px; border:1px solid #fff; display:none; z-index:2000; pointer-events:none; }
+.adminControls { position:absolute; top:10px; right:10px; background: rgba(0,0,0,0.8); padding:10px; z-index:1000; display:none; }
 .adminControls button, select, input { margin:5px; }
 </style>
 </head>
@@ -48,7 +24,6 @@ header a { color:#fff; text-decoration:none; margin-right:15px; }
   </nav>
 </header>
 
-<!-- WORLD MAP -->
 <div class="mapBox" id="worldMapBox">
   <canvas id="worldMapCanvas" width="1200" height="900"></canvas>
   <div class="cityPanel" id="cityInfoPanel"></div>
@@ -64,11 +39,10 @@ header a { color:#fff; text-decoration:none; margin-right:15px; }
     </select>
     <input type="color" onchange="setColor(this.value,'worldMap')" value="#ff0">
     <button onclick="finishPolygon('worldMap')">Finish Polygon</button>
-    <button onclick="saveMap('worldMap')">Save Map</button>
+    <button onclick="exportMap('worldMap')">Export</button>
   </div>
 </div>
 
-<!-- OUTLAND MAP -->
 <div class="mapBox" id="outlandMapBox">
   <canvas id="outlandMapCanvas" width="1200" height="900"></canvas>
   <div class="cityPanel" id="cityInfoPanel2"></div>
@@ -84,7 +58,7 @@ header a { color:#fff; text-decoration:none; margin-right:15px; }
     </select>
     <input type="color" onchange="setColor(this.value,'outlandMap')" value="#ff0">
     <button onclick="finishPolygon('outlandMap')">Finish Polygon</button>
-    <button onclick="saveMap('outlandMap')">Save Map</button>
+    <button onclick="exportMap('outlandMap')">Export</button>
   </div>
 </div>
 
@@ -100,7 +74,7 @@ if(isAdmin){
 initMap('worldMapCanvas','/assets/worldmap.jpg','worldMap',isAdmin);
 initMap('outlandMapCanvas','/assets/outland.jpg','outlandMap',isAdmin);
 
-// Center maps
+// Center maps on load
 function centerMap(mapKey){
   const map = maps[mapKey];
   const canvas = map.canvas;
@@ -116,35 +90,41 @@ function centerMap(mapKey){
   drawMap(mapKey);
 }
 
-const mapLoadCenter = ()=>{
+maps['worldMap'].img.onload = ()=>{
   centerMap('worldMap');
   centerMap('outlandMap');
 }
 
-maps['worldMap'].img.onload = mapLoadCenter;
-maps['outlandMap'].img.onload = mapLoadCenter;
-
-// Drag setup for each map independently
+// Correct drag calculation per map
 function setupDrag(mapKey){
   const map = maps[mapKey];
   let dragging=false;
-  let lastX=0,lastY=0;
+  let lastMouseX=0,lastMouseY=0;
 
   map.canvas.addEventListener('mousedown', e=>{
     if(!isAdmin) return;
     dragging=true;
-    lastX=e.clientX;
-    lastY=e.clientY;
+    const rect = map.canvas.getBoundingClientRect();
+    lastMouseX = e.clientX - rect.left;
+    lastMouseY = e.clientY - rect.top;
   });
 
   map.canvas.addEventListener('mousemove', e=>{
     if(!dragging) return;
-    const dx = (e.clientX-lastX)/map.zoom;
-    const dy = (e.clientY-lastY)/map.zoom;
-    map.panX += dx*map.zoom;
-    map.panY += dy*map.zoom;
-    lastX=e.clientX;
-    lastY=e.clientY;
+    const rect = map.canvas.getBoundingClientRect();
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+
+    // Calculate delta properly with zoom
+    const dx = (mouseX - lastMouseX);
+    const dy = (mouseY - lastMouseY);
+
+    map.panX += dx;
+    map.panY += dy;
+
+    lastMouseX = mouseX;
+    lastMouseY = mouseY;
+
     drawMap(mapKey);
     drawCities();
     drawPolygons(mapKey);
@@ -157,54 +137,43 @@ function setupDrag(mapKey){
 setupDrag('worldMap');
 setupDrag('outlandMap');
 
-// Example cities
-const cities=[
-  {map:'worldMap',x:200,y:300,name:'Stormwind',owner:'Alliance',influence:80,status:'Safe'},
-  {map:'worldMap',x:500,y:400,name:'Orgrimmar',owner:'Horde',influence:70,status:'Under Attack'},
-  {map:'outlandMap',x:300,y:250,name:'Shattrath',owner:'Neutral',influence:50,status:'Peaceful'}
-];
-
-function showCityPanel(city,e){
-  const panel = document.getElementById(city.map==='worldMap'?'cityInfoPanel':'cityInfoPanel2');
-  panel.style.left = e.clientX+10+'px';
-  panel.style.top = e.clientY+10+'px';
-  panel.innerHTML = `<b>${city.name}</b><br>Owner: ${city.owner}<br>Influence: ${city.influence}%<br>Status: ${city.status}`;
-  panel.style.display='block';
+// Polygon naming and export
+function finishPolygon(mapKey){
+  const map = maps[mapKey];
+  if(!map.currentPolygon || map.currentPolygon.length<3) return;
+  const name = prompt("Enter polygon name:");
+  map.currentPolygon.name = name || "Unnamed";
+  map.polygons.push(map.currentPolygon);
+  map.currentPolygon = [];
+  drawPolygons(mapKey);
 }
 
-function hideCityPanels(){
-  document.getElementById('cityInfoPanel').style.display='none';
-  document.getElementById('cityInfoPanel2').style.display='none';
+function exportMap(mapKey){
+  const map = maps[mapKey];
+  const geojson = {
+    type: "FeatureCollection",
+    features: map.polygons.map(p=>({
+      type:"Feature",
+      properties:{name:p.name,color:p.color},
+      geometry:{type:"Polygon",coordinates:[p.points]}
+    }))
+  };
+  const blob = new Blob([JSON.stringify(geojson,null,2)],{type:"application/json"});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = "overlays.geojson";
+  a.click();
 }
 
-function drawCities(){
-  cities.forEach(c=>{
-    const mapObj = maps[c.map];
-    const ctx = mapObj.ctx;
-    const icon = new Image();
-    icon.src = markerIcons['city'];
-    icon.onload = ()=>ctx.drawImage(icon,c.x*mapObj.zoom+mapObj.panX-16,c.y*mapObj.zoom+mapObj.panY-16,32,32);
-
-    mapObj.canvas.addEventListener('mousemove', e=>{
-      const x = (e.clientX - mapObj.canvas.getBoundingClientRect().left - mapObj.panX)/mapObj.zoom;
-      const y = (e.clientY - mapObj.canvas.getBoundingClientRect().top - mapObj.panY)/mapObj.zoom;
-      if(Math.abs(x-c.x)<16 && Math.abs(y-c.y)<16) showCityPanel(c,e);
-      else hideCityPanels();
-    });
-  });
-}
-
-// Enable polygons for both maps
+// Enable polygons for admins
 function enablePolygonEditing(mapKey){
   if(!isAdmin) return;
   const map = maps[mapKey];
   map.editPolygons = true;
   map.namePolygons = true;
 }
-
 enablePolygonEditing('worldMap');
 enablePolygonEditing('outlandMap');
-
 </script>
 </body>
 </html>
