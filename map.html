@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>LegacyWoW Interactive Map</title>
+<title>LegacyWoW World Map</title>
 
 <style>
 
@@ -14,11 +14,9 @@ color:white;
 font-family:Arial;
 }
 
-/* TOP NAV */
-
 .topbar{
 background:#111;
-padding:10px 20px;
+padding:12px 25px;
 display:flex;
 gap:25px;
 border-bottom:1px solid #333;
@@ -30,26 +28,20 @@ text-decoration:none;
 font-weight:bold;
 }
 
-.topbar a:hover{
-color:#e7c26b;
-}
-
-/* MAP AREA */
-
 .map-container{
 display:flex;
 justify-content:center;
-gap:40px;
 flex-wrap:wrap;
+gap:40px;
 padding:30px;
 }
 
 .map-box{
 position:relative;
-background:#1b1b1b;
-border:2px solid #444;
-padding:10px;
 width:1200px;
+border:2px solid #444;
+background:#1b1b1b;
+padding:10px;
 }
 
 canvas{
@@ -66,9 +58,9 @@ cursor:grab;
 position:absolute;
 top:10px;
 left:10px;
-background:rgba(0,0,0,.75);
-border:1px solid #555;
+background:rgba(0,0,0,.8);
 padding:10px;
+border:1px solid #666;
 display:flex;
 flex-direction:column;
 gap:6px;
@@ -77,27 +69,21 @@ font-size:13px;
 
 .legend button{
 background:#333;
-color:white;
-border:1px solid #666;
-padding:4px 6px;
-cursor:pointer;
-}
-
-.zoom{
-position:absolute;
-bottom:10px;
-right:10px;
-display:flex;
-flex-direction:column;
-}
-
-.zoom button{
-background:#222;
-color:white;
 border:1px solid #555;
-width:32px;
-height:32px;
-font-size:18px;
+color:white;
+cursor:pointer;
+padding:4px;
+}
+
+.city-panel{
+position:absolute;
+bottom:20px;
+left:20px;
+background:#111;
+border:1px solid #555;
+padding:12px;
+display:none;
+width:220px;
 }
 
 </style>
@@ -125,9 +111,20 @@ font-size:18px;
 
 <b>Admin Tools</b>
 
-<button onclick="setTool('marker','world')">Add Marker</button> <button onclick="setTool('polygon','world')">Draw Territory</button>
+<button onclick="setTool('polygon','world')">Draw Territory</button>
 
-<label>Color</label> <input type="color" onchange="setColor(this.value,'world')" value="#ffff00">
+<button onclick="setTool('marker','world')">Place Marker</button>
+
+<select onchange="setIcon(this.value,'world')">
+<option value="city">City</option>
+<option value="town">Town</option>
+<option value="fort">Fort</option>
+<option value="battle">Battle</option>
+<option value="tower">Tower</option>
+</select>
+
+<input type="color" value="#ffff00"
+onchange="setColor(this.value,'world')">
 
 <button onclick="finishPolygon('world')">Finish Territory</button>
 
@@ -135,10 +132,7 @@ font-size:18px;
 
 </div>
 
-<div class="zoom">
-<button onclick="zoomMap('world',1.2)">+</button>
-<button onclick="zoomMap('world',0.8)">−</button>
-</div>
+<div class="city-panel" id="cityPanel"></div>
 
 </div>
 
@@ -150,19 +144,25 @@ font-size:18px;
 
 <b>Admin Tools</b>
 
-<button onclick="setTool('marker','outland')">Add Marker</button> <button onclick="setTool('polygon','outland')">Draw Territory</button>
+<button onclick="setTool('polygon','outland')">Draw Territory</button>
 
-<label>Color</label> <input type="color" onchange="setColor(this.value,'outland')" value="#ffff00">
+<button onclick="setTool('marker','outland')">Place Marker</button>
+
+<select onchange="setIcon(this.value,'outland')">
+<option value="city">City</option>
+<option value="town">Town</option>
+<option value="fort">Fort</option>
+<option value="battle">Battle</option>
+<option value="tower">Tower</option>
+</select>
+
+<input type="color" value="#ffff00"
+onchange="setColor(this.value,'outland')">
 
 <button onclick="finishPolygon('outland')">Finish Territory</button>
 
 <button onclick="saveMap('outland')">Save Map</button>
 
-</div>
-
-<div class="zoom">
-<button onclick="zoomMap('outland',1.2)">+</button>
-<button onclick="zoomMap('outland',0.8)">−</button>
 </div>
 
 </div>
@@ -173,15 +173,17 @@ font-size:18px;
 
 <script>
 
-const admin = new URLSearchParams(location.search).get("admin") === "1";
+const admin=new URLSearchParams(location.search).get("admin")==="1"
 
 if(!admin){
-document.getElementById("worldLegend").style.display="none";
-document.getElementById("outlandLegend").style.display="none";
+
+document.getElementById("worldLegend").style.display="none"
+document.getElementById("outlandLegend").style.display="none"
+
 }
 
-initMap("worldMap","../assets/worldmap.jpg","world",admin);
-initMap("outlandMap","../assets/outland.jpg","outland",admin);
+initMap("worldMap","../assets/worldmap.jpg","world",admin)
+initMap("outlandMap","../assets/outland.jpg","outland",admin)
 
 </script>
 
