@@ -1878,8 +1878,8 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "(Ashen Reclamation)",
-        "color": "#ff0000",
+        "title": "Contested",
+        "color": "#ffffff",
         "category": "horde"
       },
       "geometry": {
@@ -2670,8 +2670,8 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "(Ashen Reclamation)",
-        "color": "#ff0000",
+        "title": "Contested",
+        "color": "#ffffff",
         "category": "horde"
       },
       "geometry": {
@@ -3488,8 +3488,8 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "New Area",
-        "color": "#ff0000",
+        "title": "Contested",
+        "color": "#ffffff",
         "category": "horde"
       },
       "geometry": {
@@ -4044,8 +4044,8 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "(Ashen Reclamation)",
-        "color": "#ff0000",
+        "title": "Contested",
+        "color": "#ffffff",
         "category": "horde"
       },
       "geometry": {
@@ -4212,52 +4212,6 @@
               649
             ]
           ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "title": "Siege of Undercity!",
-        "color": "#ffffff",
-        "category": "events",
-        "icon": "pvp"
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          1250,
-          723.5
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "title": "Alliance Staging Area",
-        "color": "#0000ff",
-        "category": "alliance"
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          1240,
-          726.25
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "title": "Alliance Staging Area",
-        "color": "#0000ff",
-        "category": "alliance"
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          1255,
-          730.875
         ]
       }
     }
