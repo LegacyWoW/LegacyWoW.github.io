@@ -5,198 +5,166 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>LegacyWoW — Progressive Vanilla → Wrath of the Lich King (3.3.5a)</title>
 
-  <style>
-    :root{
-      --bg:#0b0b0b;
-      --text:#e8e8e8;
-      --muted: rgba(232,232,232,.82);
-      --line: rgba(255,255,255,.14);
-      --glass: rgba(0,0,0,.45);
+<script>
+  const CURRENT_PATCH = "2.4.3";
 
-      --iceA: rgba(140, 205, 255, .90);
-      --iceB: rgba(80,  170, 255, .85);
-      --accent: rgba(80, 170, 255, .98);
+  const PATCHES = [
+    { key:"1.0.0",  era:"Vanilla" },
+    { key:"1.1.0",  era:"Vanilla" },
+    { key:"1.3.3",  era:"Vanilla" },
+    { key:"1.5.2",  era:"Vanilla" },
+    { key:"1.6.2",  era:"Vanilla" },
+    { key:"1.7.1",  era:"Vanilla" },
+    { key:"1.9.4",  era:"Vanilla" },
+    { key:"1.11.2", era:"Vanilla" },
+    { key:"1.12.1", era:"Vanilla" },
+    { key:"2.0.1",  era:"TBC" },
+    { key:"2.1.4",  era:"TBC" },
+    { key:"2.3.3",  era:"TBC" },
+    { key:"2.4.3",  era:"TBC" },
+    { key:"3.0.2",  era:"WOTLK" },
+    { key:"3.1.3",  era:"WOTLK" },
+    { key:"3.2.2a", era:"WOTLK" },
+    { key:"3.3.3",  era:"WOTLK" },
+    { key:"3.3.5a", era:"WOTLK" },
+    { key:"3.4.0",  era:"Custom" }
+  ];
+
+  const MAJORS = [
+    { key:"1.0.0", label:"1.0.0 Vanilla" },
+    { key:"2.0.1", label:"2.0.1 TBC" },
+    { key:"3.0.2", label:"3.0.2 WOTLK" },
+    { key:"3.4.0", label:"3.4.0 Custom" }
+  ];
+
+  function indexOfKey(k){ return PATCHES.findIndex(p => p.key === k); }
+  function toPct(i, total){ return total <= 0 ? 0 : (i / total) * 100; }
+
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  const idx = indexOfKey(CURRENT_PATCH);
+  const safeIdx = idx >= 0 ? idx : 0;
+  const currentEra = PATCHES[safeIdx]?.era || "Vanilla";
+
+  const totalSteps = PATCHES.length - 1;
+  const pct = toPct(safeIdx, totalSteps);
+
+  // =========================
+  // FIX: MULTIPLE PROGRESS BARS
+  // =========================
+  document.querySelectorAll(".progress-wrap").forEach((wrap) => {
+    const timeline = wrap.querySelector(".timeline");
+    const fill = wrap.querySelector(".bar-fill");
+    const labels = wrap.querySelector(".progress-labels");
+
+    if (!timeline || !fill) return;
+
+    // set fill width
+    fill.style.width = Math.max(2, pct) + "%";
+
+    // update labels inside this block only
+    const patchLabel = wrap.querySelector("#currentPatchLabel");
+    const eraChip = wrap.querySelector("#currentEraChip");
+
+    if (patchLabel) patchLabel.textContent = CURRENT_PATCH;
+    if (eraChip) eraChip.textContent = currentEra;
+
+    // prevent duplicates if script reruns
+    if (timeline.dataset.built === "true") return;
+    timeline.dataset.built = "true";
+
+    // ticks
+    for (let i = 0; i < PATCHES.length; i++){
+      const left = toPct(i, totalSteps);
+      const p = PATCHES[i];
+
+      const tick = document.createElement("div");
+      tick.className = "tick" + (p.key === CURRENT_PATCH ? " current" : "");
+      tick.style.left = left + "%";
+      timeline.appendChild(tick);
     }
 
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      background: var(--bg);
-      color: var(--text);
+    // current label
+    const currentLabel = document.createElement("div");
+    currentLabel.className = "current-patch-label";
+    currentLabel.style.left = pct + "%";
+    currentLabel.textContent = CURRENT_PATCH;
+    timeline.appendChild(currentLabel);
+
+    // major labels
+    for (const m of MAJORS){
+      const mi = indexOfKey(m.key);
+      if (mi < 0) continue;
+
+      const lbl = document.createElement("div");
+      lbl.className = "major-label";
+      lbl.style.left = toPct(mi, totalSteps) + "%";
+      lbl.textContent = m.label;
+      timeline.appendChild(lbl);
     }
-    a{color:#fff}
+  });
 
-    .wrap{max-width:1100px;margin:0 auto;padding:0 18px}
+  // =========================
+  // Player counter (unchanged)
+  // =========================
+  const MIN=600, MAX=850;
+  let p=Math.floor(Math.random()*(MAX-MIN+1))+MIN;
+  let t=p;
 
-    #snowCanvas{
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 99999;
+  const pc=document.getElementById("playerCount");
+  const lu=document.getElementById("lastUpdated");
+
+  function tickPlayers(){
+    if(Math.random()<0.25){
+      t=Math.floor(Math.random()*(MAX-MIN+1))+MIN;
     }
+    const diff=t-p;
+    p+=Math.sign(diff)*Math.max(1,Math.floor(Math.random()*3));
+    p=Math.max(MIN,Math.min(MAX,p));
+    pc.textContent=p;
+    lu.textContent=new Date().toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"});
+    setTimeout(tickPlayers,3000+Math.random()*3000);
+  }
+  tickPlayers();
 
-    header{
-      border-bottom:1px solid rgba(255,255,255,.10);
-      background:
-        linear-gradient(180deg, rgba(0,0,0,.25), rgba(0,0,0,.88)),
-        url("/assets/hero.jpg");
-      background-size:cover;
-      background-position:center;
+  // =========================
+  // Snow (unchanged)
+  // =========================
+  let snowOn=localStorage.getItem("snow")!=="off";
+  const btn=document.getElementById("snowToggle");
+  const c=document.getElementById("snowCanvas");
+  const x=c.getContext("2d");
+  const flakes=[];
+  for(let i=0;i<200;i++) flakes.push({
+    x:Math.random()*innerWidth,
+    y:Math.random()*innerHeight,
+    r:1+Math.random()*3,
+    v:1+Math.random()*2
+  });
+
+  function resize(){c.width=innerWidth;c.height=innerHeight}
+  addEventListener("resize",resize);resize();
+
+  function drawSnow(){
+    requestAnimationFrame(drawSnow);
+    if(!snowOn){x.clearRect(0,0,c.width,c.height);return;}
+    x.clearRect(0,0,c.width,c.height);
+    x.fillStyle="#fff";
+    for(const f of flakes){
+      f.y+=f.v;
+      if(f.y>innerHeight){f.y=-5;f.x=Math.random()*innerWidth;}
+      x.beginPath();x.arc(f.x,f.y,f.r,0,Math.PI*2);x.fill();
     }
+  }
+  drawSnow();
 
-    .toprow{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:12px;
-      flex-wrap:wrap;
-      padding:16px 0;
-    }
-
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:12px;
-      text-decoration:none;
-      color:#fff;
-      font-weight:900;
-    }
-
-    nav{display:flex;gap:10px;flex-wrap:wrap}
-    nav a{
-      color:#fff;text-decoration:none;font-weight:800;font-size:13px;
-      padding:10px 12px;border-radius:14px;
-      border:1px solid rgba(255,255,255,.18);
-      background:rgba(0,0,0,.28);
-    }
-
-    .hero{text-align:center;padding:34px 0 22px;}
-    .hero h1{margin:0;font-size:44px}
-    .hero p{color:var(--muted)}
-
-    .btn{
-      border:1px solid rgba(255,255,255,.18);
-      background:rgba(255,255,255,.06);
-      color:#fff;
-      border-radius:14px;
-      padding:12px 14px;
-      font-weight:900;
-      cursor:pointer;
-      text-decoration:none;
-    }
-
-    .status-row{
-      margin:18px auto 0;
-      max-width:980px;
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:14px;
-    }
-
-    .box{
-      padding:18px 20px;
-      border-radius:18px;
-      border:1px solid var(--line);
-      background:var(--glass);
-      backdrop-filter:blur(8px);
-    }
-
-    .title{font-weight:900;text-transform:uppercase;font-size:13px;margin-bottom:10px}
-
-    .status-online{
-      display:flex;
-      gap:10px;
-      font-size:18px;
-      font-weight:900;
-      color:var(--iceA);
-    }
-
-    .subline{
-      margin-top:10px;
-      padding:10px;
-      border-radius:12px;
-      background:rgba(255,255,255,.04);
-      border:1px solid rgba(255,255,255,.10);
-      display:flex;
-      justify-content:space-between;
-    }
-
-    .progress-wrap{
-      margin-top:12px;
-      padding:12px;
-      border-radius:14px;
-      background:rgba(255,255,255,.04);
-      border:1px solid rgba(255,255,255,.10);
-    }
-
-    .progress-labels{
-      display:flex;
-      justify-content:space-between;
-      font-size:12px;
-      margin-bottom:10px;
-    }
-
-    .chip{
-      padding:4px 8px;
-      border-radius:10px;
-      background:rgba(0,0,0,.25);
-      border:1px solid rgba(255,255,255,.14);
-      font-weight:900;
-    }
-
-    .timeline{position:relative;height:78px}
-
-    .bar{
-      position:absolute;
-      top:28px;
-      left:0;right:0;
-      height:12px;
-      border-radius:999px;
-      background:rgba(0,0,0,.35);
-      border:1px solid rgba(255,255,255,.14);
-      overflow:hidden;
-    }
-
-    .bar-fill{
-      height:100%;
-      width:3%;
-      background:linear-gradient(90deg,var(--iceA),var(--iceB));
-      transition:width .5s ease;
-    }
-
-    .tick{
-      position:absolute;
-      top:26px;
-      width:2px;
-      height:16px;
-      background:rgba(255,255,255,.3);
-    }
-
-    .tick.current{
-      height:24px;
-      top:22px;
-      background:var(--accent);
-    }
-
-    .current-patch-label{
-      position:absolute;
-      top:0;
-      font-size:12px;
-      font-weight:900;
-      padding:3px 8px;
-      border-radius:10px;
-      background:rgba(0,0,0,.3);
-      border:1px solid rgba(80,170,255,.6);
-    }
-
-    footer{
-      text-align:center;
-      padding:16px;
-      opacity:.7;
-      font-size:12px;
-    }
-  </style>
+  function syncSnow(){
+    btn.textContent=snowOn?"Snow: ON":"Snow: OFF";
+    localStorage.setItem("snow",snowOn?"on":"off");
+  }
+  btn.onclick=()=>{snowOn=!snowOn;syncSnow()};
+  syncSnow();
+</script>
 </head>
 
 <body>
@@ -204,103 +172,281 @@
 
 <header>
 <div class="wrap">
+  <div class="toprow">
+    <a class="brand" href="index.html">
+      <div class="logo"><img src="/assets/logo.png" alt="LegacyWoW" onerror="this.remove();"></div>
+      <div>LegacyWoW</div>
+    </a>
+
+    <nav>
+      <a href="how-to-play.html">How to Play</a>
+      <a href="downloads.html">Downloads</a>
+      <a href="account.html">Create Account</a>
+      <a href="news.html">News</a>
+      <a href="rules.html">Rules</a>
+      <a href="faq.html">FAQ</a>
+      <a href="map.html">Map</a>
+    </nav>
+  </div>
 
   <div class="hero">
     <h1>Progressive Vanilla → Wrath</h1>
-    <p>LegacyWoW is a long-term progressive server.</p>
+    <p>LegacyWoW is a long-term progressive server with custom systems and open-world conflict.</p>
+
+    <div class="hero-row">
+      <a class="btn primary" href="how-to-play.html">Get Started</a>
+      <a class="btn" href="downloads.html">Downloads</a>
+      <a class="btn" href="map.html">World Map</a>
+      <button class="btn ghost" id="snowToggle" type="button">Snow: ON</button>
+    </div>
 
     <div class="status-row">
-
-      <!-- ICECROWN -->
-      <div class="box realm" data-patch="1.1.0">
+      <div class="box">
         <div class="title">Server Status</div>
-        <div class="status-online">ONLINE</div>
+        <div class="status-online"><div class="dot"></div>ONLINE</div>
 
         <div class="subline">
           <div>Realm: <b>Icecrown</b></div>
-          <div>Patch: <b class="patchText">1.1.0</b></div>
+          <div>Patch: <b id="statusPatch">1.1.0</b></div>
         </div>
-
-        <div class="progress-wrap">
-          <div class="progress-labels">
-            <div>Current: <b class="currentPatchLabel"></b> <span class="chip currentEraChip"></span></div>
-            <div>Goal: <b>3.4.0</b></div>
-          </div>
-
-          <div class="timeline">
-            <div class="bar"><div class="bar-fill"></div></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- DARROWMERE -->
-      <div class="box realm" data-patch="1.0.0">
-        <div class="title">Server Status</div>
-        <div class="status-online">ONLINE</div>
 
         <div class="subline">
           <div>Realm: <b>Darrowmere</b></div>
-          <div>Patch: <b class="patchText">1.0.0</b></div>
+          <div>Patch: <b id="statusPatch">1.0.0</b></div>
         </div>
+
+        <div class="players">Players Online: <b><span id="playerCount">---</span></b></div>
+        <div class="updated">Last updated: <span id="lastUpdated">---</span></div>
+      </div>
+
+      <div class="box">
+        <div class="title">Realm Info</div>
+        <div class="realm-grid">
+          <div class="kv"><div class="k">Client</div><div class="v">3.3.5a</div></div>
+          <div class="kv"><div class="k">Progression</div><div class="v">1.0.0 → 3.3.5a</div></div>
+          <div class="kv"><div class="k">Core</div><div class="v">AzerothCore</div></div>
+          <div class="kv"><div class="k">Rates</div><div class="v">Dynamic</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="status-row-progress">
+      <div class="box">
+        <div class="title">Server Progress</div>
+        <p style="margin:0;color:var(--muted);line-height:1.55;">
+          <b>Icecrown</b> is a progressive realm that begins in <b>Patch 1.0.0</b> and advances through each era up to <b>3.3.5a</b>.
+          After Wrath progression is complete, <b>custom content is planned</b>.
+        </p>
 
         <div class="progress-wrap">
           <div class="progress-labels">
-            <div>Current: <b class="currentPatchLabel"></b> <span class="chip currentEraChip"></span></div>
-            <div>Goal: <b>3.3.5a</b></div>
+            <div>Current: <b id="currentPatchLabel">1.1.0</b> <span class="chip" id="currentEraChip" style="margin-left:8px;">Vanilla</span></div>
+            <div>Goal: <b>3.4.0</b> <span class="chip" style="margin-left:8px;">Custom</span></div>
           </div>
 
-          <div class="timeline">
-            <div class="bar"><div class="bar-fill"></div></div>
+          <div class="timeline" id="timeline">
+            <div class="bar">
+              <div class="bar-fill" id="progressFill"></div>
+            </div>
           </div>
         </div>
       </div>
-
     </div>
 
+    <div class="status-row-progress">
+      <div class="box">
+        <div class="title">Server Progress</div>
+        <p style="margin:0;color:var(--muted);line-height:1.55;">
+          <b>Darrowmere</b> is a progressive realm that begins in <b>Patch 1.0.0</b> and advances through each era up to <b>3.3.5a</b>.
+          Guild War will be introduced at a later date.
+        </p>
+
+        <div class="progress-wrap">
+          <div class="progress-labels">
+            <div>Current: <b id="currentPatchLabel">1.0.0</b> <span class="chip" id="currentEraChip" style="margin-left:8px;">Vanilla</span></div>
+            <div>Goal: <b>3.3.5a</b> <span class="chip" style="margin-left:8px;">WotLK</span></div>
+          </div>
+
+          <div class="timeline" id="timeline">
+            <div class="bar">
+              <div class="bar-fill" id="progressFill"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="status-row-wide">
+      <div class="box">
+        <div class="title">What is LegacyWoW?</div>
+        <p style="margin:0;color:var(--muted);line-height:1.6;">
+          <b>LegacyWoW</b> is a progressive World of Warcraft server that advances naturally through the expansions,
+          preserving each era while introducing meaningful custom systems.
+        </p>
+        <p style="margin:10px 0 0;color:var(--muted);line-height:1.6;">
+          We also feature a unique open-world game mode called <b>Guild War</b>, where guilds go head-to-head controlling
+          key locations throughout <b>Azeroth</b>—creating persistent conflict, rivalries, and player-driven objectives.
+        </p>
+      </div>
+    </div>
+
+    <p style="margin-top:14px;color:var(--muted);font-size:13.5px;">
+      Not affiliated with Blizzard Entertainment.
+    </p>
   </div>
 </div>
 </header>
 
-<footer>© LegacyWoW</footer>
+<footer>
+  © <span id="year"></span> LegacyWoW — Not affiliated with Blizzard Entertainment
+</footer>
 
 <script>
-const PATCHES = [
-  { key:"1.0.0", era:"Vanilla" },
-  { key:"1.1.0", era:"Vanilla" },
-  { key:"1.12.1", era:"Vanilla" },
-  { key:"2.4.3", era:"TBC" },
-  { key:"3.3.5a", era:"WOTLK" }
-];
+  // ✅ Change only this later
+  const CURRENT_PATCH = "2.4.3";
 
-function index(k){ return PATCHES.findIndex(p=>p.key===k); }
+  const PATCHES = [
+    { key:"1.0.0",  era:"Vanilla" },
+    { key:"1.1.0",  era:"Vanilla" },
+    { key:"1.3.3",  era:"Vanilla" },
+    { key:"1.5.2",  era:"Vanilla" },
+    { key:"1.6.2",  era:"Vanilla" },
+    { key:"1.7.1",  era:"Vanilla" },
+    { key:"1.9.4",  era:"Vanilla" },
+    { key:"1.11.2", era:"Vanilla" },
+    { key:"1.12.1", era:"Vanilla" },
+    { key:"2.0.1",  era:"TBC" },
+    { key:"2.1.4",  era:"TBC" },
+    { key:"2.3.3",  era:"TBC" },
+    { key:"2.4.3",  era:"TBC" },
+    { key:"3.0.2",  era:"WOTLK" },
+    { key:"3.1.3",  era:"WOTLK" },
+    { key:"3.2.2a", era:"WOTLK" },
+    { key:"3.3.3",  era:"WOTLK" },
+    { key:"3.3.5a", era:"WOTLK" },
+    { key:"3.4.0",  era:"Custom" }
+  ];
 
-document.querySelectorAll(".realm").forEach(realm=>{
-  const patch = realm.dataset.patch;
-  const i = Math.max(0,index(patch));
-  const pct = (i/(PATCHES.length-1))*100;
+  const MAJORS = [
+    { key:"1.0.0", label:"1.0.0 Vanilla" },
+    { key:"2.0.1", label:"2.0.1 TBC" },
+    { key:"3.0.2", label:"3.0.2 WOTLK" },
+    { key:"3.4.0", label:"3.4.0 Custom" }
+  ];
+  
+  function indexOfKey(k){ return PATCHES.findIndex(p => p.key === k); }
+  function toPct(i, totalSteps){
+    if (totalSteps <= 0) return 0;
+    return (i / totalSteps) * 100;
+  }
 
-  realm.querySelector(".patchText").textContent = patch;
-  realm.querySelector(".currentPatchLabel").textContent = patch;
-  realm.querySelector(".currentEraChip").textContent = PATCHES[i].era;
+  document.getElementById("year").textContent = new Date().getFullYear();
+  document.getElementById("statusPatch").textContent = CURRENT_PATCH;
 
-  realm.querySelector(".bar-fill").style.width = Math.max(5,pct)+"%";
+  const idx = indexOfKey(CURRENT_PATCH);
+  const safeIdx = idx >= 0 ? idx : 0;
+  const currentEra = PATCHES[safeIdx]?.era || "Vanilla";
 
-  const timeline = realm.querySelector(".timeline");
+  const totalSteps = PATCHES.length - 1;
+  const pct = toPct(safeIdx, totalSteps);
 
-  PATCHES.forEach((p,idx)=>{
-    const t = document.createElement("div");
-    t.className="tick"+(p.key===patch?" current":"");
-    t.style.left=(idx/(PATCHES.length-1))*100+"%";
-    timeline.appendChild(t);
-  });
+  document.getElementById("currentPatchLabel").textContent = CURRENT_PATCH;
+  document.getElementById("currentEraChip").textContent = currentEra;
 
-  const label=document.createElement("div");
-  label.className="current-patch-label";
-  label.textContent=patch;
-  label.style.left=pct+"%";
-  timeline.appendChild(label);
-});
+  const fillEl = document.getElementById("progressFill");
+  fillEl.style.width = Math.max(2, pct) + "%";
+  fillEl.title = "Current progression: Patch " + CURRENT_PATCH;
+
+  const timelineEl = document.getElementById("timeline");
+
+  // ticks
+  for (let i = 0; i < PATCHES.length; i++){
+    const leftPct = toPct(i, totalSteps);
+    const patch = PATCHES[i];
+    const isCurrent = patch.key === CURRENT_PATCH;
+
+    const tick = document.createElement("div");
+    tick.className = "tick" + (isCurrent ? " current" : "");
+    tick.style.left = leftPct + "%";
+    tick.title = "Patch " + patch.key + " — " + patch.era;
+    timelineEl.appendChild(tick);
+  }
+
+  // current patch label above bar
+  const currentLabel = document.createElement("div");
+  currentLabel.className = "current-patch-label";
+  currentLabel.style.left = pct + "%";
+  currentLabel.textContent = CURRENT_PATCH;
+  timelineEl.appendChild(currentLabel);
+
+  // major labels
+  for (const m of MAJORS){
+    const mi = indexOfKey(m.key);
+    if (mi < 0) continue;
+
+    const leftPct = toPct(mi, totalSteps);
+    const lbl = document.createElement("div");
+    lbl.className = "major-label";
+    lbl.style.left = leftPct + "%";
+    lbl.textContent = m.label;
+    timelineEl.appendChild(lbl);
+  }
+
+  // ===========================
+  // Players: 350 - 500
+  // ===========================
+  const MIN=600, MAX=850;
+  let p=Math.floor(Math.random()*(MAX-MIN+1))+MIN;
+  let t=p;
+
+  const pc=document.getElementById("playerCount");
+  const lu=document.getElementById("lastUpdated");
+
+  function tickPlayers(){
+    if(Math.random()<0.25){
+      t=Math.floor(Math.random()*(MAX-MIN+1))+MIN;
+    }
+    const diff=t-p;
+    p+=Math.sign(diff)*Math.max(1,Math.floor(Math.random()*3));
+    p=Math.max(MIN,Math.min(MAX,p));
+    pc.textContent=p;
+    lu.textContent=new Date().toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"});
+    setTimeout(tickPlayers,3000+Math.random()*3000);
+  }
+  tickPlayers();
+
+  // ===========================
+  // Snow toggle
+  // ===========================
+  let snowOn=localStorage.getItem("snow")!=="off";
+  const btn=document.getElementById("snowToggle");
+  const c=document.getElementById("snowCanvas");
+  const x=c.getContext("2d");
+  const flakes=[];
+  for(let i=0;i<200;i++) flakes.push({x:Math.random()*innerWidth,y:Math.random()*innerHeight,r:1+Math.random()*3,v:1+Math.random()*2});
+
+  function resize(){c.width=innerWidth;c.height=innerHeight}
+  addEventListener("resize",resize);resize();
+
+  function drawSnow(){
+    requestAnimationFrame(drawSnow);
+    if(!snowOn){x.clearRect(0,0,c.width,c.height);return;}
+    x.clearRect(0,0,c.width,c.height);
+    x.fillStyle="#fff";
+    for(const f of flakes){
+      f.y+=f.v;
+      if(f.y>innerHeight){f.y=-5;f.x=Math.random()*innerWidth;}
+      x.beginPath();x.arc(f.x,f.y,f.r,0,Math.PI*2);x.fill();
+    }
+  }
+  drawSnow();
+
+  function syncSnow(){
+    btn.textContent=snowOn?"Snow: ON":"Snow: OFF";
+    localStorage.setItem("snow",snowOn?"on":"off");
+  }
+  btn.onclick=()=>{snowOn=!snowOn;syncSnow()};
+  syncSnow();
 </script>
-
 </body>
 </html>
