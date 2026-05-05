@@ -6,8 +6,8 @@
   <title>LegacyWoW — Progressive Vanilla → Wrath of the Lich King (3.3.5a)</title>
 
 <script>
-  const CURRENT_PATCH_1 = "2.4.3"; // Icecrown
-  const CURRENT_PATCH_2 = "1.0.0"; // Darrowmere
+  const CURRENT_PATCH_1 = "2.4.3";
+  const CURRENT_PATCH_2 = "1.0.0";
 
   const PATCHES = [
     { key:"1.0.0", era:"Vanilla" },
@@ -32,73 +32,67 @@
   ];
 
   const MAJORS = [
-    { key:"1.0.0", label:"1.0.0 Vanilla" },
-    { key:"2.0.1", label:"2.0.1 TBC" },
-    { key:"3.0.2", label:"3.0.2 WOTLK" },
-    { key:"3.4.0", label:"3.4.0 Custom" }
+    { key:"1.0.0", label:"Vanilla" },
+    { key:"2.0.1", label:"TBC" },
+    { key:"3.0.2", label:"WOTLK" },
+    { key:"3.4.0", label:"Custom" }
   ];
 
-  function indexOfKey(k){ return PATCHES.findIndex(p => p.key === k); }
-  function toPct(i, total){ return (i / total) * 100; }
+  function idx(k){ return PATCHES.findIndex(p => p.key === k); }
+  function pct(i){ return (i/(PATCHES.length-1))*100; }
 
-  function buildBar(currentPatch, timelineId, fillId, patchLabelId, eraId){
-    const idx = indexOfKey(currentPatch);
-    const safeIdx = idx >= 0 ? idx : 0;
-    const totalSteps = PATCHES.length - 1;
-    const pct = toPct(safeIdx, totalSteps);
-    const era = PATCHES[safeIdx]?.era || "Vanilla";
+  function setupBar(timelineId, fillId, labelId, eraId, currentPatch){
+    const i = Math.max(0, idx(currentPatch));
+    const progress = pct(i);
 
-    document.getElementById(patchLabelId).textContent = currentPatch;
-    document.getElementById(eraId).textContent = era;
-
+    // fill
     const fill = document.getElementById(fillId);
-    fill.style.width = Math.max(2, pct) + "%";
+    if (fill) fill.style.width = Math.max(2, progress) + "%";
+
+    // labels
+    const label = document.getElementById(labelId);
+    const era = document.getElementById(eraId);
+
+    if (label) label.textContent = currentPatch;
+    if (era) era.textContent = PATCHES[i]?.era || "Vanilla";
 
     const timeline = document.getElementById(timelineId);
+    if (!timeline) return;
 
-    // CLEAR old (important if re-run)
-    timeline.innerHTML = `
-      <div class="bar">
-        <div class="bar-fill" id="${fillId}"></div>
-      </div>
-    `;
+    // clear ONLY dynamic elements (safe, no innerHTML wipe)
+    timeline.querySelectorAll(".tick, .major-label, .current-patch-label").forEach(e => e.remove());
 
-    const newFill = document.getElementById(fillId);
-    newFill.style.width = Math.max(2, pct) + "%";
+    const total = PATCHES.length - 1;
 
-    // ticks
-    for (let i = 0; i < PATCHES.length; i++){
-      const tick = document.createElement("div");
-      tick.className = "tick" + (PATCHES[i].key === currentPatch ? " current" : "");
-      tick.style.left = toPct(i, totalSteps) + "%";
-      timeline.appendChild(tick);
-    }
+    PATCHES.forEach((p, i2) => {
+      const t = document.createElement("div");
+      t.className = "tick" + (p.key === currentPatch ? " current" : "");
+      t.style.left = pct(i2) + "%";
+      timeline.appendChild(t);
+    });
 
-    // current label
-    const currentLabel = document.createElement("div");
-    currentLabel.className = "current-patch-label";
-    currentLabel.style.left = pct + "%";
-    currentLabel.textContent = currentPatch;
-    timeline.appendChild(currentLabel);
+    const current = document.createElement("div");
+    current.className = "current-patch-label";
+    current.style.left = progress + "%";
+    current.textContent = currentPatch;
+    timeline.appendChild(current);
 
-    // major labels
-    for (const m of MAJORS){
-      const mi = indexOfKey(m.key);
-      if (mi < 0) continue;
+    MAJORS.forEach(m => {
+      const i2 = idx(m.key);
+      if (i2 < 0) return;
 
       const lbl = document.createElement("div");
       lbl.className = "major-label";
-      lbl.style.left = toPct(mi, totalSteps) + "%";
+      lbl.style.left = pct(i2) + "%";
       lbl.textContent = m.label;
       timeline.appendChild(lbl);
-    }
+    });
   }
 
-  // BUILD BOTH BARS
-  buildBar("2.4.3", "timeline1", "progressFill1", "currentPatchLabel1", "currentEraChip1");
-  buildBar("1.0.0", "timeline2", "progressFill2", "currentPatchLabel2", "currentEraChip2");
+  // BUILD BOTH BARS SAFELY
+  setupBar("timeline1","progressFill1","currentPatchLabel1","currentEraChip1",CURRENT_PATCH_1);
+  setupBar("timeline2","progressFill2","currentPatchLabel2","currentEraChip2",CURRENT_PATCH_2);
 
-  // year
   document.getElementById("year").textContent = new Date().getFullYear();
 </script>
 </head>
