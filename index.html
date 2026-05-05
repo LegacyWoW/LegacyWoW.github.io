@@ -556,79 +556,95 @@
   document.getElementById("year").textContent = new Date().getFullYear();
   document.getElementById("statusPatch").textContent = CURRENT_PATCH;
 
-  const idx = indexOfKey(CURRENT_PATCH);
-  const safeIdx = idx >= 0 ? idx : 0;
-  const currentEra = PATCHES[safeIdx]?.era || "Vanilla";
+// ===========================
+// COMMON SETUP
+// ===========================
+const timelineEl = document.getElementById("timeline");
+const timelineEl2 = document.getElementById("timeline2");
 
-  const totalSteps = PATCHES.length - 1;
+const totalSteps = PATCHES.length - 1;
+
+// helper
+function buildProgress(patchKey, labelElId, eraElId, fillElId, timelineEl, isCurrentBar = false) {
+  const idx = indexOfKey(patchKey);
+  const safeIdx = idx >= 0 ? idx : 0;
+
+  const era = PATCHES[safeIdx]?.era || "Vanilla";
   const pct = toPct(safeIdx, totalSteps);
 
-// FIRST BAR
-const timelineEl = document.getElementById("timeline");
+  document.getElementById(labelElId).textContent = patchKey;
+  document.getElementById(eraElId).textContent = era;
 
-// SECOND BAR 👇 ADD IT RIGHT HERE
-const timelineEl2 = document.getElementById("timeline2");
-
-  document.getElementById("currentPatchLabel").textContent = CURRENT_PATCH;
-  document.getElementById("currentEraChip").textContent = currentEra;
-
-  const fillEl = document.getElementById("progressFill");
+  const fillEl = document.getElementById(fillElId);
   fillEl.style.width = Math.max(2, pct) + "%";
-  fillEl.title = "Current progression: Patch " + CURRENT_PATCH;
-
-  const CURRENT_PATCH_DARROWMERE = "1.0.0";
-
-const idx2 = indexOfKey(CURRENT_PATCH_DARROWMERE);
-const safeIdx2 = idx2 >= 0 ? idx2 : 0;
-
-const currentEra2 = PATCHES[safeIdx2]?.era || "Vanilla";
-const pct2 = toPct(safeIdx2, totalSteps);
-
-// SECOND BAR
-const timelineEl2 = document.getElementById("timeline2");
-
-const fillEl2 = document.getElementById("progressFill2");
-fillEl2.style.width = Math.max(2, pct2) + "%";
-fillEl2.title = "Current progression: Patch " + CURRENT_PATCH_DARROWMERE;
-
-document.getElementById("currentPatchLabel2").textContent = CURRENT_PATCH_DARROWMERE;
-document.getElementById("currentEraChip2").textContent = currentEra2;
-
-  const timelineEl = document.getElementById("timeline");
+  fillEl.title = "Current progression: Patch " + patchKey;
 
   // ticks
-  for (let i = 0; i < PATCHES.length; i++){
+  for (let i = 0; i < PATCHES.length; i++) {
     const leftPct = toPct(i, totalSteps);
     const patch = PATCHES[i];
-    const isCurrent = patch.key === CURRENT_PATCH;
+    const isCurrent = patch.key === patchKey;
 
     const tick = document.createElement("div");
     tick.className = "tick" + (isCurrent ? " current" : "");
     tick.style.left = leftPct + "%";
-    tick.title = "Patch " + patch.key + " — " + patch.era;
+    tick.title = patch.key + " — " + patch.era;
+
     timelineEl.appendChild(tick);
   }
 
-  // current patch label above bar
-  const currentLabel = document.createElement("div");
-  currentLabel.className = "current-patch-label";
-  currentLabel.style.left = pct + "%";
-  currentLabel.textContent = CURRENT_PATCH;
-  timelineEl.appendChild(currentLabel);
+  // current label
+  const label = document.createElement("div");
+  label.className = "current-patch-label";
+  label.style.left = pct + "%";
+  label.textContent = patchKey;
+  timelineEl.appendChild(label);
 
-  // major labels
-  for (const m of MAJORS){
-    const mi = indexOfKey(m.key);
-    if (mi < 0) continue;
+  // major labels (only once per timeline)
+  if (isCurrentBar) {
+    for (const m of MAJORS) {
+      const mi = indexOfKey(m.key);
+      if (mi < 0) continue;
 
-    const leftPct = toPct(mi, totalSteps);
-    const lbl = document.createElement("div");
-    lbl.className = "major-label";
-    lbl.style.left = leftPct + "%";
-    lbl.textContent = m.label;
-    timelineEl.appendChild(lbl);
+      const leftPct = toPct(mi, totalSteps);
+
+      const lbl = document.createElement("div");
+      lbl.className = "major-label";
+      lbl.style.left = leftPct + "%";
+      lbl.textContent = m.label;
+
+      timelineEl.appendChild(lbl);
+    }
   }
+}
 
+  // ===========================
+// ICECROWN (FIRST BAR)
+// ===========================
+const CURRENT_PATCH = "2.4.3";
+
+buildProgress(
+  CURRENT_PATCH,
+  "currentPatchLabel",
+  "currentEraChip",
+  "progressFill",
+  timelineEl,
+  true
+);
+
+// ===========================
+// DARROWMERE (SECOND BAR)
+// ===========================
+const CURRENT_PATCH_DARROWMERE = "1.0.0";
+
+buildProgress(
+  CURRENT_PATCH_DARROWMERE,
+  "currentPatchLabel2",
+  "currentEraChip2",
+  "progressFill2",
+  timelineEl2,
+  false
+);
   // ===========================
   // Players: 350 - 500
   // ===========================
