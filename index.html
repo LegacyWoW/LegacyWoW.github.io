@@ -563,12 +563,36 @@
   const totalSteps = PATCHES.length - 1;
   const pct = toPct(safeIdx, totalSteps);
 
+// FIRST BAR
+const timelineEl = document.getElementById("timeline");
+
+// SECOND BAR 👇 ADD IT RIGHT HERE
+const timelineEl2 = document.getElementById("timeline2");
+
   document.getElementById("currentPatchLabel").textContent = CURRENT_PATCH;
   document.getElementById("currentEraChip").textContent = currentEra;
 
   const fillEl = document.getElementById("progressFill");
   fillEl.style.width = Math.max(2, pct) + "%";
   fillEl.title = "Current progression: Patch " + CURRENT_PATCH;
+
+  const CURRENT_PATCH_DARROWMERE = "1.0.0";
+
+const idx2 = indexOfKey(CURRENT_PATCH_DARROWMERE);
+const safeIdx2 = idx2 >= 0 ? idx2 : 0;
+
+const currentEra2 = PATCHES[safeIdx2]?.era || "Vanilla";
+const pct2 = toPct(safeIdx2, totalSteps);
+
+// SECOND BAR
+const timelineEl2 = document.getElementById("timeline2");
+
+const fillEl2 = document.getElementById("progressFill2");
+fillEl2.style.width = Math.max(2, pct2) + "%";
+fillEl2.title = "Current progression: Patch " + CURRENT_PATCH_DARROWMERE;
+
+document.getElementById("currentPatchLabel2").textContent = CURRENT_PATCH_DARROWMERE;
+document.getElementById("currentEraChip2").textContent = currentEra2;
 
   const timelineEl = document.getElementById("timeline");
 
