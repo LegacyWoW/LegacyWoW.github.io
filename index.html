@@ -1,202 +1,226 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Server Status</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>LegacyWoW — Progressive Vanilla → Wrath of the Lich King (3.3.5a)</title>
 
 <style>
-body {
-  background: #0b0f14;
-  color: #e6f1ff;
-  font-family: Arial, sans-serif;
-  padding: 40px;
+:root{
+  --bg:#0b0b0b;
+  --text:#e8e8e8;
+  --muted: rgba(232,232,232,.82);
+  --line: rgba(255,255,255,.14);
+  --glass: rgba(0,0,0,.45);
+
+  --iceA: rgba(140, 205, 255, .90);
+  --iceB: rgba(80, 170, 255, .85);
+  --accent: rgba(80, 170, 255, .98);
 }
 
-.server {
-  margin-bottom: 60px;
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
+  background: var(--bg);
+  color: var(--text);
 }
 
-h2 {
-  margin-bottom: 10px;
+.wrap{max-width:1100px;margin:0 auto;padding:0 18px}
+
+.box{
+  padding:18px 20px;
+  border-radius:18px;
+  border:1px solid var(--line);
+  background:var(--glass);
+  backdrop-filter:blur(8px);
+  margin-top:14px;
 }
 
-.timeline {
-  position: relative;
-  margin-top: 25px;
+.title{
+  font-size:13px;
+  font-weight:900;
+  letter-spacing:.6px;
+  margin-bottom:10px;
+  text-transform:uppercase;
 }
 
-.bar {
-  height: 8px;
-  background: #1e2a38;
-  border-radius: 10px;
-  position: relative;
+.progress-wrap{
+  margin-top:12px;
+  border:1px solid rgba(255,255,255,.10);
+  background:rgba(255,255,255,.04);
+  border-radius:14px;
+  padding:12px;
 }
 
-.bar-fill {
-  height: 100%;
-  background: linear-gradient(to right, #4facfe, #00f2fe);
-  border-radius: 10px;
-  width: 0%;
+.progress-labels{
+  display:flex;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  font-size:12.5px;
+  opacity:.85;
+  margin-bottom:10px;
 }
 
-.tick {
-  position: absolute;
-  top: -4px;
-  width: 2px;
-  height: 16px;
-  background: #6c7a89;
+.chip{
+  padding:4px 8px;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,.14);
+  background:rgba(0,0,0,.25);
+  font-weight:900;
 }
 
-.tick.current {
-  background: #00f2fe;
-  height: 20px;
+.timeline{
+  position:relative;
+  height:78px;
 }
 
-.current-patch-label {
-  position: absolute;
-  top: -25px;
+.bar{
+  position:absolute;
+  left:0; right:0;
+  top:28px;
+  height:12px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.14);
+  background:rgba(0,0,0,.35);
+  overflow:hidden;
+}
+
+.bar-fill{
+  height:100%;
+  width:3%;
+  border-radius:999px;
+  background: linear-gradient(90deg, var(--iceA), var(--iceB));
+  transition: width .5s ease;
+}
+
+.tick{
+  position:absolute;
+  top:26px;
+  width:2px;
+  height:16px;
+  background: rgba(255,255,255,.3);
+}
+
+.tick.current{
+  height:24px;
+  top:22px;
+  background: var(--accent);
+}
+
+.major-label{
+  position:absolute;
+  top:52px;
   transform: translateX(-50%);
-  font-size: 12px;
-}
-
-.major-label {
-  position: absolute;
-  top: 15px;
-  transform: translateX(-50%);
-  font-size: 11px;
-  color: #9fb3c8;
-}
-
-.chip {
-  background: #1e2a38;
-  padding: 3px 8px;
-  border-radius: 6px;
-  margin-left: 10px;
-  font-size: 12px;
+  font-size:12px;
+  font-weight:900;
+  padding:3px 8px;
+  background:rgba(0,0,0,.25);
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:10px;
 }
 </style>
 </head>
 
 <body>
+<div class="wrap">
 
-<!-- ICECROWN -->
-<div class="server">
-  <h2>Icecrown</h2>
-  <b id="currentPatchLabel">2.4.3</b>
-  <span class="chip" id="currentEraChip">TBC</span>
+<!-- ================= ICECROWN ================= -->
+<div class="box">
+  <div class="title">Icecrown Progress</div>
 
-  <div class="timeline" id="timeline">
-    <div class="bar">
-      <div class="bar-fill" id="progressFill"></div>
+  <div class="progress-wrap">
+    <div class="progress-labels">
+      <div>Current: <b id="patch1_label"></b> <span class="chip" id="era1"></span></div>
+      <div>Goal: <b>3.4.0</b></div>
+    </div>
+
+    <div class="timeline" id="timeline1">
+      <div class="bar"><div class="bar-fill" id="fill1"></div></div>
     </div>
   </div>
 </div>
 
-<!-- DARROWMERE -->
-<div class="server">
-  <h2>Darrowmere</h2>
-  <b id="currentPatchLabel2">1.0.0</b>
-  <span class="chip" id="currentEraChip2">Vanilla</span>
+<!-- ================= DARROWMERE ================= -->
+<div class="box">
+  <div class="title">Darrowmere Progress</div>
 
-  <div class="timeline" id="timeline2">
-    <div class="bar">
-      <div class="bar-fill" id="progressFill2"></div>
+  <div class="progress-wrap">
+    <div class="progress-labels">
+      <div>Current: <b id="patch2_label"></b> <span class="chip" id="era2"></span></div>
+      <div>Goal: <b>3.3.5a</b></div>
+    </div>
+
+    <div class="timeline" id="timeline2">
+      <div class="bar"><div class="bar-fill" id="fill2"></div></div>
     </div>
   </div>
+</div>
+
 </div>
 
 <script>
 const PATCHES = [
   { key:"1.0.0", era:"Vanilla" },
   { key:"1.1.0", era:"Vanilla" },
-  { key:"1.3.3", era:"Vanilla" },
-  { key:"1.5.2", era:"Vanilla" },
-  { key:"1.6.2", era:"Vanilla" },
-  { key:"1.7.1", era:"Vanilla" },
-  { key:"1.9.4", era:"Vanilla" },
-  { key:"1.11.2", era:"Vanilla" },
   { key:"1.12.1", era:"Vanilla" },
   { key:"2.0.1", era:"TBC" },
-  { key:"2.1.4", era:"TBC" },
-  { key:"2.3.3", era:"TBC" },
   { key:"2.4.3", era:"TBC" },
   { key:"3.0.2", era:"WOTLK" },
-  { key:"3.1.3", era:"WOTLK" },
-  { key:"3.2.2a", era:"WOTLK" },
-  { key:"3.3.3", era:"WOTLK" },
   { key:"3.3.5a", era:"WOTLK" },
   { key:"3.4.0", era:"Custom" }
 ];
 
-const MAJORS = [
-  { key:"1.0.0", label:"1.0.0 Vanilla" },
-  { key:"2.0.1", label:"2.0.1 TBC" },
-  { key:"3.0.2", label:"3.0.2 WOTLK" },
-  { key:"3.4.0", label:"3.4.0 Custom" }
-];
+function idx(key){ return PATCHES.findIndex(p=>p.key===key); }
+function pct(i){ return (i/(PATCHES.length-1))*100; }
 
-// Set your server patches here
-const CURRENT_PATCH = "2.4.3";   // Icecrown
-const CURRENT_PATCH_2 = "1.0.0"; // Darrowmere
+function buildBar(config){
+  const i = idx(config.current);
+  const safe = i >= 0 ? i : 0;
 
-function indexOfKey(k){ 
-  return PATCHES.findIndex(p => p.key === k); 
+  document.getElementById(config.label).textContent = config.current;
+  document.getElementById(config.era).textContent = PATCHES[safe].era;
+
+  const fill = document.getElementById(config.fill);
+  fill.style.width = pct(safe) + "%";
+
+  const timeline = document.getElementById(config.timeline);
+
+  PATCHES.forEach((p, i)=>{
+    const t = document.createElement("div");
+    t.className = "tick" + (p.key===config.current?" current":"");
+    t.style.left = pct(i) + "%";
+    timeline.appendChild(t);
+  });
+
+  const maj = ["1.0.0","2.0.1","3.0.2","3.4.0"];
+  maj.forEach(m=>{
+    const mi = idx(m);
+    if(mi < 0) return;
+
+    const l = document.createElement("div");
+    l.className="major-label";
+    l.style.left = pct(mi)+"%";
+    l.textContent=m;
+    timeline.appendChild(l);
+  });
 }
 
-function toPct(i, totalSteps){
-  return (i / totalSteps) * 100;
-}
+buildBar({
+  current:"2.4.3",
+  label:"patch1_label",
+  era:"era1",
+  fill:"fill1",
+  timeline:"timeline1"
+});
 
-function buildProgress(currentPatch, timelineId, fillId, labelId, eraId){
-  const idx = indexOfKey(currentPatch);
-  const safeIdx = idx >= 0 ? idx : 0;
-  const currentEra = PATCHES[safeIdx]?.era || "Vanilla";
-
-  const totalSteps = PATCHES.length - 1;
-  const pct = toPct(safeIdx, totalSteps);
-
-  document.getElementById(labelId).textContent = currentPatch;
-  document.getElementById(eraId).textContent = currentEra;
-
-  const fillEl = document.getElementById(fillId);
-  fillEl.style.width = Math.max(2, pct) + "%";
-
-  const timelineEl = document.getElementById(timelineId);
-
-  // ticks
-  for (let i = 0; i < PATCHES.length; i++){
-    const leftPct = toPct(i, totalSteps);
-    const patch = PATCHES[i];
-
-    const tick = document.createElement("div");
-    tick.className = "tick" + (patch.key === currentPatch ? " current" : "");
-    tick.style.left = leftPct + "%";
-    timelineEl.appendChild(tick);
-  }
-
-  // current label
-  const currentLabel = document.createElement("div");
-  currentLabel.className = "current-patch-label";
-  currentLabel.style.left = pct + "%";
-  currentLabel.textContent = currentPatch;
-  timelineEl.appendChild(currentLabel);
-
-  // major labels
-  for (const m of MAJORS){
-    const mi = indexOfKey(m.key);
-    if (mi < 0) continue;
-
-    const lbl = document.createElement("div");
-    lbl.className = "major-label";
-    lbl.style.left = toPct(mi, totalSteps) + "%";
-    lbl.textContent = m.label;
-    timelineEl.appendChild(lbl);
-  }
-}
-
-// Build both timelines
-buildProgress(CURRENT_PATCH, "timeline", "progressFill", "currentPatchLabel", "currentEraChip");
-buildProgress(CURRENT_PATCH_2, "timeline2", "progressFill2", "currentPatchLabel2", "currentEraChip2");
+buildBar({
+  current:"1.0.0",
+  label:"patch2_label",
+  era:"era2",
+  fill:"fill2",
+  timeline:"timeline2"
+});
 </script>
 
 </body>
