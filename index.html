@@ -1,163 +1,196 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>LegacyWoW — Progressive Vanilla → Wrath of the Lich King (3.3.5a)</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LegacyWoW — Progressive Vanilla → Wrath of the Lich King (3.3.5a)</title>
 
-<style>
-:root{
-  --bg:#0b0b0b;
-  --text:#e8e8e8;
-  --muted: rgba(232,232,232,.82);
-  --line: rgba(255,255,255,.14);
-  --glass: rgba(0,0,0,.45);
+  <style>
+    :root{
+      --bg:#0b0b0b;
+      --text:#e8e8e8;
+      --muted: rgba(232,232,232,.82);
+      --line: rgba(255,255,255,.14);
+      --glass: rgba(0,0,0,.45);
 
-  --iceA: rgba(140, 205, 255, .90);
-  --iceB: rgba(80, 170, 255, .85);
-  --accent: rgba(80, 170, 255, .98);
-}
+      --iceA: rgba(140, 205, 255, .90);
+      --iceB: rgba(80,  170, 255, .85);
+      --accent: rgba(80, 170, 255, .98);
+    }
 
-*{box-sizing:border-box}
-body{
-  margin:0;
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
-  background: var(--bg);
-  color: var(--text);
-}
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
 
-.wrap{max-width:1100px;margin:0 auto;padding:0 18px}
+    .wrap{max-width:1100px;margin:0 auto;padding:0 18px}
 
-.box{
-  padding:18px 20px;
-  border-radius:18px;
-  border:1px solid var(--line);
-  background:var(--glass);
-  backdrop-filter:blur(8px);
-  margin-top:14px;
-}
+    #snowCanvas{
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 99999;
+    }
 
-.title{
-  font-size:13px;
-  font-weight:900;
-  letter-spacing:.6px;
-  margin-bottom:10px;
-  text-transform:uppercase;
-}
+    header{
+      border-bottom:1px solid rgba(255,255,255,.10);
+      background:
+        linear-gradient(180deg, rgba(0,0,0,.25), rgba(0,0,0,.88)),
+        url("/assets/hero.jpg");
+      background-size:cover;
+      background-position:center;
+    }
 
-.progress-wrap{
-  margin-top:12px;
-  border:1px solid rgba(255,255,255,.10);
-  background:rgba(255,255,255,.04);
-  border-radius:14px;
-  padding:12px;
-}
+    .box{
+      padding:18px 20px;
+      border-radius:18px;
+      border:1px solid var(--line);
+      background:var(--glass);
+      backdrop-filter:blur(8px);
+      box-shadow:0 16px 40px rgba(0,0,0,.45);
+      margin-top:14px;
+    }
 
-.progress-labels{
-  display:flex;
-  justify-content:space-between;
-  flex-wrap:wrap;
-  font-size:12.5px;
-  opacity:.85;
-  margin-bottom:10px;
-}
+    .title{
+      font-size:13px;
+      font-weight:900;
+      letter-spacing:.6px;
+      margin-bottom:10px;
+      text-transform:uppercase;
+    }
 
-.chip{
-  padding:4px 8px;
-  border-radius:10px;
-  border:1px solid rgba(255,255,255,.14);
-  background:rgba(0,0,0,.25);
-  font-weight:900;
-}
+    .status-row-progress{
+      margin:14px auto 0;
+      max-width:1400px;
+      display:grid;
+      grid-template-columns:1fr;
+      gap:14px;
+    }
 
-.timeline{
-  position:relative;
-  height:78px;
-}
+    .progress-wrap{
+      margin-top:12px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.04);
+      border-radius:14px;
+      padding:12px;
+    }
 
-.bar{
-  position:absolute;
-  left:0; right:0;
-  top:28px;
-  height:12px;
-  border-radius:999px;
-  border:1px solid rgba(255,255,255,.14);
-  background:rgba(0,0,0,.35);
-  overflow:hidden;
-}
+    .progress-labels{
+      display:flex;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      font-size:12.5px;
+      opacity:.85;
+      margin-bottom:10px;
+    }
 
-.bar-fill{
-  height:100%;
-  width:3%;
-  border-radius:999px;
-  background: linear-gradient(90deg, var(--iceA), var(--iceB));
-  transition: width .5s ease;
-}
+    .chip{
+      padding:4px 8px;
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(0,0,0,.25);
+      font-weight:900;
+    }
 
-.tick{
-  position:absolute;
-  top:26px;
-  width:2px;
-  height:16px;
-  background: rgba(255,255,255,.3);
-}
+    .timeline{
+      position:relative;
+      height:78px;
+    }
 
-.tick.current{
-  height:24px;
-  top:22px;
-  background: var(--accent);
-}
+    .bar{
+      position:absolute;
+      left:0; right:0;
+      top:28px;
+      height:12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(0,0,0,.35);
+      overflow:hidden;
+    }
 
-.major-label{
-  position:absolute;
-  top:52px;
-  transform: translateX(-50%);
-  font-size:12px;
-  font-weight:900;
-  padding:3px 8px;
-  background:rgba(0,0,0,.25);
-  border:1px solid rgba(255,255,255,.12);
-  border-radius:10px;
-}
-</style>
+    .bar-fill{
+      height:100%;
+      width:3%;
+      border-radius:999px;
+      background: linear-gradient(90deg, var(--iceA), var(--iceB));
+      transition: width .5s ease;
+    }
+
+    .tick{
+      position:absolute;
+      top:26px;
+      width:2px;
+      height:16px;
+      background: rgba(255,255,255,.3);
+    }
+
+    .tick.current{
+      height:24px;
+      top:22px;
+      background: var(--accent);
+    }
+
+    .major-label{
+      position:absolute;
+      top:52px;
+      transform: translateX(-50%);
+      font-size:12px;
+      font-weight:900;
+      padding:3px 8px;
+      background:rgba(0,0,0,.25);
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:10px;
+    }
+  </style>
 </head>
 
 <body>
+<canvas id="snowCanvas"></canvas>
+
+<header>
 <div class="wrap">
 
-<!-- ================= ICECROWN ================= -->
-<div class="box">
-  <div class="title">Icecrown Progress</div>
+  <!-- ================= ICECROWN ================= -->
+  <div class="status-row-progress">
+    <div class="box">
+      <div class="title">Icecrown Progress</div>
 
-  <div class="progress-wrap">
-    <div class="progress-labels">
-      <div>Current: <b id="patch1_label"></b> <span class="chip" id="era1"></span></div>
-      <div>Goal: <b>3.4.0</b></div>
-    </div>
+      <div class="progress-wrap">
+        <div class="progress-labels">
+          <div>Current: <b id="patch1_label"></b> <span class="chip" id="era1"></span></div>
+          <div>Goal: <b>3.4.0</b></div>
+        </div>
 
-    <div class="timeline" id="timeline1">
-      <div class="bar"><div class="bar-fill" id="fill1"></div></div>
-    </div>
-  </div>
-</div>
-
-<!-- ================= DARROWMERE ================= -->
-<div class="box">
-  <div class="title">Darrowmere Progress</div>
-
-  <div class="progress-wrap">
-    <div class="progress-labels">
-      <div>Current: <b id="patch2_label"></b> <span class="chip" id="era2"></span></div>
-      <div>Goal: <b>3.3.5a</b></div>
-    </div>
-
-    <div class="timeline" id="timeline2">
-      <div class="bar"><div class="bar-fill" id="fill2"></div></div>
+        <div class="timeline" id="timeline1">
+          <div class="bar"><div class="bar-fill" id="fill1"></div></div>
+        </div>
+      </div>
     </div>
   </div>
-</div>
+
+  <!-- ================= DARROWMERE (NEW SECOND BAR) ================= -->
+  <div class="status-row-progress">
+    <div class="box">
+      <div class="title">Darrowmere Progress</div>
+
+      <div class="progress-wrap">
+        <div class="progress-labels">
+          <div>Current: <b id="patch2_label"></b> <span class="chip" id="era2"></span></div>
+          <div>Goal: <b>3.3.5a</b></div>
+        </div>
+
+        <div class="timeline" id="timeline2">
+          <div class="bar"><div class="bar-fill" id="fill2"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
 
 </div>
+</header>
 
 <script>
 const PATCHES = [
@@ -171,30 +204,28 @@ const PATCHES = [
   { key:"3.4.0", era:"Custom" }
 ];
 
-function idx(key){ return PATCHES.findIndex(p=>p.key===key); }
+function idx(k){ return PATCHES.findIndex(p=>p.key===k); }
 function pct(i){ return (i/(PATCHES.length-1))*100; }
 
-function buildBar(config){
-  const i = idx(config.current);
+function buildBar(cfg){
+  const i = idx(cfg.current);
   const safe = i >= 0 ? i : 0;
 
-  document.getElementById(config.label).textContent = config.current;
-  document.getElementById(config.era).textContent = PATCHES[safe].era;
+  document.getElementById(cfg.label).textContent = cfg.current;
+  document.getElementById(cfg.era).textContent = PATCHES[safe].era;
 
-  const fill = document.getElementById(config.fill);
-  fill.style.width = pct(safe) + "%";
+  document.getElementById(cfg.fill).style.width = pct(safe) + "%";
 
-  const timeline = document.getElementById(config.timeline);
+  const tl = document.getElementById(cfg.timeline);
 
-  PATCHES.forEach((p, i)=>{
+  PATCHES.forEach((p,i)=>{
     const t = document.createElement("div");
-    t.className = "tick" + (p.key===config.current?" current":"");
+    t.className = "tick" + (p.key===cfg.current ? " current":"");
     t.style.left = pct(i) + "%";
-    timeline.appendChild(t);
+    tl.appendChild(t);
   });
 
-  const maj = ["1.0.0","2.0.1","3.0.2","3.4.0"];
-  maj.forEach(m=>{
+  ["1.0.0","2.0.1","3.0.2","3.4.0"].forEach(m=>{
     const mi = idx(m);
     if(mi < 0) return;
 
@@ -202,10 +233,11 @@ function buildBar(config){
     l.className="major-label";
     l.style.left = pct(mi)+"%";
     l.textContent=m;
-    timeline.appendChild(l);
+    tl.appendChild(l);
   });
 }
 
+/* ICECROWN */
 buildBar({
   current:"2.4.3",
   label:"patch1_label",
@@ -214,6 +246,7 @@ buildBar({
   timeline:"timeline1"
 });
 
+/* DARROWMERE */
 buildBar({
   current:"1.0.0",
   label:"patch2_label",
