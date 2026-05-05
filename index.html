@@ -404,7 +404,7 @@
 
   <div class="hero">
     <h1>Progressive Vanilla → Wrath</h1>
-    <p>LegacyWoW is a long-term progressive server with custom systems and open-world conflict.</p>
+    <p>LegacyWoW is a long-term progressive server with custom content and open-world conflict.</p>
 
     <div class="hero-row">
       <a class="btn primary" href="how-to-play.html">Get Started</a>
@@ -453,36 +453,13 @@
 
         <div class="progress-wrap">
           <div class="progress-labels">
-            <div>Current: <b id="currentPatchLabel">2.4.3</b> <span class="chip" id="currentEraChip" style="margin-left:8px;">Vanilla</span></div>
+            <div>Current: <b id="currentPatchLabel">1.1.0</b> <span class="chip" id="currentEraChip" style="margin-left:8px;">Vanilla</span></div>
             <div>Goal: <b>3.4.0</b> <span class="chip" style="margin-left:8px;">Custom</span></div>
           </div>
 
           <div class="timeline" id="timeline">
             <div class="bar">
               <div class="bar-fill" id="progressFill"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="status-row-progress">
-      <div class="box">
-        <div class="title">Server Progress</div>
-        <p style="margin:0;color:var(--muted);line-height:1.55;">
-          <b>Darrowmere</b> is a progressive realm that begins in <b>Patch 1.0.0</b> and advances through each era up to <b>3.3.5a</b>.
-          Guild War will be introduced at a later date.
-        </p>
-
-        <div class="progress-wrap">
-          <div class="progress-labels">
-            <div>Current: <b id="currentPatchLabel2">1.0.0</b> <span class="chip" id="currentEraChip2" style="margin-left:8px;">Vanilla</span></div>
-            <div>Goal: <b>3.3.5a</b> <span class="chip" style="margin-left:8px;">WotLK</span></div>
-          </div>
-
-          <div class="timeline" id="timeline2">
-            <div class="bar">
-              <div class="bar-fill" id="progressFill2"></div>
             </div>
           </div>
         </div>
@@ -498,7 +475,7 @@
         </p>
         <p style="margin:10px 0 0;color:var(--muted);line-height:1.6;">
           We also feature a unique open-world game mode called <b>Guild War</b>, where guilds go head-to-head controlling
-          key locations throughout <b>Azeroth</b>—creating persistent conflict, rivalries, and player-driven objectives.
+          key locations throughout <b>Azeroth</b>—creating persistent conflict, rivalries, and player-driven objectives. Visit Rules to learn more.
         </p>
       </div>
     </div>
@@ -556,105 +533,55 @@
   document.getElementById("year").textContent = new Date().getFullYear();
   document.getElementById("statusPatch").textContent = CURRENT_PATCH;
 
-// ===========================
-// COMMON SETUP
-// ===========================
-const timelineEl = document.getElementById("timeline");
-const timelineEl2 = document.getElementById("timeline2");
+  const idx = indexOfKey(CURRENT_PATCH);
+  const safeIdx = idx >= 0 ? idx : 0;
+  const currentEra = PATCHES[safeIdx]?.era || "Vanilla";
 
-const totalSteps = PATCHES.length - 1;
+  const totalSteps = PATCHES.length - 1;
+  const pct = toPct(safeIdx, totalSteps);
 
-function indexOfKey(k){ return PATCHES.findIndex(p => p.key === k); }
-function toPct(i, totalSteps){
-  if (totalSteps <= 0) return 0;
-  return (i / totalSteps) * 100;
-}
+  document.getElementById("currentPatchLabel").textContent = CURRENT_PATCH;
+  document.getElementById("currentEraChip").textContent = currentEra;
 
-const totalSteps = PATCHES.length - 1;
+  const fillEl = document.getElementById("progressFill");
+  fillEl.style.width = Math.max(2, pct) + "%";
+  fillEl.title = "Current progression: Patch " + CURRENT_PATCH;
 
-// 👇 PASTE YOUR NEW buildBar HERE
-function buildBar(patchKey, timelineEl, fillId, labelId, eraId, showMajors) {
-   ...
-}
-buildBar(
-  CURRENT_PATCH,
-  document.getElementById("timeline"),
-  "progressFill",
-  "currentPatchLabel",
-  "currentEraChip",
-  true
-);
+  const timelineEl = document.getElementById("timeline");
 
-buildBar(
-  CURRENT_PATCH_DARROWMERE,
-  document.getElementById("timeline2"),
-  "progressFill2",
-  "currentPatchLabel2",
-  "currentEraChip2",
-  false
-);
-  // current label
-  const cur = document.createElement("div");
-  cur.className = "current-patch-label";
-  cur.style.left = pct + "%";
-  cur.textContent = patchKey;
-  timelineEl.appendChild(cur);
+  // ticks
+  for (let i = 0; i < PATCHES.length; i++){
+    const leftPct = toPct(i, totalSteps);
+    const patch = PATCHES[i];
+    const isCurrent = patch.key === CURRENT_PATCH;
 
-  // major labels (only first bar)
-  if (showMajors) {
-    for (const m of MAJORS) {
-      const mi = indexOfKey(m.key);
-      if (mi < 0) continue;
-
-      const lbl = document.createElement("div");
-      lbl.className = "major-label";
-      lbl.style.left = toPct(mi, totalSteps) + "%";
-      lbl.textContent = m.label;
-
-      timelineEl.appendChild(lbl);
-    }
+    const tick = document.createElement("div");
+    tick.className = "tick" + (isCurrent ? " current" : "");
+    tick.style.left = leftPct + "%";
+    tick.title = "Patch " + patch.key + " — " + patch.era;
+    timelineEl.appendChild(tick);
   }
-}
 
-  buildBar(
-  CURRENT_PATCH,
-  document.getElementById("timeline"),
-  "progressFill",
-  "currentPatchLabel",
-  "currentEraChip",
-  true
-);
+  // current patch label above bar
+  const currentLabel = document.createElement("div");
+  currentLabel.className = "current-patch-label";
+  currentLabel.style.left = pct + "%";
+  currentLabel.textContent = CURRENT_PATCH;
+  timelineEl.appendChild(currentLabel);
 
-buildBar(
-  CURRENT_PATCH_DARROWMERE,
-  document.getElementById("timeline2"),
-  "progressFill2",
-  "currentPatchLabel2",
-  "currentEraChip2",
-  false
-);
-  
-const CURRENT_PATCH = "2.4.3";
-const CURRENT_PATCH_DARROWMERE = "1.0.0";
+  // major labels
+  for (const m of MAJORS){
+    const mi = indexOfKey(m.key);
+    if (mi < 0) continue;
 
-buildBar(
-  CURRENT_PATCH,
-  document.getElementById("timeline"),
-  "progressFill",
-  "currentPatchLabel",
-  "currentEraChip",
-  true
-);
+    const leftPct = toPct(mi, totalSteps);
+    const lbl = document.createElement("div");
+    lbl.className = "major-label";
+    lbl.style.left = leftPct + "%";
+    lbl.textContent = m.label;
+    timelineEl.appendChild(lbl);
+  }
 
-buildBar(
-  CURRENT_PATCH_DARROWMERE,
-  document.getElementById("timeline2"),
-  "progressFill2",
-  "currentPatchLabel2",
-  "currentEraChip2",
-  false
-);
-  
   // ===========================
   // Players: 350 - 500
   // ===========================
