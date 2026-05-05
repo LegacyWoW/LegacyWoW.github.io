@@ -5,469 +5,102 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>LegacyWoW — Progressive Vanilla → Wrath of the Lich King (3.3.5a)</title>
 
-  <style>
-    :root{
-      --bg:#0b0b0b;
-      --text:#e8e8e8;
-      --muted: rgba(232,232,232,.82);
-      --line: rgba(255,255,255,.14);
-      --glass: rgba(0,0,0,.45);
+<script>
+  const CURRENT_PATCH_1 = "2.4.3"; // Icecrown
+  const CURRENT_PATCH_2 = "1.0.0"; // Darrowmere
 
-      /* Frosty blue theme */
-      --iceA: rgba(140, 205, 255, .90);
-      --iceB: rgba(80,  170, 255, .85);
+  const PATCHES = [
+    { key:"1.0.0", era:"Vanilla" },
+    { key:"1.1.0", era:"Vanilla" },
+    { key:"1.3.3", era:"Vanilla" },
+    { key:"1.5.2", era:"Vanilla" },
+    { key:"1.6.2", era:"Vanilla" },
+    { key:"1.7.1", era:"Vanilla" },
+    { key:"1.9.4", era:"Vanilla" },
+    { key:"1.11.2", era:"Vanilla" },
+    { key:"1.12.1", era:"Vanilla" },
+    { key:"2.0.1", era:"TBC" },
+    { key:"2.1.4", era:"TBC" },
+    { key:"2.3.3", era:"TBC" },
+    { key:"2.4.3", era:"TBC" },
+    { key:"3.0.2", era:"WOTLK" },
+    { key:"3.1.3", era:"WOTLK" },
+    { key:"3.2.2a", era:"WOTLK" },
+    { key:"3.3.3", era:"WOTLK" },
+    { key:"3.3.5a", era:"WOTLK" },
+    { key:"3.4.0", era:"Custom" }
+  ];
 
-      /* Current patch highlight */
-      --accent: rgba(80, 170, 255, .98);
+  const MAJORS = [
+    { key:"1.0.0", label:"1.0.0 Vanilla" },
+    { key:"2.0.1", label:"2.0.1 TBC" },
+    { key:"3.0.2", label:"3.0.2 WOTLK" },
+    { key:"3.4.0", label:"3.4.0 Custom" }
+  ];
+
+  function indexOfKey(k){ return PATCHES.findIndex(p => p.key === k); }
+  function toPct(i, total){ return (i / total) * 100; }
+
+  function buildBar(currentPatch, timelineId, fillId, patchLabelId, eraId){
+    const idx = indexOfKey(currentPatch);
+    const safeIdx = idx >= 0 ? idx : 0;
+    const totalSteps = PATCHES.length - 1;
+    const pct = toPct(safeIdx, totalSteps);
+    const era = PATCHES[safeIdx]?.era || "Vanilla";
+
+    document.getElementById(patchLabelId).textContent = currentPatch;
+    document.getElementById(eraId).textContent = era;
+
+    const fill = document.getElementById(fillId);
+    fill.style.width = Math.max(2, pct) + "%";
+
+    const timeline = document.getElementById(timelineId);
+
+    // CLEAR old (important if re-run)
+    timeline.innerHTML = `
+      <div class="bar">
+        <div class="bar-fill" id="${fillId}"></div>
+      </div>
+    `;
+
+    const newFill = document.getElementById(fillId);
+    newFill.style.width = Math.max(2, pct) + "%";
+
+    // ticks
+    for (let i = 0; i < PATCHES.length; i++){
+      const tick = document.createElement("div");
+      tick.className = "tick" + (PATCHES[i].key === currentPatch ? " current" : "");
+      tick.style.left = toPct(i, totalSteps) + "%";
+      timeline.appendChild(tick);
     }
 
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      background: var(--bg);
-      color: var(--text);
+    // current label
+    const currentLabel = document.createElement("div");
+    currentLabel.className = "current-patch-label";
+    currentLabel.style.left = pct + "%";
+    currentLabel.textContent = currentPatch;
+    timeline.appendChild(currentLabel);
+
+    // major labels
+    for (const m of MAJORS){
+      const mi = indexOfKey(m.key);
+      if (mi < 0) continue;
+
+      const lbl = document.createElement("div");
+      lbl.className = "major-label";
+      lbl.style.left = toPct(mi, totalSteps) + "%";
+      lbl.textContent = m.label;
+      timeline.appendChild(lbl);
     }
-    a{color:#fff}
+  }
 
-    .wrap{max-width:1100px;margin:0 auto;padding:0 18px}
+  // BUILD BOTH BARS
+  buildBar("2.4.3", "timeline1", "progressFill1", "currentPatchLabel1", "currentEraChip1");
+  buildBar("1.0.0", "timeline2", "progressFill2", "currentPatchLabel2", "currentEraChip2");
 
-    /* Snow */
-    #snowCanvas{
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 99999;
-    }
-
-    header{
-      border-bottom:1px solid rgba(255,255,255,.10);
-      background:
-        linear-gradient(180deg, rgba(0,0,0,.25), rgba(0,0,0,.88)),
-        url("/assets/hero.jpg");
-      background-size:cover;
-      background-position:center;
-    }
-
-    .toprow{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:12px;
-      flex-wrap:wrap;
-      padding:16px 0;
-    }
-
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:12px;
-      text-decoration:none;
-      color:#fff;
-      font-weight:900;
-      letter-spacing:.4px;
-    }
-
-    .logo{
-      width:44px;height:44px;border-radius:12px;overflow:hidden;
-      border:1px solid rgba(255,255,255,.18);
-      background:rgba(0,0,0,.35);
-      display:flex;align-items:center;justify-content:center;
-    }
-    .logo img{width:100%;height:100%;object-fit:cover}
-
-    nav{display:flex;gap:10px;flex-wrap:wrap}
-    nav a{
-      color:#fff;text-decoration:none;font-weight:800;font-size:13px;
-      padding:10px 12px;border-radius:14px;
-      border:1px solid rgba(255,255,255,.18);
-      background:rgba(0,0,0,.28);
-      backdrop-filter: blur(6px);
-    }
-    nav a:hover{background:rgba(0,0,0,.45)}
-
-    .hero{
-      padding:34px 0 22px;
-      text-align:center;
-    }
-    .hero h1{margin:0;font-size:44px;line-height:1.05}
-    .hero p{
-      margin:12px auto 0;
-      max-width:860px;
-      color:var(--muted);
-      font-size:15.5px;
-      line-height:1.5;
-    }
-
-    .hero-row{
-      margin-top:18px;
-      display:flex;
-      justify-content:center;
-      gap:10px;
-      flex-wrap:wrap;
-    }
-
-    .btn{
-      border:1px solid rgba(255,255,255,.18);
-      background:rgba(255,255,255,.06);
-      color:#fff;
-      border-radius:14px;
-      padding:12px 14px;
-      font-weight:900;
-      font-size:13px;
-      cursor:pointer;
-      text-decoration:none;
-    }
-    .btn.primary{
-      background:rgba(80,170,255,.12);
-      border-color:rgba(80,170,255,.25);
-    }
-    .btn.ghost{background:rgba(0,0,0,.28)}
-
-    .status-row{
-      margin:18px auto 0;
-      max-width:980px;
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:14px;
-      text-align:left;
-    }
-
-    .status-row-wide{
-      margin:14px auto 0;
-      max-width:980px;
-      display:grid;
-      grid-template-columns:1fr;
-      gap:14px;
-      text-align:left;
-    }
-
-    .status-row-progress{
-      margin:14px auto 0;
-      max-width:1400px;
-      width:100%;
-      display:grid;
-      grid-template-columns:1fr;
-      gap:14px;
-      text-align:left;
-    }
-
-    .box{
-      padding:18px 20px;
-      border-radius:18px;
-      border:1px solid var(--line);
-      background:var(--glass);
-      backdrop-filter:blur(8px);
-      box-shadow:0 16px 40px rgba(0,0,0,.45);
-    }
-
-    .title{
-      font-size:13px;
-      font-weight:900;
-      letter-spacing:.6px;
-      margin-bottom:10px;
-      opacity:.9;
-      text-transform:uppercase;
-    }
-
-    .status-online{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      font-size:18px;
-      font-weight:900;
-      color:rgba(140,205,255,.95);
-    }
-
-    .dot{
-      width:12px;height:12px;border-radius:50%;
-      background:rgba(140,205,255,.95);
-      box-shadow:0 0 12px rgba(140,205,255,.7);
-      animation:pulse 1.8s infinite;
-    }
-    @keyframes pulse{
-      0%{transform:scale(1);opacity:1}
-      50%{transform:scale(1.4);opacity:.6}
-      100%{transform:scale(1);opacity:1}
-    }
-
-    .subline{
-      margin-top:10px;
-      padding:10px 12px;
-      border-radius:14px;
-      border:1px solid rgba(255,255,255,.10);
-      background:rgba(255,255,255,.04);
-      display:flex;
-      justify-content:space-between;
-      gap:10px;
-      flex-wrap:wrap;
-      font-size:13px;
-      opacity:.92;
-    }
-
-    .players{margin-top:10px;font-size:14px}
-    .updated{margin-top:8px;font-size:12.5px;opacity:.75}
-
-    .realm-grid{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:10px 14px;
-    }
-    .kv{
-      border:1px solid rgba(255,255,255,.10);
-      background:rgba(255,255,255,.04);
-      border-radius:14px;
-      padding:10px 12px;
-    }
-    .k{font-size:11.5px;font-weight:900;opacity:.7;text-transform:uppercase}
-    .v{margin-top:4px;font-size:14px;font-weight:900}
-
-    .progress-wrap{
-      margin-top:12px;
-      border:1px solid rgba(255,255,255,.10);
-      background:rgba(255,255,255,.04);
-      border-radius:14px;
-      padding:12px;
-    }
-    .progress-labels{
-      display:flex;
-      justify-content:space-between;
-      gap:10px;
-      flex-wrap:wrap;
-      font-size:12.5px;
-      opacity:.85;
-      margin-bottom:10px;
-    }
-    .chip{
-      display:inline-block;
-      padding:4px 8px;
-      border-radius:10px;
-      border:1px solid rgba(255,255,255,.14);
-      background:rgba(0,0,0,.25);
-      font-weight:900;
-      letter-spacing:.2px;
-      white-space:nowrap;
-    }
-
-    .timeline{
-      position:relative;
-      height:78px;
-      width:100%;
-    }
-
-    .bar{
-      position:absolute;
-      left:0; right:0;
-      top:28px;
-      height:12px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.14);
-      background:rgba(0,0,0,.35);
-      overflow:hidden;
-    }
-
-    /* ✅ Blue fill + icy shimmer */
-    .bar-fill{
-      height:100%;
-      width: 3%;
-      border-radius:999px;
-      position:relative;
-      transition: width .5s ease;
-
-      background: linear-gradient(90deg, var(--iceA), var(--iceB));
-      box-shadow:
-        0 0 18px rgba(140,205,255,.18),
-        inset 0 0 8px rgba(255,255,255,.12);
-    }
-
-    /* Shimmer overlay */
-    .bar-fill::before{
-      content:"";
-      position:absolute;
-      inset:-20px;
-      background:
-        linear-gradient(110deg,
-          rgba(255,255,255,0) 0%,
-          rgba(255,255,255,.18) 18%,
-          rgba(255,255,255,0) 36%
-        );
-      transform: translateX(-60%);
-      animation: shimmer 2.4s linear infinite;
-      pointer-events:none;
-      opacity:.85;
-    }
-
-    /* Subtle "ice grain" overlay */
-    .bar-fill::after{
-      content:"";
-      position:absolute;
-      inset:0;
-      background:
-        radial-gradient(circle at 20% 40%, rgba(255,255,255,.12) 0 2px, rgba(255,255,255,0) 3px),
-        radial-gradient(circle at 65% 55%, rgba(255,255,255,.10) 0 1.5px, rgba(255,255,255,0) 3px),
-        radial-gradient(circle at 85% 25%, rgba(255,255,255,.09) 0 1.5px, rgba(255,255,255,0) 3px);
-      opacity:.55;
-      mix-blend-mode: screen;
-      pointer-events:none;
-    }
-
-    @keyframes shimmer{
-      0%{transform: translateX(-70%)}
-      100%{transform: translateX(70%)}
-    }
-
-    .tick{
-      position:absolute;
-      top:26px;
-      width:2px;
-      height:16px;
-      background: rgba(255,255,255,.32);
-      border-radius:2px;
-      transform: translateX(-1px);
-    }
-    .tick.current{
-      height:24px;
-      top:22px;
-      background: var(--accent);
-      box-shadow: 0 0 16px rgba(80,170,255,.45);
-    }
-
-    .major-label{
-      position:absolute;
-      top:52px;
-      transform: translateX(-50%);
-      font-size:12px;
-      font-weight:900;
-      opacity:.88;
-      white-space:nowrap;
-      padding:3px 8px;
-      border-radius:10px;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(0,0,0,.22);
-    }
-
-    .current-patch-label{
-      position:absolute;
-      top:0px;
-      transform: translateX(-50%);
-      font-size:12px;
-      font-weight:900;
-      white-space:nowrap;
-      padding:3px 8px;
-      border-radius:10px;
-      border:1px solid rgba(80,170,255,.65);
-      background: rgba(0,0,0,.30);
-      box-shadow: 0 0 16px rgba(80,170,255,.18);
-      color:#fff;
-    }
-
-    footer{
-      border-top:1px solid rgba(255,255,255,.08);
-      padding:16px 0;
-      background:#070707;
-      font-size:12.5px;
-      opacity:.75;
-      text-align:center;
-    }
-
-    @media(max-width:900px){
-      .status-row{grid-template-columns:1fr}
-      .hero h1{font-size:36px}
-      .status-row-progress{max-width:1100px}
-      .major-label{font-size:11px}
-      .current-patch-label{font-size:11px}
-    }
-    /* =========================
-   FIX: spacing between sections
-   ========================= */
-
-.status-row-progress + .status-row-progress {
-  margin-top: 28px !important;
-}
-
-/* ensure progress bars never overlap text above */
-.progress-wrap {
-  margin-top: 16px !important;
-}
-
-/* force proper stacking context separation */
-.box {
-  position: relative;
-}
-    .status-row-progress {
-  display: block;
-  clear: both;
-  width: 100%;
-}
-
-.status-row-progress .box {
-  margin-top: 16px;
-}
-    .hero .status-row-progress {
-  position: relative;
-  display: block;
-  width: 100%;
-  clear: both;
-}
-
-.hero .status-row-progress .box {
-  margin-top: 18px;
-}
-
-.hero {
-  display: block;
-}
-    .hero {
-  display: flex;
-  flex-direction: column;
-}
-
-.status-row-progress {
-  width: 100%;
-  display: block;
-  margin-top: 18px;
-}
-
-.status-row-progress:first-of-type {
-  margin-top: 18px;
-}
-
-.status-row-progress + .status-row-progress {
-  margin-top: 28px;
-}
-    .timeline {
-  position: relative;
-  height: 100px; /* increase from 78px */
-  margin-bottom: 10px;
-}
-
-.status-row-progress .box {
-  margin-bottom: 20px;
-}
-    .status-row-progress .box {
-  display: block;
-  position: relative;
-  overflow: hidden; /* 🔥 THIS is the key fix */
-  padding-bottom: 20px;
-}
-
-.timeline {
-  position: relative;
-  height: auto; /* let it grow naturally */
-  padding-bottom: 25px; /* space for labels */
-}
-    .tick,
-.tick-label,
-.current-label {
-  position: absolute;
-}
-
-.timeline::after {
-  content: "";
-  display: block;
-  height: 25px; /* forces space for absolute elements */
-}
-  </style>
+  // year
+  document.getElementById("year").textContent = new Date().getFullYear();
+</script>
 </head>
 
 <body>
@@ -543,20 +176,20 @@
 
         <div class="progress-wrap">
           <div class="progress-labels">
-            <div>Current: <b id="currentPatchLabel">1.1.0</b> <span class="chip" id="currentEraChip" style="margin-left:8px;">Vanilla</span></div>
+            <div>Current: <b id="currentPatchLabel1">1.1.0</b> <span class="chip" id="currentEraChip1" style="margin-left:8px;">Vanilla</span></div>
             <div>Goal: <b>3.4.0</b> <span class="chip" style="margin-left:8px;">Custom</span></div>
           </div>
 
-          <div class="timeline" id="timeline">
+          <div class="timeline" id="timeline1">
             <div class="bar">
-              <div class="bar-fill" id="progressFill"></div>
+              <div class="bar-fill" id="progressFill1"></div>
             </div>
           </div>
         </div>
       </div>
     </div>
 
-        <div class="status-row-progress">
+    <div class="status-row-progress">
       <div class="box">
         <div class="title">Server Progress</div>
         <p style="margin:0;color:var(--muted);line-height:1.55;">
@@ -570,7 +203,7 @@
             <div>Goal: <b>3.3.5a</b> <span class="chip" style="margin-left:8px;">WotLK</span></div>
           </div>
 
-          <div class="timeline2" id="timeline2">
+          <div class="timeline" id="timeline2">
             <div class="bar">
               <div class="bar-fill" id="progressFill2"></div>
             </div>
@@ -750,53 +383,6 @@
   }
   btn.onclick=()=>{snowOn=!snowOn;syncSnow()};
   syncSnow();
-
-  // ===========================
-// SECOND PROGRESS BAR (DARROWMERE FIX)
-// ===========================
-
-const idx2 = indexOfKey("1.0.0");
-const safeIdx2 = idx2 >= 0 ? idx2 : 0;
-
-const pct2 = toPct(safeIdx2, totalSteps);
-
-document.getElementById("currentPatchLabel2").textContent = "1.0.0";
-document.getElementById("currentEraChip2").textContent = PATCHES[safeIdx2]?.era || "Vanilla";
-
-const fillEl2 = document.getElementById("progressFill2");
-fillEl2.style.width = Math.max(2, pct2) + "%";
-
-const timelineEl2 = document.getElementById("timeline2");
-
-// ticks
-for (let i = 0; i < PATCHES.length; i++){
-  const leftPct = toPct(i, totalSteps);
-  const patch = PATCHES[i];
-
-  const tick = document.createElement("div");
-  tick.className = "tick" + (patch.key === "1.0.0" ? " current" : "");
-  tick.style.left = leftPct + "%";
-  timelineEl2.appendChild(tick);
-}
-
-// label
-const currentLabel2 = document.createElement("div");
-currentLabel2.className = "current-patch-label";
-currentLabel2.style.left = pct2 + "%";
-currentLabel2.textContent = "1.0.0";
-timelineEl2.appendChild(currentLabel2);
-
-// majors
-for (const m of MAJORS){
-  const mi = indexOfKey(m.key);
-  if (mi < 0) continue;
-
-  const lbl = document.createElement("div");
-  lbl.className = "major-label";
-  lbl.style.left = toPct(mi, totalSteps) + "%";
-  lbl.textContent = m.label;
-  timelineEl2.appendChild(lbl);
-}
 </script>
 </body>
 </html>
