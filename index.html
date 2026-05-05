@@ -564,29 +564,32 @@ const timelineEl2 = document.getElementById("timeline2");
 
 const totalSteps = PATCHES.length - 1;
 
-// helper
-function buildProgress(patchKey, labelElId, eraElId, fillElId, timelineEl, isCurrentBar = false) {
+function buildBar(patchKey, timelineEl, fillId, labelId, eraId, showMajors) {
   const idx = indexOfKey(patchKey);
   const safeIdx = idx >= 0 ? idx : 0;
 
-  const era = PATCHES[safeIdx]?.era || "Vanilla";
   const pct = toPct(safeIdx, totalSteps);
+  const era = PATCHES[safeIdx]?.era || "Vanilla";
 
-  document.getElementById(labelElId).textContent = patchKey;
-  document.getElementById(eraElId).textContent = era;
+  // fill
+  const fillEl = document.getElementById(fillId);
+  fillEl.style.width = pct + "%";
+  fillEl.title = patchKey;
 
-  const fillEl = document.getElementById(fillElId);
-  fillEl.style.width = Math.max(2, pct) + "%";
-  fillEl.title = "Current progression: Patch " + patchKey;
+  // labels
+  document.getElementById(labelId).textContent = patchKey;
+  document.getElementById(eraId).textContent = era;
+
+  // clear OLD elements (THIS fixes duplicates + missing ticks)
+  timelineEl.innerHTML = "";
 
   // ticks
   for (let i = 0; i < PATCHES.length; i++) {
     const leftPct = toPct(i, totalSteps);
     const patch = PATCHES[i];
-    const isCurrent = patch.key === patchKey;
 
     const tick = document.createElement("div");
-    tick.className = "tick" + (isCurrent ? " current" : "");
+    tick.className = "tick" + (patch.key === patchKey ? " current" : "");
     tick.style.left = leftPct + "%";
     tick.title = patch.key + " — " + patch.era;
 
@@ -594,23 +597,21 @@ function buildProgress(patchKey, labelElId, eraElId, fillElId, timelineEl, isCur
   }
 
   // current label
-  const label = document.createElement("div");
-  label.className = "current-patch-label";
-  label.style.left = pct + "%";
-  label.textContent = patchKey;
-  timelineEl.appendChild(label);
+  const cur = document.createElement("div");
+  cur.className = "current-patch-label";
+  cur.style.left = pct + "%";
+  cur.textContent = patchKey;
+  timelineEl.appendChild(cur);
 
-  // major labels (only once per timeline)
-  if (isCurrentBar) {
+  // major labels (only first bar)
+  if (showMajors) {
     for (const m of MAJORS) {
       const mi = indexOfKey(m.key);
       if (mi < 0) continue;
 
-      const leftPct = toPct(mi, totalSteps);
-
       const lbl = document.createElement("div");
       lbl.className = "major-label";
-      lbl.style.left = leftPct + "%";
+      lbl.style.left = toPct(mi, totalSteps) + "%";
       lbl.textContent = m.label;
 
       timelineEl.appendChild(lbl);
@@ -618,6 +619,23 @@ function buildProgress(patchKey, labelElId, eraElId, fillElId, timelineEl, isCur
   }
 }
 
+  buildBar(
+  CURRENT_PATCH,
+  document.getElementById("timeline"),
+  "progressFill",
+  "currentPatchLabel",
+  "currentEraChip",
+  true
+);
+
+buildBar(
+  CURRENT_PATCH_DARROWMERE,
+  document.getElementById("timeline2"),
+  "progressFill2",
+  "currentPatchLabel2",
+  "currentEraChip2",
+  false
+);
   // ===========================
 // ICECROWN (FIRST BAR)
 // ===========================
