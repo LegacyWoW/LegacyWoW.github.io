@@ -377,6 +377,23 @@
       .major-label{font-size:11px}
       .current-patch-label{font-size:11px}
     }
+    /* =========================
+   FIX: spacing between sections
+   ========================= */
+
+.status-row-progress + .status-row-progress {
+  margin-top: 28px !important;
+}
+
+/* ensure progress bars never overlap text above */
+.progress-wrap {
+  margin-top: 16px !important;
+}
+
+/* force proper stacking context separation */
+.box {
+  position: relative;
+}
   </style>
 </head>
 
