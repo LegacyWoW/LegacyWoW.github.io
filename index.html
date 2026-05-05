@@ -444,6 +444,29 @@
 .status-row-progress .box {
   margin-bottom: 20px;
 }
+    .status-row-progress .box {
+  display: block;
+  position: relative;
+  overflow: hidden; /* 🔥 THIS is the key fix */
+  padding-bottom: 20px;
+}
+
+.timeline {
+  position: relative;
+  height: auto; /* let it grow naturally */
+  padding-bottom: 25px; /* space for labels */
+}
+    .tick,
+.tick-label,
+.current-label {
+  position: absolute;
+}
+
+.timeline::after {
+  content: "";
+  display: block;
+  height: 25px; /* forces space for absolute elements */
+}
   </style>
 </head>
 
