@@ -564,38 +564,35 @@ const timelineEl2 = document.getElementById("timeline2");
 
 const totalSteps = PATCHES.length - 1;
 
+function indexOfKey(k){ return PATCHES.findIndex(p => p.key === k); }
+function toPct(i, totalSteps){
+  if (totalSteps <= 0) return 0;
+  return (i / totalSteps) * 100;
+}
+
+const totalSteps = PATCHES.length - 1;
+
+// 👇 PASTE YOUR NEW buildBar HERE
 function buildBar(patchKey, timelineEl, fillId, labelId, eraId, showMajors) {
-  const idx = indexOfKey(patchKey);
-  const safeIdx = idx >= 0 ? idx : 0;
+   ...
+}
+buildBar(
+  CURRENT_PATCH,
+  document.getElementById("timeline"),
+  "progressFill",
+  "currentPatchLabel",
+  "currentEraChip",
+  true
+);
 
-  const pct = toPct(safeIdx, totalSteps);
-  const era = PATCHES[safeIdx]?.era || "Vanilla";
-
-  // fill
-  const fillEl = document.getElementById(fillId);
-  fillEl.style.width = pct + "%";
-  fillEl.title = patchKey;
-
-  // labels
-  document.getElementById(labelId).textContent = patchKey;
-  document.getElementById(eraId).textContent = era;
-
-  // clear OLD elements (THIS fixes duplicates + missing ticks)
-  timelineEl.innerHTML = "";
-
-  // ticks
-  for (let i = 0; i < PATCHES.length; i++) {
-    const leftPct = toPct(i, totalSteps);
-    const patch = PATCHES[i];
-
-    const tick = document.createElement("div");
-    tick.className = "tick" + (patch.key === patchKey ? " current" : "");
-    tick.style.left = leftPct + "%";
-    tick.title = patch.key + " — " + patch.era;
-
-    timelineEl.appendChild(tick);
-  }
-
+buildBar(
+  CURRENT_PATCH_DARROWMERE,
+  document.getElementById("timeline2"),
+  "progressFill2",
+  "currentPatchLabel2",
+  "currentEraChip2",
+  false
+);
   // current label
   const cur = document.createElement("div");
   cur.className = "current-patch-label";
@@ -636,31 +633,25 @@ buildBar(
   "currentEraChip2",
   false
 );
-  // ===========================
-// ICECROWN (FIRST BAR)
-// ===========================
+  
 const CURRENT_PATCH = "2.4.3";
+const CURRENT_PATCH_DARROWMERE = "1.0.0";
 
-buildProgress(
+buildBar(
   CURRENT_PATCH,
+  document.getElementById("timeline"),
+  "progressFill",
   "currentPatchLabel",
   "currentEraChip",
-  "progressFill",
-  timelineEl,
   true
 );
 
-// ===========================
-// DARROWMERE (SECOND BAR)
-// ===========================
-const CURRENT_PATCH_DARROWMERE = "1.0.0";
-
-buildProgress(
+buildBar(
   CURRENT_PATCH_DARROWMERE,
+  document.getElementById("timeline2"),
+  "progressFill2",
   "currentPatchLabel2",
   "currentEraChip2",
-  "progressFill2",
-  timelineEl2,
   false
 );
   
