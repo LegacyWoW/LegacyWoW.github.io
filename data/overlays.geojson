@@ -4202,8 +4202,8 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "(Hinterland Army)",
-        "color": "#ffff00",
+        "title": "Contested",
+        "color": "#ffffff",
         "category": "alliance"
       },
       "geometry": {
