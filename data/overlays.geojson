@@ -1878,7 +1878,7 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "Contested",
+        "title": "(Ashen Reclamation)",
         "color": "#ff0000",
         "category": "horde"
       },
@@ -4028,7 +4028,7 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "Contested",
+        "title": "(Ashen Reclamation)",
         "color": "#ff0000",
         "category": "horde"
       },
