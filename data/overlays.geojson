@@ -4202,9 +4202,9 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "Contested",
-        "color": "#ffffff",
-        "category": "alliance"
+        "title": "(Ashen Reclamation)",
+        "color": "#ff0000",
+        "category": "horde"
       },
       "geometry": {
         "type": "Polygon",
