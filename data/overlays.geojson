@@ -5093,6 +5093,22 @@
           ]
         ]
       }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "ASHEN RECLAMATION v HINTERLAND ARMY WARFRONT",
+        "color": "#ffffff",
+        "category": "neutral",
+        "icon": "pvp"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          1459,
+          438
+        ]
+      }
     }
   ]
 }
