@@ -6250,6 +6250,54 @@
           896.5
         ]
       }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "Warfront: Ashen Reclamation v Knights of Menethil",
+        "color": "#ffffff",
+        "category": "neutral",
+        "icon": "pvp"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          1329.75,
+          630.25
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "Warfront: Ashen Reclamation v Hinterland Army",
+        "color": "#ffffff",
+        "category": "neutral",
+        "icon": "pvp"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          1455.5,
+          448.25
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "Warfront: Ashen Reclamation v Legion of the Dead",
+        "color": "#ffffff",
+        "category": "neutral",
+        "icon": "pvp"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          294.625,
+          847
+        ]
+      }
     }
   ]
 }
