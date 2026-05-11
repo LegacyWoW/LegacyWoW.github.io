@@ -5,7 +5,7 @@
       "type": "Feature",
       "properties": {
         "title": "Darnassus",
-        "color": "#ffffff",
+        "color": "#0000ff",
         "category": "alliance",
         "icon": "city"
       },
@@ -136,7 +136,7 @@
       "type": "Feature",
       "properties": {
         "title": "Undercity",
-        "color": "#ffffff",
+        "color": "#ff0000",
         "category": "horde",
         "icon": "city"
       },
@@ -3667,9 +3667,9 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "(Knights of Menethil)",
-        "color": "#0000ff",
-        "category": "alliance"
+        "title": "(Ashen Reclamation)",
+        "color": "#ff0000",
+        "category": "horde"
       },
       "geometry": {
         "type": "Polygon",
@@ -5750,6 +5750,504 @@
               677
             ]
           ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "(Knights of Menethil)",
+        "color": "#0000ff",
+        "category": "alliance"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              1364.875,
+              617.25
+            ],
+            [
+              1372.125,
+              619.25
+            ],
+            [
+              1376.75,
+              621.25
+            ],
+            [
+              1381.75,
+              625.125
+            ],
+            [
+              1385.75,
+              628.75
+            ],
+            [
+              1384.875,
+              632.125
+            ],
+            [
+              1379.125,
+              636.125
+            ],
+            [
+              1372.5,
+              638
+            ],
+            [
+              1364.75,
+              639.75
+            ],
+            [
+              1359.5,
+              641.25
+            ],
+            [
+              1350.125,
+              642
+            ],
+            [
+              1342.125,
+              642
+            ],
+            [
+              1340.5,
+              639.875
+            ],
+            [
+              1340.5,
+              636.125
+            ],
+            [
+              1339.625,
+              633.875
+            ],
+            [
+              1337.375,
+              632.5
+            ],
+            [
+              1334.75,
+              631.25
+            ],
+            [
+              1331.25,
+              630.5
+            ],
+            [
+              1329.625,
+              628.875
+            ],
+            [
+              1332.25,
+              628.625
+            ],
+            [
+              1336,
+              627.875
+            ],
+            [
+              1340.25,
+              625.5
+            ],
+            [
+              1344.5,
+              624.625
+            ],
+            [
+              1348.875,
+              623.5
+            ],
+            [
+              1353.875,
+              621.625
+            ],
+            [
+              1357.5,
+              620
+            ],
+            [
+              1360.875,
+              618.75
+            ],
+            [
+              1364.875,
+              617.25
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "(Legion of the Dead)",
+        "color": "#00ffff",
+        "category": "alliance"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              1397.125,
+              596
+            ],
+            [
+              1392.625,
+              596.875
+            ],
+            [
+              1389.375,
+              598.125
+            ],
+            [
+              1386.5,
+              600.75
+            ],
+            [
+              1383.875,
+              602.75
+            ],
+            [
+              1381.75,
+              606.5
+            ],
+            [
+              1380.875,
+              609.25
+            ],
+            [
+              1379.375,
+              612.625
+            ],
+            [
+              1375.75,
+              614.875
+            ],
+            [
+              1381,
+              619.25
+            ],
+            [
+              1382.75,
+              621.375
+            ],
+            [
+              1388.25,
+              624.25
+            ],
+            [
+              1390.5,
+              627.375
+            ],
+            [
+              1393.25,
+              627.125
+            ],
+            [
+              1398.125,
+              625.125
+            ],
+            [
+              1402.125,
+              623
+            ],
+            [
+              1405.75,
+              621.125
+            ],
+            [
+              1411.25,
+              618.625
+            ],
+            [
+              1416.25,
+              617.5
+            ],
+            [
+              1422.125,
+              615.625
+            ],
+            [
+              1428.875,
+              613.375
+            ],
+            [
+              1436.125,
+              611
+            ],
+            [
+              1442.125,
+              609.375
+            ],
+            [
+              1447,
+              608.25
+            ],
+            [
+              1444,
+              604.125
+            ],
+            [
+              1439.125,
+              602.25
+            ],
+            [
+              1436.75,
+              602.875
+            ],
+            [
+              1433.5,
+              602.875
+            ],
+            [
+              1431.125,
+              602.625
+            ],
+            [
+              1428.75,
+              601.125
+            ],
+            [
+              1422.875,
+              602.375
+            ],
+            [
+              1416.875,
+              603.625
+            ],
+            [
+              1407.5,
+              606
+            ],
+            [
+              1402.375,
+              606.25
+            ],
+            [
+              1398.25,
+              605.375
+            ],
+            [
+              1396.25,
+              601.375
+            ],
+            [
+              1397.125,
+              596
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "Hammerfall (Black Rose)",
+        "color": "#ff9600",
+        "category": "horde",
+        "icon": "house"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          1500,
+          611
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "Refuge Point (Legion of the Dead)",
+        "color": "#00ffff",
+        "category": "alliance",
+        "icon": "house"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          1433.5,
+          599.875
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "Ruins of Stromgarde (Forsai Cosanta Elwynn)",
+        "color": "#009600",
+        "category": "alliance",
+        "icon": "house"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          1392.625,
+          588.75
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "Tarren Mill (Ashen Reclamation)",
+        "color": "#ff0000",
+        "category": "horde",
+        "icon": "house"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          1327.625,
+          649.625
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "Southshore (Knights of Menethil)",
+        "color": "#0000ff",
+        "category": "alliance",
+        "icon": "house"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          1301.75,
+          617.625
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "The Sepulcher (Ashen Reclamation)",
+        "color": "#ff0000",
+        "category": "horde",
+        "icon": "house"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          1157.625,
+          671.25
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "Kharanos (Hinterland Army)",
+        "color": "#ffff00",
+        "category": "alliance",
+        "icon": "house"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          1299,
+          426
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "Thelsamar (Hinterland Army)",
+        "color": "#ffff00",
+        "category": "alliance",
+        "icon": "house"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          1462.875,
+          435.5
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "Goldshire (Forsai Cosanta Elwynn)",
+        "color": "#009600",
+        "category": "alliance",
+        "icon": "house"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          1262,
+          271.375
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "Razor Hill (Ashen Reclamation)",
+        "color": "#ff0000",
+        "category": "horde",
+        "icon": "house"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          672.625,
+          516.375
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "Crossroads (Ashen Reclamation)",
+        "color": "#ff0000",
+        "category": "horde",
+        "icon": "house"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          533.25,
+          485.75
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "Bloodhoof Village (Ashen Reclamation)",
+        "color": "#ff0000",
+        "category": "horde",
+        "icon": "house"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          383.5,
+          411.625
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "Dolanaar (Legion of the Dead)",
+        "color": "#00ffff",
+        "category": "alliance",
+        "icon": "house"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          292.5,
+          896.5
         ]
       }
     }
