@@ -5403,9 +5403,9 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "(Hinterland Army)",
-        "color": "#ffff00",
-        "category": "alliance"
+        "title": "(Ashen Reclamation)",
+        "color": "#ff0000",
+        "category": "horde"
       },
       "geometry": {
         "type": "Polygon",
@@ -6248,38 +6248,6 @@
         "coordinates": [
           292.5,
           896.5
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "title": "Warfront: Ashen Reclamation v Knights of Menethil",
-        "color": "#ffffff",
-        "category": "neutral",
-        "icon": "pvp"
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          1329.75,
-          630.25
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "title": "Warfront: Ashen Reclamation v Hinterland Army",
-        "color": "#ffffff",
-        "category": "neutral",
-        "icon": "pvp"
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          1455.5,
-          448.25
         ]
       }
     }
