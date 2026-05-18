@@ -4515,9 +4515,9 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "(Black Rose)",
-        "color": "#ff9600",
-        "category": "horde"
+        "title": "(Legion of the Dead)",
+        "color": "#00ffff",
+        "category": "alliance"
       },
       "geometry": {
         "type": "Polygon",
@@ -5403,9 +5403,9 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "(Ashen Reclamation)",
-        "color": "#ff0000",
-        "category": "horde"
+        "title": "(Hinterland Army)",
+        "color": "#ffff00",
+        "category": "alliance"
       },
       "geometry": {
         "type": "Polygon",
@@ -6248,22 +6248,6 @@
         "coordinates": [
           292.5,
           896.5
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "title": "Warfront: The Eastern Coalition v Ashen Reclamation",
-        "color": "#ffffff",
-        "category": "neutral",
-        "icon": "pvp"
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          1459.875,
-          439.875
         ]
       }
     },
