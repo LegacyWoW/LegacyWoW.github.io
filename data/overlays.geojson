@@ -317,8 +317,8 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "Bloodhoof Village (Ashen Reclamation)",
-        "color": "#ff0000",
+        "title": "Bloodhoof Village (Black Rose)",
+        "color": "#ff9600",
         "category": "horde"
       },
       "geometry": {
@@ -1878,8 +1878,8 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "(Ashen Reclamation)",
-        "color": "#ff0000",
+        "title": "(Black Rose)",
+        "color": "#ff9600",
         "category": "horde"
       },
       "geometry": {
@@ -4202,9 +4202,9 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "(Ashen Reclamation)",
-        "color": "#ff0000",
-        "category": "horde"
+        "title": "(Hinterland Army)",
+        "color": "#ffff00",
+        "category": "alliance"
       },
       "geometry": {
         "type": "Polygon",
@@ -6222,8 +6222,8 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "Bloodhoof Village (Ashen Reclamation)",
-        "color": "#ff0000",
+        "title": "Bloodhoof Village (Black Rose)",
+        "color": "#ff9600",
         "category": "horde",
         "icon": "house"
       },
@@ -6503,6 +6503,86 @@
               558.75
             ]
           ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "WARFRONT: Ashen Reclamation v Knights of Menethil",
+        "color": "#ffffff",
+        "category": "neutral",
+        "icon": "pvp"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          1311.125,
+          619
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "WARFRONT: Ashen Reclamation v Black Rose",
+        "color": "#ffffff",
+        "category": "neutral",
+        "icon": "pvp"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          1329.25,
+          631.125
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "Brill (Ashen Reclamation)",
+        "color": "#ff0000",
+        "category": "horde",
+        "icon": "house"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          1246.375,
+          742.25
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "WARFRONT: Forsai Cosanta Elwynn v Scarlet Crusade",
+        "color": "#ffffff",
+        "category": "neutral",
+        "icon": "pvp"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          1386.375,
+          588.875
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "WARFRONT: Black Rose v Iron Vanguard",
+        "color": "#ffffff",
+        "category": "neutral",
+        "icon": "pvp"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          397.75,
+          408.25
         ]
       }
     }
