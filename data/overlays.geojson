@@ -6553,38 +6553,6 @@
           742.25
         ]
       }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "title": "WARFRONT: Forsai Cosanta Elwynn v Scarlet Crusade",
-        "color": "#ffffff",
-        "category": "neutral",
-        "icon": "pvp"
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          1386.375,
-          588.875
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "title": "WARFRONT: Black Rose v Iron Vanguard",
-        "color": "#ffffff",
-        "category": "neutral",
-        "icon": "pvp"
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          397.75,
-          408.25
-        ]
-      }
     }
   ]
 }
