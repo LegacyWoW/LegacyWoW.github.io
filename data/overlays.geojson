@@ -6509,38 +6509,6 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "WARFRONT: Ashen Reclamation v Knights of Menethil",
-        "color": "#ffffff",
-        "category": "neutral",
-        "icon": "pvp"
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          1311.125,
-          619
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "title": "WARFRONT: Ashen Reclamation v Black Rose",
-        "color": "#ffffff",
-        "category": "neutral",
-        "icon": "pvp"
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          1329.25,
-          631.125
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
         "title": "Brill (Ashen Reclamation)",
         "color": "#ff0000",
         "category": "horde",
