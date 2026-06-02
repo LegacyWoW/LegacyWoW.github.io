@@ -1878,8 +1878,8 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "(Black Rose)",
-        "color": "#ff9600",
+        "title": "(Ashen Reclamation)",
+        "color": "#ff0000",
         "category": "horde"
       },
       "geometry": {
@@ -4701,8 +4701,8 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "(Ashen Reclamation)",
-        "color": "#ff0000",
+        "title": "(Black Rose)",
+        "color": "#ff9600",
         "category": "horde"
       },
       "geometry": {
@@ -6519,6 +6519,70 @@
         "coordinates": [
           1246.375,
           742.25
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "WARFRONT: Ashen Reclamation v Knights of Menethil",
+        "color": "#ffffff",
+        "category": "neutral",
+        "icon": "pvp"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          1310.625,
+          616.25
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "WARFRONT: Ashen Reclamation v Knights of Menethi",
+        "color": "#ffffff",
+        "category": "neutral",
+        "icon": "pvp"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          1293.125,
+          625
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "WARFRONT: Ashen Reclamation v Knights of Menethi",
+        "color": "#ffffff",
+        "category": "neutral",
+        "icon": "pvp"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          1330.75,
+          630.125
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "WARFRONT: Ashen Reclamation v Knights of Menethi",
+        "color": "#ffffff",
+        "category": "neutral",
+        "icon": "pvp"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          540.375,
+          490.25
         ]
       }
     }
