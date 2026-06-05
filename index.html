@@ -428,9 +428,11 @@
           <div>Patch: <b id="statusPatch">1.1.0</b></div>
         </div>
 
-        <div class="players">Players Online: <b><span id="playerCount">---</span></b></div>
-        <div class="updated">Last updated: <span id="lastUpdated">---</span></div>
-      </div>
+<div class="players">Icecrown Players Online: <b><span id="playerCount">---</span></b></div>
+<div class="updated">Last updated: <span id="lastUpdated">---</span></div>
+
+<div class="players">Darrowmere Players Online: <b><span id="playerCount2">---</span></b></div>
+<div class="updated">Last updated: <span id="lastUpdated2">---</span></div>
 
       <div class="box">
         <div class="title">Realm Info</div>
@@ -587,25 +589,62 @@ Visit the Rules page to learn more about Guild War and server features.
   // ===========================
   // Players: 350 - 500
   // ===========================
-  const MIN=700, MAX=1050;
-  let p=Math.floor(Math.random()*(MAX-MIN+1))+MIN;
-  let t=p;
+// ===========================
+// Icecrown Players
+// ===========================
+const MIN=500, MAX=800;
+let p=Math.floor(Math.random()*(MAX-MIN+1))+MIN;
+let t=p;
 
-  const pc=document.getElementById("playerCount");
-  const lu=document.getElementById("lastUpdated");
+const pc=document.getElementById("playerCount");
+const lu=document.getElementById("lastUpdated");
 
-  function tickPlayers(){
-    if(Math.random()<0.25){
-      t=Math.floor(Math.random()*(MAX-MIN+1))+MIN;
-    }
-    const diff=t-p;
-    p+=Math.sign(diff)*Math.max(1,Math.floor(Math.random()*3));
-    p=Math.max(MIN,Math.min(MAX,p));
-    pc.textContent=p;
-    lu.textContent=new Date().toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"});
-    setTimeout(tickPlayers,3000+Math.random()*3000);
+// ===========================
+// Darrowmere Players
+// ===========================
+const MIN2=200, MAX2=450;
+let p2=Math.floor(Math.random()*(MAX2-MIN2+1))+MIN2;
+let t2=p2;
+
+const pc2=document.getElementById("playerCount2");
+const lu2=document.getElementById("lastUpdated2");
+
+function tickPlayers(){
+
+  // Icecrown
+  if(Math.random()<0.25){
+    t=Math.floor(Math.random()*(MAX-MIN+1))+MIN;
   }
-  tickPlayers();
+
+  const diff=t-p;
+  p+=Math.sign(diff)*Math.max(1,Math.floor(Math.random()*3));
+  p=Math.max(MIN,Math.min(MAX,p));
+
+  pc.textContent=p;
+  lu.textContent=new Date().toLocaleTimeString([], {
+    hour:"2-digit",
+    minute:"2-digit"
+  });
+
+  // Darrowmere
+  if(Math.random()<0.25){
+    t2=Math.floor(Math.random()*(MAX2-MIN2+1))+MIN2;
+  }
+
+  const diff2=t2-p2;
+  p2+=Math.sign(diff2)*Math.max(1,Math.floor(Math.random()*3));
+  p2=Math.max(MIN2,Math.min(MAX2,p2));
+
+  pc2.textContent=p2;
+  lu2.textContent=new Date().toLocaleTimeString([], {
+    hour:"2-digit",
+    minute:"2-digit"
+  });
+
+  setTimeout(tickPlayers,3000+Math.random()*3000);
+}
+
+tickPlayers();
 
   // ===========================
   // Snow toggle
