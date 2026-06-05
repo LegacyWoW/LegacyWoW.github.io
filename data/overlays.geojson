@@ -3325,9 +3325,9 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "(Knights of Menethil)",
-        "color": "#0000ff",
-        "category": "alliance"
+        "title": "(Ashen Reclamation)",
+        "color": "#ff0000",
+        "category": "horde"
       },
       "geometry": {
         "type": "Polygon",
@@ -3667,8 +3667,8 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "(Ashen Reclamation)",
-        "color": "#ff0000",
+        "title": "(Iron Vanguard)",
+        "color": "#ff00ff",
         "category": "horde"
       },
       "geometry": {
@@ -4701,8 +4701,8 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "(Black Rose)",
-        "color": "#ff9600",
+        "title": "(Iron Vanguard)",
+        "color": "#ff00ff",
         "category": "horde"
       },
       "geometry": {
@@ -5756,8 +5756,8 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "(Ashen Reclamation)",
-        "color": "#ff0000",
+        "title": "(Iron Vanguard)",
+        "color": "#ff00ff",
         "category": "horde"
       },
       "geometry": {
@@ -6519,6 +6519,54 @@
         "coordinates": [
           1246.375,
           742.25
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "SIEGE: KNIGHTS OF MENETHIL v ASHEN RECLAMATION",
+        "color": "#ffffff",
+        "category": "neutral",
+        "icon": "pvp"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          226.625,
+          903.125
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "WARFRONT: Forsai Cosanta Elwynn v Scarlet Crusade",
+        "color": "#ffffff",
+        "category": "neutral",
+        "icon": "pvp"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          1270.75,
+          272.25
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "WARFRONT: Hinterland Army v Forsai Cosanta Elwynn",
+        "color": "#ffffff",
+        "category": "neutral",
+        "icon": "pvp"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          1299.375,
+          419
         ]
       }
     }
