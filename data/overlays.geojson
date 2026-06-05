@@ -4515,9 +4515,9 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "(Legion of the Dead)",
-        "color": "#00ffff",
-        "category": "alliance"
+        "title": "(Ashen Reclamation)",
+        "color": "#ff0000",
+        "category": "horde"
       },
       "geometry": {
         "type": "Polygon",
@@ -4962,8 +4962,8 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "(Ashen Reclamation)",
-        "color": "#ff0000",
+        "title": "(Knights of Menethil)",
+        "color": "#0000ff",
         "category": "alliance"
       },
       "geometry": {
@@ -5756,9 +5756,9 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "(Knights of Menethil)",
-        "color": "#0000ff",
-        "category": "alliance"
+        "title": "(Ashen Reclamation)",
+        "color": "#ff0000",
+        "category": "horde"
       },
       "geometry": {
         "type": "Polygon",
@@ -6519,70 +6519,6 @@
         "coordinates": [
           1246.375,
           742.25
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "title": "WARFRONT: Ashen Reclamation v Knights of Menethil",
-        "color": "#ffffff",
-        "category": "neutral",
-        "icon": "pvp"
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          1310.625,
-          616.25
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "title": "WARFRONT: Ashen Reclamation v Knights of Menethi",
-        "color": "#ffffff",
-        "category": "neutral",
-        "icon": "pvp"
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          1293.125,
-          625
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "title": "WARFRONT: Ashen Reclamation v Knights of Menethi",
-        "color": "#ffffff",
-        "category": "neutral",
-        "icon": "pvp"
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          1330.75,
-          630.125
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "title": "WARFRONT: Ashen Reclamation v Knights of Menethi",
-        "color": "#ffffff",
-        "category": "neutral",
-        "icon": "pvp"
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          540.375,
-          490.25
         ]
       }
     }
