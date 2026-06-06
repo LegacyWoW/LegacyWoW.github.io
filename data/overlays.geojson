@@ -6541,22 +6541,6 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "WARFRONT: Forsai Cosanta Elwynn v Scarlet Crusade",
-        "color": "#ffffff",
-        "category": "neutral",
-        "icon": "pvp"
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          1270.75,
-          272.25
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
         "title": "WARFRONT: Hinterland Army v Forsai Cosanta Elwynn",
         "color": "#ffffff",
         "category": "neutral",
