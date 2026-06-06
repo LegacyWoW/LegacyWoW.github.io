@@ -250,8 +250,8 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "Kharanos (Hinterland Army)",
-        "color": "#ffff00",
+        "title": "Kharanos (Forsai Cosanta Elwynn)",
+        "color": "#00ff00",
         "category": "alliance"
       },
       "geometry": {
@@ -6142,8 +6142,8 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "Kharanos (Hinterland Army)",
-        "color": "#ffff00",
+        "title": "Kharanos (Forsai Cosanta Elwynn)",
+        "color": "#00ff00",
         "category": "alliance",
         "icon": "house"
       },
@@ -6535,22 +6535,6 @@
         "coordinates": [
           226.625,
           903.125
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "title": "WARFRONT: Hinterland Army v Forsai Cosanta Elwynn",
-        "color": "#ffffff",
-        "category": "neutral",
-        "icon": "pvp"
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          1299.375,
-          419
         ]
       }
     }
