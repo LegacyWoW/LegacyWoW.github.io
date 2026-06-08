@@ -888,9 +888,9 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "(Knights of Menethil)",
-        "color": "#0000ff",
-        "category": "alliance"
+        "title": "(Ashen Reclamation)",
+        "color": "#ff0000",
+        "category": "horde"
       },
       "geometry": {
         "type": "Polygon",
@@ -3667,9 +3667,9 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "(Iron Vanguard)",
-        "color": "#ff00ff",
-        "category": "horde"
+        "title": "(Forsai Cosanta Elwynn)",
+        "color": "#009600",
+        "category": "alliance"
       },
       "geometry": {
         "type": "Polygon",
@@ -6519,22 +6519,6 @@
         "coordinates": [
           1246.375,
           742.25
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "title": "SIEGE: KNIGHTS OF MENETHIL v ASHEN RECLAMATION",
-        "color": "#ffffff",
-        "category": "neutral",
-        "icon": "pvp"
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          226.625,
-          903.125
         ]
       }
     }
