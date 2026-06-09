@@ -6644,6 +6644,70 @@
           673.25
         ]
       }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "SIEGE: EKTO v Ashen Reclamation",
+        "color": "#ffffff",
+        "category": "neutral",
+        "icon": "pvp"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          1298.125,
+          675
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "WARFRONT: Forsai Cosanta Elwynn v Iron Vanguard",
+        "color": "#ffffff",
+        "category": "neutral",
+        "icon": "pvp"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          1330.25,
+          630.375
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "WARFRONT: Ashen Reclamation v Black Rose",
+        "color": "#ffffff",
+        "category": "neutral",
+        "icon": "pvp"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          398.5,
+          408
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "WARFRONT: Ashen Reclamation v Knights of Menethil",
+        "color": "#ffffff",
+        "category": "neutral",
+        "icon": "pvp"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          236.625,
+          902.125
+        ]
+      }
     }
   ]
 }
