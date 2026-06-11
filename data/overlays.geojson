@@ -888,9 +888,9 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "(Ashen Reclamation)",
-        "color": "#ff0000",
-        "category": "horde"
+        "title": "(Knights of Menethil)",
+        "color": "#0000ff",
+        "category": "alliance"
       },
       "geometry": {
         "type": "Polygon",
@@ -3667,8 +3667,8 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "(Forsai Cosanta Elwynn)",
-        "color": "#009600",
+        "title": "(Knights of Menethil)",
+        "color": "#0000ff",
         "category": "alliance"
       },
       "geometry": {
@@ -6525,9 +6525,9 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "Ruins of Alterac (Ashen Reclamation)",
-        "color": "#ff0000",
-        "category": "horde"
+        "title": "Fort Alterac (Legion of the Dead)",
+        "color": "#00ffff",
+        "category": "alliance"
       },
       "geometry": {
         "type": "Polygon",
@@ -6632,9 +6632,9 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "Alterac",
-        "color": "#ff0000",
-        "category": "horde",
+        "title": "Alterac (Raid time 5pm - 10pm PST)",
+        "color": "#00ffff",
+        "category": "alliance",
         "icon": "fort"
       },
       "geometry": {
@@ -6642,70 +6642,6 @@
         "coordinates": [
           1287.5,
           673.25
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "title": "SIEGE: EKTO v Ashen Reclamation",
-        "color": "#ffffff",
-        "category": "neutral",
-        "icon": "pvp"
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          1298.125,
-          675
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "title": "WARFRONT: Forsai Cosanta Elwynn v Iron Vanguard",
-        "color": "#ffffff",
-        "category": "neutral",
-        "icon": "pvp"
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          1330.25,
-          630.375
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "title": "WARFRONT: Ashen Reclamation v Black Rose",
-        "color": "#ffffff",
-        "category": "neutral",
-        "icon": "pvp"
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          398.5,
-          408
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "title": "WARFRONT: Ashen Reclamation v Knights of Menethil",
-        "color": "#ffffff",
-        "category": "neutral",
-        "icon": "pvp"
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          236.625,
-          902.125
         ]
       }
     }
