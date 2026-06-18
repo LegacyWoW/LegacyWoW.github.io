@@ -3325,9 +3325,9 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "(Ashen Reclamation)",
-        "color": "#ff0000",
-        "category": "horde"
+        "title": "(Knights of Menethil)",
+        "color": "#0000ff",
+        "category": "alliance"
       },
       "geometry": {
         "type": "Polygon",
@@ -4515,9 +4515,9 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "(Ashen Reclamation)",
-        "color": "#ff0000",
-        "category": "horde"
+        "title": "(Legion of the Dead)",
+        "color": "#00ffff",
+        "category": "alliance"
       },
       "geometry": {
         "type": "Polygon",
