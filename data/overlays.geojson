@@ -2203,9 +2203,9 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "Ruins of Stromgarde (Forsai Cosanta Elwynn)",
-        "color": "#009600",
-        "category": "alliance"
+        "title": "Ruins of Stromgarde (Iron Vanguard)",
+        "color": "#ff00ff",
+        "category": "horde"
       },
       "geometry": {
         "type": "Polygon",
@@ -5756,8 +5756,8 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "(Iron Vanguard)",
-        "color": "#ff00ff",
+        "title": "(Ashen Reclamation)",
+        "color": "#ff0000",
         "category": "horde"
       },
       "geometry": {
@@ -6078,9 +6078,9 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "Ruins of Stromgarde (Forsai Cosanta Elwynn)",
-        "color": "#009600",
-        "category": "alliance",
+        "title": "Ruins of Stromgarde (Iron Vanguard)",
+        "color": "#ff00ff",
+        "category": "horde",
         "icon": "house"
       },
       "geometry": {
@@ -6642,6 +6642,38 @@
         "coordinates": [
           1287.5,
           673.25
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "WARFRONT: Forsai Cosanta Elwynn v Iron Vanguard",
+        "color": "#ffffff",
+        "category": "neutral",
+        "icon": "pvp"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          1307,
+          426
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "WARFRONT: Forsai Cosanta Elwynn v Ashen Reclamation",
+        "color": "#ffffff",
+        "category": "neutral",
+        "icon": "pvp"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          1298.25,
+          271.5
         ]
       }
     }
