@@ -6644,38 +6644,6 @@
           673.25
         ]
       }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "title": "WARFRONT: Forsai Cosanta Elwynn v Iron Vanguard",
-        "color": "#ffffff",
-        "category": "neutral",
-        "icon": "pvp"
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          1307,
-          426
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "title": "WARFRONT: Forsai Cosanta Elwynn v Ashen Reclamation",
-        "color": "#ffffff",
-        "category": "neutral",
-        "icon": "pvp"
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          1298.25,
-          271.5
-        ]
-      }
     }
   ]
 }
