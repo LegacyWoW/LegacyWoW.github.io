@@ -4701,8 +4701,8 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "(Iron Vanguard)",
-        "color": "#ff00ff",
+        "title": "(Ashen Reclamation)",
+        "color": "#ff0000",
         "category": "horde"
       },
       "geometry": {
@@ -6254,8 +6254,8 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "(Black Rose)",
-        "color": "#ff9600",
+        "title": "(Iron Vanguard)",
+        "color": "#ff00ff",
         "category": "horde"
       },
       "geometry": {
@@ -6642,6 +6642,22 @@
         "coordinates": [
           1287.5,
           673.25
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "WARFRONT: Ashen Reclamation v Knights of Menethil",
+        "color": "#ffffff",
+        "category": "neutral",
+        "icon": "pvp"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          1317.5,
+          634.5
         ]
       }
     }
