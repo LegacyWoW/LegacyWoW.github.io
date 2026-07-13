@@ -3325,9 +3325,9 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "(Knights of Menethil)",
-        "color": "#0000ff",
-        "category": "alliance"
+        "title": "(iron Vanguard)",
+        "color": "#ff00ff",
+        "category": "horde"
       },
       "geometry": {
         "type": "Polygon",
@@ -4131,9 +4131,9 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "(Ashen Reclamation)",
-        "color": "#ff0000",
-        "category": "horde"
+        "title": "(Knights of Menethil)",
+        "color": "#0000ff",
+        "category": "alliance"
       },
       "geometry": {
         "type": "Polygon",
@@ -6254,9 +6254,9 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "(Iron Vanguard)",
-        "color": "#ff00ff",
-        "category": "horde"
+        "title": "(Knights of Menethil)",
+        "color": "#0000ff",
+        "category": "alliance"
       },
       "geometry": {
         "type": "Polygon",
