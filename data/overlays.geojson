@@ -1609,7 +1609,7 @@
       "type": "Feature",
       "properties": {
         "title": "Goldshire (Forsai Cosanta Elwynn)",
-        "color": "#009600",
+        "color": "#00ff00",
         "category": "alliance"
       },
       "geometry": {
@@ -3108,7 +3108,7 @@
       "type": "Feature",
       "properties": {
         "title": "(Forsai Cosanta Elwynn)",
-        "color": "#009600",
+        "color": "#00ff00",
         "category": "alliance"
       },
       "geometry": {
@@ -4282,7 +4282,7 @@
       "type": "Feature",
       "properties": {
         "title": "(Forsai Cosanta Elwynn)",
-        "color": "#009600",
+        "color": "#00ff00",
         "category": "alliance"
       },
       "geometry": {
@@ -6175,7 +6175,7 @@
       "type": "Feature",
       "properties": {
         "title": "Goldshire (Forsai Cosanta Elwynn)",
-        "color": "#009600",
+        "color": "#00ff00",
         "category": "alliance",
         "icon": "house"
       },
@@ -6254,8 +6254,8 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "(Knights of Menethil)",
-        "color": "#0000ff",
+        "title": "(Order of Alterac)",
+        "color": "#00ff96",
         "category": "alliance"
       },
       "geometry": {
