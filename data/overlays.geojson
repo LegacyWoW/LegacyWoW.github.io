@@ -3782,9 +3782,9 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "(Legion of the Dead)",
-        "color": "#00ffff",
-        "category": "alliance"
+        "title": "(Iron Vanguard)",
+        "color": "#ff00ff",
+        "category": "horde"
       },
       "geometry": {
         "type": "Polygon",
@@ -4515,9 +4515,9 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "(Legion of the Dead)",
-        "color": "#00ffff",
-        "category": "alliance"
+        "title": "(Iron Vanguard)",
+        "color": "#ff00ff",
+        "category": "horde"
       },
       "geometry": {
         "type": "Polygon",
@@ -6642,22 +6642,6 @@
         "coordinates": [
           1287.5,
           673.25
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "title": "WARFRONT: Ashen Reclamation v Knights of Menethil",
-        "color": "#ffffff",
-        "category": "neutral",
-        "icon": "pvp"
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          1317.5,
-          634.5
         ]
       }
     }
