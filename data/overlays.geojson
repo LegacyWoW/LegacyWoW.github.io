@@ -2203,9 +2203,9 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "Ruins of Stromgarde (Iron Vanguard)",
-        "color": "#ff00ff",
-        "category": "horde"
+        "title": "Ruins of Stromgarde (Legion of the Dead)",
+        "color": "#00ffff",
+        "category": "alliance"
       },
       "geometry": {
         "type": "Polygon",
@@ -3325,7 +3325,7 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "(iron Vanguard)",
+        "title": "(Iron Vanguard)",
         "color": "#ff00ff",
         "category": "horde"
       },
@@ -6078,9 +6078,9 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "Ruins of Stromgarde (Iron Vanguard)",
-        "color": "#ff00ff",
-        "category": "horde",
+        "title": "Ruins of Stromgarde (Legion of the Dead)",
+        "color": "#00ffff",
+        "category": "alliance",
         "icon": "house"
       },
       "geometry": {
