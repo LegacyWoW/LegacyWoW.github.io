@@ -1993,9 +1993,9 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "(Legion of the Dead)",
-        "color": "#00ffff",
-        "category": "alliance"
+        "title": "(Iron Vanguard)",
+        "color": "#ff00ff",
+        "category": "horde"
       },
       "geometry": {
         "type": "Polygon",
@@ -4202,8 +4202,8 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "(Hinterland Army)",
-        "color": "#ffff00",
+        "title": "(Forsai Cosanta Elwynn)",
+        "color": "#00ff00",
         "category": "alliance"
       },
       "geometry": {
@@ -5403,8 +5403,8 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "(Hinterland Army)",
-        "color": "#ffff00",
+        "title": "(Forsai Cosanta Elwynn)",
+        "color": "#00ff00",
         "category": "alliance"
       },
       "geometry": {
@@ -5756,8 +5756,8 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "(Ashen Reclamation)",
-        "color": "#ff0000",
+        "title": "(Black Rose)",
+        "color": "#ff9600",
         "category": "horde"
       },
       "geometry": {
@@ -6642,6 +6642,165 @@
         "coordinates": [
           1287.5,
           673.25
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "Fort Warsong (Contested)",
+        "color": "#ffffff",
+        "category": "neutral"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              604.75,
+              612
+            ],
+            [
+              600,
+              612.375
+            ],
+            [
+              594.75,
+              612.5
+            ],
+            [
+              591.125,
+              612.375
+            ],
+            [
+              588,
+              611.625
+            ],
+            [
+              586.375,
+              611
+            ],
+            [
+              584.5,
+              608.625
+            ],
+            [
+              581,
+              607.5
+            ],
+            [
+              578.25,
+              607.25
+            ],
+            [
+              577.125,
+              605
+            ],
+            [
+              576.625,
+              602.125
+            ],
+            [
+              574.875,
+              600.125
+            ],
+            [
+              573.625,
+              597.75
+            ],
+            [
+              573.125,
+              595.125
+            ],
+            [
+              572.5,
+              592.625
+            ],
+            [
+              573.25,
+              590.375
+            ],
+            [
+              575.25,
+              588.625
+            ],
+            [
+              577.875,
+              587.25
+            ],
+            [
+              581.5,
+              586
+            ],
+            [
+              585.125,
+              586.375
+            ],
+            [
+              588.75,
+              587.25
+            ],
+            [
+              591.375,
+              589.375
+            ],
+            [
+              593.5,
+              591.125
+            ],
+            [
+              594.875,
+              593.625
+            ],
+            [
+              597.5,
+              595.75
+            ],
+            [
+              599.625,
+              597.875
+            ],
+            [
+              601.625,
+              600.125
+            ],
+            [
+              603.125,
+              602.375
+            ],
+            [
+              603.75,
+              604.75
+            ],
+            [
+              604.125,
+              606.625
+            ],
+            [
+              605.125,
+              608.5
+            ],
+            [
+              604.75,
+              612
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "Warsong (Raid time 5pm - 10pm PST)",
+        "color": "#ffffff",
+        "category": "neutral",
+        "icon": "fort"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          592.625,
+          601.125
         ]
       }
     }
