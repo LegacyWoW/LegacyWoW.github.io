@@ -6648,9 +6648,9 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "Fort Warsong (Contested)",
-        "color": "#ffffff",
-        "category": "neutral"
+        "title": "Fort Warsong (Ashen Reclamation)",
+        "color": "#ff0000",
+        "category": "horde"
       },
       "geometry": {
         "type": "Polygon",
@@ -6792,8 +6792,8 @@
       "type": "Feature",
       "properties": {
         "title": "Warsong (Raid time 5pm - 10pm PST)",
-        "color": "#ffffff",
-        "category": "neutral",
+        "color": "#ff0000",
+        "category": "horde",
         "icon": "fort"
       },
       "geometry": {
