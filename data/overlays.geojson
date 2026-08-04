@@ -1993,9 +1993,9 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "(Iron Vanguard)",
-        "color": "#ff00ff",
-        "category": "horde"
+        "title": "(Knights of Menethil)",
+        "color": "#0000ff",
+        "category": "alliance"
       },
       "geometry": {
         "type": "Polygon",
@@ -3325,9 +3325,9 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "(Iron Vanguard)",
-        "color": "#ff00ff",
-        "category": "horde"
+        "title": "(Legion of the Dead)",
+        "color": "#00ffff",
+        "category": "alliance"
       },
       "geometry": {
         "type": "Polygon",
@@ -3782,9 +3782,9 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "(Iron Vanguard)",
-        "color": "#ff00ff",
-        "category": "horde"
+        "title": "(Legion of the Dead)",
+        "color": "#00ffff",
+        "category": "alliance"
       },
       "geometry": {
         "type": "Polygon",
@@ -4515,9 +4515,9 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "(Iron Vanguard)",
-        "color": "#ff00ff",
-        "category": "horde"
+        "title": "(Legion of the Dead)",
+        "color": "#00ffff",
+        "category": "alliance"
       },
       "geometry": {
         "type": "Polygon",
@@ -5756,9 +5756,9 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "(Black Rose)",
-        "color": "#ff9600",
-        "category": "horde"
+        "title": "(Order of Alterac)",
+        "color": "#00ff96",
+        "category": "alliance"
       },
       "geometry": {
         "type": "Polygon",
@@ -6801,6 +6801,54 @@
         "coordinates": [
           592.625,
           601.125
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "WARFRONT: ASHEN V RED EMPIRE",
+        "color": "#ffffff",
+        "category": "neutral",
+        "icon": "pvp"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          1178.875,
+          676.625
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "WARFRONT: ASHEN V RED EMPIRE",
+        "color": "#ffffff",
+        "category": "neutral",
+        "icon": "pvp"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          538.75,
+          491.5
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "WARFRONT: BLACK ROSE V RED EMPIRE",
+        "color": "#ffffff",
+        "category": "neutral",
+        "icon": "pvp"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          398.375,
+          410.875
         ]
       }
     }
