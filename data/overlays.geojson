@@ -1993,8 +1993,8 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "(Knights of Menethil)",
-        "color": "#0000ff",
+        "title": "(Legion of the Dead)",
+        "color": "#00ffff",
         "category": "alliance"
       },
       "geometry": {
