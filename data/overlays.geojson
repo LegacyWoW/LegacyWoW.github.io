@@ -2286,8 +2286,8 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "Crossroads (Ashen Reclamation)",
-        "color": "#ff0000",
+        "title": "Crossroads (Red Empire)",
+        "color": "#640000",
         "category": "horde"
       },
       "geometry": {
@@ -4701,8 +4701,8 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "(Ashen Reclamation)",
-        "color": "#ff0000",
+        "title": "(Red Empire)",
+        "color": "#640000",
         "category": "horde"
       },
       "geometry": {
@@ -4792,8 +4792,8 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "(Ashen Reclamation)",
-        "color": "#ff0000",
+        "title": "(Red Empire)",
+        "color": "#640000",
         "category": "horde"
       },
       "geometry": {
@@ -5641,8 +5641,8 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "(Ashen Reclamation)",
-        "color": "#ff0000",
+        "title": "(Red Empire)",
+        "color": "#640000",
         "category": "horde"
       },
       "geometry": {
@@ -6206,8 +6206,8 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "Crossroads (Ashen Reclamation)",
-        "color": "#ff0000",
+        "title": "Crossroads (Red Empire)",
+        "color": "#640000",
         "category": "horde",
         "icon": "house"
       },
@@ -6801,54 +6801,6 @@
         "coordinates": [
           592.625,
           601.125
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "title": "WARFRONT: ASHEN V RED EMPIRE",
-        "color": "#ffffff",
-        "category": "neutral",
-        "icon": "pvp"
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          1178.875,
-          676.625
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "title": "WARFRONT: ASHEN V RED EMPIRE",
-        "color": "#ffffff",
-        "category": "neutral",
-        "icon": "pvp"
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          538.75,
-          491.5
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "title": "WARFRONT: BLACK ROSE V RED EMPIRE",
-        "color": "#ffffff",
-        "category": "neutral",
-        "icon": "pvp"
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          398.375,
-          410.875
         ]
       }
     }
