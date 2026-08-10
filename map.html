@@ -50,57 +50,11 @@
 
     .shell{
       position: relative;
-      width: 100%;
-      background: #111;
-    }
-
-    .world-map-section{
-      position: relative;
-      width: 100%;
-      height: 80vh;
-      min-height: 600px;
-      background: #000;
-      overflow: hidden;
-    }
-
-    .world-map-section .leaflet-container{
-      width: 100%;
-      height: 100%;
-      background: #000;
-    }
-
-    .world-map-section .map-label{
-      position:absolute;
-      top:16px;
-      left:16px;
-      z-index:1000;
-      padding:10px 14px;
-      border-radius:12px;
-      border:1px solid rgba(255,255,255,.18);
-      background:rgba(0,0,0,.65);
-      color:#fff;
-      font-weight:900;
-      pointer-events:none;
-    }
-
-    .world-map-section .leaflet-control-zoom a{
-      background:rgba(0,0,0,.75) !important;
-      color:#fff !important;
-      border-color:rgba(255,255,255,.20) !important;
-    }
-
-    .world-map-section .leaflet-control-zoom a:hover{
-      background:rgba(255,255,255,.18) !important;
-    }
-
-    .current-map{
-      position: relative;
-      width: 100%;
-    }
-
-    #map{
       height: calc(100vh - 72px);
       min-height: 560px;
+    }
+    #map{
+      height: 100%;
       width: 100%;
       background: #111;
     }
@@ -188,98 +142,18 @@
   </header>
 
   <div class="shell">
+    <div id="map"></div>
 
-    <!-- Northrend -->
-    <div class="world-map-section" id="northrendMap">
-      <div class="map-label">Northrend</div>
+    <!-- Admin-only controls (hidden unless ?admin=1) -->
+    <div class="adminbar" id="adminBar">
+      <button class="btn" id="exportBtn">Export</button>
+      <button class="btn" id="clearBtn">Clear</button>
     </div>
-
-    <!-- Existing interactive Azeroth map -->
-    <div class="current-map">
-      <div id="map"></div>
-
-      <!-- Admin-only controls (hidden unless ?admin=1) -->
-      <div class="adminbar" id="adminBar">
-        <button class="btn" id="exportBtn">Export</button>
-        <button class="btn" id="clearBtn">Clear</button>
-      </div>
-    </div>
-
-    <!-- Outland -->
-    <div class="world-map-section" id="outlandMap">
-      <div class="map-label">Outland</div>
-    </div>
-
   </div>
 
-  <!-- Keep the existing Azeroth map exactly as it was -->
   <script src="/map/app.js"></script>
 
   <script>
-    // Additional maps use Leaflet's simple-image coordinate system.
-    // Relative image paths work on both a custom domain and GitHub Pages.
-    function createWorldMap(elementId, imagePath, width, height) {
-      const container = document.getElementById(elementId);
-
-      const map = L.map(container, {
-        crs: L.CRS.Simple,
-        center: [height / 2, width / 2],
-        zoom: 0,
-        minZoom: -3,
-        maxZoom: 5,
-        zoomControl: true,
-        scrollWheelZoom: true,
-        doubleClickZoom: true,
-        dragging: true,
-        touchZoom: true,
-        boxZoom: true,
-        keyboard: true,
-        attributionControl: false
-      });
-
-      const bounds = [[0, 0], [height, width]];
-
-      L.imageOverlay(imagePath, bounds, {
-        opacity: 1,
-        interactive: false
-      }).addTo(map);
-
-      map.fitBounds(bounds, { padding: [20, 20] });
-
-      // Keep the entire map reasonably close while still allowing zooming.
-      map.setMaxBounds([
-        [-height * 0.5, -width * 0.5],
-        [height * 1.5, width * 1.5]
-      ]);
-
-      // Make sure Leaflet recalculates the container after the page loads.
-      setTimeout(() => {
-        map.invalidateSize();
-        map.fitBounds(bounds, { padding: [20, 20] });
-      }, 100);
-
-      return map;
-    }
-
-    const northrendMap = createWorldMap(
-      "northrendMap",
-      "map/Northrend.png",
-      1073,
-      878
-    );
-
-    const outlandMap = createWorldMap(
-      "outlandMap",
-      "map/outland.png",
-      779,
-      763
-    );
-
-    window.addEventListener("resize", () => {
-      northrendMap.invalidateSize();
-      outlandMap.invalidateSize();
-    });
-
     const isAdmin = new URLSearchParams(location.search).get("admin") === "1";
     const adminBar = document.getElementById("adminBar");
     if (!isAdmin && adminBar) adminBar.style.display = "none";
