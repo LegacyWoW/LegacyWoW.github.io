@@ -50,13 +50,35 @@
 
     .shell{
       position: relative;
-      height: calc(100vh - 72px);
-      min-height: 560px;
-    }
-    #map{
-      height: 100%;
       width: 100%;
       background: #111;
+    }
+
+    .current-map{
+      position: relative;
+      width: 100%;
+    }
+
+    #map{
+      height: calc(100vh - 72px);
+      min-height: 560px;
+      width: 100%;
+      background: #111;
+    }
+
+    .extra-map{
+      width: 100%;
+      background: #000;
+      display: flex;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .extra-map img{
+      display: block;
+      width: 100%;
+      height: auto;
+      max-width: 100%;
     }
 
     /* Admin-only top-right bar */
@@ -142,12 +164,25 @@
   </header>
 
   <div class="shell">
-    <div id="map"></div>
+    <!-- Northrend map -->
+    <div class="extra-map">
+      <img src="/map/Northrend.png" alt="Northrend World Map" />
+    </div>
 
-    <!-- Admin-only controls (hidden unless ?admin=1) -->
-    <div class="adminbar" id="adminBar">
-      <button class="btn" id="exportBtn">Export</button>
-      <button class="btn" id="clearBtn">Clear</button>
+    <!-- Current interactive world map -->
+    <div class="current-map">
+      <div id="map"></div>
+
+      <!-- Admin-only controls (hidden unless ?admin=1) -->
+      <div class="adminbar" id="adminBar">
+        <button class="btn" id="exportBtn">Export</button>
+        <button class="btn" id="clearBtn">Clear</button>
+      </div>
+    </div>
+
+    <!-- Outland map -->
+    <div class="extra-map">
+      <img src="/map/outland.png" alt="Outland World Map" />
     </div>
   </div>
 
