@@ -54,6 +54,45 @@
       background: #111;
     }
 
+    .world-map-section{
+      position: relative;
+      width: 100%;
+      height: 80vh;
+      min-height: 600px;
+      background: #000;
+      overflow: hidden;
+    }
+
+    .world-map-section .leaflet-container{
+      width: 100%;
+      height: 100%;
+      background: #000;
+    }
+
+    .world-map-section .map-label{
+      position:absolute;
+      top:16px;
+      left:16px;
+      z-index:1000;
+      padding:10px 14px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,.18);
+      background:rgba(0,0,0,.65);
+      color:#fff;
+      font-weight:900;
+      pointer-events:none;
+    }
+
+    .world-map-section .leaflet-control-zoom a{
+      background:rgba(0,0,0,.75) !important;
+      color:#fff !important;
+      border-color:rgba(255,255,255,.20) !important;
+    }
+
+    .world-map-section .leaflet-control-zoom a:hover{
+      background:rgba(255,255,255,.18) !important;
+    }
+
     .current-map{
       position: relative;
       width: 100%;
@@ -64,29 +103,6 @@
       min-height: 560px;
       width: 100%;
       background: #111;
-    }
-
-    /* Additional zoomable world maps */
-    .extra-map{
-      position: relative;
-      width: 100%;
-      height: 75vh;
-      min-height: 500px;
-      background: #000;
-      overflow: hidden;
-      border-bottom: 1px solid rgba(255,255,255,.10);
-    }
-
-    .extra-map .leaflet-container{
-      width: 100%;
-      height: 100%;
-      background: #000;
-    }
-
-    .extra-map .leaflet-control-zoom a{
-      background: rgba(0,0,0,.70) !important;
-      color: #fff !important;
-      border-color: rgba(255,255,255,.18) !important;
     }
 
     /* Admin-only top-right bar */
@@ -172,10 +188,13 @@
   </header>
 
   <div class="shell">
-    <!-- Northrend -->
-    <div class="extra-map" id="northrendMap"></div>
 
-    <!-- Current interactive Azeroth map -->
+    <!-- Northrend -->
+    <div class="world-map-section" id="northrendMap">
+      <div class="map-label">Northrend</div>
+    </div>
+
+    <!-- Existing interactive Azeroth map -->
     <div class="current-map">
       <div id="map"></div>
 
@@ -187,56 +206,71 @@
     </div>
 
     <!-- Outland -->
-    <div class="extra-map" id="outlandMap"></div>
+    <div class="world-map-section" id="outlandMap">
+      <div class="map-label">Outland</div>
+    </div>
+
   </div>
 
+  <!-- Keep the existing Azeroth map exactly as it was -->
   <script src="/map/app.js"></script>
 
   <script>
-    /*
-     * The original interactive Azeroth map is still handled by /map/app.js.
-     * These two additional maps use Leaflet's simple image CRS so they can
-     * be zoomed and panned just like the main map.
-     */
-    function createImageMap(elementId, imagePath, imageWidth, imageHeight) {
-      const map = L.map(elementId, {
+    // Additional maps use Leaflet's simple-image coordinate system.
+    // Relative image paths work on both a custom domain and GitHub Pages.
+    function createWorldMap(elementId, imagePath, width, height) {
+      const container = document.getElementById(elementId);
+
+      const map = L.map(container, {
         crs: L.CRS.Simple,
-        minZoom: -2,
-        maxZoom: 4,
-        zoomSnap: 0.25,
-        zoomDelta: 0.5,
+        center: [height / 2, width / 2],
+        zoom: 0,
+        minZoom: -3,
+        maxZoom: 5,
+        zoomControl: true,
         scrollWheelZoom: true,
         doubleClickZoom: true,
         dragging: true,
         touchZoom: true,
         boxZoom: true,
         keyboard: true,
-        zoomControl: true
+        attributionControl: false
       });
 
-      const bounds = [[0, 0], [imageHeight, imageWidth]];
+      const bounds = [[0, 0], [height, width]];
 
       L.imageOverlay(imagePath, bounds, {
+        opacity: 1,
         interactive: false
       }).addTo(map);
 
-      map.fitBounds(bounds);
-      map.setMaxBounds([[-imageHeight * 0.25, -imageWidth * 0.25],
-                        [imageHeight * 1.25, imageWidth * 1.25]]);
+      map.fitBounds(bounds, { padding: [20, 20] });
+
+      // Keep the entire map reasonably close while still allowing zooming.
+      map.setMaxBounds([
+        [-height * 0.5, -width * 0.5],
+        [height * 1.5, width * 1.5]
+      ]);
+
+      // Make sure Leaflet recalculates the container after the page loads.
+      setTimeout(() => {
+        map.invalidateSize();
+        map.fitBounds(bounds, { padding: [20, 20] });
+      }, 100);
 
       return map;
     }
 
-    const northrendMap = createImageMap(
+    const northrendMap = createWorldMap(
       "northrendMap",
-      "/map/Northrend.png",
+      "map/Northrend.png",
       1073,
       878
     );
 
-    const outlandMap = createImageMap(
+    const outlandMap = createWorldMap(
       "outlandMap",
-      "/map/outland.png",
+      "map/outland.png",
       779,
       763
     );
