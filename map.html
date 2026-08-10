@@ -66,19 +66,27 @@
       background: #111;
     }
 
+    /* Additional zoomable world maps */
     .extra-map{
+      position: relative;
       width: 100%;
+      height: 75vh;
+      min-height: 500px;
       background: #000;
-      display: flex;
-      justify-content: center;
       overflow: hidden;
+      border-bottom: 1px solid rgba(255,255,255,.10);
     }
 
-    .extra-map img{
-      display: block;
+    .extra-map .leaflet-container{
       width: 100%;
-      height: auto;
-      max-width: 100%;
+      height: 100%;
+      background: #000;
+    }
+
+    .extra-map .leaflet-control-zoom a{
+      background: rgba(0,0,0,.70) !important;
+      color: #fff !important;
+      border-color: rgba(255,255,255,.18) !important;
     }
 
     /* Admin-only top-right bar */
@@ -164,12 +172,10 @@
   </header>
 
   <div class="shell">
-    <!-- Northrend map -->
-    <div class="extra-map">
-      <img src="/map/Northrend.png" alt="Northrend World Map" />
-    </div>
+    <!-- Northrend -->
+    <div class="extra-map" id="northrendMap"></div>
 
-    <!-- Current interactive world map -->
+    <!-- Current interactive Azeroth map -->
     <div class="current-map">
       <div id="map"></div>
 
@@ -180,15 +186,66 @@
       </div>
     </div>
 
-    <!-- Outland map -->
-    <div class="extra-map">
-      <img src="/map/outland.png" alt="Outland World Map" />
-    </div>
+    <!-- Outland -->
+    <div class="extra-map" id="outlandMap"></div>
   </div>
 
   <script src="/map/app.js"></script>
 
   <script>
+    /*
+     * The original interactive Azeroth map is still handled by /map/app.js.
+     * These two additional maps use Leaflet's simple image CRS so they can
+     * be zoomed and panned just like the main map.
+     */
+    function createImageMap(elementId, imagePath, imageWidth, imageHeight) {
+      const map = L.map(elementId, {
+        crs: L.CRS.Simple,
+        minZoom: -2,
+        maxZoom: 4,
+        zoomSnap: 0.25,
+        zoomDelta: 0.5,
+        scrollWheelZoom: true,
+        doubleClickZoom: true,
+        dragging: true,
+        touchZoom: true,
+        boxZoom: true,
+        keyboard: true,
+        zoomControl: true
+      });
+
+      const bounds = [[0, 0], [imageHeight, imageWidth]];
+
+      L.imageOverlay(imagePath, bounds, {
+        interactive: false
+      }).addTo(map);
+
+      map.fitBounds(bounds);
+      map.setMaxBounds([[-imageHeight * 0.25, -imageWidth * 0.25],
+                        [imageHeight * 1.25, imageWidth * 1.25]]);
+
+      return map;
+    }
+
+    const northrendMap = createImageMap(
+      "northrendMap",
+      "/map/Northrend.png",
+      1073,
+      878
+    );
+
+    const outlandMap = createImageMap(
+      "outlandMap",
+      "/map/outland.png",
+      779,
+      763
+    );
+
+    window.addEventListener("resize", () => {
+      northrendMap.invalidateSize();
+      outlandMap.invalidateSize();
+    });
+
     const isAdmin = new URLSearchParams(location.search).get("admin") === "1";
     const adminBar = document.getElementById("adminBar");
     if (!isAdmin && adminBar) adminBar.style.display = "none";
