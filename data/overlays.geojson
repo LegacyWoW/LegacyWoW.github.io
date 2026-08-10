@@ -404,8 +404,8 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "Tarren Mill (Ashen Reclamation)",
-        "color": "#ff0000",
+        "title": "Tarren Mill (Red Empire)",
+        "color": "#640000",
         "category": "horde"
       },
       "geometry": {
@@ -5756,8 +5756,8 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "(Order of Alterac)",
-        "color": "#00ff96",
+        "title": "(Knights of Menethil)",
+        "color": "#0000ff",
         "category": "alliance"
       },
       "geometry": {
@@ -6094,8 +6094,8 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "Tarren Mill (Ashen Reclamation)",
-        "color": "#ff0000",
+        "title": "Tarren Mill (Red Empire)",
+        "color": "#640000",
         "category": "horde",
         "icon": "house"
       },
@@ -6254,9 +6254,9 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "(Order of Alterac)",
-        "color": "#00ff96",
-        "category": "alliance"
+        "title": "(Black Rose)",
+        "color": "#ff9600",
+        "category": "horde"
       },
       "geometry": {
         "type": "Polygon",
