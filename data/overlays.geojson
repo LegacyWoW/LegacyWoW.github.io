@@ -2144,8 +2144,8 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "The Sepulcher (Ashen Reclamation)",
-        "color": "#ff0000",
+        "title": "The Sepulcher (Red Empire)",
+        "color": "#640000",
         "category": "horde"
       },
       "geometry": {
@@ -4131,9 +4131,9 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "(Knights of Menethil)",
-        "color": "#0000ff",
-        "category": "alliance"
+        "title": "(Red Empire)",
+        "color": "#640000",
+        "category": "horde"
       },
       "geometry": {
         "type": "Polygon",
@@ -5403,8 +5403,8 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "(Forsai Cosanta Elwynn)",
-        "color": "#00ff00",
+        "title": "(Hinterland Army)",
+        "color": "#ffff00",
         "category": "alliance"
       },
       "geometry": {
@@ -6126,8 +6126,8 @@
     {
       "type": "Feature",
       "properties": {
-        "title": "The Sepulcher (Ashen Reclamation)",
-        "color": "#ff0000",
+        "title": "The Sepulcher (Red Empire)",
+        "color": "#640000",
         "category": "horde",
         "icon": "house"
       },
