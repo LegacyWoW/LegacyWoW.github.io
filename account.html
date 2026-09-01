@@ -1,13 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
 
   <title>LegacyWoW — Create Account</title>
 
+
   <style>
+
     :root{
+
       --bg:#0b0b0b;
       --text:#e8e8e8;
       --muted:rgba(232,232,232,.82);
@@ -21,20 +30,27 @@
 
       --danger:#ff7777;
       --success:#8cffc1;
+
     }
+
 
     *{
       box-sizing:border-box;
     }
 
+
     html,
     body{
+
       margin:0;
       padding:0;
       min-height:100%;
+
     }
 
+
     body{
+
       font-family:
         system-ui,
         -apple-system,
@@ -43,83 +59,117 @@
         Arial,
         sans-serif;
 
-      background:
-        #0b0b0b;
+      background:#0b0b0b;
 
       color:var(--text);
+
     }
+
 
     a{
       color:#fff;
     }
 
+
     .wrap{
+
       max-width:1100px;
+
       margin:0 auto;
+
       padding:0 18px;
+
     }
+
 
     /* ======================================================
        SNOW
        ====================================================== */
 
     #snowCanvas{
+
       position:fixed;
+
       inset:0;
+
       pointer-events:none;
+
       z-index:99999;
+
     }
+
 
     /* ======================================================
        HEADER
        ====================================================== */
 
     header{
+
       min-height:calc(100vh - 57px);
 
       border-bottom:1px solid rgba(255,255,255,.10);
 
       background:
+
         linear-gradient(
           180deg,
           rgba(0,0,0,.25),
           rgba(0,0,0,.88)
         ),
+
         url("/assets/hero.jpg");
 
       background-size:cover;
+
       background-position:center;
+
     }
 
+
     .toprow{
+
       display:flex;
+
       justify-content:space-between;
+
       align-items:center;
 
       gap:12px;
+
       flex-wrap:wrap;
 
       padding:16px 0;
+
     }
 
+
     .brand{
+
       display:flex;
+
       align-items:center;
 
       gap:12px;
 
       text-decoration:none;
+
       color:#fff;
 
       font-weight:900;
+
       letter-spacing:.4px;
+
     }
 
+
     .logo{
+
       width:44px;
+
       height:44px;
 
       border-radius:12px;
+
       overflow:hidden;
 
       border:1px solid rgba(255,255,255,.18);
@@ -127,31 +177,48 @@
       background:rgba(0,0,0,.35);
 
       display:flex;
+
       align-items:center;
+
       justify-content:center;
+
     }
 
+
     .logo img{
+
       width:100%;
+
       height:100%;
+
       object-fit:cover;
+
     }
+
 
     /* ======================================================
        NAVIGATION
        ====================================================== */
 
     nav{
+
       display:flex;
+
       gap:10px;
+
       flex-wrap:wrap;
+
     }
 
+
     nav a{
+
       color:#fff;
+
       text-decoration:none;
 
       font-weight:800;
+
       font-size:13px;
 
       padding:10px 12px;
@@ -168,27 +235,40 @@
         background .2s ease,
         border-color .2s ease,
         transform .2s ease;
+
     }
 
+
     nav a:hover{
+
       background:rgba(0,0,0,.45);
+
       border-color:rgba(80,170,255,.35);
+
       transform:translateY(-1px);
+
     }
+
 
     /* ======================================================
        CONTENT
        ====================================================== */
 
     .content{
+
       display:flex;
+
       justify-content:center;
 
       padding:46px 0 60px;
+
     }
 
+
     .registration-box{
+
       width:100%;
+
       max-width:560px;
 
       padding:28px;
@@ -205,17 +285,25 @@
         0 20px 60px rgba(0,0,0,.55);
 
       text-align:left;
+
     }
 
+
     .title{
+
       text-align:center;
+
       font-size:30px;
+
       font-weight:900;
 
       margin:0;
+
     }
 
+
     .subtitle{
+
       text-align:center;
 
       margin:10px auto 28px;
@@ -225,18 +313,25 @@
       color:var(--muted);
 
       line-height:1.55;
+
       font-size:14px;
+
     }
+
 
     /* ======================================================
        FORM
        ====================================================== */
 
     .form-group{
+
       margin-bottom:17px;
+
     }
 
+
     label{
+
       display:block;
 
       margin-bottom:7px;
@@ -250,9 +345,12 @@
       letter-spacing:.5px;
 
       opacity:.9;
+
     }
 
+
     input{
+
       width:100%;
 
       padding:13px 14px;
@@ -273,33 +371,49 @@
         border-color .2s ease,
         box-shadow .2s ease,
         background .2s ease;
+
     }
+
 
     input::placeholder{
+
       color:rgba(255,255,255,.35);
+
     }
 
+
     input:focus{
+
       border-color:rgba(80,170,255,.65);
 
       background:rgba(0,0,0,.55);
 
       box-shadow:
         0 0 0 3px rgba(80,170,255,.10);
+
     }
+
 
     .password-wrap{
+
       position:relative;
+
     }
+
 
     .password-wrap input{
+
       padding-right:50px;
+
     }
 
+
     .password-toggle{
+
       position:absolute;
 
       right:9px;
+
       top:50%;
 
       transform:translateY(-50%);
@@ -315,13 +429,19 @@
       font-size:13px;
 
       padding:7px;
+
     }
+
 
     .password-toggle:hover{
+
       color:#fff;
+
     }
 
+
     .help{
+
       margin-top:6px;
 
       color:rgba(232,232,232,.55);
@@ -329,23 +449,31 @@
       font-size:11.5px;
 
       line-height:1.4;
+
     }
+
 
     /* ======================================================
        CHECKBOX
        ====================================================== */
 
     .rules{
+
       display:flex;
+
       align-items:flex-start;
 
       gap:10px;
 
       margin:22px 0;
+
     }
 
+
     .rules input{
+
       width:17px;
+
       height:17px;
 
       margin:1px 0 0;
@@ -353,9 +481,12 @@
       flex:none;
 
       accent-color:#50aaff;
+
     }
 
+
     .rules label{
+
       margin:0;
 
       text-transform:none;
@@ -369,24 +500,31 @@
       line-height:1.45;
 
       opacity:.85;
+
     }
 
+
     .rules a{
+
       color:var(--iceA);
 
       font-weight:800;
+
     }
+
 
     /* ======================================================
        BUTTON
        ====================================================== */
 
     .submit{
+
       width:100%;
 
       border:1px solid rgba(80,170,255,.35);
 
       background:
+
         linear-gradient(
           90deg,
           rgba(140,205,255,.13),
@@ -410,10 +548,14 @@
         border-color .2s ease,
         transform .2s ease,
         box-shadow .2s ease;
+
     }
 
+
     .submit:hover{
+
       background:
+
         linear-gradient(
           90deg,
           rgba(140,205,255,.22),
@@ -426,9 +568,12 @@
         0 0 22px rgba(80,170,255,.12);
 
       transform:translateY(-1px);
+
     }
 
+
     .submit:disabled{
+
       opacity:.55;
 
       cursor:not-allowed;
@@ -436,13 +581,16 @@
       transform:none;
 
       box-shadow:none;
+
     }
+
 
     /* ======================================================
        MESSAGE
        ====================================================== */
 
     .message{
+
       display:none;
 
       margin-bottom:18px;
@@ -454,9 +602,12 @@
       font-size:13px;
 
       line-height:1.45;
+
     }
 
+
     .message.error{
+
       display:block;
 
       border:1px solid rgba(255,119,119,.30);
@@ -464,9 +615,12 @@
       background:rgba(255,70,70,.08);
 
       color:#ffb0b0;
+
     }
 
+
     .message.success{
+
       display:block;
 
       border:1px solid rgba(140,255,193,.30);
@@ -474,20 +628,27 @@
       background:rgba(80,255,160,.07);
 
       color:#b8ffd8;
+
     }
+
 
     /* ======================================================
        SUCCESS PANEL
        ====================================================== */
 
     .success-panel{
+
       display:none;
 
       text-align:center;
+
     }
 
+
     .success-icon{
+
       width:58px;
+
       height:58px;
 
       margin:0 auto 16px;
@@ -499,30 +660,42 @@
       background:rgba(80,255,160,.07);
 
       display:flex;
+
       align-items:center;
+
       justify-content:center;
 
       font-size:26px;
 
       color:var(--success);
+
     }
 
+
     .success-panel h2{
+
       margin:0;
 
       font-size:26px;
+
       font-weight:900;
+
     }
 
+
     .success-panel p{
+
       color:var(--muted);
 
       line-height:1.6;
 
       font-size:14px;
+
     }
 
+
     .success-buttons{
+
       display:flex;
 
       justify-content:center;
@@ -532,9 +705,12 @@
       flex-wrap:wrap;
 
       margin-top:22px;
+
     }
 
+
     .success-button{
+
       display:inline-block;
 
       padding:11px 14px;
@@ -552,19 +728,25 @@
       font-size:13px;
 
       font-weight:900;
+
     }
 
+
     .success-button.primary{
+
       border-color:rgba(80,170,255,.35);
 
       background:rgba(80,170,255,.12);
+
     }
+
 
     /* ======================================================
        FOOTER
        ====================================================== */
 
     footer{
+
       border-top:1px solid rgba(255,255,255,.08);
 
       padding:16px 0;
@@ -576,7 +758,9 @@
       opacity:.75;
 
       text-align:center;
+
     }
+
 
     /* ======================================================
        MOBILE
@@ -585,743 +769,971 @@
     @media(max-width:700px){
 
       .toprow{
+
         justify-content:center;
+
       }
+
 
       .registration-box{
+
         padding:22px 18px;
+
       }
+
 
       .title{
+
         font-size:26px;
+
       }
 
+
       nav{
+
         justify-content:center;
+
       }
+
     }
+
   </style>
+
 </head>
+
 
 <body>
 
-<canvas id="snowCanvas"></canvas>
 
-<header>
+  <canvas id="snowCanvas"></canvas>
 
-  <div class="wrap">
 
-    <!-- ====================================================
-         HEADER / NAVIGATION
-         ==================================================== -->
+  <header>
 
-    <div class="toprow">
 
-      <a class="brand" href="index.html">
+    <div class="wrap">
 
-        <div class="logo">
-          <img
-            src="/assets/logo.png"
-            alt="LegacyWoW"
-            onerror="this.remove();"
-          >
-        </div>
 
-        <div>LegacyWoW</div>
+      <!-- ====================================================
+           HEADER / NAVIGATION
+           ==================================================== -->
 
-      </a>
+      <div class="toprow">
 
 
-      <nav>
+        <a class="brand" href="index.html">
 
-        <a href="how-to-play.html">
-          How to Play
-        </a>
 
-        <a href="downloads.html">
-          Downloads
-        </a>
+          <div class="logo">
 
-        <a href="account.html">
-          Create Account
-        </a>
-
-        <a href="news.html">
-          News
-        </a>
-
-        <a href="rules.html">
-          Rules
-        </a>
-
-        <a href="faq.html">
-          FAQ
-        </a>
-
-        <a href="map.html">
-          Map
-        </a>
-
-      </nav>
-
-    </div>
-
-
-    <!-- ====================================================
-         REGISTRATION CONTENT
-         ==================================================== -->
-
-    <div class="content">
-
-      <div class="registration-box">
-
-        <div id="registrationArea">
-
-          <h1 class="title">
-            Create Your Account
-          </h1>
-
-          <p class="subtitle">
-            Join LegacyWoW and begin your journey through Azeroth.
-            Create your account below to get started.
-          </p>
-
-
-          <div
-            id="message"
-            class="message"
-          ></div>
-
-
-          <form id="registrationForm">
-
-            <!-- USERNAME -->
-
-            <div class="form-group">
-
-              <label for="username">
-                Username
-              </label>
-
-              <input
-                id="username"
-                name="username"
-                type="text"
-                maxlength="32"
-                autocomplete="username"
-                placeholder="Enter your username"
-                required
-              >
-
-              <div class="help">
-                3–32 characters. Letters only.
-              </div>
-
-            </div>
-
-
-            <!-- EMAIL -->
-
-            <div class="form-group">
-
-              <label for="email">
-                Email Address
-              </label>
-
-              <input
-                id="email"
-                name="email"
-                type="email"
-                maxlength="255"
-                autocomplete="email"
-                placeholder="you@example.com"
-                required
-              >
-
-            </div>
-
-
-            <!-- PASSWORD -->
-
-            <div class="form-group">
-
-              <label for="password">
-                Password
-              </label>
-
-              <div class="password-wrap">
-
-                <input
-                  id="password"
-                  name="password"
-                  type="password"
-                  maxlength="32"
-                  autocomplete="new-password"
-                  placeholder="Enter your password"
-                  required
-                >
-
-                <button
-                  type="button"
-                  class="password-toggle"
-                  onclick="togglePassword('password', this)"
-                >
-                  Show
-                </button>
-
-              </div>
-
-              <div class="help">
-                Minimum 6 characters.
-              </div>
-
-            </div>
-
-
-            <!-- CONFIRM PASSWORD -->
-
-            <div class="form-group">
-
-              <label for="confirm_password">
-                Confirm Password
-              </label>
-
-              <div class="password-wrap">
-
-                <input
-                  id="confirm_password"
-                  name="confirm_password"
-                  type="password"
-                  maxlength="32"
-                  autocomplete="new-password"
-                  placeholder="Enter your password again"
-                  required
-                >
-
-                <button
-                  type="button"
-                  class="password-toggle"
-                  onclick="togglePassword('confirm_password', this)"
-                >
-                  Show
-                </button>
-
-              </div>
-
-            </div>
-
-
-            <!-- RULES -->
-
-            <div class="rules">
-
-              <input
-                id="rules"
-                type="checkbox"
-                required
-              >
-
-              <label for="rules">
-
-                I agree to the
-                <a href="rules.html" target="_blank">
-                  LegacyWoW Rules
-                </a>
-                and understand that violations may result in
-                account suspension or termination.
-
-              </label>
-
-            </div>
-
-
-            <!-- SUBMIT -->
-
-            <button
-              id="submitButton"
-              class="submit"
-              type="submit"
+            <img
+              src="/assets/logo.png"
+              alt="LegacyWoW"
+              onerror="this.remove();"
             >
-              Create Account
-            </button>
-
-          </form>
-
-        </div>
-
-
-        <!-- ==================================================
-             SUCCESS
-             ================================================== -->
-
-        <div
-          id="successPanel"
-          class="success-panel"
-        >
-
-          <div class="success-icon">
-            ✓
-          </div>
-
-          <h2>
-            Account Created!
-          </h2>
-
-          <p>
-            Your LegacyWoW account has been successfully created.
-          </p>
-
-          <p>
-            You can now launch the LegacyWoW 3.3.5a client
-            and log in with your new account.
-          </p>
-
-          <div class="success-buttons">
-
-            <a
-              class="success-button primary"
-              href="how-to-play.html"
-            >
-              How to Play
-            </a>
-
-            <a
-              class="success-button"
-              href="downloads.html"
-            >
-              Download Client
-            </a>
-
-            <a
-              class="success-button"
-              href="index.html"
-            >
-              Back to Home
-            </a>
 
           </div>
 
-        </div>
+
+          <div>LegacyWoW</div>
+
+
+        </a>
+
+
+        <nav>
+
+
+          <a href="how-to-play.html">
+            How to Play
+          </a>
+
+
+          <a href="downloads.html">
+            Downloads
+          </a>
+
+
+          <a href="account.html">
+            Create Account
+          </a>
+
+
+          <a href="news.html">
+            News
+          </a>
+
+
+          <a href="rules.html">
+            Rules
+          </a>
+
+
+          <a href="faq.html">
+            FAQ
+          </a>
+
+
+          <a href="map.html">
+            Map
+          </a>
+
+
+        </nav>
+
 
       </div>
 
+
+      <!-- ====================================================
+           REGISTRATION CONTENT
+           ==================================================== -->
+
+      <div class="content">
+
+
+        <div class="registration-box">
+
+
+          <div id="registrationArea">
+
+
+            <h1 class="title">
+              Create Your Account
+            </h1>
+
+
+            <p class="subtitle">
+
+              Join LegacyWoW and begin your journey through Azeroth.
+              Create your account below to get started.
+
+            </p>
+
+
+            <div
+              id="message"
+              class="message"
+            ></div>
+
+
+            <form id="registrationForm">
+
+
+              <!-- USERNAME -->
+
+              <div class="form-group">
+
+
+                <label for="username">
+                  Username
+                </label>
+
+
+                <input
+                  id="username"
+                  name="username"
+                  type="text"
+                  minlength="3"
+                  maxlength="32"
+                  autocomplete="username"
+                  placeholder="Enter your username"
+                  required
+                >
+
+
+                <div class="help">
+
+                  3–32 characters. Letters and numbers only.
+
+                </div>
+
+
+              </div>
+
+
+              <!-- EMAIL -->
+
+              <div class="form-group">
+
+
+                <label for="email">
+                  Email Address
+                </label>
+
+
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  maxlength="255"
+                  autocomplete="email"
+                  placeholder="you@example.com"
+                  required
+                >
+
+
+              </div>
+
+
+              <!-- PASSWORD -->
+
+              <div class="form-group">
+
+
+                <label for="password">
+                  Password
+                </label>
+
+
+                <div class="password-wrap">
+
+
+                  <input
+                    id="password"
+                    name="password"
+                    type="password"
+                    maxlength="32"
+                    autocomplete="new-password"
+                    placeholder="Enter your password"
+                    required
+                  >
+
+
+                  <button
+                    type="button"
+                    class="password-toggle"
+                    onclick="togglePassword('password', this)"
+                  >
+
+                    Show
+
+                  </button>
+
+
+                </div>
+
+
+                <div class="help">
+
+                  Minimum 6 characters.
+
+                </div>
+
+
+              </div>
+
+
+              <!-- CONFIRM PASSWORD -->
+
+              <div class="form-group">
+
+
+                <label for="confirm_password">
+                  Confirm Password
+                </label>
+
+
+                <div class="password-wrap">
+
+
+                  <input
+                    id="confirm_password"
+                    name="confirm_password"
+                    type="password"
+                    maxlength="32"
+                    autocomplete="new-password"
+                    placeholder="Enter your password again"
+                    required
+                  >
+
+
+                  <button
+                    type="button"
+                    class="password-toggle"
+                    onclick="togglePassword('confirm_password', this)"
+                  >
+
+                    Show
+
+                  </button>
+
+
+                </div>
+
+
+              </div>
+
+
+              <!-- RULES -->
+
+              <div class="rules">
+
+
+                <input
+                  id="rules"
+                  type="checkbox"
+                  required
+                >
+
+
+                <label for="rules">
+
+
+                  I agree to the
+
+                  <a
+                    href="rules.html"
+                    target="_blank"
+                  >
+                    LegacyWoW Rules
+                  </a>
+
+                  and understand that violations may result in
+                  account suspension or termination.
+
+
+                </label>
+
+
+              </div>
+
+
+              <!-- SUBMIT -->
+
+              <button
+                id="submitButton"
+                class="submit"
+                type="submit"
+              >
+
+                Create Account
+
+              </button>
+
+
+            </form>
+
+
+          </div>
+
+
+          <!-- ==================================================
+               SUCCESS
+               ================================================== -->
+
+          <div
+            id="successPanel"
+            class="success-panel"
+          >
+
+
+            <div class="success-icon">
+
+              ✓
+
+            </div>
+
+
+            <h2>
+
+              Account Created!
+
+            </h2>
+
+
+            <p>
+
+              Your LegacyWoW account has been successfully created.
+
+            </p>
+
+
+            <p>
+
+              You can now launch the LegacyWoW 3.3.5a client
+              and log in with your new account.
+
+            </p>
+
+
+            <div class="success-buttons">
+
+
+              <a
+                class="success-button primary"
+                href="how-to-play.html"
+              >
+
+                How to Play
+
+              </a>
+
+
+              <a
+                class="success-button"
+                href="downloads.html"
+              >
+
+                Download Client
+
+              </a>
+
+
+              <a
+                class="success-button"
+                href="index.html"
+              >
+
+                Back to Home
+
+              </a>
+
+
+            </div>
+
+
+          </div>
+
+
+        </div>
+
+
+      </div>
+
+
     </div>
 
-  </div>
 
-</header>
-
-
-<footer>
-
-  © <span id="year"></span>
-  LegacyWoW —
-  Not affiliated with Blizzard Entertainment
-
-</footer>
+  </header>
 
 
-<script>
+  <footer>
 
-  // ========================================================
-  // CONFIGURATION
-  // ========================================================
+    © <span id="year"></span>
 
-  /*
-     TEMPORARY TEST URL
+    LegacyWoW —
 
-     This is your current Cloudflare Quick Tunnel.
+    Not affiliated with Blizzard Entertainment
 
-     We will replace this with the permanent Cloudflare
-     address later.
-  */
-
-const REGISTRATION_API =
-  "https://logon-legacywow.tail63bcbc.ts.net";
+  </footer>
 
 
-  // ========================================================
-  // YEAR
-  // ========================================================
-
-  document.getElementById("year").textContent =
-    new Date().getFullYear();
+  <script>
 
 
-  // ========================================================
-  // PASSWORD VISIBILITY
-  // ========================================================
+    // ========================================================
+    // CONFIGURATION
+    // ========================================================
 
-  function togglePassword(id, button){
 
-    const input = document.getElementById(id);
+    const REGISTRATION_API =
+      "https://logon-legacywow.tail63bcbc.ts.net";
 
-    if(input.type === "password"){
 
-      input.type = "text";
+    // ========================================================
+    // YEAR
+    // ========================================================
 
-      button.textContent = "Hide";
 
-    }else{
+    document.getElementById("year").textContent =
+      new Date().getFullYear();
 
-      input.type = "password";
 
-      button.textContent = "Show";
+    // ========================================================
+    // PASSWORD VISIBILITY
+    // ========================================================
+
+
+    function togglePassword(id, button){
+
+      const input =
+        document.getElementById(id);
+
+
+      if(input.type === "password"){
+
+        input.type = "text";
+
+        button.textContent = "Hide";
+
+      }else{
+
+        input.type = "password";
+
+        button.textContent = "Show";
+
+      }
 
     }
 
-  }
 
+    // ========================================================
+    // REGISTRATION
+    // ========================================================
 
-  // ========================================================
-  // REGISTRATION
-  // ========================================================
 
-  const form =
-    document.getElementById("registrationForm");
+    const form =
+      document.getElementById("registrationForm");
 
-  const message =
-    document.getElementById("message");
 
-  const submitButton =
-    document.getElementById("submitButton");
+    const message =
+      document.getElementById("message");
 
-  const registrationArea =
-    document.getElementById("registrationArea");
 
-  const successPanel =
-    document.getElementById("successPanel");
+    const submitButton =
+      document.getElementById("submitButton");
 
 
-  function showError(text){
+    const registrationArea =
+      document.getElementById("registrationArea");
 
-    message.className = "message error";
 
-    message.textContent = text;
+    const successPanel =
+      document.getElementById("successPanel");
 
-    message.scrollIntoView({
-      behavior:"smooth",
-      block:"center"
-    });
 
-  }
+    function showError(text){
 
+      message.className =
+        "message error";
 
-  function showSuccess(){
 
-    registrationArea.style.display = "none";
+      message.textContent =
+        text;
 
-    successPanel.style.display = "block";
 
-  }
+      message.scrollIntoView({
 
+        behavior:"smooth",
 
-  form.addEventListener(
-    "submit",
-    async function(event){
+        block:"center"
 
-      event.preventDefault();
+      });
 
+    }
 
-      // ----------------------------------------------------
-      // Read values
-      // ----------------------------------------------------
 
-      const username =
-        document.getElementById("username")
-          .value
-          .trim();
+    function showSuccess(){
 
-      const email =
-        document.getElementById("email")
-          .value
-          .trim();
+      registrationArea.style.display =
+        "none";
 
-      const password =
-        document.getElementById("password")
-          .value;
 
-      const confirmPassword =
-        document.getElementById("confirm_password")
-          .value;
+      successPanel.style.display =
+        "block";
 
-      const rules =
-        document.getElementById("rules")
-          .checked;
+    }
 
 
-      // ----------------------------------------------------
-      // Client-side validation
-      // ----------------------------------------------------
+    form.addEventListener(
+      "submit",
+      async function(event){
 
-      if(!/^[A-Za-z]{3,32}$/.test(username)){
+        event.preventDefault();
 
-        showError(
-          "Username must contain only letters and be between 3 and 32 characters."
-        );
 
-        return;
+        // ----------------------------------------------------
+        // Read values
+        // ----------------------------------------------------
 
-      }
 
+        const username =
+          document
+            .getElementById("username")
+            .value
+            .trim();
 
-      if(password.length < 6){
 
-        showError(
-          "Password must be at least 6 characters."
-        );
+        const email =
+          document
+            .getElementById("email")
+            .value
+            .trim();
 
-        return;
 
-      }
+        const password =
+          document
+            .getElementById("password")
+            .value;
 
 
-      if(password.length > 32){
+        const confirmPassword =
+          document
+            .getElementById("confirm_password")
+            .value;
 
-        showError(
-          "Password cannot exceed 32 characters."
-        );
 
-        return;
+        const rules =
+          document
+            .getElementById("rules")
+            .checked;
 
-      }
 
+        // ----------------------------------------------------
+        // Client-side validation
+        // ----------------------------------------------------
 
-      if(password !== confirmPassword){
 
-        showError(
-          "Passwords do not match."
-        );
+        /*
+          Username:
+          - Letters A-Z
+          - Letters a-z
+          - Numbers 0-9
+          - Minimum 3 characters
+          - Maximum 32 characters
+          - No spaces
+          - No symbols
+        */
 
-        return;
-
-      }
-
-
-      if(!rules){
-
-        showError(
-          "You must agree to the LegacyWoW Rules."
-        );
-
-        return;
-
-      }
-
-
-      // ----------------------------------------------------
-      // Disable button
-      // ----------------------------------------------------
-
-      submitButton.disabled = true;
-
-      submitButton.textContent =
-        "Creating Account...";
-
-
-      message.className = "message";
-
-      message.textContent = "";
-
-
-      try{
-
-        // --------------------------------------------------
-        // Send registration request
-        // --------------------------------------------------
-
-        const response = await fetch(
-          REGISTRATION_API + "/register",
-          {
-            method:"POST",
-
-            headers:{
-              "Content-Type":"application/json"
-            },
-
-            body:JSON.stringify({
-
-              username:username,
-
-              password:password,
-
-              confirm_password:confirmPassword,
-
-              email:email
-
-            })
-
-          }
-        );
-
-
-        // --------------------------------------------------
-        // Read response
-        // --------------------------------------------------
-
-        const result =
-          await response.json();
-
-
-        if(!response.ok){
+        if(!/^[A-Za-z0-9]{3,32}$/.test(username)){
 
           showError(
-            result.error ||
-            "Registration failed. Please try again."
+            "Username must contain only letters and numbers and be between 3 and 32 characters."
           );
-
-          submitButton.disabled = false;
-
-          submitButton.textContent =
-            "Create Account";
 
           return;
 
         }
 
 
-        // --------------------------------------------------
-        // Success
-        // --------------------------------------------------
-
-        showSuccess();
+        // ----------------------------------------------------
+        // Password validation
+        // ----------------------------------------------------
 
 
-      }catch(error){
+        if(password.length < 6){
 
-        console.error(error);
+          showError(
+            "Password must be at least 6 characters."
+          );
 
-        showError(
-          "Unable to contact the LegacyWoW registration server. Please try again later."
-        );
+          return;
 
-        submitButton.disabled = false;
+        }
+
+
+        if(password.length > 32){
+
+          showError(
+            "Password cannot exceed 32 characters."
+          );
+
+          return;
+
+        }
+
+
+        if(password !== confirmPassword){
+
+          showError(
+            "Passwords do not match."
+          );
+
+          return;
+
+        }
+
+
+        // ----------------------------------------------------
+        // Rules
+        // ----------------------------------------------------
+
+
+        if(!rules){
+
+          showError(
+            "You must agree to the LegacyWoW Rules."
+          );
+
+          return;
+
+        }
+
+
+        // ----------------------------------------------------
+        // Disable button
+        // ----------------------------------------------------
+
+
+        submitButton.disabled =
+          true;
+
 
         submitButton.textContent =
-          "Create Account";
+          "Creating Account...";
+
+
+        message.className =
+          "message";
+
+
+        message.textContent =
+          "";
+
+
+        try{
+
+
+          // --------------------------------------------------
+          // Send registration request
+          // --------------------------------------------------
+
+
+          const response =
+            await fetch(
+
+              REGISTRATION_API + "/register",
+
+              {
+
+                method:"POST",
+
+                headers:{
+
+                  "Content-Type":
+                    "application/json"
+
+                },
+
+                body:JSON.stringify({
+
+                  username:username,
+
+                  password:password,
+
+                  confirm_password:
+                    confirmPassword,
+
+                  email:email
+
+                })
+
+              }
+
+            );
+
+
+          // --------------------------------------------------
+          // Read response
+          // --------------------------------------------------
+
+
+          const result =
+            await response.json();
+
+
+          if(!response.ok){
+
+            showError(
+
+              result.error ||
+
+              "Registration failed. Please try again."
+
+            );
+
+
+            submitButton.disabled =
+              false;
+
+
+            submitButton.textContent =
+              "Create Account";
+
+
+            return;
+
+          }
+
+
+          // --------------------------------------------------
+          // Success
+          // --------------------------------------------------
+
+
+          showSuccess();
+
+
+        }catch(error){
+
+
+          console.error(error);
+
+
+          showError(
+
+            "Unable to contact the LegacyWoW registration server. Please try again later."
+
+          );
+
+
+          submitButton.disabled =
+            false;
+
+
+          submitButton.textContent =
+            "Create Account";
+
+
+        }
+
 
       }
-
-    }
-  );
-
-
-  // ========================================================
-  // SNOW
-  // ========================================================
-
-  let snowOn =
-    localStorage.getItem("snow") !== "off";
-
-  const canvas =
-    document.getElementById("snowCanvas");
-
-  const ctx =
-    canvas.getContext("2d");
-
-  const flakes = [];
-
-
-  for(let i = 0; i < 200; i++){
-
-    flakes.push({
-
-      x:Math.random() * innerWidth,
-
-      y:Math.random() * innerHeight,
-
-      r:1 + Math.random() * 3,
-
-      v:1 + Math.random() * 2
-
-    });
-
-  }
-
-
-  function resizeSnow(){
-
-    canvas.width = innerWidth;
-
-    canvas.height = innerHeight;
-
-  }
-
-
-  addEventListener(
-    "resize",
-    resizeSnow
-  );
-
-
-  resizeSnow();
-
-
-  function drawSnow(){
-
-    requestAnimationFrame(drawSnow);
-
-
-    if(!snowOn){
-
-      ctx.clearRect(
-        0,
-        0,
-        canvas.width,
-        canvas.height
-      );
-
-      return;
-
-    }
-
-
-    ctx.clearRect(
-      0,
-      0,
-      canvas.width,
-      canvas.height
     );
 
 
-    ctx.fillStyle = "#fff";
+    // ========================================================
+    // SNOW
+    // ========================================================
 
 
-    for(const flake of flakes){
+    let snowOn =
+      localStorage.getItem("snow") !== "off";
 
-      flake.y += flake.v;
+
+    const canvas =
+      document.getElementById("snowCanvas");
 
 
-      if(flake.y > innerHeight){
+    const ctx =
+      canvas.getContext("2d");
 
-        flake.y = -5;
 
-        flake.x =
-          Math.random() * innerWidth;
+    const flakes = [];
+
+
+    for(let i = 0; i < 200; i++){
+
+      flakes.push({
+
+        x:
+          Math.random() * innerWidth,
+
+        y:
+          Math.random() * innerHeight,
+
+        r:
+          1 + Math.random() * 3,
+
+        v:
+          1 + Math.random() * 2
+
+      });
+
+    }
+
+
+    function resizeSnow(){
+
+      canvas.width =
+        innerWidth;
+
+
+      canvas.height =
+        innerHeight;
+
+    }
+
+
+    addEventListener(
+      "resize",
+      resizeSnow
+    );
+
+
+    resizeSnow();
+
+
+    function drawSnow(){
+
+      requestAnimationFrame(
+        drawSnow
+      );
+
+
+      if(!snowOn){
+
+        ctx.clearRect(
+
+          0,
+          0,
+
+          canvas.width,
+          canvas.height
+
+        );
+
+        return;
 
       }
 
 
-      ctx.beginPath();
+      ctx.clearRect(
 
-      ctx.arc(
-        flake.x,
-        flake.y,
-        flake.r,
         0,
-        Math.PI * 2
+        0,
+
+        canvas.width,
+        canvas.height
+
       );
 
-      ctx.fill();
+
+      ctx.fillStyle =
+        "#fff";
+
+
+      for(const flake of flakes){
+
+        flake.y +=
+          flake.v;
+
+
+        if(flake.y > innerHeight){
+
+          flake.y =
+            -5;
+
+
+          flake.x =
+            Math.random() *
+            innerWidth;
+
+        }
+
+
+        ctx.beginPath();
+
+
+        ctx.arc(
+
+          flake.x,
+
+          flake.y,
+
+          flake.r,
+
+          0,
+
+          Math.PI * 2
+
+        );
+
+
+        ctx.fill();
+
+      }
 
     }
 
-  }
+
+    drawSnow();
 
 
-  drawSnow();
+  </script>
 
-</script>
 
 </body>
+
 </html>
