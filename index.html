@@ -34,14 +34,13 @@
 
     /* Snow */
     #snowCanvas{
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      pointer-events: none;
-      z-index: 2147483647;
-      display: block;
+      position:fixed;
+      inset:0;
+      width:100vw;
+      height:100vh;
+      pointer-events:none;
+      z-index:2147483647;
+      display:block;
     }
 
     header{
@@ -589,17 +588,6 @@ let t=p;
 
 const pc=document.getElementById("playerCount");
 const lu=document.getElementById("lastUpdated");
-
-// ===========================
-// Darrowmere Players
-// ===========================
-const MIN2=0, MAX2=0;
-let p2=Math.floor(Math.random()*(MAX2-MIN2+1))+MIN2;
-let t2=p2;
-
-const pc2=document.getElementById("playerCount2");
-const lu2=document.getElementById("lastUpdated2");
-
 function tickPlayers(){
 
   if(Math.random()<0.25){
@@ -612,20 +600,6 @@ function tickPlayers(){
 
   pc.textContent=p;
   lu.textContent=new Date().toLocaleTimeString([], {
-    hour:"2-digit",
-    minute:"2-digit"
-  });
-
-  if(Math.random()<0.25){
-    t2=Math.floor(Math.random()*(MAX2-MIN2+1))+MIN2;
-  }
-
-  const diff2=t2-p2;
-  p2+=Math.sign(diff2)*Math.max(1,Math.floor(Math.random()*3));
-  p2=Math.max(MIN2,Math.min(MAX2,p2));
-
-  pc2.textContent=p2;
-  lu2.textContent=new Date().toLocaleTimeString([], {
     hour:"2-digit",
     minute:"2-digit"
   });
