@@ -8,16 +8,23 @@
   <style>
     body{
       margin:0;
-      font-family: system-ui, Segoe UI, Roboto, Arial, sans-serif;
+      font-family:system-ui, Segoe UI, Roboto, Arial, sans-serif;
       background:#0b0b0b;
       color:#e8e8e8;
     }
+
     header{
       padding:14px 0;
       border-bottom:1px solid rgba(255,255,255,.10);
       background:#070707;
     }
-    .wrap{max-width:1100px;margin:0 auto;padding:0 18px}
+
+    .wrap{
+      max-width:1100px;
+      margin:0 auto;
+      padding:0 18px;
+    }
+
     .top{
       display:flex;
       justify-content:space-between;
@@ -25,6 +32,7 @@
       gap:12px;
       flex-wrap:wrap;
     }
+
     .brand{
       color:#fff;
       text-decoration:none;
@@ -34,6 +42,7 @@
       align-items:center;
       gap:12px;
     }
+
     .logo{
       width:40px;
       height:40px;
@@ -45,6 +54,7 @@
       align-items:center;
       justify-content:center;
     }
+
     .logo img{
       width:100%;
       height:100%;
@@ -52,7 +62,12 @@
       display:block;
     }
 
-    nav{display:flex;gap:10px;flex-wrap:wrap}
+    nav{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
     nav a{
       color:#fff;
       text-decoration:none;
@@ -63,30 +78,44 @@
       border:1px solid rgba(255,255,255,.18);
       background:rgba(255,255,255,.04);
     }
-    nav a:hover{background:rgba(255,255,255,.10)}
 
-    main{padding:22px 0 36px}
+    nav a:hover{
+      background:rgba(255,255,255,.10);
+    }
+
+    main{
+      padding:22px 0 36px;
+    }
 
     .card{
       border:1px solid rgba(255,255,255,.10);
       border-radius:18px;
       background:rgba(255,255,255,.04);
       padding:18px;
+      margin-bottom:16px;
     }
 
     h1{
       margin:0 0 14px;
       font-size:26px;
     }
+
     h2{
       margin:18px 0 8px;
-      font-size:16px;
+      font-size:17px;
     }
+
     p{
       margin:0 0 10px;
       line-height:1.55;
       opacity:.95;
     }
+
+    ul, ol{
+      line-height:1.7;
+      margin-top:8px;
+    }
+
     pre{
       margin:8px 0 14px;
       padding:12px;
@@ -97,6 +126,10 @@
       font-size:13px;
     }
 
+    code{
+      font-family:Consolas, Monaco, monospace;
+    }
+
     .btn{
       display:inline-block;
       text-decoration:none;
@@ -104,11 +137,27 @@
       background:rgba(255,255,255,.08);
       color:#fff;
       border-radius:14px;
-      padding:10px 12px;
+      padding:10px 14px;
       font-weight:900;
       font-size:13px;
     }
-    .btn:hover{background:rgba(255,255,255,.14)}
+
+    .btn:hover{
+      background:rgba(255,255,255,.14);
+    }
+
+    .notice{
+      border:1px solid rgba(255,255,255,.16);
+      border-radius:14px;
+      background:rgba(255,255,255,.06);
+      padding:14px;
+      margin:14px 0;
+    }
+
+    .muted{
+      color:rgba(232,232,232,.65);
+      font-size:13px;
+    }
 
     footer{
       border-top:1px solid rgba(255,255,255,.08);
@@ -121,12 +170,15 @@
 </head>
 
 <body>
+
   <header>
     <div class="wrap top">
+
       <a class="brand" href="index.html">
         <div class="logo">
           <img src="/assets/logo.png" alt="LegacyWoW" onerror="this.remove();">
         </div>
+
         <div>LegacyWoW</div>
       </a>
 
@@ -139,47 +191,297 @@
         <a href="faq.html">FAQ</a>
         <a href="map.html">Map</a>
       </nav>
+
     </div>
   </header>
 
+
   <main>
+
     <div class="wrap">
+
       <div class="card">
+
         <h1>How to Play</h1>
 
         <p>
           LegacyWoW runs on the <b>3.3.5a</b> client and progresses from
-          <b>Patch 1.0.0 → 3.3.5a</b> with custom content along the way.
+          <b>Patch 1.0.0 → 3.3.5a</b>, with custom content introduced along
+          the way.
+        </p>
+
+        <p>
+          Follow the steps below to get connected and start playing.
         </p>
 
         <p>
           <a class="btn" href="downloads.html">Go to Downloads</a>
         </p>
 
-        <h2>1) Set your realmlist</h2>
-        <pre>set realmlist logon-legacywow.tail63bcbc.ts.net</pre>
+      </div>
 
-        <h2>2) Create an account</h2>
+
+      <div class="card">
+
+        <h2>1) Download the LegacyWoW Client</h2>
+
         <p>
-          Account creation is manual for now. Visit
-          <a href="account.html" style="color:#fff;">Create Account</a>.
+          Download the LegacyWoW game client and any required files from
+          the Downloads page.
         </p>
 
-        <h2>3) Select optional patches</h2>
         <p>
-          Start <b>patchmenu.exe</b> to select any optional patches you wish to use,
-          such as HD models, new mounts, or other available features.
-        </p>
-
-        <h2>4) Update and launch the game</h2>
-        <p>
-          Start <b>WoWLauncher.exe</b> to update the game as needed.
-          Once finished, launch <b>wow.exe</b> to begin playing.
+          <a class="btn" href="downloads.html">Go to Downloads</a>
         </p>
 
       </div>
+
+
+      <div class="card">
+
+        <h2>2) Install Tailscale</h2>
+
+        <p>
+          LegacyWoW uses <b>Tailscale</b> to securely connect players to
+          the game server.
+        </p>
+
+        <p>
+          You will need to install Tailscale on the computer you use to
+          play LegacyWoW.
+        </p>
+
+        <p>
+          <a
+            class="btn"
+            href="https://tailscale.com/download"
+            target="_blank"
+            rel="noopener"
+          >
+            Download Tailscale
+          </a>
+        </p>
+
+      </div>
+
+
+      <div class="card">
+
+        <h2>3) Create a Tailscale Account</h2>
+
+        <p>
+          Open Tailscale after installing it and create a free Tailscale
+          account.
+        </p>
+
+        <p class="muted">
+          You do not need to join the LegacyWoW team or manage any
+          additional network settings yourself.
+        </p>
+
+      </div>
+
+
+      <div class="card">
+
+        <h2>4) Connect to the LegacyWoW Server</h2>
+
+        <p>
+          Once Tailscale is installed and you have created your account,
+          use the LegacyWoW access link below.
+        </p>
+
+        <p>
+          <a
+            class="btn"
+            href="https://login.tailscale.com/admin/invite/rY8shuxgnUG9Uoz3hBPD11"
+            target="_blank"
+            rel="noopener"
+          >
+            Connect to LegacyWoW
+          </a>
+        </p>
+
+        <div class="notice">
+
+          <p>
+            <b>Important:</b> Tailscale must be running while you play
+            LegacyWoW.
+          </p>
+
+          <p>
+            The LegacyWoW server uses Tailscale for the game connection.
+            Without Tailscale running, your game client will not be able
+            to reach the server.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <div class="card">
+
+        <h2>5) Set Your Realmlist</h2>
+
+        <p>
+          Open your LegacyWoW game folder and locate:
+        </p>
+
+        <pre><code>realmlist.wtf</code></pre>
+
+        <p>
+          Open the file with Notepad and replace its contents with:
+        </p>
+
+        <pre><code>set realmlist logon-legacywow.tail63bcbc.ts.net</code></pre>
+
+        <p class="muted">
+          Make sure Tailscale is running before launching the game.
+        </p>
+
+      </div>
+
+
+      <div class="card">
+
+        <h2>6) Create Your LegacyWoW Account</h2>
+
+        <p>
+          Create your LegacyWoW game account through the website.
+        </p>
+
+        <p>
+          <a class="btn" href="account.html">Create Account</a>
+        </p>
+
+        <p>
+          Enter your desired username, email address, and password.
+          You will use these credentials to log into the game.
+        </p>
+
+      </div>
+
+
+      <div class="card">
+
+        <h2>7) Select Optional Patches</h2>
+
+        <p>
+          Start:
+        </p>
+
+        <pre><code>patchmenu.exe</code></pre>
+
+        <p>
+          Use the patch menu to select any optional features you would
+          like to use.
+        </p>
+
+        <p>
+          Optional content may include HD models, new mounts, custom
+          models, or other available LegacyWoW features.
+        </p>
+
+        <p class="muted">
+          Optional patches are not required unless specifically stated.
+        </p>
+
+      </div>
+
+
+      <div class="card">
+
+        <h2>8) Update the Game</h2>
+
+        <p>
+          Start:
+        </p>
+
+        <pre><code>WoWLauncher.exe</code></pre>
+
+        <p>
+          Allow the launcher to update your LegacyWoW client as needed.
+        </p>
+
+        <p>
+          Wait until the launcher has finished before continuing.
+        </p>
+
+      </div>
+
+
+      <div class="card">
+
+        <h2>9) Launch LegacyWoW</h2>
+
+        <p>
+          Make sure Tailscale is running and that you have successfully
+          connected to the LegacyWoW server.
+        </p>
+
+        <p>
+          Launch:
+        </p>
+
+        <pre><code>wow.exe</code></pre>
+
+        <p>
+          Log in using the LegacyWoW account you created on the website.
+        </p>
+
+      </div>
+
+
+      <div class="card">
+
+        <h2>Quick Start</h2>
+
+        <ol>
+          <li>Download the LegacyWoW client.</li>
+          <li>Install Tailscale.</li>
+          <li>Create a free Tailscale account.</li>
+          <li>Click <b>Connect to LegacyWoW</b>.</li>
+          <li>Make sure Tailscale is running.</li>
+          <li>Set your <code>realmlist.wtf</code> to <code>logon-legacywow.tail63bcbc.ts.net</code>.</li>
+          <li>Create your LegacyWoW account.</li>
+          <li>Run <code>patchmenu.exe</code> for optional patches.</li>
+          <li>Run <code>WoWLauncher.exe</code> to update.</li>
+          <li>Launch <code>wow.exe</code>.</li>
+        </ol>
+
+      </div>
+
+
+      <div class="card">
+
+        <h2>Having Trouble Connecting?</h2>
+
+        <p>
+          Make sure:
+        </p>
+
+        <ul>
+          <li>Tailscale is installed and running.</li>
+          <li>You have used the LegacyWoW access link.</li>
+          <li>The LegacyWoW server is available in Tailscale.</li>
+          <li>Your <code>realmlist.wtf</code> contains the correct address.</li>
+          <li>You are using the LegacyWoW 3.3.5a client.</li>
+          <li>Your game files have finished updating.</li>
+        </ul>
+
+        <p>
+          If you still cannot connect, visit the
+          <a href="faq.html" style="color:#fff;">FAQ</a>
+          or contact the LegacyWoW team.
+        </p>
+
+      </div>
+
     </div>
+
   </main>
+
 
   <footer>
     <div class="wrap">
@@ -187,8 +489,10 @@
     </div>
   </footer>
 
+
   <script>
     document.getElementById("year").textContent = new Date().getFullYear();
   </script>
+
 </body>
 </html>
