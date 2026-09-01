@@ -634,34 +634,126 @@ tickPlayers();
   // ===========================
   // Snow toggle
   // ===========================
-  let snowOn=localStorage.getItem("snow")!=="off";
-  const btn=document.getElementById("snowToggle");
-  const c=document.getElementById("snowCanvas");
-  const x=c.getContext("2d");
-  const flakes=[];
-  for(let i=0;i<200;i++) flakes.push({x:Math.random()*innerWidth,y:Math.random()*innerHeight,r:1+Math.random()*3,v:1+Math.random()*2});
+  // Snow is enabled by default. The setting is saved in localStorage.
+  let snowOn = localStorage.getItem("snow") !== "off";
 
-  function resize(){c.width=innerWidth;c.height=innerHeight}
-  addEventListener("resize",resize);resize();
+  const btn = document.getElementById("snowToggle");
+  const canvas = document.getElementById("snowCanvas");
+  const ctx = canvas.getContext("2d");
 
-  function drawSnow(){
-    requestAnimationFrame(drawSnow);
-    if(!snowOn){x.clearRect(0,0,c.width,c.height);return;}
-    x.clearRect(0,0,c.width,c.height);
-    x.fillStyle="#fff";
-    for(const f of flakes){
-      f.y+=f.v;
-      if(f.y>innerHeight){f.y=-5;f.x=Math.random()*innerWidth;}
-      x.beginPath();x.arc(f.x,f.y,f.r,0,Math.PI*2);x.fill();
+  let flakes = [];
+  let animationId = null;
+
+  function resizeSnowCanvas() {
+    // Use devicePixelRatio so the flakes stay crisp on high-DPI screens.
+    const dpr = Math.max(1, Math.min(window.devicePixelRatio || 1, 2));
+
+    canvas.width = Math.floor(window.innerWidth * dpr);
+    canvas.height = Math.floor(window.innerHeight * dpr);
+    canvas.style.width = window.innerWidth + "px";
+    canvas.style.height = window.innerHeight + "px";
+
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+
+  function createFlakes() {
+    flakes = [];
+
+    const count = Math.max(
+      100,
+      Math.min(250, Math.floor(window.innerWidth * window.innerHeight / 7000))
+    );
+
+    for (let i = 0; i < count; i++) {
+      flakes.push({
+        x: Math.random() * window.innerWidth,
+        y: Math.random() * window.innerHeight,
+        r: 1 + Math.random() * 2.5,
+        v: 0.7 + Math.random() * 1.8,
+        drift: (Math.random() - 0.5) * 0.35
+      });
     }
   }
-  drawSnow();
 
-  function syncSnow(){
-    btn.textContent=snowOn?"Snow: ON":"Snow: OFF";
-    localStorage.setItem("snow",snowOn?"on":"off");
+  function clearSnow() {
+    ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
   }
-  btn.onclick=()=>{snowOn=!snowOn;syncSnow()};
+
+  function drawSnow() {
+    if (!snowOn) {
+      animationId = null;
+      clearSnow();
+      return;
+    }
+
+    clearSnow();
+
+    ctx.fillStyle = "rgba(255,255,255,0.9)";
+
+    for (const f of flakes) {
+      f.y += f.v;
+      f.x += f.drift;
+
+      // Wrap flakes around the screen edges.
+      if (f.y > window.innerHeight + 5) {
+        f.y = -5;
+        f.x = Math.random() * window.innerWidth;
+      }
+
+      if (f.x < -5) f.x = window.innerWidth + 5;
+      if (f.x > window.innerWidth + 5) f.x = -5;
+
+      ctx.beginPath();
+      ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    animationId = requestAnimationFrame(drawSnow);
+  }
+
+  function startSnow() {
+    if (animationId === null) {
+      animationId = requestAnimationFrame(drawSnow);
+    }
+  }
+
+  function stopSnow() {
+    snowOn = false;
+    if (animationId !== null) {
+      cancelAnimationFrame(animationId);
+      animationId = null;
+    }
+    clearSnow();
+  }
+
+  function syncSnow() {
+    btn.textContent = snowOn ? "Snow: ON" : "Snow: OFF";
+    localStorage.setItem("snow", snowOn ? "on" : "off");
+
+    if (snowOn) {
+      startSnow();
+    } else {
+      stopSnow();
+    }
+  }
+
+  window.addEventListener("resize", () => {
+    resizeSnowCanvas();
+    createFlakes();
+
+    // If snow is disabled, make absolutely sure the canvas is empty.
+    if (!snowOn) clearSnow();
+  });
+
+  // Initialize snow before starting the animation.
+  resizeSnowCanvas();
+  createFlakes();
+
+  btn.addEventListener("click", () => {
+    snowOn = !snowOn;
+    syncSnow();
+  });
+
   syncSnow();
 </script>
 </body>
