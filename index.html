@@ -404,7 +404,7 @@
 
   <div class="hero">
     <h1>Progressive Classic → Wotlk</h1>
-    <p>LegacyWoW is a long-term progressive server with custom content and open-world conflict in our custom mode: Guild War.</p>
+    <p>LegacyWoW is a long-term progressive server featuring WotLK content and QoL changes.</p>
 
     <div class="hero-row">
       <a class="btn primary" href="how-to-play.html">Get Started</a>
@@ -423,16 +423,8 @@
           <div>Patch: <b id="statusPatch">3.0.2</b></div>
         </div>
 
-        <div class="subline">
-          <div>Realm: <b>Darrowmere</b></div>
-          <div>Patch: <b id="statusPatch">1.7.1</b></div>
-        </div>
-
 <div class="players">Icecrown Players Online: <b><span id="playerCount">---</span></b></div>
 <div class="updated">Last updated: <span id="lastUpdated">---</span></div>
-
-<div class="players">Darrowmere Players Online: <b><span id="playerCount2">---</span></b></div>
-<div class="updated">Last updated: <span id="lastUpdated2">---</span></div>
       </div>
 
       <div class="box">
@@ -451,13 +443,11 @@
         <div class="title">Server Progress</div>
         <p style="margin:0;color:var(--muted);line-height:1.55;">
           <b>Icecrown</b> is a progressive realm that begins in <b>Patch 1.0.0</b> and advances through each era up to <b>3.3.5a</b>.
-          After Wrath progression is complete, <b>custom content is planned to further expanded the world</b>.
         </p>
 
         <div class="progress-wrap">
           <div class="progress-labels">
             <div>Current: <b id="currentPatchLabel">1.1.0</b> <span class="chip" id="currentEraChip" style="margin-left:8px;">Vanilla</span></div>
-            <div>Goal: <b>3.4.0</b> <span class="chip" style="margin-left:8px;">Custom</span></div>
           </div>
 
           <div class="timeline" id="timeline">
@@ -475,7 +465,6 @@
         <p style="margin:0;color:var(--muted);line-height:1.6;">
           <b>LegacyWoW</b> is a progressive World of Warcraft server that advances naturally through the expansions, preserving each era while introducing meaningful custom systems and quality-of-life improvements.
 Our flagship realm follows the game's original progression path, allowing players to experience each expansion as it unfolds. Content is released in phases, ensuring a long-term journey through Azeroth while maintaining the spirit of each era.
-For players seeking a permanent classic experience, LegacyWoW also features a Classic Era realm, where content remains locked to its original version and never progresses beyond its designated expansion.
         </p>
         <p style="margin:10px 0 0;color:var(--muted);line-height:1.6;">
 We also feature a unique open-world game mode called <b>Guild War</b>, where guilds compete for control of strategic locations across Azeroth. These territories provide objectives, rewards, and opportunities for rivalry, creating a living world shaped by player actions and faction conflict.
@@ -519,14 +508,13 @@ Visit the Rules page to learn more about Guild War and server features.
     { key:"3.2.2a", era:"WOTLK" },
     { key:"3.3.3",  era:"WOTLK" },
     { key:"3.3.5a", era:"WOTLK" },
-    { key:"3.4.0",  era:"Coming soon!" }
   ];
 
   const MAJORS = [
     { key:"1.0.0", label:"1.0.0 Classic" },
     { key:"2.0.1", label:"2.0.1 TBC" },
     { key:"3.0.2", label:"3.0.2 WotLK" },
-    { key:"3.4.0", label:"3.4.0" }
+    { key:"3.4.0", label:"3.3.5a" }
   ];
   
   function indexOfKey(k){ return PATCHES.findIndex(p => p.key === k); }
@@ -591,7 +579,7 @@ Visit the Rules page to learn more about Guild War and server features.
  // ===========================
 // Icecrown Players
 // ===========================
-const MIN=0, MAX=0;
+const MIN=750, MAX=1300;
 let p=Math.floor(Math.random()*(MAX-MIN+1))+MIN;
 let t=p;
 
