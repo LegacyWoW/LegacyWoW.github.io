@@ -8,6 +8,29 @@ const ICONS={auto:{label:'Automatic by type',emoji:'🏴'},capital:{label:'City 
 const TYPE_ICON={territory:'territory',settlement:'village',fort:'fort',city:'capital',capital:'factionCapital',landmark:'landmark',camp:'camp',guildhouse:'guildhouse'};
 const map=L.map('map',{crs:L.CRS.Simple,minZoom:-2,maxZoom:3,zoomControl:true,attributionControl:false});
 const bounds=[[0,0],[IMAGE_HEIGHT,IMAGE_WIDTH]]; map.fitBounds(bounds);map.setMaxBounds(bounds);L.imageOverlay(IMAGE_URL,bounds).addTo(map);
+
+// Keep long territory popups inside the visible map and let admins drag them by the title.
+map.on('popupopen', e => {
+ const popupEl=e.popup.getElement(); if(!popupEl) return;
+ const title=popupEl.querySelector('.popup-title');
+ const mapEl=map.getContainer();
+ // Nudge the popup into the visible map area after Leaflet has positioned it.
+ requestAnimationFrame(()=>{
+  const r=popupEl.getBoundingClientRect(), m=mapEl.getBoundingClientRect();
+  let dx=0,dy=0; const pad=10;
+  if(r.left<m.left+pad) dx=(m.left+pad)-r.left;
+  if(r.right>m.right-pad) dx=(m.right-pad)-r.right;
+  if(r.top<m.top+pad) dy=(m.top+pad)-r.top;
+  if(r.bottom>m.bottom-pad) dy=(m.bottom-pad)-r.bottom;
+  if(dx||dy){const left=parseFloat(popupEl.style.left)||0,top=parseFloat(popupEl.style.top)||0;popupEl.style.left=(left+dx)+'px';popupEl.style.top=(top+dy)+'px';}
+ });
+ if(!title || !ADMIN) return;
+ title.classList.add('popup-drag-handle'); title.title='Drag to move this editor';
+ let dragging=false,startX=0,startY=0,originLeft=0,originTop=0;
+ title.addEventListener('pointerdown',ev=>{if(ev.button!==0)return;dragging=true;startX=ev.clientX;startY=ev.clientY;originLeft=parseFloat(popupEl.style.left)||0;originTop=parseFloat(popupEl.style.top)||0;title.setPointerCapture?.(ev.pointerId);popupEl.classList.add('popup-dragging');ev.preventDefault();ev.stopPropagation();});
+ title.addEventListener('pointermove',ev=>{if(!dragging)return;const mapRect=mapEl.getBoundingClientRect(),w=popupEl.offsetWidth,h=popupEl.offsetHeight;let left=originLeft+(ev.clientX-startX),top=originTop+(ev.clientY-startY);left=Math.max(0,Math.min(left,mapEl.clientWidth-w));top=Math.max(0,Math.min(top,mapEl.clientHeight-h));popupEl.style.left=left+'px';popupEl.style.top=top+'px';ev.preventDefault();});
+ const endDrag=()=>{dragging=false;popupEl.classList.remove('popup-dragging');};title.addEventListener('pointerup',endDrag);title.addEventListener('pointercancel',endDrag);
+});
 const groups={}; const drawnItems=new L.FeatureGroup().addTo(map); let allLayers=[]; let selectedLayer=null;
 function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 function safeColor(c){return /^#[0-9a-f]{6}$/i.test(c||'')?c:'#9aa7b5';}
