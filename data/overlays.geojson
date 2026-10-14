@@ -7,7 +7,14 @@
         "title": "Darnassus",
         "color": "#0000ff",
         "category": "alliance",
-        "icon": "city"
+        "icon": "capital",
+        "owner": "Alliance",
+        "status": "controlled",
+        "type": "city",
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0
       },
       "geometry": {
         "type": "Point",
@@ -22,7 +29,15 @@
       "properties": {
         "title": "Darnassus (Knights of Menethil)",
         "color": "#0000ff",
-        "category": "alliance"
+        "category": "alliance",
+        "owner": "Alliance",
+        "status": "controlled",
+        "type": "territory",
+        "icon": "auto",
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0
       },
       "geometry": {
         "type": "Polygon",
@@ -138,7 +153,14 @@
         "title": "Undercity",
         "color": "#ff0000",
         "category": "horde",
-        "icon": "city"
+        "icon": "capital",
+        "owner": "Horde",
+        "status": "controlled",
+        "type": "city",
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0
       },
       "geometry": {
         "type": "Point",
@@ -153,7 +175,15 @@
       "properties": {
         "title": "Undercity (Ashen Reclamation)",
         "color": "#ff0000",
-        "category": "horde"
+        "category": "horde",
+        "owner": "Horde",
+        "status": "controlled",
+        "type": "territory",
+        "icon": "auto",
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0
       },
       "geometry": {
         "type": "Polygon",
@@ -252,7 +282,15 @@
       "properties": {
         "title": "Kharanos (Forsai Cosanta Elwynn)",
         "color": "#00ff00",
-        "category": "alliance"
+        "category": "alliance",
+        "owner": "Alliance",
+        "status": "controlled",
+        "type": "territory",
+        "icon": "auto",
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0
       },
       "geometry": {
         "type": "Polygon",
@@ -319,7 +357,15 @@
       "properties": {
         "title": "Bloodhoof Village (Black Rose)",
         "color": "#ff9600",
-        "category": "horde"
+        "category": "horde",
+        "owner": "Horde",
+        "status": "controlled",
+        "type": "territory",
+        "icon": "auto",
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0
       },
       "geometry": {
         "type": "Polygon",
@@ -406,7 +452,15 @@
       "properties": {
         "title": "Tarren Mill (Red Empire)",
         "color": "#640000",
-        "category": "horde"
+        "category": "horde",
+        "owner": "Horde",
+        "status": "controlled",
+        "type": "territory",
+        "icon": "auto",
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0
       },
       "geometry": {
         "type": "Polygon",
@@ -485,7 +539,15 @@
       "properties": {
         "title": "Southshore (Knights of Menethil)",
         "color": "#0000ff",
-        "category": "alliance"
+        "category": "alliance",
+        "owner": "Alliance",
+        "status": "controlled",
+        "type": "territory",
+        "icon": "auto",
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0
       },
       "geometry": {
         "type": "Polygon",
@@ -592,7 +654,15 @@
       "properties": {
         "title": "Brill (Ashen Reclamation)",
         "color": "#ff0000",
-        "category": "horde"
+        "category": "horde",
+        "owner": "Horde",
+        "status": "controlled",
+        "type": "territory",
+        "icon": "auto",
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0
       },
       "geometry": {
         "type": "Polygon",
@@ -743,7 +813,15 @@
       "properties": {
         "title": "(Knights of Menethil)",
         "color": "#0000ff",
-        "category": "alliance"
+        "category": "alliance",
+        "owner": "Alliance",
+        "status": "controlled",
+        "type": "territory",
+        "icon": "auto",
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0
       },
       "geometry": {
         "type": "Polygon",
@@ -890,7 +968,15 @@
       "properties": {
         "title": "(Knights of Menethil)",
         "color": "#0000ff",
-        "category": "alliance"
+        "category": "alliance",
+        "owner": "Alliance",
+        "status": "controlled",
+        "type": "territory",
+        "icon": "auto",
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0
       },
       "geometry": {
         "type": "Polygon",
@@ -1065,7 +1151,15 @@
       "properties": {
         "title": "Dolanaar (Legion of the Dead)",
         "color": "#00ffff",
-        "category": "alliance"
+        "category": "alliance",
+        "owner": "Alliance",
+        "status": "controlled",
+        "type": "territory",
+        "icon": "auto",
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0
       },
       "geometry": {
         "type": "Polygon",
@@ -1208,7 +1302,15 @@
       "properties": {
         "title": "Razor Hill (Ashen Reclamation)",
         "color": "#ff0000",
-        "category": "horde"
+        "category": "horde",
+        "owner": "Horde",
+        "status": "controlled",
+        "type": "territory",
+        "icon": "auto",
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0
       },
       "geometry": {
         "type": "Polygon",
@@ -1475,7 +1577,15 @@
       "properties": {
         "title": "Hammerfall (Black Rose)",
         "color": "#ff9600",
-        "category": "horde"
+        "category": "horde",
+        "owner": "Horde",
+        "status": "controlled",
+        "type": "territory",
+        "icon": "auto",
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0
       },
       "geometry": {
         "type": "Polygon",
@@ -1610,7 +1720,15 @@
       "properties": {
         "title": "Goldshire (Forsai Cosanta Elwynn)",
         "color": "#00ff00",
-        "category": "alliance"
+        "category": "alliance",
+        "owner": "Alliance",
+        "status": "controlled",
+        "type": "territory",
+        "icon": "auto",
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0
       },
       "geometry": {
         "type": "Polygon",
@@ -1793,7 +1911,15 @@
       "properties": {
         "title": "Refuge Point (Legion of the Dead)",
         "color": "#00ffff",
-        "category": "alliance"
+        "category": "alliance",
+        "owner": "Alliance",
+        "status": "controlled",
+        "type": "territory",
+        "icon": "auto",
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0
       },
       "geometry": {
         "type": "Polygon",
@@ -1880,7 +2006,15 @@
       "properties": {
         "title": "(Ashen Reclamation)",
         "color": "#ff0000",
-        "category": "horde"
+        "category": "horde",
+        "owner": "Horde",
+        "status": "controlled",
+        "type": "territory",
+        "icon": "auto",
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0
       },
       "geometry": {
         "type": "Polygon",
@@ -1995,7 +2129,15 @@
       "properties": {
         "title": "(Legion of the Dead)",
         "color": "#00ffff",
-        "category": "alliance"
+        "category": "alliance",
+        "owner": "Alliance",
+        "status": "controlled",
+        "type": "territory",
+        "icon": "auto",
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0
       },
       "geometry": {
         "type": "Polygon",
@@ -2146,7 +2288,15 @@
       "properties": {
         "title": "The Sepulcher (Red Empire)",
         "color": "#640000",
-        "category": "horde"
+        "category": "horde",
+        "owner": "Horde",
+        "status": "controlled",
+        "type": "territory",
+        "icon": "auto",
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0
       },
       "geometry": {
         "type": "Polygon",
@@ -2205,7 +2355,15 @@
       "properties": {
         "title": "Ruins of Stromgarde (Legion of the Dead)",
         "color": "#00ffff",
-        "category": "alliance"
+        "category": "alliance",
+        "owner": "Alliance",
+        "status": "controlled",
+        "type": "territory",
+        "icon": "auto",
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0
       },
       "geometry": {
         "type": "Polygon",
@@ -2288,7 +2446,15 @@
       "properties": {
         "title": "Crossroads (Red Empire)",
         "color": "#640000",
-        "category": "horde"
+        "category": "horde",
+        "owner": "Horde",
+        "status": "controlled",
+        "type": "territory",
+        "icon": "auto",
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0
       },
       "geometry": {
         "type": "Polygon",
@@ -2375,7 +2541,15 @@
       "properties": {
         "title": "Thelsamar (Hinterland Army)",
         "color": "#ffff00",
-        "category": "alliance"
+        "category": "alliance",
+        "owner": "Alliance",
+        "status": "controlled",
+        "type": "territory",
+        "icon": "auto",
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0
       },
       "geometry": {
         "type": "Polygon",
@@ -2438,7 +2612,15 @@
       "properties": {
         "title": "(Ashen Reclamation)",
         "color": "#ff0000",
-        "category": "horde"
+        "category": "horde",
+        "owner": "Horde",
+        "status": "controlled",
+        "type": "territory",
+        "icon": "auto",
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0
       },
       "geometry": {
         "type": "Polygon",
@@ -2533,7 +2715,15 @@
       "properties": {
         "title": "(Ashen Reclamation)",
         "color": "#ff0000",
-        "category": "horde"
+        "category": "horde",
+        "owner": "Horde",
+        "status": "controlled",
+        "type": "territory",
+        "icon": "auto",
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0
       },
       "geometry": {
         "type": "Polygon",
@@ -2656,7 +2846,15 @@
       "properties": {
         "title": "(Ashen Reclamation)",
         "color": "#ff0000",
-        "category": "horde"
+        "category": "horde",
+        "owner": "Horde",
+        "status": "controlled",
+        "type": "territory",
+        "icon": "auto",
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0
       },
       "geometry": {
         "type": "Polygon",
@@ -2863,7 +3061,15 @@
       "properties": {
         "title": "(Ashen Reclamation)",
         "color": "#ff0000",
-        "category": "horde"
+        "category": "horde",
+        "owner": "Horde",
+        "status": "controlled",
+        "type": "territory",
+        "icon": "auto",
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0
       },
       "geometry": {
         "type": "Polygon",
@@ -3026,7 +3232,15 @@
       "properties": {
         "title": "(Legion of the Dead)",
         "color": "#00ffff",
-        "category": "alliance"
+        "category": "alliance",
+        "owner": "Alliance",
+        "status": "controlled",
+        "type": "territory",
+        "icon": "auto",
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0
       },
       "geometry": {
         "type": "Polygon",
@@ -3109,7 +3323,15 @@
       "properties": {
         "title": "(Forsai Cosanta Elwynn)",
         "color": "#00ff00",
-        "category": "alliance"
+        "category": "alliance",
+        "owner": "Alliance",
+        "status": "controlled",
+        "type": "territory",
+        "icon": "auto",
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0
       },
       "geometry": {
         "type": "Polygon",
@@ -3224,7 +3446,15 @@
       "properties": {
         "title": "(Black Rose)",
         "color": "#ff9600",
-        "category": "horde"
+        "category": "horde",
+        "owner": "Horde",
+        "status": "controlled",
+        "type": "territory",
+        "icon": "auto",
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0
       },
       "geometry": {
         "type": "Polygon",
@@ -3327,7 +3557,15 @@
       "properties": {
         "title": "(Legion of the Dead)",
         "color": "#00ffff",
-        "category": "alliance"
+        "category": "alliance",
+        "owner": "Alliance",
+        "status": "controlled",
+        "type": "territory",
+        "icon": "auto",
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0
       },
       "geometry": {
         "type": "Polygon",
@@ -3474,7 +3712,15 @@
       "properties": {
         "title": "(Ashen Reclamation)",
         "color": "#ff0000",
-        "category": "horde"
+        "category": "horde",
+        "owner": "Horde",
+        "status": "controlled",
+        "type": "territory",
+        "icon": "auto",
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0
       },
       "geometry": {
         "type": "Polygon",
@@ -3669,7 +3915,15 @@
       "properties": {
         "title": "(Knights of Menethil)",
         "color": "#0000ff",
-        "category": "alliance"
+        "category": "alliance",
+        "owner": "Alliance",
+        "status": "controlled",
+        "type": "territory",
+        "icon": "auto",
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0
       },
       "geometry": {
         "type": "Polygon",
@@ -3784,7 +4038,15 @@
       "properties": {
         "title": "(Legion of the Dead)",
         "color": "#00ffff",
-        "category": "alliance"
+        "category": "alliance",
+        "owner": "Alliance",
+        "status": "controlled",
+        "type": "territory",
+        "icon": "auto",
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0
       },
       "geometry": {
         "type": "Polygon",
@@ -3883,7 +4145,15 @@
       "properties": {
         "title": "(Legion of the Dead)",
         "color": "#00fbff",
-        "category": "alliance"
+        "category": "alliance",
+        "owner": "Alliance",
+        "status": "controlled",
+        "type": "territory",
+        "icon": "auto",
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0
       },
       "geometry": {
         "type": "Polygon",
@@ -4030,7 +4300,15 @@
       "properties": {
         "title": "(Ashen Reclamation)",
         "color": "#ff0000",
-        "category": "horde"
+        "category": "horde",
+        "owner": "Horde",
+        "status": "controlled",
+        "type": "territory",
+        "icon": "auto",
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0
       },
       "geometry": {
         "type": "Polygon",
@@ -4133,7 +4411,15 @@
       "properties": {
         "title": "(Red Empire)",
         "color": "#640000",
-        "category": "horde"
+        "category": "horde",
+        "owner": "Horde",
+        "status": "controlled",
+        "type": "territory",
+        "icon": "auto",
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0
       },
       "geometry": {
         "type": "Polygon",
@@ -4204,7 +4490,15 @@
       "properties": {
         "title": "(Forsai Cosanta Elwynn)",
         "color": "#00ff00",
-        "category": "alliance"
+        "category": "alliance",
+        "owner": "Alliance",
+        "status": "controlled",
+        "type": "territory",
+        "icon": "auto",
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0
       },
       "geometry": {
         "type": "Polygon",
@@ -4283,7 +4577,15 @@
       "properties": {
         "title": "(Forsai Cosanta Elwynn)",
         "color": "#00ff00",
-        "category": "alliance"
+        "category": "alliance",
+        "owner": "Alliance",
+        "status": "controlled",
+        "type": "territory",
+        "icon": "auto",
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0
       },
       "geometry": {
         "type": "Polygon",
@@ -4382,7 +4684,15 @@
       "properties": {
         "title": "(Black Rose)",
         "color": "#ff9600",
-        "category": "horde"
+        "category": "horde",
+        "owner": "Horde",
+        "status": "controlled",
+        "type": "territory",
+        "icon": "auto",
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0
       },
       "geometry": {
         "type": "Polygon",
@@ -4517,7 +4827,15 @@
       "properties": {
         "title": "(Legion of the Dead)",
         "color": "#00ffff",
-        "category": "alliance"
+        "category": "alliance",
+        "owner": "Alliance",
+        "status": "controlled",
+        "type": "territory",
+        "icon": "auto",
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0
       },
       "geometry": {
         "type": "Polygon",
@@ -4584,7 +4902,15 @@
       "properties": {
         "title": "(Knights of Menethil)",
         "color": "#0000ff",
-        "category": "alliance"
+        "category": "alliance",
+        "owner": "Alliance",
+        "status": "controlled",
+        "type": "territory",
+        "icon": "auto",
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0
       },
       "geometry": {
         "type": "Polygon",
@@ -4703,7 +5029,15 @@
       "properties": {
         "title": "(Red Empire)",
         "color": "#640000",
-        "category": "horde"
+        "category": "horde",
+        "owner": "Horde",
+        "status": "controlled",
+        "type": "territory",
+        "icon": "auto",
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0
       },
       "geometry": {
         "type": "Polygon",
@@ -4794,7 +5128,15 @@
       "properties": {
         "title": "(Red Empire)",
         "color": "#640000",
-        "category": "horde"
+        "category": "horde",
+        "owner": "Horde",
+        "status": "controlled",
+        "type": "territory",
+        "icon": "auto",
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0
       },
       "geometry": {
         "type": "Polygon",
@@ -4877,7 +5219,15 @@
       "properties": {
         "title": "(Legion of the Dead)",
         "color": "#00ffff",
-        "category": "alliance"
+        "category": "alliance",
+        "owner": "Alliance",
+        "status": "controlled",
+        "type": "territory",
+        "icon": "auto",
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0
       },
       "geometry": {
         "type": "Polygon",
@@ -4964,7 +5314,15 @@
       "properties": {
         "title": "(Knights of Menethil)",
         "color": "#0000ff",
-        "category": "alliance"
+        "category": "alliance",
+        "owner": "Alliance",
+        "status": "controlled",
+        "type": "territory",
+        "icon": "auto",
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0
       },
       "geometry": {
         "type": "Polygon",
@@ -5099,7 +5457,15 @@
       "properties": {
         "title": "(Black Rose)",
         "color": "#ff9600",
-        "category": "horde"
+        "category": "horde",
+        "owner": "Horde",
+        "status": "controlled",
+        "type": "territory",
+        "icon": "auto",
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0
       },
       "geometry": {
         "type": "Polygon",
@@ -5282,7 +5648,15 @@
       "properties": {
         "title": "(Knights of Menethil)",
         "color": "#0000ff",
-        "category": "alliance"
+        "category": "alliance",
+        "owner": "Alliance",
+        "status": "controlled",
+        "type": "territory",
+        "icon": "auto",
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0
       },
       "geometry": {
         "type": "Polygon",
@@ -5405,7 +5779,15 @@
       "properties": {
         "title": "(Hinterland Army)",
         "color": "#ffff00",
-        "category": "alliance"
+        "category": "alliance",
+        "owner": "Alliance",
+        "status": "controlled",
+        "type": "territory",
+        "icon": "auto",
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0
       },
       "geometry": {
         "type": "Polygon",
@@ -5508,7 +5890,15 @@
       "properties": {
         "title": "(Knights of Menethil)",
         "color": "#0000ff",
-        "category": "alliance"
+        "category": "alliance",
+        "owner": "Alliance",
+        "status": "controlled",
+        "type": "territory",
+        "icon": "auto",
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0
       },
       "geometry": {
         "type": "Polygon",
@@ -5643,7 +6033,15 @@
       "properties": {
         "title": "(Red Empire)",
         "color": "#640000",
-        "category": "horde"
+        "category": "horde",
+        "owner": "Horde",
+        "status": "controlled",
+        "type": "territory",
+        "icon": "auto",
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0
       },
       "geometry": {
         "type": "Polygon",
@@ -5758,7 +6156,15 @@
       "properties": {
         "title": "(Knights of Menethil)",
         "color": "#0000ff",
-        "category": "alliance"
+        "category": "alliance",
+        "owner": "Alliance",
+        "status": "controlled",
+        "type": "territory",
+        "icon": "auto",
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0
       },
       "geometry": {
         "type": "Polygon",
@@ -5885,7 +6291,15 @@
       "properties": {
         "title": "(Legion of the Dead)",
         "color": "#00ffff",
-        "category": "alliance"
+        "category": "alliance",
+        "owner": "Alliance",
+        "status": "controlled",
+        "type": "territory",
+        "icon": "auto",
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0
       },
       "geometry": {
         "type": "Polygon",
@@ -6049,7 +6463,14 @@
         "title": "Hammerfall (Black Rose)",
         "color": "#ff9600",
         "category": "horde",
-        "icon": "house"
+        "icon": "guildhouse",
+        "owner": "Horde",
+        "status": "controlled",
+        "type": "territory",
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0
       },
       "geometry": {
         "type": "Point",
@@ -6065,7 +6486,14 @@
         "title": "Refuge Point (Legion of the Dead)",
         "color": "#00ffff",
         "category": "alliance",
-        "icon": "house"
+        "icon": "guildhouse",
+        "owner": "Alliance",
+        "status": "controlled",
+        "type": "territory",
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0
       },
       "geometry": {
         "type": "Point",
@@ -6081,7 +6509,14 @@
         "title": "Ruins of Stromgarde (Legion of the Dead)",
         "color": "#00ffff",
         "category": "alliance",
-        "icon": "house"
+        "icon": "guildhouse",
+        "owner": "Alliance",
+        "status": "controlled",
+        "type": "territory",
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0
       },
       "geometry": {
         "type": "Point",
@@ -6097,7 +6532,14 @@
         "title": "Tarren Mill (Red Empire)",
         "color": "#640000",
         "category": "horde",
-        "icon": "house"
+        "icon": "guildhouse",
+        "owner": "Horde",
+        "status": "controlled",
+        "type": "territory",
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0
       },
       "geometry": {
         "type": "Point",
@@ -6113,7 +6555,14 @@
         "title": "Southshore (Knights of Menethil)",
         "color": "#0000ff",
         "category": "alliance",
-        "icon": "house"
+        "icon": "guildhouse",
+        "owner": "Alliance",
+        "status": "controlled",
+        "type": "territory",
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0
       },
       "geometry": {
         "type": "Point",
@@ -6129,7 +6578,14 @@
         "title": "The Sepulcher (Red Empire)",
         "color": "#640000",
         "category": "horde",
-        "icon": "house"
+        "icon": "guildhouse",
+        "owner": "Horde",
+        "status": "controlled",
+        "type": "territory",
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0
       },
       "geometry": {
         "type": "Point",
@@ -6145,7 +6601,14 @@
         "title": "Kharanos (Forsai Cosanta Elwynn)",
         "color": "#00ff00",
         "category": "alliance",
-        "icon": "house"
+        "icon": "guildhouse",
+        "owner": "Alliance",
+        "status": "controlled",
+        "type": "territory",
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0
       },
       "geometry": {
         "type": "Point",
@@ -6161,7 +6624,14 @@
         "title": "Thelsamar (Hinterland Army)",
         "color": "#ffff00",
         "category": "alliance",
-        "icon": "house"
+        "icon": "guildhouse",
+        "owner": "Alliance",
+        "status": "controlled",
+        "type": "territory",
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0
       },
       "geometry": {
         "type": "Point",
@@ -6177,7 +6647,14 @@
         "title": "Goldshire (Forsai Cosanta Elwynn)",
         "color": "#00ff00",
         "category": "alliance",
-        "icon": "house"
+        "icon": "guildhouse",
+        "owner": "Alliance",
+        "status": "controlled",
+        "type": "territory",
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0
       },
       "geometry": {
         "type": "Point",
@@ -6193,7 +6670,14 @@
         "title": "Razor Hill (Ashen Reclamation)",
         "color": "#ff0000",
         "category": "horde",
-        "icon": "house"
+        "icon": "guildhouse",
+        "owner": "Horde",
+        "status": "controlled",
+        "type": "territory",
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0
       },
       "geometry": {
         "type": "Point",
@@ -6209,7 +6693,14 @@
         "title": "Crossroads (Red Empire)",
         "color": "#640000",
         "category": "horde",
-        "icon": "house"
+        "icon": "guildhouse",
+        "owner": "Horde",
+        "status": "controlled",
+        "type": "territory",
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0
       },
       "geometry": {
         "type": "Point",
@@ -6225,7 +6716,14 @@
         "title": "Bloodhoof Village (Black Rose)",
         "color": "#ff9600",
         "category": "horde",
-        "icon": "house"
+        "icon": "guildhouse",
+        "owner": "Horde",
+        "status": "controlled",
+        "type": "territory",
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0
       },
       "geometry": {
         "type": "Point",
@@ -6241,7 +6739,14 @@
         "title": "Dolanaar (Legion of the Dead)",
         "color": "#00ffff",
         "category": "alliance",
-        "icon": "house"
+        "icon": "guildhouse",
+        "owner": "Alliance",
+        "status": "controlled",
+        "type": "territory",
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0
       },
       "geometry": {
         "type": "Point",
@@ -6256,7 +6761,15 @@
       "properties": {
         "title": "(Black Rose)",
         "color": "#ff9600",
-        "category": "horde"
+        "category": "horde",
+        "owner": "Horde",
+        "status": "controlled",
+        "type": "territory",
+        "icon": "auto",
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0
       },
       "geometry": {
         "type": "Polygon",
@@ -6512,7 +7025,14 @@
         "title": "Brill (Ashen Reclamation)",
         "color": "#ff0000",
         "category": "horde",
-        "icon": "house"
+        "icon": "guildhouse",
+        "owner": "Horde",
+        "status": "controlled",
+        "type": "territory",
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0
       },
       "geometry": {
         "type": "Point",
@@ -6527,7 +7047,15 @@
       "properties": {
         "title": "Fort Alterac (Legion of the Dead)",
         "color": "#00ffff",
-        "category": "alliance"
+        "category": "alliance",
+        "owner": "Alliance",
+        "status": "controlled",
+        "type": "territory",
+        "icon": "auto",
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0
       },
       "geometry": {
         "type": "Polygon",
@@ -6635,7 +7163,14 @@
         "title": "Alterac (Raid time 5pm - 10pm PST)",
         "color": "#00ffff",
         "category": "alliance",
-        "icon": "fort"
+        "icon": "fort",
+        "owner": "Alliance",
+        "status": "controlled",
+        "type": "fort",
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0
       },
       "geometry": {
         "type": "Point",
@@ -6650,7 +7185,15 @@
       "properties": {
         "title": "Fort Warsong (Ashen Reclamation)",
         "color": "#ff0000",
-        "category": "horde"
+        "category": "horde",
+        "owner": "Horde",
+        "status": "controlled",
+        "type": "territory",
+        "icon": "auto",
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0
       },
       "geometry": {
         "type": "Polygon",
@@ -6794,7 +7337,14 @@
         "title": "Warsong (Raid time 5pm - 10pm PST)",
         "color": "#ff0000",
         "category": "horde",
-        "icon": "fort"
+        "icon": "fort",
+        "owner": "Horde",
+        "status": "controlled",
+        "type": "fort",
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0
       },
       "geometry": {
         "type": "Point",
