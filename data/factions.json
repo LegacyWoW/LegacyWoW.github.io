@@ -1,28 +1,10 @@
 {
   "factions": [
     {
-      "name": "Alliance",
-      "color": "#2d8cff",
-      "emblem": "⚔️",
+      "name": "Neutral",
+      "color": "#ffffff",
+      "emblem": "",
       "leader": "",
-      "capital": "",
-      "description": "",
-      "lore": ""
-    },
-    {
-      "name": "Horde",
-      "color": "#e44852",
-      "emblem": "⚔️",
-      "leader": "",
-      "capital": "",
-      "description": "",
-      "lore": ""
-    },
-    {
-      "name": "Legion of the Dead",
-      "color": "#9aa7b5",
-      "emblem": "⚔️",
-      "leader": "Maleficarus",
       "capital": "",
       "description": "",
       "lore": ""
