@@ -5,23 +5,52 @@
   <title>LegacyWoW — FAQ</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
-    body{margin:0;font-family:system-ui,Segoe UI,Roboto,Arial;background:#0b0b0b;color:#e8e8e8}
-    header{padding:14px 0;border-bottom:1px solid rgba(255,255,255,.10);background:#070707}
-    .wrap{max-width:1100px;margin:0 auto;padding:0 18px}
-    .top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
-    .brand{color:#fff;text-decoration:none;font-weight:900;letter-spacing:.4px;display:flex;align-items:center;gap:12px}
-    .logo{width:40px;height:40px;border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.04);display:flex;align-items:center;justify-content:center}
-    .logo img{width:100%;height:100%;object-fit:cover;display:block}
-    nav{display:flex;gap:10px;flex-wrap:wrap}
-    nav a{color:#fff;text-decoration:none;font-weight:800;font-size:13px;padding:10px 12px;border-radius:14px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.04)}
-    nav a:hover{background:rgba(255,255,255,.10)}
-    main{padding:22px 0}
-    .card{border:1px solid rgba(255,255,255,.10);border-radius:16px;background:rgba(255,255,255,.04);padding:16px}
-    h1{margin:0 0 12px;font-size:26px}
-    h2{margin:16px 0 6px;font-size:15px}
-    p{opacity:.9;line-height:1.5}
-    pre{margin:8px 0 14px;padding:12px;border-radius:14px;border:1px solid rgba(255,255,255,.12);background:rgba(0,0,0,.35)}
-    footer{border-top:1px solid rgba(255,255,255,.08);padding:16px 0;background:#070707;color:rgba(232,232,232,.65);font-size:12.5px}
+
+:root{color-scheme:dark;--line:rgba(117,190,255,.22);--blue:#8fd0ff;--blue2:#4aa9ef;--text:#e9f3fc;--muted:#a9bacb;--panel:rgba(12,22,35,.91);--panel2:rgba(18,32,49,.78)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:#0b0b0b;color:var(--text);line-height:1.65}
+a{color:var(--blue)}
+header{padding:14px 0;border-bottom:1px solid var(--line);background:rgba(5,10,17,.96);box-shadow:0 8px 28px rgba(0,0,0,.24)}
+.wrap{max-width:1100px;margin:0 auto;padding:0 20px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+.brand{color:#fff;text-decoration:none;font-weight:900;letter-spacing:.5px;display:flex;align-items:center;gap:12px}
+.logo{width:42px;height:42px;border-radius:12px;overflow:hidden;border:1px solid var(--line);background:rgba(100,170,230,.08);display:flex;align-items:center;justify-content:center}
+.logo img{width:100%;height:100%;object-fit:cover;display:block}
+nav{display:flex;gap:8px;flex-wrap:wrap}
+nav a{color:#dceeff;text-decoration:none;font-weight:750;font-size:13px;padding:9px 12px;border-radius:11px;border:1px solid rgba(143,208,255,.17);background:rgba(143,208,255,.045);transition:background .18s,border-color .18s}
+nav a:hover,nav a[href="faq.html"]{background:rgba(74,169,239,.15);border-color:rgba(143,208,255,.5)}
+main{padding:36px 0 46px}
+.hero{padding:clamp(22px,4vw,38px);border:1px solid rgba(143,208,255,.28);border-radius:20px;background:linear-gradient(135deg,rgba(21,47,72,.94),rgba(8,16,27,.96));box-shadow:0 18px 48px rgba(0,0,0,.25);margin-bottom:20px}
+.eyebrow{text-transform:uppercase;letter-spacing:2px;color:var(--blue);font-size:11px;font-weight:900;margin:0 0 8px}
+h1{font-size:clamp(30px,5vw,42px);line-height:1.12;margin:0 0 12px;letter-spacing:-.7px}
+.hero p{max-width:780px;color:#c1d2e3;margin:0}
+.search-wrap{margin-top:22px}
+#faqSearch{width:100%;padding:13px 15px;border-radius:12px;border:1px solid rgba(143,208,255,.28);background:rgba(3,9,16,.65);color:var(--text);font:inherit;outline:none}
+#faqSearch:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(74,169,239,.12)}
+.categories{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 18px}
+.categories a{display:inline-block;padding:7px 11px;border-radius:99px;border:1px solid rgba(143,208,255,.19);background:rgba(143,208,255,.05);color:#cfe8ff;text-decoration:none;font-size:12px;font-weight:800}
+.categories a:hover{background:rgba(74,169,239,.15)}
+.faq-group{margin:0 0 18px;border:1px solid var(--line);border-radius:18px;background:var(--panel);padding:clamp(16px,3vw,24px);box-shadow:0 14px 36px rgba(0,0,0,.2)}
+.faq-group h2{margin:0 0 12px;font-size:18px;color:#c8e7ff;display:flex;align-items:center;gap:9px}
+.faq-group h2:before{content:"";display:block;width:4px;height:20px;border-radius:5px;background:linear-gradient(var(--blue),var(--blue2))}
+details{border:1px solid rgba(143,208,255,.13);border-radius:12px;background:var(--panel2);margin:9px 0;overflow:hidden}
+details[open]{border-color:rgba(143,208,255,.32);background:rgba(20,39,59,.85)}
+summary{cursor:pointer;list-style:none;padding:14px 16px;font-weight:800;color:#edf7ff;display:flex;align-items:center;justify-content:space-between;gap:14px}
+summary::-webkit-details-marker{display:none}
+summary:after{content:"+";font-size:20px;line-height:1;color:var(--blue);font-weight:500}
+details[open] summary:after{content:"−"}
+.answer{padding:0 16px 15px;color:#c7d7e6}
+.answer p{margin:0 0 10px}
+.answer p:last-child{margin-bottom:0}
+pre{margin:10px 0;padding:12px 14px;border-radius:11px;border:1px solid rgba(143,208,255,.18);background:rgba(0,0,0,.35);color:#bfe4ff;overflow-x:auto;white-space:pre-wrap;overflow-wrap:anywhere}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.button{display:inline-flex;align-items:center;justify-content:center;padding:10px 14px;border-radius:11px;border:1px solid rgba(143,208,255,.28);background:rgba(74,169,239,.12);color:#e7f5ff;text-decoration:none;font-weight:800;font-size:13px}
+.button:hover{background:rgba(74,169,239,.22)}
+.no-results{display:none;padding:18px;border:1px dashed var(--line);border-radius:12px;color:var(--muted);text-align:center}
+footer{border-top:1px solid var(--line);padding:18px 0;background:rgba(5,10,17,.96);color:var(--muted);font-size:12.5px}
+@media(max-width:720px){.wrap{padding:0 14px}.top{align-items:flex-start}nav{gap:6px}nav a{padding:8px 10px;font-size:12px}main{padding-top:22px}.hero{border-radius:16px}.faq-group{border-radius:15px}}
+
   </style>
 </head>
 <body>
@@ -44,35 +73,179 @@
 
   <main>
     <div class="wrap">
-      <div class="card">
-        <h1>FAQ</h1>
+      <section class="hero">
+        <p class="eyebrow">LegacyWoW Player Support</p>
+        <h1>Frequently Asked Questions</h1>
+        <p>New to LegacyWoW or returning to Azeroth? Find answers about connecting, accounts, realm progression, gameplay, and getting help. If you cannot find what you need, contact our team.</p>
+        <div class="search-wrap">
+          <input id="faqSearch" type="search" placeholder="Search questions and answers..." aria-label="Search frequently asked questions">
+        </div>
+        <div class="actions">
+          <a class="button" href="how-to-play.html">How to Play</a>
+          <a class="button" href="downloads.html">Downloads</a>
+          <a class="button" href="account.html">Create Account</a>
+          <a class="button" href="rules.html">Server Rules</a>
+        </div>
+      </section>
 
-        <h2>What client do I need?</h2>
-        <p>World of Warcraft <b>3.3.5a</b> found here on our website.</p>
+      <nav class="categories" aria-label="FAQ categories">
+        <a href="#getting-started">Getting Started</a>
+        <a href="#connection">Connection & Technical</a>
+        <a href="#realm">Realm & Progression</a>
+        <a href="#gameplay">Gameplay</a>
+        <a href="#accounts">Accounts & Rules</a>
+        <a href="#support">Support</a>
+      </nav>
 
-        <h2>What is the progression?</h2>
-        <p>Icecrown progresses through <b>Patch 1.0.0 → 3.3.5a</b> with custom content and QoL changes.</p>
-        <h2>How do I set my realmlist?</h2>
-        <pre>set realmlist logon-legacywow.tail63bcbc.ts.net</pre>
+      <section class="faq-group" id="getting-started">
+        <h2>Getting Started</h2>
+        <details class="faq-item">
+          <summary>What client do I need?</summary>
+          <div class="answer"><p>You need the World of Warcraft <strong>3.3.5a client (build 12340)</strong>. Use the client download linked on our website, and avoid mixing it with another installation that has been modified for a different version.</p><p><a href="downloads.html">Visit Downloads</a></p></div>
+        </details>
+        <details class="faq-item">
+          <summary>How do I get started?</summary>
+          <div class="answer"><p>Download the required client, follow the connection instructions, create a LegacyWoW account, and launch the game using the instructions on our site. The How to Play page walks you through the setup.</p><p><a href="how-to-play.html">Read How to Play</a></p></div>
+        </details>
+        <details class="faq-item">
+          <summary>How do I create an account?</summary>
+          <div class="answer"><p>Open the Create Account page and complete the registration form. Your website registration is separate from any retail World of Warcraft account.</p><p><a href="account.html">Create a LegacyWoW account</a></p></div>
+        </details>
+        <details class="faq-item">
+          <summary>Is LegacyWoW affiliated with Blizzard Entertainment?</summary>
+          <div class="answer"><p>No. LegacyWoW is an independent fan project and is not affiliated with, endorsed by, or sponsored by Blizzard Entertainment.</p></div>
+        </details>
+      </section>
 
-        <h2>How do I create an account?</h2>
-        <p>
-          Visit the create an account tab.
-        </p>
-        <pre></pre>
+      <section class="faq-group" id="connection">
+        <h2>Connection & Technical Help</h2>
+        <details class="faq-item">
+          <summary>How do I set my realmlist?</summary>
+          <div class="answer"><p>Follow the How to Play instructions and use the realmlist address below in the appropriate configuration file for your client.</p><pre>set realmlist logon-legacywow.tail63bcbc.ts.net</pre><p>Make sure you save the file and that you are editing the correct WoW client installation.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>Do I need Tailscale?</summary>
+          <div class="answer"><p>The current connection instructions on the website use a Tailscale address. Follow the latest How to Play guide for the required setup and invitation steps. If the connection details change, the website's instructions should be treated as the source of truth.</p><p><a href="how-to-play.html">View connection instructions</a></p></div>
+        </details>
+        <details class="faq-item">
+          <summary>The game will not connect. What should I check?</summary>
+          <div class="answer"><p>First, confirm that you have the correct 3.3.5a client, that the realmlist is entered exactly as shown, and that any required Tailscale setup is complete. Check that you are launching the intended client folder. If the issue continues, contact support and include the exact error message.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>Can I use my existing WoW installation?</summary>
+          <div class="answer"><p>You can use a separate, compatible 3.3.5a installation. Keeping a dedicated folder for LegacyWoW is recommended so files or settings from other clients do not interfere.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>Where should addons go?</summary>
+          <div class="answer"><p>For the 3.3.5a client, addons generally belong in the client folder under <code>Interface\AddOns</code>. Make sure the addon supports the 3.3.5a client; modern Retail addons usually will not work correctly.</p></div>
+        </details>
+      </section>
 
-        <h2>Is this server affiliated with Blizzard?</h2>
-        <p>No. LegacyWoW is a fan project and is not affiliated with Blizzard Entertainment.</p>
-        
-        <h2>Any other questions?</h2>
-        <p>Reach out to us at Legacy.WoW.team@gmail.com and a GM will assist.</p>
-      </div>
+      <section class="faq-group" id="realm">
+        <h2>Realm & Progression</h2>
+        <details class="faq-item">
+          <summary>What is the Icecrown realm progression?</summary>
+          <div class="answer"><p>Icecrown is designed to progress through World of Warcraft's expansion-era patches toward <strong>Wrath of the Lich King 3.3.5a</strong>, alongside custom content and quality-of-life changes. Check the latest News posts for the current patch and release schedule, as dates and content can change.</p><p><a href="news.html">Read server news</a></p></div>
+        </details>
+        <details class="faq-item">
+          <summary>Is the server completely Blizzlike?</summary>
+          <div class="answer"><p>LegacyWoW combines the 3.3.5a client and expansion-era progression with custom content and quality-of-life features. Some systems and experiences may differ from the original official game.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>Where can I find current rates and updates?</summary>
+          <div class="answer"><p>Check the homepage for the realm rates currently advertised and the News page for patch releases, events, maintenance notices, and other updates. If two pages appear to conflict, look for the most recent announcement.</p><p><a href="index.html">Homepage</a> · <a href="news.html">News</a></p></div>
+        </details>
+        <details class="faq-item">
+          <summary>How do I know when a patch or event goes live?</summary>
+          <div class="answer"><p>Keep an eye on the website's News section for official announcements about patch progression, seasonal events, maintenance, and content releases.</p></div>
+        </details>
+      </section>
+
+      <section class="faq-group" id="gameplay">
+        <h2>Gameplay & Features</h2>
+        <details class="faq-item">
+          <summary>Does LegacyWoW have custom content?</summary>
+          <div class="answer"><p>Yes. LegacyWoW includes custom content and quality-of-life changes in addition to its expansion-era progression. Check the homepage and News page for features and content that are currently available.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>Are multiboxing and automated bots allowed?</summary>
+          <div class="answer"><p>Multiboxing is allowed, but gameplay inputs must be made by the player. Prohibited botting and automated gameplay input are not allowed. Please review the <a href="rules.html">Server Rules</a> for the current policy.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>What should I do if I find a bug or exploit?</summary>
+          <div class="answer"><p>Do not abuse it or use it to gain an advantage. Stop using the affected mechanic and report the issue to staff with enough detail to help reproduce it safely.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>Can I suggest a feature or report a problem?</summary>
+          <div class="answer"><p>Yes. Contact the team with a clear description of the suggestion or issue, the character or area involved when relevant, and any error messages or steps needed to reproduce the problem.</p></div>
+        </details>
+      </section>
+
+      <section class="faq-group" id="accounts">
+        <h2>Accounts, Rules & Enforcement</h2>
+        <details class="faq-item">
+          <summary>Can I share or sell my account?</summary>
+          <div class="answer"><p>Account sharing and real-money trading are prohibited under the current Server Rules. Keep your credentials private and do not buy, sell, or trade accounts, characters, gold, or items for real money.</p><p><a href="rules.html">Read the Server Rules</a></p></div>
+        </details>
+        <details class="faq-item">
+          <summary>What happens if I break a server rule?</summary>
+          <div class="answer"><p>Depending on severity and circumstances, staff may issue a warning, suspension, or permanent ban. Serious violations may result in immediate action. Review the Server Rules before playing.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>How can I appeal a suspension or ban?</summary>
+          <div class="answer"><p>Contact staff calmly through the available support channel. Include your account or character name, the action you are appealing, and any relevant context. Avoid posting private account details in public channels.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>Is Guild War still available?</summary>
+          <div class="answer"><p>No. Guild War has been discontinued. Older references to its mechanics may remain in historical documentation, but they should not be taken as confirmation that the mode is active.</p></div>
+        </details>
+      </section>
+
+      <section class="faq-group" id="support">
+        <h2>Support & Contact</h2>
+        <details class="faq-item">
+          <summary>How do I contact the team?</summary>
+          <div class="answer"><p>Email <a href="mailto:Legacy.WoW.team@gmail.com">Legacy.WoW.team@gmail.com</a> and a GM or team member can assist. Include a concise explanation of the issue and any relevant details.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>What information should I include in a support request?</summary>
+          <div class="answer"><p>Include the nature of the problem, your character name, when it occurred, the steps that led to it, and the exact error message if there is one. Never send your password.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>Where can I find official updates?</summary>
+          <div class="answer"><p>The website's News page is the best place to check announcements about progression, events, maintenance, and server changes.</p><p><a href="news.html">Visit News</a></p></div>
+        </details>
+      </section>
+
+      <div class="no-results" id="noResults">No matching questions found. Try a different search term or contact the team for help.</div>
     </div>
   </main>
 
   <footer>
     <div class="wrap">© <span id="year"></span> LegacyWoW</div>
   </footer>
-  <script>document.getElementById("year").textContent=new Date().getFullYear();</script>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+    const search = document.getElementById("faqSearch");
+    const items = Array.from(document.querySelectorAll(".faq-item"));
+    const groups = Array.from(document.querySelectorAll(".faq-group"));
+    const noResults = document.getElementById("noResults");
+    search.addEventListener("input", () => {
+      const query = search.value.trim().toLowerCase();
+      let visibleCount = 0;
+      items.forEach(item => {
+        const matches = item.textContent.toLowerCase().includes(query);
+        item.style.display = matches ? "" : "none";
+        if (matches) visibleCount++;
+      });
+      groups.forEach(group => {
+        const hasVisible = Array.from(group.querySelectorAll(".faq-item")).some(item => item.style.display !== "none");
+        group.style.display = hasVisible ? "" : "none";
+      });
+      noResults.style.display = visibleCount ? "none" : "block";
+    });
+  </script>
 </body>
 </html>
+
