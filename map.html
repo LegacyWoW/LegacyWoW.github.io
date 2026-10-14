@@ -4,102 +4,35 @@
   <meta charset="UTF-8" />
   <title>LegacyWoW — World Map</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#080d14" />
+  <meta name="description" content="Explore the LegacyWoW world map." />
 
   <style>
-    :root{
-      --bg:#0b0b0b;
-      --border: rgba(255,255,255,.14);
-      --text:#e8e8e8;
-    }
-    body{
-      margin:0;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-    }
 
-    header{
-      padding: 14px 0;
-      border-bottom: 1px solid rgba(255,255,255,.10);
-      background: #070707;
-    }
-    .wrap{ max-width:1100px; margin:0 auto; padding:0 18px; }
-    .toprow{
-      display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;
-    }
-    .brand{
-      display:flex; align-items:center; gap:12px; text-decoration:none; color:#fff;
-      font-weight:900; letter-spacing:.4px;
-    }
-    .logo{
-      width:40px; height:40px; border-radius:12px; overflow:hidden;
-      border:1px solid rgba(255,255,255,.18);
-      background: rgba(255,255,255,.04);
-      display:flex; align-items:center; justify-content:center;
-    }
-    .logo img{ width:100%; height:100%; object-fit:cover; display:block; }
+:root{color-scheme:dark;--line:rgba(117,190,255,.23);--blue:#8fd0ff;--blue2:#4aa9ef;--text:#e9f3fc;--muted:#a9bacb}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:#080d14;color:var(--text)}
+header{position:relative;z-index:1000;padding:12px 0;border-bottom:1px solid var(--line);background:rgba(5,10,17,.97);box-shadow:0 8px 28px rgba(0,0,0,.24)}
+.wrap{max-width:1200px;margin:0 auto;padding:0 20px}
+.toprow{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:#fff;font-weight:900;letter-spacing:.4px}
+.logo{width:42px;height:42px;border-radius:12px;overflow:hidden;border:1px solid var(--line);background:rgba(100,170,230,.08);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.logo img{width:100%;height:100%;object-fit:cover;display:block}
+nav{display:flex;gap:8px;flex-wrap:wrap}
+nav a{color:#dceeff;text-decoration:none;font-weight:750;font-size:13px;padding:9px 12px;border-radius:11px;border:1px solid rgba(143,208,255,.17);background:rgba(143,208,255,.045);transition:background .18s,border-color .18s}
+nav a:hover,nav a[href="map.html"]{background:rgba(74,169,239,.15);border-color:rgba(143,208,255,.5)}
+.shell{position:relative;height:calc(100vh - 67px);min-height:480px;background:#0b1420}
+#map{height:100%;width:100%;background:#111;z-index:1}
+.adminbar{position:absolute;top:16px;right:16px;z-index:999;display:flex;gap:8px;align-items:center;padding:10px;border-radius:14px;border:1px solid var(--line);background:rgba(5,12,21,.86);backdrop-filter:blur(12px);box-shadow:0 12px 30px rgba(0,0,0,.4)}
+.btn{border:1px solid rgba(143,208,255,.28);background:rgba(74,169,239,.13);color:#eff8ff;border-radius:10px;padding:10px 13px;font-weight:850;cursor:pointer;font-size:13px;transition:background .18s,border-color .18s}
+.btn:hover{background:rgba(74,169,239,.25);border-color:rgba(143,208,255,.5)}
+.leaflet-control a{background-color:rgba(5,12,21,.88)!important;color:#eaf6ff!important;border-color:rgba(143,208,255,.24)!important}
+.leaflet-control a:hover{background-color:rgba(18,43,66,.95)!important}
+.leaflet-bar{border:1px solid rgba(143,208,255,.22)!important;box-shadow:0 4px 14px rgba(0,0,0,.25)!important}
+.leaflet-popup-content-wrapper,.leaflet-popup-tip{background:rgba(5,12,21,.94);color:#eff8ff;border:1px solid rgba(143,208,255,.2)}
+.leaflet-popup-content{line-height:1.5}
+@media(max-width:720px){.wrap{padding:0 12px}.toprow{align-items:flex-start;gap:10px}.brand{font-size:14px}nav{gap:5px}nav a{padding:7px 9px;font-size:12px}.shell{height:calc(100vh - 120px);min-height:420px}.adminbar{top:10px;right:10px;padding:7px}.btn{padding:8px 10px;font-size:12px}}
 
-    nav{ display:flex; gap:10px; flex-wrap:wrap; }
-    nav a{
-      color:#fff; text-decoration:none; font-weight:800; font-size:13px;
-      padding:10px 12px; border-radius:14px;
-      border:1px solid rgba(255,255,255,.18);
-      background: rgba(255,255,255,.04);
-    }
-    nav a:hover{ background: rgba(255,255,255,.10); }
-
-    .shell{
-      position: relative;
-      height: calc(100vh - 72px);
-      min-height: 560px;
-    }
-    #map{
-      height: 100%;
-      width: 100%;
-      background: #111;
-    }
-
-    /* Admin-only top-right bar */
-    .adminbar{
-      position:absolute;
-      top:16px;
-      right:16px;
-      z-index: 999;
-      display:flex;
-      gap:10px;
-      align-items:center;
-      padding:10px;
-      border-radius:14px;
-      border:1px solid var(--border);
-      background: rgba(0,0,0,.45);
-      backdrop-filter: blur(10px);
-      box-shadow: 0 12px 30px rgba(0,0,0,.35);
-    }
-    .btn{
-      border:1px solid rgba(255,255,255,.18);
-      background: rgba(255,255,255,.06);
-      color:#fff;
-      border-radius:12px;
-      padding:10px 12px;
-      font-weight:900;
-      cursor:pointer;
-      font-size:13px;
-    }
-    .btn:hover{ background: rgba(255,255,255,.12); }
-
-    /* ✅ IMPORTANT: don't wipe Leaflet-draw icons */
-    .leaflet-control a{
-      background-color: rgba(0,0,0,.55) !important;
-      color:#fff !important;
-      border-color: rgba(255,255,255,.14) !important;
-    }
-    .leaflet-control a:hover{ background-color: rgba(0,0,0,.75) !important; }
-
-    .leaflet-popup-content-wrapper, .leaflet-popup-tip{
-      background: rgba(0,0,0,.80);
-      color:#fff;
-      border:1px solid rgba(255,255,255,.12);
-    }
   </style>
 
   <!-- Leaflet -->
