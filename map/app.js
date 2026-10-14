@@ -241,89 +241,64 @@ function manageFactions(){
  $('fm-export').onclick=exportFactionProfiles;$('fm-close').onclick=()=>modal.remove();
 }
 
-// Shared-boundary snapping for newly drawn or edited polygons.
-// Vertices can snap to existing vertices OR to existing border segments. When a
-// new edge follows an existing edge, existing vertices along that edge are inserted
-// into the new ring so both polygons use the same boundary coordinates.
+// Shared-boundary geometry: snap new polygon vertices to existing vertices OR
+// existing border segments, then split existing rings at the snapped points.
+// This makes matching borders use identical coordinates rather than merely nearby lines.
 function snapPolygonVertices(layer){
  if(!(layer instanceof L.Polygon) || layer instanceof L.Rectangle || !map || !layer.getLatLngs) return layer;
- const SNAP_PIXELS=24, EDGE_INSERT_PIXELS=5;
- const candidateVertices=[], candidateSegments=[];
- function collectRings(value){
-  if(!Array.isArray(value)||!value.length)return;
-  if(value[0] && Number.isFinite(value[0].lat) && Number.isFinite(value[0].lng)){
-   const ring=value;
-   ring.forEach(ll=>candidateVertices.push(ll));
-   for(let i=0;i<ring.length-1;i++)candidateSegments.push([ring[i],ring[i+1]]);
-   // GeoJSON rings are closed; account for rings supplied without a repeated endpoint.
-   if(ring.length>2 && (ring[0].lat!==ring[ring.length-1].lat || ring[0].lng!==ring[ring.length-1].lng)){
-    candidateSegments.push([ring[ring.length-1],ring[0]]);
-   }
-   return;
-  }
-  value.forEach(collectRings);
+ const SNAP_PIXELS=24, candidates=[], existingPolygons=[];
+ const isLL=v=>v && Number.isFinite(v.lat) && Number.isFinite(v.lng);
+ function walkRings(value,fn){
+  if(!Array.isArray(value))return;
+  if(value.length && isLL(value[0])){fn(value);return;}
+  value.forEach(v=>walkRings(v,fn));
+ }
+ function collectVertices(value){if(Array.isArray(value)){value.forEach(collectVertices);return;}if(isLL(value))candidates.push(value);}
+ function nearestOnSegment(p,a,b){
+  const dx=b.x-a.x,dy=b.y-a.y,den=dx*dx+dy*dy;
+  const t=den?Math.max(0,Math.min(1,((p.x-a.x)*dx+(p.y-a.y)*dy)/den)):0;
+  const q=L.point(a.x+t*dx,a.y+t*dy);return {point:q,distance:p.distanceTo(q),t};
  }
  allLayers.forEach(other=>{
   if(other===layer || !(other instanceof L.Polygon) || other instanceof L.Rectangle || !other.getLatLngs)return;
-  collectRings(other.getLatLngs());
+  existingPolygons.push(other);const latlngs=other.getLatLngs();collectVertices(latlngs);
+  walkRings(latlngs,ring=>{for(let i=0;i<ring.length-1;i++){
+   const a=ring[i],b=ring[i+1];candidates.push({__segment:true,a,b,ap:map.latLngToContainerPoint(a),bp:map.latLngToContainerPoint(b)});
+  }});
  });
- if(!candidateVertices.length && !candidateSegments.length)return layer;
- const vertices=candidateVertices.map(ll=>({ll,pt:map.latLngToContainerPoint(ll)}));
- const segments=candidateSegments.map(([a,b])=>({a,b,ap:map.latLngToContainerPoint(a),bp:map.latLngToContainerPoint(b)}));
- function nearestOnSegment(pt,seg){
-  const dx=seg.bp.x-seg.ap.x,dy=seg.bp.y-seg.ap.y,den=dx*dx+dy*dy;
-  const t=den?Math.max(0,Math.min(1,((pt.x-seg.ap.x)*dx+(pt.y-seg.ap.y)*dy)/den)):0;
-  const projected=L.point(seg.ap.x+t*dx,seg.ap.y+t*dy);
-  return {pt:projected,t,d:pt.distanceTo(projected)};
+ if(!candidates.length)return layer;
+ const vertexCandidates=candidates.filter(v=>!v.__segment).map(ll=>({ll,pt:map.latLngToContainerPoint(ll)}));
+ const segmentCandidates=candidates.filter(v=>v.__segment);
+ function snapTree(value){
+  if(Array.isArray(value))return value.map(snapTree);
+  if(!isLL(value))return value;
+  const pt=map.latLngToContainerPoint(value);let best=null,bestDist=SNAP_PIXELS;
+  for(const c of vertexCandidates){const d=pt.distanceTo(c.pt);if(d<bestDist){best=c.ll;bestDist=d;}}
+  for(const c of segmentCandidates){const hit=nearestOnSegment(pt,c.ap,c.bp);if(hit.distance<bestDist){best=map.containerPointToLatLng(hit.point);bestDist=hit.distance;}}
+  return best?L.latLng(best.lat,best.lng):value;
  }
- function snapOne(ll){
-  const pt=map.latLngToContainerPoint(ll);let best=null,bestDist=SNAP_PIXELS;
-  for(const v of vertices){const d=pt.distanceTo(v.pt);if(d<bestDist){best=v.ll;bestDist=d;}}
-  for(const seg of segments){const hit=nearestOnSegment(pt,seg);if(hit.d<bestDist){best=map.containerPointToLatLng(hit.pt);bestDist=hit.d;}}
-  return best?L.latLng(best.lat,best.lng):ll;
- }
- function pointSegmentDistance(pt,a,b){
-  const dx=b.x-a.x,dy=b.y-a.y,den=dx*dx+dy*dy;
-  const t=den?Math.max(0,Math.min(1,((pt.x-a.x)*dx+(pt.y-a.y)*dy)/den)):0;
-  const q=L.point(a.x+t*dx,a.y+t*dy);
-  return {distance:pt.distanceTo(q),t};
- }
- function snapRing(ring){
-  if(!Array.isArray(ring)||ring.length<2)return ring;
-  const snapped=ring.map(snapOne),out=[];
-  for(let i=0;i<snapped.length-1;i++){
-   const a=snapped[i],b=snapped[i+1],ap=map.latLngToContainerPoint(a),bp=map.latLngToContainerPoint(b);
-   out.push(a);
-   const inserts=[];
-   // Insert existing border vertices that lie almost exactly on this new edge.
-   for(const v of vertices){
-    const hit=pointSegmentDistance(v.pt,ap,bp);
-    if(hit.distance<=EDGE_INSERT_PIXELS && hit.t>0.001 && hit.t<0.999){
-     inserts.push({t:hit.t,ll:v.ll});
-    }
-   }
-   inserts.sort((x,y)=>x.t-y.t);
-   let last=null;
-   for(const item of inserts){
-    const key=item.ll.lat+','+item.ll.lng;
-    if(key!==last && !(Math.abs(item.ll.lat-a.lat)<1e-12&&Math.abs(item.ll.lng-a.lng)<1e-12)&&!(Math.abs(item.ll.lat-b.lat)<1e-12&&Math.abs(item.ll.lng-b.lng)<1e-12)){
-     out.push(L.latLng(item.ll.lat,item.ll.lng));last=key;
-    }
-   }
-  }
-  out.push(snapped[snapped.length-1]);
-  // Preserve ring closure exactly, using the first coordinate as the closing coordinate.
-  if(out.length>2 && (ring[0].lat===ring[ring.length-1].lat && ring[0].lng===ring[ring.length-1].lng)){
-   out[out.length-1]=L.latLng(out[0].lat,out[0].lng);
-  }
-  return out;
- }
- function processTree(value){
+ layer.setLatLngs(snapTree(layer.getLatLngs()));
+ // Add any new polygon vertices that land on an existing edge to that edge's ring.
+ // Thus both polygons describe the shared segment using the same coordinate sequence.
+ const newVertices=[];walkRings(layer.getLatLngs(),ring=>ring.forEach(ll=>newVertices.push(ll)));
+ function splitExistingTree(value){
   if(!Array.isArray(value))return value;
-  if(value.length && value[0] && Number.isFinite(value[0].lat)&&Number.isFinite(value[0].lng))return snapRing(value);
-  return value.map(processTree);
+  if(value.length && isLL(value[0])){
+   const ring=[];
+   for(let i=0;i<value.length-1;i++){
+    const a=value[i],b=value[i+1];ring.push(a);
+    const ap=map.latLngToContainerPoint(a),bp=map.latLngToContainerPoint(b),hits=[];
+    newVertices.forEach(v=>{
+     const vp=map.latLngToContainerPoint(v),hit=nearestOnSegment(vp,ap,bp);
+     if(hit.t>1e-7&&hit.t<1-1e-7&&hit.distance<1.25)hits.push({t:hit.t,ll:v});
+    });
+    hits.sort((x,y)=>x.t-y.t).forEach(h=>{const last=ring[ring.length-1];if(!last||map.latLngToContainerPoint(last).distanceTo(map.latLngToContainerPoint(h.ll))>0.25)ring.push(L.latLng(h.ll.lat,h.ll.lng));});
+   }
+   ring.push(value[value.length-1]);return ring;
+  }
+  return value.map(splitExistingTree);
  }
- layer.setLatLngs(processTree(layer.getLatLngs()));
+ existingPolygons.forEach(other=>{const updated=splitExistingTree(other.getLatLngs());other.setLatLngs(updated);if(other.redraw)other.redraw();});
  if(layer.redraw)layer.redraw();
  return layer;
 }
