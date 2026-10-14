@@ -5,23 +5,45 @@
   <title>LegacyWoW — Rules</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
-    body{margin:0;font-family:system-ui,Segoe UI,Roboto,Arial;background:#0b0b0b;color:#e8e8e8}
-    header{padding:14px 0;border-bottom:1px solid rgba(255,255,255,.10);background:#070707}
-    .wrap{max-width:1100px;margin:0 auto;padding:0 18px}
-    .top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
-    .brand{color:#fff;text-decoration:none;font-weight:900;letter-spacing:.4px;display:flex;align-items:center;gap:12px}
-    .logo{width:40px;height:40px;border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.04);display:flex;align-items:center;justify-content:center}
-    .logo img{width:100%;height:100%;object-fit:cover;display:block}
-    nav{display:flex;gap:10px;flex-wrap:wrap}
-    nav a{color:#fff;text-decoration:none;font-weight:800;font-size:13px;padding:10px 12px;border-radius:14px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.04)}
-    nav a:hover{background:rgba(255,255,255,.10)}
-    main{padding:22px 0}
-    .card{border:1px solid rgba(255,255,255,.10);border-radius:16px;background:rgba(255,255,255,.04);padding:16px}
-    h1{margin:0 0 12px;font-size:26px}
-    h2{margin:16px 0 8px;font-size:16px}
-    p,li{opacity:.9;line-height:1.5}
-    ul{padding-left:18px}
-    footer{border-top:1px solid rgba(255,255,255,.08);padding:16px 0;background:#070707;color:rgba(232,232,232,.65);font-size:12.5px}
+
+:root{color-scheme:dark;--bg:#080d14;--panel:rgba(12,22,35,.91);--panel2:rgba(18,32,49,.78);--line:rgba(117,190,255,.22);--blue:#8fd0ff;--blue2:#4aa9ef;--text:#e9f3fc;--muted:#a9bacb}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:#0b0b0b;color:var(--text);line-height:1.65}
+a{color:var(--blue)}
+header{padding:14px 0;border-bottom:1px solid var(--line);background:rgba(5,10,17,.96);box-shadow:0 8px 28px rgba(0,0,0,.24)}
+.wrap{max-width:1100px;margin:0 auto;padding:0 20px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+.brand{color:#fff;text-decoration:none;font-weight:900;letter-spacing:.5px;display:flex;align-items:center;gap:12px}
+.logo{width:42px;height:42px;border-radius:12px;overflow:hidden;border:1px solid var(--line);background:rgba(100,170,230,.08);display:flex;align-items:center;justify-content:center}
+.logo img{width:100%;height:100%;object-fit:cover;display:block}
+nav{display:flex;gap:8px;flex-wrap:wrap}
+nav a{color:#dceeff;text-decoration:none;font-weight:750;font-size:13px;padding:9px 12px;border-radius:11px;border:1px solid rgba(143,208,255,.17);background:rgba(143,208,255,.045);transition:background .18s,border-color .18s,transform .18s}
+nav a:hover,nav a[href="rules.html"]{background:rgba(74,169,239,.15);border-color:rgba(143,208,255,.5)}
+main{padding:36px 0 46px}
+.intro{padding:clamp(22px,4vw,38px);border:1px solid rgba(143,208,255,.28);border-radius:20px;background:linear-gradient(135deg,rgba(21,47,72,.94),rgba(8,16,27,.96));box-shadow:0 18px 48px rgba(0,0,0,.25);margin-bottom:20px;position:relative;overflow:hidden}
+.eyebrow{text-transform:uppercase;letter-spacing:2px;color:var(--blue);font-size:11px;font-weight:900;margin:0 0 8px}
+h1{font-size:clamp(30px,5vw,42px);line-height:1.12;margin:0 0 12px;letter-spacing:-.7px}
+.intro p{max-width:780px;color:#c1d2e3;margin:0}
+.notice{margin-top:20px;padding:12px 15px;border-radius:12px;border:1px solid rgba(255,202,120,.25);background:rgba(255,183,77,.07);color:#f4dcb6;font-size:13px}
+.card{border:1px solid var(--line);border-radius:18px;background:var(--panel);padding:clamp(18px,3vw,28px);box-shadow:0 14px 36px rgba(0,0,0,.2)}
+.rule-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.rule-section{border:1px solid rgba(143,208,255,.14);border-radius:14px;background:var(--panel2);padding:18px;min-width:0}
+.rule-section h2{margin:0 0 10px;font-size:17px;color:#c8e7ff;display:flex;align-items:center;gap:9px}
+.rule-section h2:before{content:"";display:block;width:4px;height:19px;border-radius:5px;background:linear-gradient(var(--blue),var(--blue2));flex:0 0 4px}
+p,li{color:#d2deea}
+p{margin:8px 0 12px}
+ul{padding-left:20px;margin:8px 0 0}
+li{padding-left:2px;margin:6px 0}
+li::marker{color:#75bdf3}
+strong{color:#f0f7ff}
+.archived{margin-top:18px;border:1px solid rgba(255,202,120,.22);border-radius:14px;background:rgba(255,183,77,.045);padding:20px}
+.archived h2{margin:0 0 8px;color:#f3d6a5;font-size:18px}
+.archived .archive-label{display:inline-block;margin-bottom:10px;border-radius:99px;padding:4px 9px;font-size:10px;letter-spacing:1px;text-transform:uppercase;font-weight:900;color:#f7d8a1;background:rgba(255,183,77,.1);border:1px solid rgba(255,202,120,.22)}
+.archived p{color:#d7d0c3}
+footer{border-top:1px solid var(--line);padding:18px 0;background:rgba(5,10,17,.96);color:var(--muted);font-size:12.5px}
+@media(max-width:720px){.wrap{padding:0 14px}.top{align-items:flex-start}.rule-grid{grid-template-columns:1fr}nav{gap:6px}nav a{padding:8px 10px;font-size:12px}.intro{border-radius:16px}main{padding-top:22px}}
+
   </style>
 </head>
 <body>
@@ -44,77 +66,115 @@
 
   <main>
     <div class="wrap">
-      <div class="card">
+      <section class="intro">
+        <p class="eyebrow">LegacyWoW Community Guidelines</p>
         <h1>Server Rules</h1>
+        <p>These rules help keep LegacyWoW fair, welcoming, and enjoyable for everyone. Playing on the server means agreeing to follow them. If you are unsure whether something is allowed, ask staff before doing it.</p>
+        <div class="notice"><strong>Important:</strong> Staff may consider context, intent, severity, and prior violations when deciding how to handle an incident. Attempts to exploit loopholes or evade enforcement may result in additional penalties.</div>
+      </section>
 
-        <h2>General Conduct</h2>
-        <ul>
-          <li>No cheating, botting, or exploiting bugs.</li>
-          <li>No harassment, hate speech, or excessive toxicity.</li>
-          <li>Respect staff decisions.</li>
-        </ul>
+      <section class="card">
+        <div class="rule-grid">
+          <section class="rule-section">
+            <h2>1. Respectful Conduct</h2>
+            <ul>
+              <li>No harassment, hate speech, discriminatory abuse, targeted intimidation, or sustained personal attacks.</li>
+              <li>Keep chat reasonably civil. Disagreements are allowed; threats, repeated abuse, and deliberately disruptive behavior are not.</li>
+              <li>Do not impersonate staff, other players, or official LegacyWoW representatives.</li>
+              <li>Do not share another player's private or identifying information without their permission.</li>
+              <li>Keep character names, guild names, and public messages appropriate for a shared gaming community.</li>
+            </ul>
+          </section>
 
-        <h2>Gameplay</h2>
-        <ul>
-          <li>No real-money trading (RMT).</li>
-          <li>No account sharing.</li>
-          <li>Abusing exploits will result in penalties.</li>
-          <li>Multiboxing is allowed, but all inputs must be made by the player.</li>
-          <li>Botting is prohibited.</li>
-        </ul>
+          <section class="rule-section">
+            <h2>2. Fair Play & Exploits</h2>
+            <ul>
+              <li>No cheating, prohibited botting, unauthorized automation, or third-party tools that give an unfair advantage.</li>
+              <li>Multiboxing is allowed, but all gameplay inputs must be made by the player. Automated gameplay input is not allowed.</li>
+              <li>Do not abuse bugs, unintended mechanics, map exploits, or other loopholes to gain an advantage.</li>
+              <li>If you discover a bug or exploit, stop using it and report it to staff. Repeated or deliberate abuse may lead to serious penalties.</li>
+              <li>Do not interfere with server operations, attempt to compromise accounts, or exploit vulnerabilities in the website or server.</li>
+            </ul>
+          </section>
 
-        <h2>Enforcement</h2>
-        <p>
-          Staff may issue warnings, suspensions, or bans depending on severity.
-        </p>
-        
-        <h2>Guild War Rules*</h2>
-      <p>
-        Guild War is a unique, optional game mode that allows guilds to compete in the open world for control of key locations. Participation is not required, and Guild War does not directly impact players who choose not to opt in.
-      </p>
+          <section class="rule-section">
+            <h2>3. Accounts & Security</h2>
+            <ul>
+              <li>Real-money trading (RMT) involving accounts, characters, gold, items, or services is prohibited.</li>
+              <li>Account sharing is not allowed. Keep your account credentials private and secure.</li>
+              <li>You are responsible for activity carried out on your account. Staff may review the circumstances of a suspected violation.</li>
+              <li>Do not attempt to access another player's account or use accounts to evade a suspension or ban.</li>
+              <li>Do not exploit payment, donation, or account systems or misrepresent transactions to obtain an unfair benefit.</li>
+            </ul>
+          </section>
 
-      <p>
-        <strong>How to Participate:</strong> To join Guild War, a Guild Master must purchase a Guildhouse in any major city. Once established, guild members can speak with their assigned Guild Officer inside the Guildhouse to begin attacking, defending, or capturing locations.
-      </p>
+          <section class="rule-section">
+            <h2>4. Chat, Advertising & Spam</h2>
+            <ul>
+              <li>No spam, chat flooding, or deliberately disruptive repeated messages.</li>
+              <li>Do not advertise cheats, account sales, gold sales, or other prohibited services.</li>
+              <li>Do not use public channels to repeatedly provoke, disrupt, or derail other players' conversations.</li>
+              <li>Keep recruitment, trade, and group-finding messages relevant to the channel and avoid excessive repetition.</li>
+            </ul>
+          </section>
 
-      <p>
-        <strong>Cities:</strong> Cities are the largest and most valuable locations in Guild War. They provide significant income and allow the controlling guild to set tax rates on player transactions, with all revenue deposited into the guild bank.
-        To capture a contested city, a guild must acquire <strong>Marks of Control</strong> and deposit them into the guild bank under the tab corresponding to the target location. Once your guild reaches 50% control, the city becomes yours.
-        Controlling a city allows you to assign guards, manage officers, and adjust tax rates. Cities require upkeep, and if control falls below 50%, the city becomes vulnerable to siege by other guilds. Cities can be sieged only once a day, only after the control falls below 50%. If it is successfully defended, it will be "locked" and unable to be attacked again for 3 days.
-      </p>
+          <section class="rule-section">
+            <h2>5. PvP & Player Interaction</h2>
+            <ul>
+              <li>Play within the server's intended rules and mechanics. Do not use exploits to manipulate PvP outcomes or rewards.</li>
+              <li>Do not coordinate with opposing players to manipulate battlegrounds, rankings, rewards, or other competitive systems.</li>
+              <li>Do not deliberately obstruct events or other server activities through exploits or behavior intended to prevent others from participating.</li>
+              <li>Normal in-game rivalry and legitimate PvP are part of the game; harassment and exploit abuse are not.</li>
+            </ul>
+          </section>
 
-      <p>
-        <strong>Forts:</strong> Forts are strategic military positions across the open world. Initially, they can be claimed using Marks of Control. Once captured, opposing guilds must weaken control by raiding the fort and defeating its Officer.
-        After sufficient successful raids, the fort becomes contested again and may be captured by another guild. Forts require less upkeep than cities and are only vulnerable during designated raid windows. Forts can be attacked 5 times daily, but if successfully defended, the fort will not be able to be attacked again for 24 hours.
-      </p>
+          <section class="rule-section">
+            <h2>6. Staff & Support</h2>
+            <ul>
+              <li>Follow reasonable staff instructions related to server rules, investigations, and maintaining a fair environment.</li>
+              <li>Do not harass staff or use tickets to threaten, spam, or make knowingly false reports.</li>
+              <li>If you disagree with an action, appeal calmly through the available support channels rather than disrupting public chat.</li>
+              <li>Do not impersonate staff or claim that a staff member has authorized something when they have not.</li>
+              <li>Report suspected rule violations with useful details when possible. Do not retaliate against or publicly expose players you report.</li>
+            </ul>
+          </section>
 
-      <p>
-        <strong>Outposts:</strong> Outposts are smaller locations chosen for their income potential or strategic positioning (such as Goldshire). They require minimal upkeep and can be weakened either by defeating the stationed Officer or through Marks of Control.
-        Outposts can also expand into nearby areas, increasing your guild’s territorial reach. There is no capped amount of times these can be attacked, but if defended it will be protected from attacks for 12 hours.
-      </p>
+          <section class="rule-section">
+            <h2>7. Server Integrity</h2>
+            <ul>
+              <li>Do not attempt to crash, overload, disrupt, or gain unauthorized access to the game server, website, or related services.</li>
+              <li>Do not exploit registration, launcher, or other server systems to bypass restrictions or obtain unauthorized access.</li>
+              <li>Do not evade disciplinary action by creating or using alternate accounts.</li>
+              <li>Staff may temporarily restrict access or investigate behavior that threatens server stability or community safety.</li>
+            </ul>
+          </section>
 
-      <p>
-        <strong>Territories:</strong> Territories are adjacent lands influenced by nearby controlled locations. Over time, stable control will extend your influence into surrounding areas.
-        If your control weakens, these areas may revert to neutral. Territories provide minor gold income and act as a buffer between major holdings.
-      </p>
+          <section class="rule-section">
+            <h2>8. Enforcement</h2>
+            <p>Depending on the circumstances, staff may issue a warning, remove inappropriate content, suspend an account, or permanently ban an account. Severe violations may result in immediate action.</p>
+            <ul>
+              <li>Penalties may reflect severity, intent, impact, prior history, and whether a player cooperates with an investigation.</li>
+              <li>Trying to hide, repeat, or benefit from a violation may increase the penalty.</li>
+              <li>Staff decisions should be appealed through support channels. Public arguments or harassment will not help resolve a case.</li>
+            </ul>
+          </section>
+        </div>
 
-      <p>
-        <strong>Additional Rules:</strong> Guilds may form alliances, allowing them to work together against rival guilds. During a siege, you may reinforce another guild by submitting an in-game ticket specifying who you wish to support and how. Reinforcements are subject to associated costs.
-      </p>
-
-      <p>
-        Guilds may also be <strong>vassalized</strong>. This can occur if a guild loses all of its territories or both the Guild Master and officers are defeated in a duel. Vassalized guilds fall under the control or influence of another guild. Guild Masters are allowed up to 5 key officers.
-      </p>
-
-      <p>
-        Guilds receive NPC bots to assist with both offense and defense. These units can join your group, be stationed at controlled locations for defense, or deployed in attacks.
-      </p>
-
-      <p>
-        The current limit is <strong>5 NPCs per 25 guild members</strong>. Exceeding this limit is considered a severe violation: the Guild Master will be banned, and the guild will be permanently disbanded.
-        <strong>*THIS GAME MODE HAS BEEN DISCONTINUED.</strong>
-      </p>
-      </div>
+        <section class="archived">
+          <span class="archive-label">Archived — Discontinued Mode</span>
+          <h2>Guild War Rules (Historical)</h2>
+          <p><strong>Guild War has been discontinued.</strong> The following text is retained for historical reference only and does not describe an active game mode. These rules should not be treated as current gameplay instructions.</p>
+          <p>Guild War was an optional game mode that allowed guilds to compete in the open world for control of key locations. Participation was not required, and the mode did not directly impact players who chose not to opt in.</p>
+          <p><strong>How to Participate:</strong> Historically, a Guild Master purchased a Guildhouse in a major city. Guild members could speak with their assigned Guild Officer inside the Guildhouse to begin attacking, defending, or capturing locations.</p>
+          <p><strong>Cities:</strong> Cities were the largest and most valuable locations in Guild War. They provided income and allowed the controlling guild to set tax rates on player transactions, with revenue deposited into the guild bank. To capture a contested city, a guild acquired <strong>Marks of Control</strong> and deposited them into the guild bank under the tab corresponding to the target location. At 50% control, the city became theirs. Cities required upkeep and could become vulnerable to siege if control fell below 50%. They could be sieged once per day; a successful defense locked the city against attacks for three days.</p>
+          <p><strong>Forts:</strong> Forts were strategic military positions across the open world. They could initially be claimed using Marks of Control. Opposing guilds could weaken control by raiding the fort and defeating its Officer. After sufficient successful raids, the fort became contested again. Forts required less upkeep than cities and were vulnerable during designated raid windows. They could be attacked five times daily; a successful defense prevented further attacks for 24 hours.</p>
+          <p><strong>Outposts:</strong> Outposts were smaller locations chosen for income or strategic positioning, such as Goldshire. They required minimal upkeep and could be weakened by defeating the stationed Officer or through Marks of Control. Outposts could expand into nearby areas. They had no fixed attack limit, but a successful defense protected them from attacks for 12 hours.</p>
+          <p><strong>Territories:</strong> Territories were adjacent lands influenced by nearby controlled locations. Stable control extended influence into surrounding areas; weakened control could cause areas to revert to neutral. Territories provided minor gold income and acted as a buffer between major holdings.</p>
+          <p><strong>Additional Rules:</strong> Guilds could form alliances. During a siege, players could reinforce another guild by submitting an in-game ticket specifying whom they wished to support and how; reinforcements were subject to associated costs.</p>
+          <p>Guilds could also be <strong>vassalized</strong> if they lost all territories or both the Guild Master and officers were defeated in a duel. Vassalized guilds fell under another guild's control or influence. Guild Masters were allowed up to five key officers.</p>
+          <p>Guilds received NPC bots to assist with offense and defense. Units could join a group, be stationed at controlled locations, or be deployed in attacks. The historical limit was <strong>five NPCs per 25 guild members</strong>; exceeding it was described as a severe violation that could result in a Guild Master ban and permanent guild disbandment.</p>
+        </section>
+      </section>
     </div>
   </main>
 
