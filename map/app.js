@@ -153,8 +153,8 @@ let factionProfiles = {};
 let searchTerm='', typeFilter='', statusFilter='';
 function factionRecord(name){
  const key=groupKey(name);
- if(!factionProfiles[key]) factionProfiles[key]={name:factionKey(name),color:factionColor(name),emblem:'⚔️',leader:'',capital:'',description:'',lore:''};
- return factionProfiles[key];
+ // Display-only fallback: do not reinsert deleted/unsaved profiles into factionProfiles.
+ return factionProfiles[key] || {name:factionKey(name),color:factionColor(name),emblem:'',leader:'',capital:'',description:'',lore:''};
 }
 function territoryLayers(){return allLayers.filter(l=>!(l instanceof L.Marker));}
 function matchesFilters(layer){
@@ -186,7 +186,7 @@ function renderFactionCards(){
  const byOwner={};
  allLayers.forEach(l=>{const p=meta(l),k=groupKey(p.owner);if(!byOwner[k])byOwner[k]={name:p.owner,territories:[],attacked:0,contested:0,capitals:0,strongholds:0};const f=byOwner[k];if(!(l instanceof L.Marker)){f.territories.push(l);if(p.status==='attacked')f.attacked++;if(p.status==='contested')f.contested++;if(p.type==='capital')f.capitals++;if(['fort','city','guildhouse'].includes(p.type))f.strongholds++;}});
  const factions=Object.entries(byOwner).map(([k,v])=>({key:k,...v,profile:factionRecord(v.name)})).sort((a,b)=>b.territories.length-a.territories.length);
- box.innerHTML=factions.length?factions.map(f=>`<button class="faction-card" data-faction="${esc(f.key)}" style="--faction-color:${safeColor(f.profile.color)}"><div class="faction-card-head"><span class="faction-emblem">${esc(f.profile.emblem||'⚔️')}</span><span>${esc(f.profile.name||f.name)}</span></div><div class="faction-card-stats"><span>${f.territories.length} territories</span><span>${f.capitals} capitals</span><span>${f.strongholds} strongholds</span><span>${f.attacked} attacked</span></div>${f.profile.leader?`<div class="faction-description">Leader: ${esc(f.profile.leader)}</div>`:''}${f.profile.description?`<div class="faction-description">${esc(f.profile.description)}</div>`:''}</button>`).join(''):'<div class="empty-note">Faction cards appear when territories have owners.</div>';
+ box.innerHTML=factions.length?factions.map(f=>`<button class="faction-card" data-faction="${esc(f.key)}" style="--faction-color:${safeColor(f.profile.color)}"><div class="faction-card-head">${f.profile.emblem?`<span class="faction-emblem">${esc(f.profile.emblem)}</span>`:'' }<span>${esc(f.profile.name||f.name)}</span></div><div class="faction-card-stats"><span>${f.territories.length} territories</span><span>${f.capitals} capitals</span><span>${f.strongholds} strongholds</span><span>${f.attacked} attacked</span></div>${f.profile.leader?`<div class="faction-description">Leader: ${esc(f.profile.leader)}</div>`:''}${f.profile.description?`<div class="faction-description">${esc(f.profile.description)}</div>`:''}</button>`).join(''):'<div class="empty-note">Faction cards appear when territories have owners.</div>';
  box.querySelectorAll('[data-faction]').forEach(btn=>btn.onclick=()=>{const key=btn.dataset.faction;const cb=document.querySelector(`[data-owner="${CSS.escape(key)}"]`);if(cb){document.querySelectorAll('[data-owner]').forEach(x=>x.checked=false);cb.checked=true;document.getElementById('showAllLayers').checked=false;refreshWarRoom();}});
 }
 function renderChronicle(){
@@ -257,7 +257,7 @@ function snapPolygonVertices(layer){
  });
  if(!candidates.length)return layer;
  const candidatePoints=candidates.map(ll=>({ll,pt:map.latLngToContainerPoint(ll)}));
- const SNAP_PIXELS=12;
+ const SNAP_PIXELS=24;
  function snapTree(value){
   if(Array.isArray(value))return value.map(snapTree);
   if(value && Number.isFinite(value.lat) && Number.isFinite(value.lng)){
