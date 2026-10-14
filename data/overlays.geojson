@@ -1883,6 +1883,293 @@
           ]
         ]
       }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "Deadman’s Crossing",
+        "owner": "Neutral",
+        "color": "#ffffff",
+        "category": "neutral",
+        "status": "neutral",
+        "type": "territory",
+        "icon": "territory",
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0,
+        "importance": "",
+        "garrison": "",
+        "fortifications": "",
+        "battleNotes": "",
+        "lastUpdated": "",
+        "history": [],
+        "battleStart": "",
+        "battleEnd": "",
+        "battleType": "",
+        "strategicNotes": ""
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              1371,
+              233.75
+            ],
+            [
+              1371.375,
+              227.625
+            ],
+            [
+              1377.75,
+              221.625
+            ],
+            [
+              1416.25,
+              221.5
+            ],
+            [
+              1421.375,
+              224
+            ],
+            [
+              1420.75,
+              238.125
+            ],
+            [
+              1407.5,
+              245.375
+            ],
+            [
+              1402,
+              241.75
+            ],
+            [
+              1379.125,
+              241.75
+            ],
+            [
+              1371,
+              233.75
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "Karazhan",
+        "owner": "Neutral",
+        "color": "#000000",
+        "category": "neutral",
+        "status": "neutral",
+        "type": "landmark",
+        "icon": "landmark",
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0,
+        "importance": "",
+        "garrison": "",
+        "fortifications": "",
+        "battleNotes": "",
+        "lastUpdated": "",
+        "history": [],
+        "battleStart": "",
+        "battleEnd": "",
+        "battleType": "",
+        "strategicNotes": ""
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              1377,
+              198.5
+            ],
+            [
+              1377.125,
+              196.75
+            ],
+            [
+              1408.5,
+              195.875
+            ],
+            [
+              1408.385054,
+              193.129813
+            ],
+            [
+              1408.37961,
+              192.999807
+            ],
+            [
+              1424.753061,
+              191.531459
+            ],
+            [
+              1427.75,
+              200.625
+            ],
+            [
+              1430.625,
+              206.625
+            ],
+            [
+              1427.988878,
+              214.413543
+            ],
+            [
+              1427.875,
+              214.75
+            ],
+            [
+              1416.25,
+              221.5
+            ],
+            [
+              1377.75,
+              221.625
+            ],
+            [
+              1370.5,
+              218.125
+            ],
+            [
+              1370.5,
+              198.5
+            ],
+            [
+              1370.75,
+              198.5
+            ],
+            [
+              1377,
+              198.5
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "Mistyreed Strand",
+        "owner": "Neutral",
+        "color": "#ffffff",
+        "category": "neutral",
+        "status": "neutral",
+        "type": "territory",
+        "icon": "territory",
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0,
+        "importance": "",
+        "garrison": "",
+        "fortifications": "",
+        "battleNotes": "",
+        "lastUpdated": "",
+        "history": [],
+        "battleStart": "",
+        "battleEnd": "",
+        "battleType": "",
+        "strategicNotes": ""
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              1519.75,
+              264
+            ],
+            [
+              1526.625,
+              260.375
+            ],
+            [
+              1531.25,
+              260.125
+            ],
+            [
+              1541.375,
+              254.375
+            ],
+            [
+              1549.375,
+              246.875
+            ],
+            [
+              1556.25,
+              237
+            ],
+            [
+              1553.5,
+              225.875
+            ],
+            [
+              1543,
+              216.5
+            ],
+            [
+              1533.125,
+              207.875
+            ],
+            [
+              1515.125,
+              209.375
+            ],
+            [
+              1514.929497,
+              200.251511
+            ],
+            [
+              1528.25,
+              198.125
+            ],
+            [
+              1537.5,
+              198.5
+            ],
+            [
+              1553.875,
+              201.125
+            ],
+            [
+              1575.125,
+              211.625
+            ],
+            [
+              1580.875,
+              234.875
+            ],
+            [
+              1573,
+              250.625
+            ],
+            [
+              1555.875,
+              261.25
+            ],
+            [
+              1535.625,
+              266.75
+            ],
+            [
+              1523.625,
+              266.375
+            ],
+            [
+              1519.75,
+              264
+            ]
+          ]
+        ]
+      }
     }
   ]
 }
