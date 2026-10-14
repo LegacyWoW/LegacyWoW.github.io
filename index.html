@@ -469,65 +469,51 @@
       color:#fff;
     }
 
-    .about-box{padding:24px}
-    .about-heading{
+    .feature-intro{
       margin:0;
-      font-size:clamp(22px,3vw,30px);
-      line-height:1.2;
-      text-align:center;
-      text-shadow:0 2px 14px rgba(0,0,0,.65);
-    }
-    .about-intro{
-      max-width:850px;
-      margin:12px auto 0;
       color:var(--muted);
-      line-height:1.7;
-      text-align:center;
+      line-height:1.65;
     }
     .feature-grid{
       display:grid;
-      grid-template-columns:repeat(4,minmax(0,1fr));
+      grid-template-columns:repeat(3,minmax(0,1fr));
       gap:12px;
-      margin-top:22px;
+      margin-top:18px;
     }
     .feature-card{
-      padding:17px 15px;
+      min-width:0;
+      padding:15px 16px;
       border:1px solid rgba(140,205,255,.17);
       border-radius:15px;
       background:linear-gradient(145deg,rgba(80,170,255,.085),rgba(0,0,0,.20));
-      min-width:0;
-      transition:transform .18s ease,border-color .18s ease,background .18s ease;
-    }
-    .feature-card:hover{
-      transform:translateY(-2px);
-      border-color:rgba(140,205,255,.38);
-      background:linear-gradient(145deg,rgba(80,170,255,.13),rgba(0,0,0,.24));
-    }
-    .feature-icon{
-      color:rgba(170,220,255,.98);
-      font-size:23px;
-      line-height:1;
-      text-shadow:0 0 14px rgba(80,170,255,.24);
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.035);
     }
     .feature-card h3{
-      margin:12px 0 7px;
+      margin:0 0 7px;
       font-size:14px;
       line-height:1.35;
-      color:#fff;
+      color:rgba(220,240,255,.98);
     }
     .feature-card p{
       margin:0;
+      color:rgba(232,232,232,.78);
       font-size:13px;
-      line-height:1.6;
-      color:var(--muted);
+      line-height:1.55;
     }
-    @media(max-width:900px){
+    .feature-more{
+      margin:16px 0 0;
+      padding-top:13px;
+      border-top:1px solid rgba(255,255,255,.10);
+      color:rgba(232,232,232,.82);
+      line-height:1.6;
+      font-size:13.5px;
+    }
+    @media(max-width:760px){
       .feature-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
     }
     @media(max-width:520px){
-      .about-box{padding:18px}
       .feature-grid{grid-template-columns:1fr}
-      .feature-card{padding:15px}
+      .feature-card{padding:14px}
     }
 
     footer{
@@ -632,37 +618,45 @@
     </div>
 
     <div class="status-row-wide">
-      <div class="box about-box">
-        <div class="title">Discover LegacyWoW</div>
-        <h2 class="about-heading">A Journey Through Azeroth's History</h2>
-        <p class="about-intro">
-          LegacyWoW is a progressive World of Warcraft server built around the journey through the original eras of the game.
-          Experience evolving content from Classic through The Burning Crusade and into Wrath of the Lich King, with quality-of-life
-          improvements and a community-focused world along the way.
+      <div class="box">
+        <div class="title">What Is LegacyWoW?</div>
+        <p class="feature-intro">
+          <b>LegacyWoW</b> is a progressive World of Warcraft realm built around the journey through Azeroth,
+          with custom features and quality-of-life additions that give players more ways to personalize their characters,
+          compete with other players, and take part in server-wide adventures.
         </p>
 
         <div class="feature-grid">
           <div class="feature-card">
-            <div class="feature-icon">❄</div>
-            <h3>Progressive Content</h3>
-            <p>Advance through the original expansion eras as the realm's journey unfolds.</p>
+            <h3>PvP Titles</h3>
+            <p>Earn recognition for your achievements and show off your accomplishments across Azeroth.</p>
           </div>
           <div class="feature-card">
-            <div class="feature-icon">⚔</div>
-            <h3>Classic WoW Experience</h3>
-            <p>Rediscover Azeroth's familiar zones, dungeons, raids, and adventures.</p>
+            <h3>Custom Titles</h3>
+            <p>Personalize your character with additional titles that help make your hero stand out.</p>
           </div>
           <div class="feature-card">
-            <div class="feature-icon">✦</div>
-            <h3>Quality-of-Life Changes</h3>
-            <p>Enjoy thoughtful improvements designed to support your adventure.</p>
+            <h3>Open-World PvP</h3>
+            <p>Join custom PvP activities and take the fight beyond the battlegrounds.</p>
           </div>
           <div class="feature-card">
-            <div class="feature-icon">◆</div>
-            <h3>PvE &amp; PvP Adventures</h3>
-            <p>Choose your path through quests, group content, and faction conflict.</p>
+            <h3>PvE Events</h3>
+            <p>Take part in custom PvE events and discover new challenges across the world.</p>
+          </div>
+          <div class="feature-card">
+            <h3>New Character Tab</h3>
+            <p>Explore an additional character tab designed to give you more ways to view character information.</p>
+          </div>
+          <div class="feature-card">
+            <h3>Transmog</h3>
+            <p>Customize your character's appearance and create a look that suits your adventure.</p>
           </div>
         </div>
+
+        <p class="feature-more">
+          And there's more to discover as you play. Explore the website to learn about the realm, its rules,
+          progression, and other features available on LegacyWoW.
+        </p>
       </div>
     </div>
 
