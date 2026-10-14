@@ -84,7 +84,7 @@ function attachClick(layer){
    selectedLayer=layer;
    if(layer instanceof L.Marker){layer.setZIndexOffset(1200);if(layer._icon)layer._icon.style.zIndex='1200';}
    else if(layer.setStyle)layer.setStyle({color:'#f6d477',weight:4,opacity:1,fillOpacity:.34});
-   if(ADMIN){const oe=event?.originalEvent;attachEditor(layer,oe?{x:oe.clientX,y:oe.clientY}:null);}else{attachViewer(layer);updateDetails(layer);}
+   if(ADMIN){const oe=event?.originalEvent;attachEditor(layer,oe?{x:oe.clientX,y:oe.clientY}:null);}else{updateDetails(layer);}
  });
 }
 function field(label,id,value,type='text',extra=''){return `<label for="${id}">${label}</label><input id="${id}" type="${type}" value="${esc(value)}" ${extra}>`;}
@@ -109,7 +109,7 @@ function attachEditor(layer, clickPoint){
   addToOwner(layer);attachClick(layer);attachViewer(layer);updateDetails(layer);renderLegend();refreshWarRoom();closeFloatingEditor();
  };
 }
-function loadFeature(layer,props,geom){const oldOwner=props.owner||props.category||'Neutral';layer._lw={title:props.title||(geom==='Point'?'Map marker':'Unnamed territory'),owner:factionKey(oldOwner),color:safeColor(props.color||factionColor(oldOwner)),status:STATUSES[props.status]?props.status:((String(oldOwner).toLowerCase()==='neutral')?'neutral':'controlled'),type:TERRITORY_TYPES[props.type]?props.type:(geom==='Point'?(props.icon==='city'?'city':props.icon==='fort'?'fort':'territory'):'territory'),icon:props.icon&&ICONS[props.icon]?props.icon:(props.icon==='city'?'capital':props.icon==='fort'?'fort':'auto'),description:props.description||'',defense:clampRating(props.defense),attacker:props.attacker||'',attackerRating:clampRating(props.attackerRating),importance:props.importance||'',garrison:props.garrison||'',fortifications:props.fortifications||'',battleNotes:props.battleNotes||'',lastUpdated:props.lastUpdated||'',history:Array.isArray(props.history)?props.history:[],battleStart:props.battleStart||'',battleEnd:props.battleEnd||'',battleType:props.battleType||'',strategicNotes:props.strategicNotes||''};addToOwner(layer);attachClick(layer);}
+function loadFeature(layer,props,geom){const oldOwner=props.owner||props.category||'Neutral';layer._lw={title:props.title||(geom==='Point'?'Map marker':'Unnamed territory'),owner:factionKey(oldOwner),color:safeColor(props.color||factionColor(oldOwner)),status:STATUSES[props.status]?props.status:((String(oldOwner).toLowerCase()==='neutral')?'neutral':'controlled'),type:TERRITORY_TYPES[props.type]?props.type:(geom==='Point'?(props.icon==='city'?'city':props.icon==='fort'?'fort':'territory'):'territory'),icon:props.icon&&ICONS[props.icon]?props.icon:(props.icon==='city'?'capital':props.icon==='fort'?'fort':'auto'),description:props.description||'',defense:clampRating(props.defense),attacker:props.attacker||'',attackerRating:clampRating(props.attackerRating),importance:props.importance||'',garrison:props.garrison||'',fortifications:props.fortifications||'',battleNotes:props.battleNotes||'',lastUpdated:props.lastUpdated||'',history:Array.isArray(props.history)?props.history:[],battleStart:props.battleStart||'',battleEnd:props.battleEnd||'',battleType:props.battleType||'',strategicNotes:props.strategicNotes||''};addToOwner(layer);attachClick(layer);if(!ADMIN)attachViewer(layer);}
 
 
 function matchesFilters(layer){
