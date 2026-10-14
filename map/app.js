@@ -241,68 +241,80 @@ function manageFactions(){
  $('fm-export').onclick=exportFactionProfiles;$('fm-close').onclick=()=>modal.remove();
 }
 
-// Shared-boundary geometry: snap new polygon vertices to existing vertices OR
-// existing border segments, then split existing rings at the snapped points.
-// This makes matching borders use identical coordinates rather than merely nearby lines.
+// Shared-edge topology helper. Unlike simple vertex snapping, this aligns a new
+// edge to an existing edge when both endpoints are close to the same segment,
+// then inserts the same vertices into both polygon rings where the edges meet.
 function snapPolygonVertices(layer){
  if(!(layer instanceof L.Polygon) || layer instanceof L.Rectangle || !map || !layer.getLatLngs) return layer;
- const SNAP_PIXELS=24, candidates=[], existingPolygons=[];
- const isLL=v=>v && Number.isFinite(v.lat) && Number.isFinite(v.lng);
- function walkRings(value,fn){
-  if(!Array.isArray(value))return;
-  if(value.length && isLL(value[0])){fn(value);return;}
-  value.forEach(v=>walkRings(v,fn));
- }
- function collectVertices(value){if(Array.isArray(value)){value.forEach(collectVertices);return;}if(isLL(value))candidates.push(value);}
- function nearestOnSegment(p,a,b){
-  const dx=b.x-a.x,dy=b.y-a.y,den=dx*dx+dy*dy;
-  const t=den?Math.max(0,Math.min(1,((p.x-a.x)*dx+(p.y-a.y)*dy)/den)):0;
-  const q=L.point(a.x+t*dx,a.y+t*dy);return {point:q,distance:p.distanceTo(q),t};
- }
+ const SNAP_PX=18, EDGE_PX=3, existing=[];
+ const isLL=v=>v&&Number.isFinite(v.lat)&&Number.isFinite(v.lng);
+ function rings(tree,fn){if(!Array.isArray(tree))return;if(tree.length&&isLL(tree[0]))fn(tree);else tree.forEach(v=>rings(v,fn));}
+ function xy(ll){return map.latLngToContainerPoint(ll);}
+ function nearest(p,a,b){const dx=b.x-a.x,dy=b.y-a.y,den=dx*dx+dy*dy;const t=den?Math.max(0,Math.min(1,((p.x-a.x)*dx+(p.y-a.y)*dy)/den)):0;const q=L.point(a.x+t*dx,a.y+t*dy);return {q,t,d:p.distanceTo(q)};}
+ function same(a,b){return xy(a).distanceTo(xy(b))<0.2;}
  allLayers.forEach(other=>{
-  if(other===layer || !(other instanceof L.Polygon) || other instanceof L.Rectangle || !other.getLatLngs)return;
-  existingPolygons.push(other);const latlngs=other.getLatLngs();collectVertices(latlngs);
-  walkRings(latlngs,ring=>{for(let i=0;i<ring.length-1;i++){
-   const a=ring[i],b=ring[i+1];candidates.push({__segment:true,a,b,ap:map.latLngToContainerPoint(a),bp:map.latLngToContainerPoint(b)});
-  }});
- });
- if(!candidates.length)return layer;
- const vertexCandidates=candidates.filter(v=>!v.__segment).map(ll=>({ll,pt:map.latLngToContainerPoint(ll)}));
- const segmentCandidates=candidates.filter(v=>v.__segment);
- function snapTree(value){
-  if(Array.isArray(value))return value.map(snapTree);
-  if(!isLL(value))return value;
-  const pt=map.latLngToContainerPoint(value);let best=null,bestDist=SNAP_PIXELS;
-  for(const c of vertexCandidates){const d=pt.distanceTo(c.pt);if(d<bestDist){best=c.ll;bestDist=d;}}
-  for(const c of segmentCandidates){const hit=nearestOnSegment(pt,c.ap,c.bp);if(hit.distance<bestDist){best=map.containerPointToLatLng(hit.point);bestDist=hit.distance;}}
-  return best?L.latLng(best.lat,best.lng):value;
- }
- layer.setLatLngs(snapTree(layer.getLatLngs()));
- // Add any new polygon vertices that land on an existing edge to that edge's ring.
- // Thus both polygons describe the shared segment using the same coordinate sequence.
- const newVertices=[];walkRings(layer.getLatLngs(),ring=>ring.forEach(ll=>newVertices.push(ll)));
- function splitExistingTree(value){
-  if(!Array.isArray(value))return value;
-  if(value.length && isLL(value[0])){
-   const ring=[];
-   for(let i=0;i<value.length-1;i++){
-    const a=value[i],b=value[i+1];ring.push(a);
-    const ap=map.latLngToContainerPoint(a),bp=map.latLngToContainerPoint(b),hits=[];
-    newVertices.forEach(v=>{
-     const vp=map.latLngToContainerPoint(v),hit=nearestOnSegment(vp,ap,bp);
-     if(hit.t>1e-7&&hit.t<1-1e-7&&hit.distance<1.25)hits.push({t:hit.t,ll:v});
-    });
-    hits.sort((x,y)=>x.t-y.t).forEach(h=>{const last=ring[ring.length-1];if(!last||map.latLngToContainerPoint(last).distanceTo(map.latLngToContainerPoint(h.ll))>0.25)ring.push(L.latLng(h.ll.lat,h.ll.lng));});
+  if(other===layer||!(other instanceof L.Polygon)||other instanceof L.Rectangle||!other.getLatLngs)return;
+  rings(other.getLatLngs(),ring=>{
+   for(let i=0;i<ring.length;i++){
+    const a=ring[i],b=ring[(i+1)%ring.length]; if(!a||!b||same(a,b))continue;
+    existing.push({layer:other,ring,a,b,ap:xy(a),bp:xy(b)});
    }
-   ring.push(value[value.length-1]);return ring;
-  }
-  return value.map(splitExistingTree);
+  });
+ });
+ if(!existing.length)return layer;
+ const existingVertices=[];existing.forEach(s=>{existingVertices.push(s.a,s.b);});
+ function snapPoint(ll){
+  const p=xy(ll);let best=null,dist=SNAP_PX;
+  for(const v of existingVertices){const d=p.distanceTo(xy(v));if(d<dist){dist=d;best=v;}}
+  for(const s of existing){const hit=nearest(p,s.ap,s.bp);if(hit.d<dist){dist=hit.d;best=map.containerPointToLatLng(hit.q);}}
+  return best?L.latLng(best.lat,best.lng):ll;
  }
- existingPolygons.forEach(other=>{const updated=splitExistingTree(other.getLatLngs());other.setLatLngs(updated);if(other.redraw)other.redraw();});
+ // First snap all new vertices. Then, for each new edge, if both endpoints
+ // lie near one existing segment, project BOTH onto that same segment. This
+ // avoids two independently snapped endpoints creating a nearly-parallel line.
+ let tree=layer.getLatLngs();
+ function snapTree(v){if(Array.isArray(v))return v.map(snapTree);return isLL(v)?snapPoint(v):v;}
+ tree=snapTree(tree);
+ function alignRings(v){
+  if(!Array.isArray(v))return v;
+  if(v.length&&isLL(v[0])){
+   const out=v.map(ll=>L.latLng(ll.lat,ll.lng));
+   for(let i=0;i<out.length;i++){
+    const j=(i+1)%out.length, a=xy(out[i]),b=xy(out[j]); let best=null,bestScore=Infinity;
+    for(const s of existing){const ha=nearest(a,s.ap,s.bp),hb=nearest(b,s.ap,s.bp);
+     if(ha.d<=SNAP_PX&&hb.d<=SNAP_PX){const span=Math.abs(ha.t-hb.t);if(span<0.015)continue;const score=ha.d+hb.d;if(score<bestScore){bestScore=score;best={s,ha,hb};}}
+    }
+    if(best){const pa=map.containerPointToLatLng(best.ha.q),pb=map.containerPointToLatLng(best.hb.q);out[i]=L.latLng(pa.lat,pa.lng);out[j]=L.latLng(pb.lat,pb.lng);}
+   }
+   return out;
+  }
+  return v.map(alignRings);
+ }
+ tree=alignRings(tree);layer.setLatLngs(tree);
+ // Gather new polygon vertices, and add each one to an existing edge if it
+ // lies on that edge. This makes shared junctions use the same vertex sequence.
+ const newVertices=[];rings(layer.getLatLngs(),ring=>ring.forEach(ll=>newVertices.push(ll)));
+ function splitTree(v){
+  if(!Array.isArray(v))return v;
+  if(v.length&&isLL(v[0])){
+   const out=[];
+   for(let i=0;i<v.length;i++){
+    const a=v[i],b=v[(i+1)%v.length],ap=xy(a),bp=xy(b);out.push(a);
+    if(i===v.length-1)continue;
+    const hits=[];
+    newVertices.forEach(ll=>{if(same(ll,a)||same(ll,b))return;const h=nearest(xy(ll),ap,bp);if(h.d<=EDGE_PX&&h.t>1e-6&&h.t<1-1e-6)hits.push({t:h.t,ll});});
+    hits.sort((x,y)=>x.t-y.t).forEach(h=>{if(!out.length||!same(out[out.length-1],h.ll))out.push(L.latLng(h.ll.lat,h.ll.lng));});
+   }
+   return out;
+  }
+  return v.map(splitTree);
+ }
+ const touched=new Set();
+ existing.forEach(s=>touched.add(s.layer));
+ touched.forEach(other=>{const updated=splitTree(other.getLatLngs());other.setLatLngs(updated);if(other.redraw)other.redraw();});
  if(layer.redraw)layer.redraw();
  return layer;
 }
-
 function renderLegend(){const owners={};allLayers.forEach(l=>{const p=meta(l);owners[p.owner.toLowerCase()]={name:p.owner,color:p.color};});const filters=document.getElementById('layerFilters');if(!filters)return;filters.innerHTML='<label class="filter"><input type="checkbox" id="showAllLayers" checked> All territories</label>'+Object.values(owners).sort((a,b)=>a.name.localeCompare(b.name)).map(o=>`<label class="filter"><input type="checkbox" data-owner="${esc(o.name.toLowerCase())}" checked> <span class="swatch" style="color:${o.color};border-color:${o.color};background:${o.color}35"></span>${esc(o.name)}</label>`).join('');const allToggle=document.getElementById('showAllLayers');allToggle.onchange=e=>{document.querySelectorAll('[data-owner]').forEach(i=>{i.checked=e.target.checked;const g=groups[i.dataset.owner];if(g){if(i.checked)map.addLayer(g);else map.removeLayer(g);}});};document.querySelectorAll('[data-owner]').forEach(i=>i.onchange=()=>{const g=groups[i.dataset.owner];if(g){if(i.checked)map.addLayer(g);else map.removeLayer(g);}allToggle.checked=[...document.querySelectorAll('[data-owner]')].every(x=>x.checked);refreshWarRoom();});setupWarRoomFilters();refreshWarRoom();}
 document.getElementById('manageFactionsBtn')?.addEventListener('click',manageFactions);document.getElementById('exportFactionsBtn')?.addEventListener('click',exportFactionProfiles);setupWarRoomFilters();loadFactionProfiles().then(()=>fetch(DATA_URL,{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('Could not load territory data');return r.json();}).then(geo=>{if(!geo||!Array.isArray(geo.features))throw Error('Invalid GeoJSON');L.geoJSON(geo,{pointToLayer:(f,ll)=>L.marker(ll),onEachFeature:(f,layer)=>{loadFeature(layer,f.properties||{},f.geometry?.type);allLayers.push(layer);}});renderLegend();setupWarRoomFilters();refreshWarRoom();if(!allLayers.length&&ADMIN)document.getElementById('details').innerHTML='<div class="detail-name">Ready to map</div><div class="detail-copy">Use the drawing tools to add territories or markers.</div>';})).catch(err=>{console.error(err);document.getElementById('details').innerHTML='<div class="detail-name">Map data unavailable</div><div class="detail-copy">Could not load /data/overlays.geojson or faction data. Check the published files.</div>';});
 if(ADMIN){const drawControl=new L.Control.Draw({edit:{featureGroup:drawnItems,remove:true},draw:{polygon:{allowIntersection:false,showArea:true},rectangle:true,circle:false,marker:true,polyline:false,circlemarker:false}});map.addControl(drawControl);
