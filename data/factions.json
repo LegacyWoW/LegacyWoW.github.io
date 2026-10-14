@@ -1,3 +1,31 @@
 {
-  "factions": []
+  "factions": [
+    {
+      "name": "Alliance",
+      "color": "#2d8cff",
+      "emblem": "⚔️",
+      "leader": "",
+      "capital": "",
+      "description": "",
+      "lore": ""
+    },
+    {
+      "name": "Horde",
+      "color": "#e44852",
+      "emblem": "⚔️",
+      "leader": "",
+      "capital": "",
+      "description": "",
+      "lore": ""
+    },
+    {
+      "name": "Legion of the Dead",
+      "color": "#8da7c0",
+      "emblem": "⚔️",
+      "leader": "Maleficarus",
+      "capital": "Dolanaar",
+      "description": "",
+      "lore": ""
+    }
+  ]
 }
