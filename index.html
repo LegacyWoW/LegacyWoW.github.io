@@ -174,12 +174,54 @@
     }
 
     .box{
-      padding:18px 20px;
+      padding:20px 22px;
       border-radius:18px;
-      border:1px solid var(--line);
-      background:var(--glass);
+      border:1px solid rgba(140,205,255,.20);
+      background:linear-gradient(145deg,rgba(4,22,34,.76),rgba(0,0,0,.52));
       backdrop-filter:blur(8px);
-      box-shadow:0 16px 40px rgba(0,0,0,.45);
+      box-shadow:0 16px 40px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.045);
+      min-width:0;
+    }
+    .box .title{
+      color:rgba(190,225,255,.92);
+      letter-spacing:1px;
+      font-size:12px;
+      margin-bottom:13px;
+    }
+    .status-row{align-items:stretch}
+    .status-row > .box{height:100%}
+    .status-online{
+      font-size:20px;
+      letter-spacing:.35px;
+    }
+    .subline{
+      border-color:rgba(140,205,255,.14);
+      background:rgba(100,175,230,.07);
+      padding:11px 13px;
+    }
+    .players{
+      padding-top:2px;
+      line-height:1.6;
+    }
+    .updated{
+      color:rgba(232,232,232,.70);
+      line-height:1.5;
+    }
+    .realm-grid{gap:11px}
+    .kv{
+      border-color:rgba(140,205,255,.15);
+      background:linear-gradient(145deg,rgba(100,175,230,.09),rgba(0,0,0,.16));
+      padding:12px 13px;
+      min-width:0;
+    }
+    .k{
+      color:rgba(200,225,245,.75);
+      letter-spacing:.7px;
+    }
+    .v{
+      font-size:14px;
+      line-height:1.4;
+      overflow-wrap:anywhere;
     }
 
     .title{
@@ -232,7 +274,7 @@
     .realm-grid{
       display:grid;
       grid-template-columns:1fr 1fr;
-      gap:10px 14px;
+      gap:11px;
     }
     .kv{
       border:1px solid rgba(255,255,255,.10);
@@ -453,9 +495,11 @@
         <div class="title">Realm Info</div>
         <div class="realm-grid">
           <div class="kv"><div class="k">Client</div><div class="v">3.3.5a</div></div>
-          <div class="kv"><div class="k">Progression</div><div class="v">1.0.0 → 3.3.5a</div></div>
-          <div class="kv"><div class="k">Core</div><div class="v">AzerothCore</div></div>
-          <div class="kv"><div class="k">Rates</div><div class="v">x3 XP</div></div>
+          <div class="kv"><div class="k">Progression</div><div class="v">Classic → TBC → WotLK</div></div>
+          <div class="kv"><div class="k">Server Core</div><div class="v">AzerothCore</div></div>
+          <div class="kv"><div class="k">Experience</div><div class="v">x3 XP</div></div>
+          <div class="kv"><div class="k">Reputation</div><div class="v">x2 Gains</div></div>
+          <div class="kv"><div class="k">Gold</div><div class="v">x1.5 Gains</div></div>
         </div>
       </div>
     </div>
