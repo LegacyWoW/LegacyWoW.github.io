@@ -218,18 +218,59 @@ function manageFactions(){
  const existing=Object.values(factionProfiles);
  const modal=document.createElement('div');modal.className='admin-modal';
  const options=existing.map(f=>`<option value="${esc(f.name)}">${esc(f.name)}</option>`).join('');
- modal.innerHTML=`<div class="admin-modal-card"><h2>Faction Management</h2><p class="empty-note">Create faction profiles, set their colors and emblems, and add lore. Export factions.json and publish it with the map.</p><label>Choose existing faction or create new</label><select id="fm-existing"><option value="">— New faction —</option>${options}</select><label>Faction name</label><input id="fm-name" maxlength="80" placeholder="Faction name"><label>Faction color</label><input id="fm-color" type="color" value="#8da7c0"><label>Emblem (emoji, optional)</label><input id="fm-emblem" maxlength="8" value="" placeholder="Leave blank for no emblem"><label>Leader / ruling guild</label><input id="fm-leader" maxlength="100"><label>Capital territory name</label><input id="fm-capital" maxlength="100"><label>Short description</label><textarea id="fm-description" maxlength="500"></textarea><label>Lore / faction background</label><textarea id="fm-lore" maxlength="2000"></textarea><div class="modal-actions"><button class="btn" id="fm-save">Save faction</button><button class="btn" id="fm-export">Export factions.json</button><button class="btn" id="fm-close">Close</button></div></div>`;
+ modal.innerHTML=`<div class="admin-modal-card"><h2>Faction Management</h2><p class="empty-note">Create faction profiles, set their colors and emblems, and add lore. Export factions.json and publish it with the map.</p><label>Choose existing faction or create new</label><select id="fm-existing"><option value="">— New faction —</option>${options}</select><label>Faction name</label><input id="fm-name" maxlength="80" placeholder="Faction name"><label>Faction color</label><input id="fm-color" type="color" value="#8da7c0"><label>Emblem (emoji, optional)</label><input id="fm-emblem" maxlength="8" value="" placeholder="Leave blank for no emblem"><label>Leader / ruling guild</label><input id="fm-leader" maxlength="100"><label>Capital territory name</label><input id="fm-capital" maxlength="100"><label>Short description</label><textarea id="fm-description" maxlength="500"></textarea><label>Lore / faction background</label><textarea id="fm-lore" maxlength="2000"></textarea><div class="modal-actions"><button class="btn" id="fm-save">Save faction</button><button class="btn" id="fm-delete" style="border-color:#b84a4a;background:rgba(184,74,74,.18)">Delete selected faction</button><button class="btn" id="fm-export">Export factions.json</button><button class="btn" id="fm-close">Close</button></div></div>`;
  document.body.appendChild(modal);
  const $=id=>modal.querySelector('#'+id);
  $('fm-existing').onchange=()=>{const f=factionProfiles[groupKey($('fm-existing').value)];$('fm-name').value=f?.name||'';$('fm-color').value=f?.color||'#8da7c0';$('fm-emblem').value=f?.emblem||'';$('fm-leader').value=f?.leader||'';$('fm-capital').value=f?.capital||'';$('fm-description').value=f?.description||'';$('fm-lore').value=f?.lore||'';};
  $('fm-save').onclick=()=>{const name=$('fm-name').value.trim();if(!name)return alert('Enter a faction name.');factionProfiles[groupKey(name)]={name,color:safeColor($('fm-color').value),emblem:$('fm-emblem').value.trim(),leader:$('fm-leader').value.trim(),capital:$('fm-capital').value.trim(),description:$('fm-description').value.trim(),lore:$('fm-lore').value.trim()};renderFactionCards();$('fm-existing').innerHTML='<option value="">— New faction —</option>'+Object.values(factionProfiles).map(f=>`<option value="${esc(f.name)}">${esc(f.name)}</option>`).join('');$('fm-existing').value=name;alert('Faction saved in this editing session. Export factions.json and publish it to make it public.');};
+ $('fm-delete').onclick=()=>{
+  const selected=$('fm-existing').value;
+  if(!selected)return alert('Choose an existing faction to delete first.');
+  const key=groupKey(selected), faction=factionProfiles[key];
+  if(!faction)return alert('That faction profile could not be found.');
+  const used=territoryLayers().filter(layer=>groupKey(meta(layer).owner)===key).length;
+  const warning=used?`\n\n${used} map item(s) are still assigned to this faction. Deleting its profile will NOT delete those map items or change their owners.`:'';
+  if(!confirm(`Delete the faction profile for "${faction.name}"?\n\nThis change is local until you export factions.json and publish it.${warning}`))return;
+  delete factionProfiles[key];
+  renderFactionCards();
+  $('fm-existing').innerHTML='<option value="">— New faction —</option>'+Object.values(factionProfiles).map(f=>`<option value="${esc(f.name)}">${esc(f.name)}</option>`).join('');
+  $('fm-existing').value='';
+  $('fm-name').value='';$('fm-color').value='#8da7c0';$('fm-emblem').value='';$('fm-leader').value='';$('fm-capital').value='';$('fm-description').value='';$('fm-lore').value='';
+  alert('Faction profile deleted from this editing session. Click Export factions.json and publish the downloaded file to make the deletion permanent.');
+};
  $('fm-export').onclick=exportFactionProfiles;$('fm-close').onclick=()=>modal.remove();
 }
 
-// Compatibility-safe geometry hook. Earlier builds called this after drawing/editing,
-// but the helper was missing, which threw a ReferenceError and aborted marker/shape creation.
-// Leaflet Draw already supplies the finished geometry, so leave it unchanged here.
-function snapPolygonVertices(layer){ return layer; }
+// Snap newly drawn/edited polygon vertices to nearby existing polygon vertices.
+// This makes it much easier to make neighboring territories share exact corner points.
+// It does not perform polygon clipping or guarantee that interiors never overlap.
+function snapPolygonVertices(layer){
+ if(!(layer instanceof L.Polygon) || layer instanceof L.Rectangle || !map || !layer.getLatLngs) return layer;
+ const candidates=[];
+ function collectExisting(value){
+  if(Array.isArray(value)){value.forEach(collectExisting);return;}
+  if(value && Number.isFinite(value.lat) && Number.isFinite(value.lng)) candidates.push(value);
+ }
+ allLayers.forEach(other=>{
+  if(other===layer || !(other instanceof L.Polygon) || !other.getLatLngs) return;
+  collectExisting(other.getLatLngs());
+ });
+ if(!candidates.length)return layer;
+ const candidatePoints=candidates.map(ll=>({ll,pt:map.latLngToContainerPoint(ll)}));
+ const SNAP_PIXELS=12;
+ function snapTree(value){
+  if(Array.isArray(value))return value.map(snapTree);
+  if(value && Number.isFinite(value.lat) && Number.isFinite(value.lng)){
+   const pt=map.latLngToContainerPoint(value);let best=null,bestDist=SNAP_PIXELS;
+   for(const c of candidatePoints){const d=pt.distanceTo(c.pt);if(d<bestDist){best=c.ll;bestDist=d;}}
+   return best ? L.latLng(best.lat,best.lng) : value;
+  }
+  return value;
+ }
+ layer.setLatLngs(snapTree(layer.getLatLngs()));
+ if(layer.redraw)layer.redraw();
+ return layer;
+}
 
 function renderLegend(){const owners={};allLayers.forEach(l=>{const p=meta(l);owners[p.owner.toLowerCase()]={name:p.owner,color:p.color};});const filters=document.getElementById('layerFilters');if(!filters)return;filters.innerHTML='<label class="filter"><input type="checkbox" id="showAllLayers" checked> All territories</label>'+Object.values(owners).sort((a,b)=>a.name.localeCompare(b.name)).map(o=>`<label class="filter"><input type="checkbox" data-owner="${esc(o.name.toLowerCase())}" checked> <span class="swatch" style="color:${o.color};border-color:${o.color};background:${o.color}35"></span>${esc(o.name)}</label>`).join('');const allToggle=document.getElementById('showAllLayers');allToggle.onchange=e=>{document.querySelectorAll('[data-owner]').forEach(i=>{i.checked=e.target.checked;const g=groups[i.dataset.owner];if(g){if(i.checked)map.addLayer(g);else map.removeLayer(g);}});};document.querySelectorAll('[data-owner]').forEach(i=>i.onchange=()=>{const g=groups[i.dataset.owner];if(g){if(i.checked)map.addLayer(g);else map.removeLayer(g);}allToggle.checked=[...document.querySelectorAll('[data-owner]')].every(x=>x.checked);refreshWarRoom();});setupWarRoomFilters();refreshWarRoom();}
 document.getElementById('manageFactionsBtn')?.addEventListener('click',manageFactions);document.getElementById('exportFactionsBtn')?.addEventListener('click',exportFactionProfiles);setupWarRoomFilters();loadFactionProfiles().then(()=>fetch(DATA_URL,{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('Could not load territory data');return r.json();}).then(geo=>{if(!geo||!Array.isArray(geo.features))throw Error('Invalid GeoJSON');L.geoJSON(geo,{pointToLayer:(f,ll)=>L.marker(ll),onEachFeature:(f,layer)=>{loadFeature(layer,f.properties||{},f.geometry?.type);allLayers.push(layer);}});renderLegend();setupWarRoomFilters();refreshWarRoom();if(!allLayers.length&&ADMIN)document.getElementById('details').innerHTML='<div class="detail-name">Ready to map</div><div class="detail-copy">Use the drawing tools to add territories or markers.</div>';})).catch(err=>{console.error(err);document.getElementById('details').innerHTML='<div class="detail-name">Map data unavailable</div><div class="detail-copy">Could not load /data/overlays.geojson or faction data. Check the published files.</div>';});
