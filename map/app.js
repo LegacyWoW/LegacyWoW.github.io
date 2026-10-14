@@ -13,7 +13,7 @@ const bounds=[[0,0],[IMAGE_HEIGHT,IMAGE_WIDTH]]; map.fitBounds(bounds);map.setMa
 // feature, can be moved anywhere on the page, and is recreated at the next feature's anchor.
 let activeEditor = null;
 function closeFloatingEditor(){ if(activeEditor){ activeEditor.remove(); activeEditor=null; } }
-function openFloatingEditor(layer, html){
+function openFloatingEditor(layer, html, clickPoint){
  closeFloatingEditor();
  const panel=document.createElement('section');
  panel.className='lw-floating-editor';
@@ -22,14 +22,22 @@ function openFloatingEditor(layer, html){
  document.body.appendChild(panel); activeEditor=panel;
  const point=layer instanceof L.Marker ? map.latLngToContainerPoint(layer.getLatLng()) : map.latLngToContainerPoint(layer.getBounds ? layer.getBounds().getCenter() : map.getCenter());
  const mapRect=map.getContainer().getBoundingClientRect();
- const desiredLeft=mapRect.left+point.x+18, desiredTop=mapRect.top+point.y-40;
- panel.style.left=Math.max(8,Math.min(desiredLeft,window.innerWidth-340))+'px';
- panel.style.top=Math.max(8,Math.min(desiredTop,window.innerHeight-280))+'px';
+ // Prefer the exact mouse click position. Polygon bounds centers can be far from the
+ // border/point the administrator actually clicked.
+ const anchorX=clickPoint?.x ?? (mapRect.left+point.x);
+ const anchorY=clickPoint?.y ?? (mapRect.top+point.y);
+ const panelWidth=360, panelHeight=Math.min(600,window.innerHeight-32);
+ let left=anchorX+18, top=anchorY-40;
+ if(left+panelWidth>window.innerWidth-8) left=anchorX-panelWidth-18;
+ if(top+panelHeight>window.innerHeight-8) top=window.innerHeight-panelHeight-8;
+ panel.style.left=left+'px'; panel.style.top=top+'px';
  panel.querySelector('.lw-floating-close').addEventListener('click',closeFloatingEditor);
- const handle=panel.querySelector('.lw-floating-head'); let dragging=false, sx=0, sy=0, ox=0, oy=0;
- handle.addEventListener('pointerdown',ev=>{if(ev.target.closest('button'))return; if(ev.button!==0)return; dragging=true;sx=ev.clientX;sy=ev.clientY;ox=panel.offsetLeft;oy=panel.offsetTop;handle.setPointerCapture?.(ev.pointerId);panel.classList.add('is-dragging');ev.preventDefault();});
- handle.addEventListener('pointermove',ev=>{if(!dragging)return;panel.style.left=(ox+ev.clientX-sx)+'px';panel.style.top=(oy+ev.clientY-sy)+'px';});
- const stop=()=>{dragging=false;panel.classList.remove('is-dragging');}; handle.addEventListener('pointerup',stop);handle.addEventListener('pointercancel',stop);
+ const handle=panel.querySelector('.lw-floating-head'); let dragging=false, sx=0, sy=0, ox=0, oy=0, activePointer=null;
+ // Listen on document during drag so movement continues even when the cursor leaves the header.
+ handle.addEventListener('pointerdown',ev=>{if(ev.target.closest('button')||ev.button!==0)return;dragging=true;activePointer=ev.pointerId;sx=ev.clientX;sy=ev.clientY;const r=panel.getBoundingClientRect();ox=r.left;oy=r.top;panel.classList.add('is-dragging');ev.preventDefault();});
+ const movePanel=ev=>{if(!dragging|| (activePointer!==null && ev.pointerId!==activePointer))return;panel.style.left=(ox+ev.clientX-sx)+'px';panel.style.top=(oy+ev.clientY-sy)+'px';};
+ const stop=ev=>{if(!dragging)return;if(ev && activePointer!==null && ev.pointerId!==activePointer)return;dragging=false;activePointer=null;panel.classList.remove('is-dragging');};
+ document.addEventListener('pointermove',movePanel);document.addEventListener('pointerup',stop);document.addEventListener('pointercancel',stop);
  return panel.querySelector('.lw-floating-body');
 }
 const groups={}; const drawnItems=new L.FeatureGroup().addTo(map); let allLayers=[]; let selectedLayer=null;
@@ -71,22 +79,22 @@ if(p.importance) html+=`<br><strong>Strategic importance:</strong> ${esc(p.impor
 html+='</div>';layer.bindPopup(html,{className:'lw-dark-popup'});if(layer.setTooltipContent)layer.bindTooltip(`${iconLabel(layer)} ${esc(p.title)}`,{direction:'top',sticky:true,opacity:.96});}
 function attachClick(layer){
  layer.off('click');
- layer.on('click',()=>{
+ layer.on('click',(event)=>{
    if(selectedLayer && selectedLayer!==layer && !(selectedLayer instanceof L.Marker)) applyStyle(selectedLayer);
    selectedLayer=layer;
    if(layer instanceof L.Marker){layer.setZIndexOffset(1200);if(layer._icon)layer._icon.style.zIndex='1200';}
    else if(layer.setStyle)layer.setStyle({color:'#f6d477',weight:4,opacity:1,fillOpacity:.34});
-   if(ADMIN)attachEditor(layer);else{attachViewer(layer);updateDetails(layer);}
+   if(ADMIN){const oe=event?.originalEvent;attachEditor(layer,oe?{x:oe.clientX,y:oe.clientY}:null);}else{attachViewer(layer);updateDetails(layer);}
  });
 }
 function field(label,id,value,type='text',extra=''){return `<label for="${id}">${label}</label><input id="${id}" type="${type}" value="${esc(value)}" ${extra}>`;}
-function attachEditor(layer){
+function attachEditor(layer, clickPoint){
  const p=meta(layer);
  const types=Object.entries(TERRITORY_TYPES).map(([k,v])=>`<option value="${k}" ${p.type===k?'selected':''}>${v}</option>`).join('');
  const statuses=Object.entries(STATUSES).map(([k,v])=>`<option value="${k}" ${p.status===k?'selected':''}>${v}</option>`).join('');
  const icons=Object.entries(ICONS).map(([k,v])=>`<option value="${k}" ${iconOf(layer)===k?'selected':''}>${v.emoji} ${v.label}</option>`).join('');
  const html=`<div class="edit-form">${field('Territory name','lw-title',p.title,'text','maxlength="100"')}${field('Faction / owner name (create any faction)','lw-owner',p.owner,'text','maxlength="80" placeholder="e.g. Alliance, Horde, Guild name"')}<label>Territory color</label><input id="lw-color" type="color" value="${p.color}"><label>Territory type</label><select id="lw-type">${types}</select><label>Map icon</label><select id="lw-icon">${icons}</select><label>Territory status</label><select id="lw-status">${statuses}</select>${field('Defense rating (any number)','lw-defense',p.defense,'number','step="any"')}<div id="siegeFields" style="display:${p.status==='attacked'||p.status==='contested'?'grid':'none'};gap:7px"><label for="lw-attacker">Attacker / attacking faction</label><input id="lw-attacker" value="${esc(p.attacker)}" maxlength="100" placeholder="Who is attacking?">${field('Attacker rating (any number)','lw-attackrating',p.attackerRating,'number','step="any"')}</div><label>Strategic importance</label><select id="lw-importance"><option value="" ${!p.importance?'selected':''}>Not specified</option>${['Low','Moderate','High','Critical'].map(v=>`<option ${p.importance===v?'selected':''}>${v}</option>`).join('')}</select>${field('Garrison strength (optional)','lw-garrison',p.garrison)}<label>Defensive fortifications (optional)</label><textarea id="lw-fortifications" maxlength="500">${esc(p.fortifications)}</textarea><label>Battle notes (optional)</label><textarea id="lw-battle-notes" maxlength="1000">${esc(p.battleNotes)}</textarea>${field('Last updated (optional)','lw-last-updated',p.lastUpdated)}${field('Battle / siege type (optional)','lw-battle-type',p.battleType)}${field('Battle start date (optional)','lw-battle-start',p.battleStart)}${field('Battle end date (optional)','lw-battle-end',p.battleEnd)}<label>Strategic notes (optional)</label><textarea id="lw-strategic-notes" maxlength="1000">${esc(p.strategicNotes)}</textarea><label>Chronicle entries (one per line: YYYY-MM-DD | Event title | Details)</label><textarea id="lw-history" maxlength="4000" placeholder="2026-10-13 | Siege begins | The attackers reached the outer gate.">${esc(p.history.map(h=>[h.date||'',h.title||'',h.details||''].join(' | ')).join('\n'))}</textarea><label>Information</label><textarea id="lw-description" maxlength="1000" placeholder="Optional details, defenses, history, siege notes">${esc(p.description)}</textarea><button class="btn" id="lw-save" type="button">Save territory</button><div class="statusline">Changes are local until you export and publish the GeoJSON.</div></div>`;
- const body=openFloatingEditor(layer,html);
+ const body=openFloatingEditor(layer,html,clickPoint);
  const status=body.querySelector('#lw-status');
  status.onchange=()=>{body.querySelector('#siegeFields').style.display=(status.value==='attacked'||status.value==='contested')?'grid':'none';};
  const typeSelect=body.querySelector('#lw-type'),iconSelect=body.querySelector('#lw-icon');
