@@ -44,6 +44,23 @@ strong{color:#f0f7ff}
 footer{border-top:1px solid var(--line);padding:18px 0;background:rgba(5,10,17,.96);color:var(--muted);font-size:12.5px}
 @media(max-width:720px){.wrap{padding:0 14px}.top{align-items:flex-start}.rule-grid{grid-template-columns:1fr}nav{gap:6px}nav a{padding:8px 10px;font-size:12px}.intro{border-radius:16px}main{padding-top:22px}}
 
+  
+.guild-war{margin-top:20px;padding:clamp(18px,3vw,30px);border:1px solid rgba(143,208,255,.2);border-radius:16px;background:rgba(8,17,28,.72);min-width:0}
+.guild-war-eyebrow{text-transform:uppercase;letter-spacing:1.8px;color:var(--blue);font-size:11px;font-weight:900;margin:0 0 8px}
+.guild-war h2{margin:2em 0 .65em;padding-bottom:.42em;border-bottom:1px solid var(--line);font-size:clamp(20px,3vw,25px);line-height:1.3;color:#c8e7ff}
+.guild-war h2.guild-war-title{margin-top:0;font-size:clamp(23px,4vw,30px);color:#f0f7ff;border-bottom-color:rgba(143,208,255,.32)}
+.guild-war h3{margin:1.5em 0 .45em;font-size:17px;color:#d8ebfb}
+.guild-war p{color:#d2deea;margin:8px 0 12px}
+.guild-war ul,.guild-war ol{padding-left:22px;margin:8px 0 14px}
+.guild-war li{padding-left:2px;margin:5px 0;color:#d2deea}
+.guild-war li::marker{color:#75bdf3}
+.guild-war strong{color:#f0f7ff}
+.guild-war .table-wrap{overflow-x:auto;margin:14px 0 18px;border-radius:9px}
+.guild-war table{width:100%;border-collapse:collapse;min-width:460px;font-variant-numeric:tabular-nums}
+.guild-war th,.guild-war td{padding:10px 12px;border:1px solid var(--line);text-align:left}
+.guild-war th{background:rgba(74,169,239,.13);color:#f0f7ff}
+.guild-war tr:nth-child(even) td{background:rgba(143,208,255,.035)}
+
   </style>
 </head>
 <body>
@@ -160,19 +177,377 @@ footer{border-top:1px solid var(--line);padding:18px 0;background:rgba(5,10,17,.
           </section>
         </div>
 
-        <section class="archived">
-          <span class="archive-label">Archived — Discontinued Mode</span>
-          <h2>Guild War Rules (Historical)</h2>
-          <p><strong>Guild War has been discontinued.</strong> The following text is retained for historical reference only and does not describe an active game mode. These rules should not be treated as current gameplay instructions.</p>
-          <p>Guild War was an optional game mode that allowed guilds to compete in the open world for control of key locations. Participation was not required, and the mode did not directly impact players who chose not to opt in.</p>
-          <p><strong>How to Participate:</strong> Historically, a Guild Master purchased a Guildhouse in a major city. Guild members could speak with their assigned Guild Officer inside the Guildhouse to begin attacking, defending, or capturing locations.</p>
-          <p><strong>Cities:</strong> Cities were the largest and most valuable locations in Guild War. They provided income and allowed the controlling guild to set tax rates on player transactions, with revenue deposited into the guild bank. To capture a contested city, a guild acquired <strong>Marks of Control</strong> and deposited them into the guild bank under the tab corresponding to the target location. At 50% control, the city became theirs. Cities required upkeep and could become vulnerable to siege if control fell below 50%. They could be sieged once per day; a successful defense locked the city against attacks for three days.</p>
-          <p><strong>Forts:</strong> Forts were strategic military positions across the open world. They could initially be claimed using Marks of Control. Opposing guilds could weaken control by raiding the fort and defeating its Officer. After sufficient successful raids, the fort became contested again. Forts required less upkeep than cities and were vulnerable during designated raid windows. They could be attacked five times daily; a successful defense prevented further attacks for 24 hours.</p>
-          <p><strong>Outposts:</strong> Outposts were smaller locations chosen for income or strategic positioning, such as Goldshire. They required minimal upkeep and could be weakened by defeating the stationed Officer or through Marks of Control. Outposts could expand into nearby areas. They had no fixed attack limit, but a successful defense protected them from attacks for 12 hours.</p>
-          <p><strong>Territories:</strong> Territories were adjacent lands influenced by nearby controlled locations. Stable control extended influence into surrounding areas; weakened control could cause areas to revert to neutral. Territories provided minor gold income and acted as a buffer between major holdings.</p>
-          <p><strong>Additional Rules:</strong> Guilds could form alliances. During a siege, players could reinforce another guild by submitting an in-game ticket specifying whom they wished to support and how; reinforcements were subject to associated costs.</p>
-          <p>Guilds could also be <strong>vassalized</strong> if they lost all territories or both the Guild Master and officers were defeated in a duel. Vassalized guilds fell under another guild's control or influence. Guild Masters were allowed up to five key officers.</p>
-          <p>Guilds received NPC bots to assist with offense and defense. Units could join a group, be stationed at controlled locations, or be deployed in attacks. The historical limit was <strong>five NPCs per 25 guild members</strong>; exceeding it was described as a severe violation that could result in a Guild Master ban and permanent guild disbandment.</p>
+        <section class="guild-war">
+          <p class="guild-war-eyebrow">Territorial Warfare System</p>
+          <h2 class="guild-war-title">Guild War — Official Rules &amp; Gameplay</h2>
+<h2>1. Overview</h2>
+<p>Guild War is a persistent territorial warfare system in which guilds compete for control of Azeroth's lands, settlements, fortifications, and strategic locations. Through conquest, resource management, military planning, and diplomacy, guilds can establish their own domains and challenge rival powers for control of the world.</p>
+<p>Every territory has strategic value. Some provide resources, others offer defensive advantages, and certain locations serve as vital military or economic centers. Success requires more than winning battles — guilds must secure their borders, maintain their holdings, and protect the roads that connect their territories.</p>
+<h2>2. Territory Types</h2>
+<p>Every zone participating in Guild War is assigned a territory type. Each type serves a different strategic purpose.</p>
+<p><strong>Territory</strong></p>
+<ul>
+<li>Represents a standard region of land.</li>
+<li>Establishes borders and determines which neighboring zones may be attacked.</li>
+<li>May provide basic income or other regional benefits.</li>
+<li>Serves as the foundation for territorial expansion.</li>
+</ul>
+<p><strong>Settlement</strong></p>
+<ul>
+<li>Represents a village, township, or inhabited outpost.</li>
+<li>May generate Gold and Supplies.</li>
+<li>Provides a staging point for military operations.</li>
+<li>Can support a limited garrison.</li>
+<li>Can receive defensive upgrades to increase its maximum defensive strength.</li>
+</ul>
+<p><strong>Fort</strong></p>
+<ul>
+<li>Represents a fortified military position or strategic stronghold.</li>
+<li>Benefits from increased defensive capabilities.</li>
+<li>Can support a substantial garrison.</li>
+<li>May control important roads, bridges, or mountain passes.</li>
+<li>Can receive defensive upgrades to increase its maximum defensive strength.</li>
+</ul>
+<p><strong>City</strong></p>
+<ul>
+<li>Represents a major population center.</li>
+<li>Provides significant economic and strategic benefits.</li>
+<li>Can support a large garrison.</li>
+<li>Requires a major military effort to capture.</li>
+<li>Can receive defensive upgrades to increase its maximum defensive strength.</li>
+</ul>
+<p><strong>Capital</strong></p>
+<ul>
+<li>A Capital is a territory designated by a guild as its seat of power.</li>
+<li>A guild may maintain one active Capital at a time.</li>
+<li>Capital status provides special strategic significance and may grant additional benefits.</li>
+<li>A Capital can receive defensive upgrades beyond the standard defensive limit.</li>
+<li>If a Capital is captured, the owning guild suffers the consequences defined by the Guild War campaign rules. The loss of a Capital does not automatically transfer all of the guild's remaining territories.</li>
+</ul>
+<p><strong>Landmark</strong></p>
+<ul>
+<li>Represents a location of historical, cultural, or strategic importance.</li>
+<li>May provide unique bonuses, prestige, or other special benefits.</li>
+<li>Can become a valuable objective during a territorial conflict.</li>
+<li>Does not qualify for defensive strength upgrades.</li>
+</ul>
+<p><strong>Guildhouse</strong></p>
+<ul>
+<li>Represents a guild's established headquarters.</li>
+<li>Provides a central location for guild administration and military organization.</li>
+<li>May offer special benefits to the owning guild.</li>
+<li>Capture and protection rules are determined by the Guild War campaign regulations.</li>
+<li>Does not qualify for defensive strength upgrades.</li>
+</ul>
+<p><strong>Camp</strong></p>
+<ul>
+<li>Represents a military encampment or forward operating position.</li>
+<li>Provides a staging point for military operations.</li>
+<li>May store limited Supplies or support a small garrison.</li>
+<li>Is generally easier to capture than a permanent fortification.</li>
+<li>Can receive limited defensive upgrades.</li>
+</ul>
+<h2>3. Territory Ownership and Borders</h2>
+<p>Guilds may expand their holdings by capturing eligible territories.</p>
+<h3>Border Requirement</h3>
+<p>A territory may only be attacked if it shares a recognized border with a territory controlled by the attacking guild, or if an explicitly permitted strategic connection provides access.</p>
+<p>Guilds cannot freely attack distant territories behind enemy lines.</p>
+<ul>
+<li>Neutral territories may be claimed or attacked according to their designation and the applicable campaign rules.</li>
+<li>Enemy-controlled territories block ordinary territorial expansion beyond their borders.</li>
+<li>Strategic crossings, such as bridges and mountain passes, may determine access between regions.</li>
+<li>Special access rules may apply to designated locations or campaign objectives.</li>
+</ul>
+<p>Territorial adjacency and permitted connections are determined by the official Guild War map.</p>
+<h2>4. Resources and Economy</h2>
+<p>Guild War uses three primary resources, alongside Gold as the guild treasury currency.</p>
+<p><strong>Lumber</strong></p>
+<ul>
+<li>Used for constructing and improving fortifications, including upgrades to DR and GS.</li>
+<li>Supports the development of camps, defensive structures, and other infrastructure.</li>
+<li>May be produced by logging camps and designated forest territories.</li>
+</ul>
+<p><strong>Ore and Minerals</strong></p>
+<ul>
+<li>Used for advanced construction, reinforced defenses, and military improvements to DR and GS.</li>
+<li>May be produced by mines and designated mineral-rich territories.</li>
+<li>Scarce mineral-producing locations can become important strategic objectives.</li>
+</ul>
+<p><strong>Supplies</strong></p>
+<ul>
+<li>Used to sustain garrisons and military operations.</li>
+<li>Supports the establishment of camps and prolonged sieges.</li>
+<li>May be produced by settlements, supply depots, and other designated locations.</li>
+<li>May be required for field army deployment and siege preparations.</li>
+</ul>
+<p><strong>Gold</strong></p>
+<ul>
+<li>Serves as the primary treasury currency.</li>
+<li>May be used for administration, recruitment, upgrades, maintenance, and other approved expenditures.</li>
+</ul>
+<h3>Resource Production</h3>
+<p>Territories may produce resources according to their type and assigned production values.</p>
+<ul>
+<li>Resource-producing locations generate their designated resources while under valid control.</li>
+<li>Production may be affected by ownership, supply access, territory condition, or special campaign rules.</li>
+<li>Resources located in isolated territories may remain stockpiled locally until a valid supply connection is restored.</li>
+<li>Capturing a resource-producing territory transfers its future production to the new owner. Existing stockpiles are handled according to the campaign's capture rules.</li>
+</ul>
+<p>Guilds are responsible for balancing expansion, military upkeep, and infrastructure development.</p>
+<h2>5. Roads, Trade, and Supply Lines</h2>
+<p>The existing roads within the World of Warcraft game world form the foundation of the Guild War trade and supply network.</p>
+<p>Roads connect settlements, resource-producing locations, cities, and other strategic holdings. They allow resources and supplies to move between connected territories when the necessary conditions are met.</p>
+<h3>Road Access</h3>
+<ul>
+<li>Roads passing through friendly-controlled territory are considered open for normal trade and supply.</li>
+<li>Roads passing through enemy-controlled territory are blocked for ordinary supply and trade unless a special rule permits access.</li>
+<li>Territories without a functioning supply connection may continue producing resources, but those resources may remain stored locally.</li>
+<li>Capturing a territory can disrupt the connections passing through it, potentially isolating neighboring holdings.</li>
+</ul>
+<h3>Strategic Crossings</h3>
+<p>Certain locations may control important routes through the world.</p>
+<p>Examples include:</p>
+<ul>
+<li>Bridges and river crossings.</li>
+<li>Mountain passes.</li>
+<li>Major road junctions.</li>
+<li>Other designated strategic connections.</li>
+</ul>
+<p>Control of these locations can influence regional access, supply movement, and military operations.</p>
+<h3>Road Raids</h3>
+<p>Guilds may conduct authorized raids against designated road connections without necessarily attempting to capture the surrounding territory.</p>
+<p>Depending on the campaign rules, a successful raid may:</p>
+<ul>
+<li>Temporarily disrupt resource deliveries.</li>
+<li>Intercept or damage a caravan's cargo.</li>
+<li>Increase supply costs for affected military holdings.</li>
+<li>Force the defending guild to protect or restore the route.</li>
+</ul>
+<p>Road raids must follow the applicable declaration, participation, and resolution requirements. They cannot be used to bypass territorial attack restrictions.</p>
+<h2>6. Defense Rating, Garrison Strength, and Field Strength</h2>
+<p>Every territory participating in Guild War has a maximum defensive capacity determined by its territory type and eligible upgrades. These limits determine the strength of the defending NPC force and the attacking NPC force deployed during a battle.</p>
+<p>The three primary strength ratings are Defense Rating (DR), Garrison Strength (GS), and Field Strength (FS).</p>
+<h3>Defense Rating (DR)</h3>
+<p>Represents the defensive advantages of a location, including terrain, fortifications, walls, and other protective improvements.</p>
+<p>DR contributes to the defensive rating used to determine the strength and advantages of the defending force.</p>
+<h3>Garrison Strength (GS)</h3>
+<p>Represents the military force assigned to defend a territory.</p>
+<p>GS contributes to the number and strength of defending NPC troops deployed during a battle. Garrison assignments must remain within the territory's permitted defensive capacity.</p>
+<h3>Field Strength (FS)</h3>
+<p>Represents the attacking force committed to a territorial assault or siege.</p>
+<p>FS determines the size and strength of the attacking NPC force deployed for the battle, subject to the applicable attack limits and siege upgrades.</p>
+<h3>Combined Defensive Strength</h3>
+<p>DR and GS share a combined defensive limit.</p>
+<p><strong>Defensive Strength = DR + GS</strong></p>
+<p>For example, a territory with DR 60 and GS 40 has a total Defensive Strength of 100.</p>
+<p>The guild may allocate its defensive capacity between DR and GS according to its strategy, provided the combined total does not exceed the permitted maximum.</p>
+<h3>Base Strength Limits</h3>
+<p>Before upgrades, the standard combined defensive cap is 100. The standard maximum FS for an attacking force is also 100.</p>
+<p>These are maximum permitted ratings, not values automatically granted to every territory or attacking guild.</p>
+<p>The actual strength assigned to a territory or committed to an attack may be lower.</p>
+<h3>Strength and NPC Deployment</h3>
+<p>Strength ratings influence both the strategic odds of a battle and the NPC troops deployed for each side.</p>
+<p>For example, if defenders have a combined Defensive Strength of 100/100 and attackers commit 75/100 FS:</p>
+<ul>
+<li>The defenders receive a stronger NPC deployment reflecting their full defensive rating.</li>
+<li>The attackers receive a smaller NPC deployment corresponding to their committed Field Strength.</li>
+<li>The defenders have a numerical advantage, but the battle is not automatically decided.</li>
+<li>The final outcome depends on the battle mechanics, NPC/player performance, and the applicable capture requirements.</li>
+</ul>
+<p>Higher ratings allow larger or stronger NPC forces to participate. The exact deployment scale is determined by the battle system.</p>
+<p>Strength ratings are therefore not merely administrative numbers; they directly influence the scale and difficulty of Guild War battles.</p>
+<h2>7. Maximum Strength by Territory Type</h2>
+<p>Every territory has a maximum combined DR + GS capacity. Only eligible territory types can increase this capacity through defensive upgrades.</p>
+<h3>Base and Upgraded Defensive Caps</h3>
+<div class="table-wrap"><table>
+<tr><th>Territory Type</th><th>Base DR + GS Cap</th><th>Maximum After Upgrades</th></tr>
+<tr><td>Territory</td><td>100</td><td>100</td></tr>
+<tr><td>Landmark</td><td>100</td><td>100</td></tr>
+<tr><td>Guildhouse</td><td>100</td><td>100</td></tr>
+<tr><td>Camp</td><td>100</td><td>125</td></tr>
+<tr><td>Settlement</td><td>100</td><td>150</td></tr>
+<tr><td>Fort</td><td>100</td><td>175</td></tr>
+<tr><td>City</td><td>100</td><td>200</td></tr>
+<tr><td>Capital</td><td>100</td><td>225</td></tr>
+</table></div>
+<p>The upgraded caps are the maximum combined defensive strength a territory can support after all permitted defensive upgrades have been applied.</p>
+<p>These caps do not grant free strength. Guilds must invest the required resources and assign DR and GS to reach the permitted maximum.</p>
+<h3>Field Strength Limits</h3>
+<div class="table-wrap"><table>
+<tr><th>Attack Condition</th><th>Maximum FS</th></tr>
+<tr><td>Standard attack</td><td>100</td></tr>
+<tr><td>Siege Tier I</td><td>125</td></tr>
+<tr><td>Siege Tier II</td><td>150</td></tr>
+<tr><td>Siege Tier III</td><td>175</td></tr>
+<tr><td>Siege Tier IV</td><td>200</td></tr>
+</table></div>
+<p>Field Strength upgrades apply to the attacking force and are temporary for the designated siege or attack. They do not permanently increase a territory's defensive capacity.</p>
+<p>The maximum FS permitted for a battle is determined by the attacking guild's available strength, purchased siege upgrades, and any applicable campaign restrictions.</p>
+<h2>8. Territory Upgrades</h2>
+<p>Guilds may invest resources to improve eligible territories and increase their maximum defensive capacity.</p>
+<p><strong>Only Camps, Settlements, Forts, Cities, and Capitals qualify for defensive strength upgrades.</strong> Territories, Landmarks, and Guildhouses remain subject to their base defensive caps.</p>
+<h3>Defensive Upgrades</h3>
+<p>Defensive upgrades increase the maximum combined DR + GS capacity of an eligible territory.</p>
+<div class="table-wrap"><table>
+<tr><th>Territory Type</th><th>Maximum Defensive Capacity</th></tr>
+<tr><td>Camp</td><td>125</td></tr>
+<tr><td>Settlement</td><td>150</td></tr>
+<tr><td>Fort</td><td>175</td></tr>
+<tr><td>City</td><td>200</td></tr>
+<tr><td>Capital</td><td>225</td></tr>
+</table></div>
+<p>Possible upgrades include:</p>
+<ul>
+<li><strong>Palisades:</strong> Improve basic defensive capabilities. (Minor increased DR)</li>
+<li><strong>Reinforced Walls:</strong> Provide stronger fortifications. (Major increased DR)</li>
+<li><strong>Watchtowers:</strong> Improve warning and intelligence capabilities. (Minor increased GS)</li>
+<li><strong>Barracks:</strong> Increase garrison capacity. (Major increased GS)</li>
+<li><strong>Fortification Repairs:</strong> Restore defensive capabilities after a siege.</li>
+</ul>
+<p>Upgrade costs, rating increases, and eligibility must be recorded in the campaign's official upgrade rules.</p>
+<p>Upgrades increase the maximum capacity a territory can support. They do not automatically increase its current DR or GS.</p>
+<p>For example, a Fort with a defensive cap of 175 may currently have DR 80 and GS 60, giving it a total of 140/175. The remaining capacity can be used by investing in further improvements or assigning additional garrison strength.</p>
+<p>A territory cannot exceed its maximum permitted defensive capacity.</p>
+<h3>Siege Upgrades</h3>
+<p>Attacking guilds may invest in siege preparations to increase the maximum FS available for a designated attack.</p>
+<ul>
+<li>Siege upgrades require the appropriate resources and Gold.</li>
+<li>The upgrade must be declared and recorded before the assault.</li>
+<li>Siege upgrades increase the permitted attacking strength but do not automatically provide the additional FS.</li>
+<li>The attacking guild must still commit the available strength and Supplies required for the assault.</li>
+<li>The maximum FS obtainable through standard siege upgrades is 200.</li>
+</ul>
+<p>Siege upgrades apply to the designated attack and do not permanently increase the attacking guild's strength for every battle.</p>
+<h3>Upgrade Restrictions</h3>
+<ul>
+<li>Upgrades must be purchased using the required resources and Gold.</li>
+<li>Lumber and Ore may be used to improve DR and GS.</li>
+<li>Supplies may be required for field army deployment and siege preparations.</li>
+<li>Each upgrade must specify its cost, effect, and applicable limits.</li>
+<li>All upgrades must be recorded on the official Guild War map.</li>
+<li>A territory's upgrade limits remain unchanged when ownership transfers.</li>
+<li>Fortification damage or other siege effects may temporarily reduce effective defensive strength.</li>
+</ul>
+<h2>9. Attacks and Territorial Conquest</h2>
+<p>Capturing a territory requires a valid attack and completion of the applicable capture conditions.</p>
+<p>A standard territorial conflict follows these stages:</p>
+<ol>
+<li><strong>Declaration:</strong> The attacking guild identifies an eligible target and declares its intention to attack.</li>
+<li><strong>Mobilization:</strong> Both sides prepare their forces and commit any required resources.</li>
+<li><strong>Preparation:</strong> The attacking and defending guilds organize their positions, fortifications, and available support.</li>
+<li><strong>Assault:</strong> The designated battle or territorial objective takes place, with NPC deployments influenced by DR, GS, and FS.</li>
+<li><strong>Resolution:</strong> The outcome is verified and the official map is updated.</li>
+</ol>
+<p>Declaring an attack does not automatically transfer ownership.</p>
+<h3>Capture Requirements</h3>
+<p>Different territory types may require different objectives.</p>
+<ul>
+<li><strong>Territories:</strong> May be captured through a designated territorial battle using DR + GS against FS.</li>
+<li><strong>Camps:</strong> May be captured by defeating the defending force or DR + GS against FS.</li>
+<li><strong>Settlements:</strong> Require the attacker to secure the designated settlement objective.</li>
+<li><strong>Landmarks:</strong> Require the attacker to secure the designated objective or DR + GS against FS.</li>
+<li><strong>Forts:</strong> May require a formal siege and the capture of a primary defensive objective.</li>
+<li><strong>Cities:</strong> May require multiple objectives to be secured before ownership can change.</li>
+<li><strong>Capitals:</strong> Require a capital siege and completion of the applicable capture objectives.</li>
+<li><strong>Guildhouses:</strong> Follow their designated headquarters protection and attack rules.</li>
+</ul>
+<p>The required strength ratings, NPC deployments, and capture conditions must be established before the battle begins.</p>
+<h3>Failed Attacks</h3>
+<p>A failed attack may result in the loss of committed Supplies, siege investments, or other resources.</p>
+<p>Defenders may receive a temporary period of protection following a successful defense. This prevents repeated attacks from overwhelming the same territory without allowing its defenders time to recover.</p>
+<h2>10. Diplomacy and Alliances</h2>
+<p>Guilds may establish diplomatic agreements where permitted by the campaign.</p>
+<p>Possible agreements include:</p>
+<ul>
+<li><strong>Non-Aggression Pacts:</strong> Temporary agreements not to attack one another.</li>
+<li><strong>Alliances:</strong> Agreements to provide mutual support under defined conditions.</li>
+<li><strong>Resource Agreements:</strong> Arrangements for exchanging resources or sharing designated economic benefits.</li>
+<li><strong>Joint Sieges:</strong> Authorized participation by multiple guilds in a common offensive.</li>
+</ul>
+<p>Agreements must have clearly defined terms and durations. Any restrictions on allied participation, shared supply access, or joint attacks must be respected.</p>
+<p>Diplomatic agreements do not override the official territory ownership and border rules.</p>
+<h2>11. Territory Status</h2>
+<p>Territory ownership and territory condition are recorded separately.</p>
+<ul>
+<li><strong>Controlled:</strong> The territory is under its owner's normal control.</li>
+<li><strong>Contested:</strong> An active conflict or siege is underway.</li>
+<li><strong>Neutral:</strong> The territory has no recognized guild owner.</li>
+<li><strong>Isolated:</strong> The territory has lost its functioning friendly supply connection.</li>
+</ul>
+<p>Trade routes may separately be designated as open, threatened, disrupted, or blockaded.</p>
+<p>These statuses help guilds understand the current strategic situation without confusing temporary military conditions with official ownership.</p>
+<h2>12. How to Make Plays &amp; Manage Guild Resources</h2>
+<p>All Guild War actions must be submitted through the official administrative process. This includes territorial attacks, siege declarations, defensive upgrades, resource transactions, and other actions that affect the campaign.</p>
+<h3>Guild Quartermaster and Guild Vault</h3>
+<p>Guild War resources can be managed through your guild's Quartermaster at any Guildhouse.</p>
+<p>All Guild War funds and resources must be kept in the guild vault. This includes:</p>
+<ul>
+<li>Gold</li>
+<li>Lumber</li>
+<li>Ore and Minerals</li>
+<li>Supplies</li>
+</ul>
+<p>Lumber, Ore, and Supplies are represented by designated stackable in-game items. Keep these items in the guild vault so the guild's stockpile can be verified. Gold remains the existing in-game currency.</p>
+<p>Resources contributed to the guild vault are held for Guild War operations and should not be treated as personal stockpiles.</p>
+<h3>Contacting Guild War Administration</h3>
+<p>To make a play, contact a GM in-game by submitting a ticket or sending in-game mail to <strong>Guildwaradmin</strong>.</p>
+<p>Your request should identify:</p>
+<ul>
+<li>Your guild.</li>
+<li>The action you want to take.</li>
+<li>The territory or target involved.</li>
+<li>Any required resource expenditure, upgrade, or siege tier.</li>
+</ul>
+<p>Examples of actions that must be submitted include:</p>
+<ul>
+<li>Declaring an attack on an eligible territory.</li>
+<li>Initiating a siege against a Fort, City, or Capital.</li>
+<li>Purchasing or applying Siege Tier I, II, III, or IV for a designated attack.</li>
+<li>Purchasing or applying a defensive upgrade to an eligible territory.</li>
+<li>Requesting or documenting a Guild War resource transfer.</li>
+</ul>
+<h3>Approval and Recordkeeping</h3>
+<p>Submitting a ticket or in-game mail does not automatically authorize an action. Wait for confirmation from Guild War administration before proceeding.</p>
+<ul>
+<li>Siege upgrades apply only to the designated attack and must be approved before the assault.</li>
+<li>Defensive upgrades apply to an eligible territory and must be recorded on the official map.</li>
+<li>Resource expenditures are deducted from the guild's available stockpile and documented by administration.</li>
+<li>All upgrades and actions remain subject to the applicable DR, GS, and FS limits.</li>
+<li>The official Guild War map remains the authoritative record of territory ownership, strength ratings, upgrades, and completed actions.</li>
+</ul>
+<p>Guilds are responsible for maintaining sufficient resources and submitting accurate requests. Unapproved actions may not be recognized.</p>
+<h2>13. Playerbots and Guild Limits</h2>
+<p>LegacyWoW supports Playerbots, but Guild War participating guilds are limited to <strong>a maximum of 10 Playerbots in their guild at any one time</strong>.</p>
+<p>This limit applies continuously, not only during active battles. Guild leaders are responsible for ensuring their guild remains within the allowed number.</p>
+<p>Exceeding the 10-Playerbot limit may result in disciplinary action. Penalties may include removal of excess bots, suspension from Guild War, removal from the Guild War campaign, or deletion of the guild. The severity of the action will be determined by staff based on the circumstances.</p>
+<p>Guilds must not use additional guilds or other arrangements to evade this limit. Staff decisions on enforcement are final.</p>
+<h2>14. Campaign Administration</h2>
+<p>The official Guild War map is the authoritative record of territory ownership, designated capitals, active conflicts, strength ratings, upgrades, and other campaign information.</p>
+<p>All territorial attacks, ownership changes, resource adjustments, upgrades, and other significant actions must follow the established administrative procedures.</p>
+<ul>
+<li>Attacks must be declared and recorded as required.</li>
+<li>Capture conditions must be satisfied before ownership changes.</li>
+<li>Resource transfers and upgrades must be documented.</li>
+<li>DR, GS, and FS must remain within their applicable limits.</li>
+<li>Disputes are resolved according to the published campaign rules.</li>
+<li>Administrative corrections should be recorded to maintain an accurate campaign history.</li>
+</ul>
+<p>The campaign administrator is responsible for maintaining the official record and ensuring that all participating guilds are treated consistently.</p>
+<h2>15. Fair Play</h2>
+<p>Guild War is intended to encourage strategic competition, organized warfare, and meaningful territorial control.</p>
+<p>All participants are expected to:</p>
+<ul>
+<li>Follow the published Guild War rules and campaign decisions.</li>
+<li>Respect declared battle requirements and deadlines.</li>
+<li>Avoid exploiting administrative procedures or territory mechanics.</li>
+<li>Honor valid diplomatic agreements.</li>
+<li>Cooperate with campaign administration when resolving disputes.</li>
+</ul>
+<p>Abuse of the system, deliberate manipulation of territory records, or repeated violations of campaign rules may result in penalties or other administrative action.</p>
+<h2>16. Final Authority</h2>
+<p>Guild War is an evolving game mode. Territory availability, resource values, strength limits, upgrade costs, NPC deployment values, capture requirements, and other mechanics may be adjusted to maintain balance and improve the campaign.</p>
+<p>The official Guild War map and published campaign announcements serve as the authoritative sources for current territory ownership, active conflicts, strength ratings, and special rules.</p>
+<p>Further rules or amendments may be introduced as the campaign develops.</p>
         </section>
       </section>
     </div>
