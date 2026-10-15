@@ -19092,6 +19092,2226 @@
           ]
         ]
       }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "Timbermaw Post",
+        "owner": "Neutral",
+        "color": "#ffffff",
+        "category": "neutral",
+        "status": "neutral",
+        "type": "territory",
+        "icon": "territory",
+        "striped": false,
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0,
+        "importance": "",
+        "garrison": "",
+        "fortifications": "",
+        "battleNotes": "",
+        "lastUpdated": "",
+        "history": [],
+        "battleStart": "",
+        "battleEnd": "",
+        "battleType": "",
+        "strategicNotes": ""
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              502,
+              767.25
+            ],
+            [
+              504.375,
+              742.375
+            ],
+            [
+              531.875,
+              746.75
+            ],
+            [
+              555,
+              750
+            ],
+            [
+              573.875,
+              750.875
+            ],
+            [
+              595.875,
+              747
+            ],
+            [
+              613.75,
+              744.75
+            ],
+            [
+              614.875,
+              757.25
+            ],
+            [
+              599.243792,
+              770.276102
+            ],
+            [
+              591.25,
+              768.375
+            ],
+            [
+              571.5,
+              766.625
+            ],
+            [
+              543,
+              764.625
+            ],
+            [
+              502,
+              767.25
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "Firefrost Hotsprings",
+        "owner": "Neutral",
+        "color": "#ffffff",
+        "category": "neutral",
+        "status": "neutral",
+        "type": "territory",
+        "icon": "territory",
+        "striped": false,
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0,
+        "importance": "",
+        "garrison": "",
+        "fortifications": "",
+        "battleNotes": "",
+        "lastUpdated": "",
+        "history": [],
+        "battleStart": "",
+        "battleEnd": "",
+        "battleType": "",
+        "strategicNotes": ""
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              502,
+              767.25
+            ],
+            [
+              497.375,
+              792.375
+            ],
+            [
+              514.125,
+              789.75
+            ],
+            [
+              538.125,
+              788.625
+            ],
+            [
+              554.375,
+              789.875
+            ],
+            [
+              564.875,
+              792.625
+            ],
+            [
+              582.875,
+              787.75
+            ],
+            [
+              591.25,
+              768.375
+            ],
+            [
+              571.5,
+              766.625
+            ],
+            [
+              543,
+              764.625
+            ],
+            [
+              502,
+              767.25
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "Lake Kel'Theril",
+        "owner": "Neutral",
+        "color": "#ffffff",
+        "category": "neutral",
+        "status": "neutral",
+        "type": "territory",
+        "icon": "territory",
+        "striped": false,
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0,
+        "importance": "",
+        "garrison": "",
+        "fortifications": "",
+        "battleNotes": "",
+        "lastUpdated": "",
+        "history": [],
+        "battleStart": "",
+        "battleEnd": "",
+        "battleType": "",
+        "strategicNotes": ""
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              599.598718,
+              770.360512
+            ],
+            [
+              634.875,
+              778.75
+            ],
+            [
+              636.25,
+              772.375
+            ],
+            [
+              648.5,
+              763.875
+            ],
+            [
+              665.125,
+              755.625
+            ],
+            [
+              625.375,
+              734.5
+            ],
+            [
+              613.75,
+              744.75
+            ],
+            [
+              614.875,
+              757.25
+            ],
+            [
+              599.598718,
+              770.360512
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "Mazthoril",
+        "owner": "Neutral",
+        "color": "#ffffff",
+        "category": "neutral",
+        "status": "neutral",
+        "type": "territory",
+        "icon": "territory",
+        "striped": false,
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0,
+        "importance": "",
+        "garrison": "",
+        "fortifications": "",
+        "battleNotes": "",
+        "lastUpdated": "",
+        "history": [],
+        "battleStart": "",
+        "battleEnd": "",
+        "battleType": "",
+        "strategicNotes": ""
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              625.375,
+              734.5
+            ],
+            [
+              634,
+              726.875
+            ],
+            [
+              639,
+              708.75
+            ],
+            [
+              691.625,
+              700.375
+            ],
+            [
+              700.5,
+              719.5
+            ],
+            [
+              710.625,
+              754.25
+            ],
+            [
+              690.25,
+              754.125
+            ],
+            [
+              665.125,
+              755.625
+            ],
+            [
+              625.375,
+              734.5
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "Felpaw Village",
+        "owner": "Neutral",
+        "color": "#ffffff",
+        "category": "neutral",
+        "status": "neutral",
+        "type": "territory",
+        "icon": "territory",
+        "striped": false,
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0,
+        "importance": "",
+        "garrison": "",
+        "fortifications": "",
+        "battleNotes": "",
+        "lastUpdated": "",
+        "history": [],
+        "battleStart": "",
+        "battleEnd": "",
+        "battleType": "",
+        "strategicNotes": ""
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              498.204887,
+              787.866696
+            ],
+            [
+              470.75,
+              783.5
+            ],
+            [
+              474.625,
+              765
+            ],
+            [
+              502,
+              767.25
+            ],
+            [
+              498.204887,
+              787.866696
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "Talonbranch Glade",
+        "owner": "Neutral",
+        "color": "#ffffff",
+        "category": "neutral",
+        "status": "neutral",
+        "type": "territory",
+        "icon": "territory",
+        "striped": false,
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0,
+        "importance": "",
+        "garrison": "",
+        "fortifications": "",
+        "battleNotes": "",
+        "lastUpdated": "",
+        "history": [],
+        "battleStart": "",
+        "battleEnd": "",
+        "battleType": "",
+        "strategicNotes": ""
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              474.625,
+              765
+            ],
+            [
+              472.875,
+              739.75
+            ],
+            [
+              504.375,
+              742.375
+            ],
+            [
+              502,
+              767.25
+            ],
+            [
+              474.625,
+              765
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "Irontree Woods",
+        "owner": "Neutral",
+        "color": "#ffffff",
+        "category": "neutral",
+        "status": "neutral",
+        "type": "territory",
+        "icon": "territory",
+        "striped": false,
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0,
+        "importance": "",
+        "garrison": "",
+        "fortifications": "",
+        "battleNotes": "",
+        "lastUpdated": "",
+        "history": [],
+        "battleStart": "",
+        "battleEnd": "",
+        "battleType": "",
+        "strategicNotes": ""
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              470.75,
+              783.5
+            ],
+            [
+              474.625,
+              765
+            ],
+            [
+              472.875,
+              739.75
+            ],
+            [
+              442.125,
+              728
+            ],
+            [
+              422.5,
+              711.25
+            ],
+            [
+              404.875,
+              715.25
+            ],
+            [
+              380.125,
+              715.375
+            ],
+            [
+              384.5,
+              743.75
+            ],
+            [
+              399.875,
+              763.25
+            ],
+            [
+              418.625,
+              776.125
+            ],
+            [
+              441.25,
+              780
+            ],
+            [
+              470.75,
+              783.5
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "Jaedenar",
+        "owner": "Neutral",
+        "color": "#ffffff",
+        "category": "neutral",
+        "status": "neutral",
+        "type": "territory",
+        "icon": "territory",
+        "striped": false,
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0,
+        "importance": "",
+        "garrison": "",
+        "fortifications": "",
+        "battleNotes": "",
+        "lastUpdated": "",
+        "history": [],
+        "battleStart": "",
+        "battleEnd": "",
+        "battleType": "",
+        "strategicNotes": ""
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              380.125,
+              715.375
+            ],
+            [
+              404.875,
+              715.25
+            ],
+            [
+              422.5,
+              711.25
+            ],
+            [
+              421.125,
+              697.125
+            ],
+            [
+              431.5,
+              683.5
+            ],
+            [
+              436.625,
+              676.125
+            ],
+            [
+              405.625,
+              649.75
+            ],
+            [
+              387.875,
+              665.625
+            ],
+            [
+              377.375,
+              683.125
+            ],
+            [
+              376,
+              698
+            ],
+            [
+              380.125,
+              715.375
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "Deadwood Village",
+        "owner": "Neutral",
+        "color": "#ffffff",
+        "category": "neutral",
+        "status": "neutral",
+        "type": "territory",
+        "icon": "territory",
+        "striped": false,
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0,
+        "importance": "",
+        "garrison": "",
+        "fortifications": "",
+        "battleNotes": "",
+        "lastUpdated": "",
+        "history": [],
+        "battleStart": "",
+        "battleEnd": "",
+        "battleType": "",
+        "strategicNotes": ""
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              420.970768,
+              662.806278
+            ],
+            [
+              446.375,
+              649.625
+            ],
+            [
+              435.875,
+              637.75
+            ],
+            [
+              405.625,
+              649.75
+            ],
+            [
+              420.970768,
+              662.806278
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "Emerald Sanctuary",
+        "owner": "Neutral",
+        "color": "#ffffff",
+        "category": "neutral",
+        "status": "neutral",
+        "type": "territory",
+        "icon": "territory",
+        "striped": false,
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0,
+        "importance": "",
+        "garrison": "",
+        "fortifications": "",
+        "battleNotes": "",
+        "lastUpdated": "",
+        "history": [],
+        "battleStart": "",
+        "battleEnd": "",
+        "battleType": "",
+        "strategicNotes": ""
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              420.970768,
+              662.806278
+            ],
+            [
+              436.625,
+              676.125
+            ],
+            [
+              455.5,
+              667.25
+            ],
+            [
+              478.125,
+              659
+            ],
+            [
+              486.25,
+              653.625
+            ],
+            [
+              467,
+              645.875
+            ],
+            [
+              452.25,
+              645.625
+            ],
+            [
+              446.375,
+              649.625
+            ],
+            [
+              420.970768,
+              662.806278
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "Shrine of Remulos",
+        "owner": "Neutral",
+        "color": "#ffffff",
+        "category": "neutral",
+        "status": "neutral",
+        "type": "territory",
+        "icon": "territory",
+        "striped": false,
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0,
+        "importance": "",
+        "garrison": "",
+        "fortifications": "",
+        "battleNotes": "",
+        "lastUpdated": "",
+        "history": [],
+        "battleStart": "",
+        "battleEnd": "",
+        "battleType": "",
+        "strategicNotes": ""
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              447.131197,
+              780.697769
+            ],
+            [
+              433.25,
+              824.75
+            ],
+            [
+              454.875,
+              828.625
+            ],
+            [
+              482,
+              838.875
+            ],
+            [
+              494,
+              832.375
+            ],
+            [
+              489.75,
+              825
+            ],
+            [
+              486.875,
+              818.875
+            ],
+            [
+              489.125,
+              809.5
+            ],
+            [
+              491.875,
+              800.375
+            ],
+            [
+              497.375,
+              792.375
+            ],
+            [
+              498.125829,
+              788.296172
+            ],
+            [
+              470.75,
+              783.5
+            ],
+            [
+              447.131197,
+              780.697769
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "Ruins of Mathystra",
+        "owner": "Neutral",
+        "color": "#ffffff",
+        "category": "neutral",
+        "status": "neutral",
+        "type": "territory",
+        "icon": "territory",
+        "striped": false,
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0,
+        "importance": "",
+        "garrison": "",
+        "fortifications": "",
+        "battleNotes": "",
+        "lastUpdated": "",
+        "history": [],
+        "battleStart": "",
+        "battleEnd": "",
+        "battleType": "",
+        "strategicNotes": ""
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              447.377727,
+              780.727018
+            ],
+            [
+              433.25,
+              824.75
+            ],
+            [
+              420.625,
+              819.25
+            ],
+            [
+              408.5,
+              812.25
+            ],
+            [
+              378.125,
+              794.625
+            ],
+            [
+              388,
+              781.625
+            ],
+            [
+              403.648332,
+              765.841021
+            ],
+            [
+              418.625,
+              776.125
+            ],
+            [
+              441.25,
+              780
+            ],
+            [
+              447.377727,
+              780.727018
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "Bashal'Aran",
+        "owner": "Neutral",
+        "color": "#ffffff",
+        "category": "neutral",
+        "status": "neutral",
+        "type": "territory",
+        "icon": "territory",
+        "striped": false,
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0,
+        "importance": "",
+        "garrison": "",
+        "fortifications": "",
+        "battleNotes": "",
+        "lastUpdated": "",
+        "history": [],
+        "battleStart": "",
+        "battleEnd": "",
+        "battleType": "",
+        "strategicNotes": ""
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              384.5,
+              743.75
+            ],
+            [
+              346.875,
+              770.75
+            ],
+            [
+              378.125,
+              794.625
+            ],
+            [
+              388,
+              781.625
+            ],
+            [
+              403.393492,
+              765.666031
+            ],
+            [
+              399.875,
+              763.25
+            ],
+            [
+              384.5,
+              743.75
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "Auberdine",
+        "owner": "Neutral",
+        "color": "#ffffff",
+        "category": "neutral",
+        "status": "neutral",
+        "type": "settlement",
+        "icon": "village",
+        "striped": false,
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0,
+        "importance": "",
+        "garrison": "",
+        "fortifications": "",
+        "battleNotes": "",
+        "lastUpdated": "",
+        "history": [],
+        "battleStart": "",
+        "battleEnd": "",
+        "battleType": "",
+        "strategicNotes": ""
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              378.125,
+              794.625
+            ],
+            [
+              374.875,
+              797.875
+            ],
+            [
+              348.25,
+              799
+            ],
+            [
+              344.125,
+              792.375
+            ],
+            [
+              346.375,
+              783.5
+            ],
+            [
+              340.375,
+              781.875
+            ],
+            [
+              329.75,
+              780.375
+            ],
+            [
+              313.875,
+              772.75
+            ],
+            [
+              296.5,
+              767.625
+            ],
+            [
+              292.5,
+              761.125
+            ],
+            [
+              292.75,
+              753.875
+            ],
+            [
+              297,
+              745.375
+            ],
+            [
+              307,
+              739.625
+            ],
+            [
+              327.5,
+              739.75
+            ],
+            [
+              345.75,
+              738.75
+            ],
+            [
+              359.75,
+              735.875
+            ],
+            [
+              382.307441,
+              729.52969
+            ],
+            [
+              384.5,
+              743.75
+            ],
+            [
+              346.875,
+              770.75
+            ],
+            [
+              378.125,
+              794.625
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "Ameth'Aran",
+        "owner": "Neutral",
+        "color": "#ffffff",
+        "category": "neutral",
+        "status": "neutral",
+        "type": "territory",
+        "icon": "territory",
+        "striped": false,
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0,
+        "importance": "",
+        "garrison": "",
+        "fortifications": "",
+        "battleNotes": "",
+        "lastUpdated": "",
+        "history": [],
+        "battleStart": "",
+        "battleEnd": "",
+        "battleType": "",
+        "strategicNotes": ""
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              322.372904,
+              739.718737
+            ],
+            [
+              321.5,
+              706.5
+            ],
+            [
+              377.722758,
+              705.256467
+            ],
+            [
+              380.125,
+              715.375
+            ],
+            [
+              382.307441,
+              729.52969
+            ],
+            [
+              359.75,
+              735.875
+            ],
+            [
+              345.75,
+              738.75
+            ],
+            [
+              327.5,
+              739.75
+            ],
+            [
+              322.372904,
+              739.718737
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "Grove of the Ancients",
+        "owner": "Neutral",
+        "color": "#ffffff",
+        "category": "neutral",
+        "status": "neutral",
+        "type": "territory",
+        "icon": "territory",
+        "striped": false,
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0,
+        "importance": "",
+        "garrison": "",
+        "fortifications": "",
+        "battleNotes": "",
+        "lastUpdated": "",
+        "history": [],
+        "battleStart": "",
+        "battleEnd": "",
+        "battleType": "",
+        "strategicNotes": ""
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              321.5,
+              706.5
+            ],
+            [
+              313.25,
+              695.875
+            ],
+            [
+              326.5,
+              690.25
+            ],
+            [
+              346,
+              691.25
+            ],
+            [
+              376.716671,
+              690.246919
+            ],
+            [
+              376,
+              698
+            ],
+            [
+              377.722758,
+              705.256467
+            ],
+            [
+              321.5,
+              706.5
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "Master's Glaive",
+        "owner": "Neutral",
+        "color": "#ffffff",
+        "category": "neutral",
+        "status": "neutral",
+        "type": "territory",
+        "icon": "territory",
+        "striped": false,
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0,
+        "importance": "",
+        "garrison": "",
+        "fortifications": "",
+        "battleNotes": "",
+        "lastUpdated": "",
+        "history": [],
+        "battleStart": "",
+        "battleEnd": "",
+        "battleType": "",
+        "strategicNotes": ""
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              313.25,
+              695.875
+            ],
+            [
+              306.125,
+              686.75
+            ],
+            [
+              307.125,
+              680.125
+            ],
+            [
+              319.375,
+              676.875
+            ],
+            [
+              321.125,
+              669.625
+            ],
+            [
+              333.375,
+              670.625
+            ],
+            [
+              347.625,
+              674.75
+            ],
+            [
+              377.375,
+              683.125
+            ],
+            [
+              376.716671,
+              690.246919
+            ],
+            [
+              347.131933,
+              691.213189
+            ],
+            [
+              346,
+              691.25
+            ],
+            [
+              326.5,
+              690.25
+            ],
+            [
+              313.25,
+              695.875
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "Blackfathom Depths",
+        "owner": "Neutral",
+        "color": "#ffffff",
+        "category": "neutral",
+        "status": "neutral",
+        "type": "landmark",
+        "icon": "landmark",
+        "striped": false,
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0,
+        "importance": "",
+        "garrison": "",
+        "fortifications": "",
+        "battleNotes": "",
+        "lastUpdated": "",
+        "history": [],
+        "battleStart": "",
+        "battleEnd": "",
+        "battleType": "",
+        "strategicNotes": ""
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              321.125,
+              669.625
+            ],
+            [
+              307.25,
+              656.125
+            ],
+            [
+              297.375,
+              654.75
+            ],
+            [
+              280.5,
+              662.375
+            ],
+            [
+              275.25,
+              674.625
+            ],
+            [
+              286.75,
+              679.875
+            ],
+            [
+              307.125,
+              680.125
+            ],
+            [
+              319.375,
+              676.875
+            ],
+            [
+              321.125,
+              669.625
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "Zoram'gar Outpost",
+        "owner": "Neutral",
+        "color": "#ffffff",
+        "category": "neutral",
+        "status": "neutral",
+        "type": "camp",
+        "icon": "camp",
+        "striped": false,
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0,
+        "importance": "",
+        "garrison": "",
+        "fortifications": "",
+        "battleNotes": "",
+        "lastUpdated": "",
+        "history": [],
+        "battleStart": "",
+        "battleEnd": "",
+        "battleType": "",
+        "strategicNotes": ""
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              307.25,
+              656.125
+            ],
+            [
+              299.875,
+              633.375
+            ],
+            [
+              280.625,
+              635
+            ],
+            [
+              278.5,
+              647.625
+            ],
+            [
+              290.841378,
+              657.702229
+            ],
+            [
+              297.375,
+              654.75
+            ],
+            [
+              297.953965,
+              654.830615
+            ],
+            [
+              307.25,
+              656.125
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "Maestras Post",
+        "owner": "Neutral",
+        "color": "#ffffff",
+        "category": "neutral",
+        "status": "neutral",
+        "type": "camp",
+        "icon": "camp",
+        "striped": false,
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0,
+        "importance": "",
+        "garrison": "",
+        "fortifications": "",
+        "battleNotes": "",
+        "lastUpdated": "",
+        "history": [],
+        "battleStart": "",
+        "battleEnd": "",
+        "battleType": "",
+        "strategicNotes": ""
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              377.375,
+              683.125
+            ],
+            [
+              387.875,
+              665.625
+            ],
+            [
+              344.25,
+              646.25
+            ],
+            [
+              304.298791,
+              647.021271
+            ],
+            [
+              307.25,
+              656.125
+            ],
+            [
+              321.125,
+              669.625
+            ],
+            [
+              333.375,
+              670.625
+            ],
+            [
+              347.625,
+              674.75
+            ],
+            [
+              377.375,
+              683.125
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "Thistlefur Village",
+        "owner": "Neutral",
+        "color": "#ffffff",
+        "category": "neutral",
+        "status": "neutral",
+        "type": "territory",
+        "icon": "territory",
+        "striped": false,
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0,
+        "importance": "",
+        "garrison": "",
+        "fortifications": "",
+        "battleNotes": "",
+        "lastUpdated": "",
+        "history": [],
+        "battleStart": "",
+        "battleEnd": "",
+        "battleType": "",
+        "strategicNotes": ""
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              304.298791,
+              647.021271
+            ],
+            [
+              299.875,
+              633.375
+            ],
+            [
+              300.875,
+              618.75
+            ],
+            [
+              322,
+              616
+            ],
+            [
+              340.75,
+              623.125
+            ],
+            [
+              400.208983,
+              654.593902
+            ],
+            [
+              387.875,
+              665.625
+            ],
+            [
+              344.25,
+              646.25
+            ],
+            [
+              304.298791,
+              647.021271
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "Astranaar",
+        "owner": "Neutral",
+        "color": "#ffffff",
+        "category": "neutral",
+        "status": "neutral",
+        "type": "settlement",
+        "icon": "village",
+        "striped": false,
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0,
+        "importance": "",
+        "garrison": "",
+        "fortifications": "",
+        "battleNotes": "",
+        "lastUpdated": "",
+        "history": [],
+        "battleStart": "",
+        "battleEnd": "",
+        "battleType": "",
+        "strategicNotes": ""
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              300.875,
+              618.75
+            ],
+            [
+              315.375,
+              596.125
+            ],
+            [
+              342.875,
+              606.5
+            ],
+            [
+              362.125,
+              595.75
+            ],
+            [
+              389.875,
+              590.375
+            ],
+            [
+              403.5,
+              586
+            ],
+            [
+              417.875,
+              610.5
+            ],
+            [
+              407.125,
+              618.875
+            ],
+            [
+              427.63279,
+              641.019637
+            ],
+            [
+              405.625,
+              649.75
+            ],
+            [
+              400.208983,
+              654.593902
+            ],
+            [
+              340.75,
+              623.125
+            ],
+            [
+              322,
+              616
+            ],
+            [
+              300.875,
+              618.75
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "Raynewood Retreat",
+        "owner": "Neutral",
+        "color": "#ffffff",
+        "category": "neutral",
+        "status": "neutral",
+        "type": "territory",
+        "icon": "territory",
+        "striped": false,
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0,
+        "importance": "",
+        "garrison": "",
+        "fortifications": "",
+        "battleNotes": "",
+        "lastUpdated": "",
+        "history": [],
+        "battleStart": "",
+        "battleEnd": "",
+        "battleType": "",
+        "strategicNotes": ""
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              435.875,
+              637.75
+            ],
+            [
+              446.375,
+              649.625
+            ],
+            [
+              451.990141,
+              645.801925
+            ],
+            [
+              452.25,
+              645.625
+            ],
+            [
+              467,
+              645.875
+            ],
+            [
+              481.125,
+              635.75
+            ],
+            [
+              497.75,
+              626.75
+            ],
+            [
+              496.875,
+              610.125
+            ],
+            [
+              495.375,
+              599.375
+            ],
+            [
+              478.25,
+              587
+            ],
+            [
+              430.625,
+              602
+            ],
+            [
+              435.875,
+              637.75
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "Iris Lake",
+        "owner": "Neutral",
+        "color": "#ffffff",
+        "category": "neutral",
+        "status": "neutral",
+        "type": "territory",
+        "icon": "territory",
+        "striped": false,
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0,
+        "importance": "",
+        "garrison": "",
+        "fortifications": "",
+        "battleNotes": "",
+        "lastUpdated": "",
+        "history": [],
+        "battleStart": "",
+        "battleEnd": "",
+        "battleType": "",
+        "strategicNotes": ""
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              412.829929,
+              601.901445
+            ],
+            [
+              430.625,
+              602
+            ],
+            [
+              435.875,
+              637.75
+            ],
+            [
+              427.63279,
+              641.019637
+            ],
+            [
+              407.125,
+              618.875
+            ],
+            [
+              417.875,
+              610.5
+            ],
+            [
+              412.829929,
+              601.901445
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "Shrine of Aessena",
+        "owner": "Neutral",
+        "color": "#ffffff",
+        "category": "neutral",
+        "status": "neutral",
+        "type": "territory",
+        "icon": "territory",
+        "striped": false,
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0,
+        "importance": "",
+        "garrison": "",
+        "fortifications": "",
+        "battleNotes": "",
+        "lastUpdated": "",
+        "history": [],
+        "battleStart": "",
+        "battleEnd": "",
+        "battleType": "",
+        "strategicNotes": ""
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              315.375,
+              596.125
+            ],
+            [
+              331.875,
+              584
+            ],
+            [
+              362.125,
+              576.125
+            ],
+            [
+              399.75,
+              574.625
+            ],
+            [
+              403.5,
+              586
+            ],
+            [
+              389.875,
+              590.375
+            ],
+            [
+              362.125,
+              595.75
+            ],
+            [
+              342.875,
+              606.5
+            ],
+            [
+              315.375,
+              596.125
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "Mystral Lake",
+        "owner": "Neutral",
+        "color": "#ffffff",
+        "category": "neutral",
+        "status": "neutral",
+        "type": "territory",
+        "icon": "territory",
+        "striped": false,
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0,
+        "importance": "",
+        "garrison": "",
+        "fortifications": "",
+        "battleNotes": "",
+        "lastUpdated": "",
+        "history": [],
+        "battleStart": "",
+        "battleEnd": "",
+        "battleType": "",
+        "strategicNotes": ""
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              478.25,
+              587
+            ],
+            [
+              457,
+              559.5
+            ],
+            [
+              441.125,
+              561
+            ],
+            [
+              435,
+              569.375
+            ],
+            [
+              399.75,
+              574.625
+            ],
+            [
+              403.5,
+              586
+            ],
+            [
+              412.829929,
+              601.901445
+            ],
+            [
+              430.625,
+              602
+            ],
+            [
+              478.25,
+              587
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "Splintertree Post",
+        "owner": "Neutral",
+        "color": "#ffffff",
+        "category": "neutral",
+        "status": "neutral",
+        "type": "camp",
+        "icon": "camp",
+        "striped": false,
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0,
+        "importance": "",
+        "garrison": "",
+        "fortifications": "",
+        "battleNotes": "",
+        "lastUpdated": "",
+        "history": [],
+        "battleStart": "",
+        "battleEnd": "",
+        "battleType": "",
+        "strategicNotes": ""
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              478.25,
+              587
+            ],
+            [
+              502.125009,
+              578.875031
+            ],
+            [
+              508.250009,
+              555.750031
+            ],
+            [
+              528.875009,
+              555.750031
+            ],
+            [
+              541.125009,
+              564.750031
+            ],
+            [
+              547.625009,
+              570.625031
+            ],
+            [
+              539.750009,
+              628.500031
+            ],
+            [
+              516.000009,
+              626.500031
+            ],
+            [
+              497.75,
+              626.75
+            ],
+            [
+              496.875,
+              610.125
+            ],
+            [
+              495.375,
+              599.375
+            ],
+            [
+              478.25,
+              587
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "Warsong",
+        "owner": "Neutral",
+        "color": "#ffffff",
+        "category": "neutral",
+        "status": "neutral",
+        "type": "fort",
+        "icon": "fort",
+        "striped": false,
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0,
+        "importance": "",
+        "garrison": "",
+        "fortifications": "",
+        "battleNotes": "",
+        "lastUpdated": "",
+        "history": [],
+        "battleStart": "",
+        "battleEnd": "",
+        "battleType": "",
+        "strategicNotes": ""
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              547.625009,
+              570.625031
+            ],
+            [
+              571.125009,
+              577.500031
+            ],
+            [
+              599.500009,
+              579.000031
+            ],
+            [
+              598.625009,
+              594.125031
+            ],
+            [
+              606.750009,
+              613.125031
+            ],
+            [
+              608.500009,
+              615.875031
+            ],
+            [
+              600.000009,
+              619.500031
+            ],
+            [
+              567.000009,
+              613.000031
+            ],
+            [
+              562.125009,
+              619.250031
+            ],
+            [
+              561.375009,
+              629.750031
+            ],
+            [
+              539.750009,
+              628.500031
+            ],
+            [
+              547.625009,
+              570.625031
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "Fallen Sky Lake",
+        "owner": "Neutral",
+        "color": "#ffffff",
+        "category": "neutral",
+        "status": "neutral",
+        "type": "territory",
+        "icon": "territory",
+        "striped": false,
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0,
+        "importance": "",
+        "garrison": "",
+        "fortifications": "",
+        "battleNotes": "",
+        "lastUpdated": "",
+        "history": [],
+        "battleStart": "",
+        "battleEnd": "",
+        "battleType": "",
+        "strategicNotes": ""
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              457,
+              559.5
+            ],
+            [
+              478.25,
+              587
+            ],
+            [
+              502.125009,
+              578.875031
+            ],
+            [
+              508.250009,
+              555.750031
+            ],
+            [
+              501.000009,
+              555.500031
+            ],
+            [
+              492.000009,
+              549.125031
+            ],
+            [
+              457,
+              559.5
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "Valormok",
+        "owner": "Neutral",
+        "color": "#ffffff",
+        "category": "neutral",
+        "status": "neutral",
+        "type": "territory",
+        "icon": "territory",
+        "striped": false,
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0,
+        "importance": "",
+        "garrison": "",
+        "fortifications": "",
+        "battleNotes": "",
+        "lastUpdated": "",
+        "history": [],
+        "battleStart": "",
+        "battleEnd": "",
+        "battleType": "",
+        "strategicNotes": ""
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              561.375009,
+              629.750031
+            ],
+            [
+              582.125009,
+              636.875031
+            ],
+            [
+              596.375009,
+              646.000031
+            ],
+            [
+              598.875009,
+              653.500031
+            ],
+            [
+              608.875009,
+              658.375031
+            ],
+            [
+              618.125009,
+              656.750031
+            ],
+            [
+              620.625009,
+              643.875031
+            ],
+            [
+              628.000009,
+              632.250031
+            ],
+            [
+              621.875009,
+              624.500031
+            ],
+            [
+              608.500009,
+              615.875031
+            ],
+            [
+              600.000009,
+              619.500031
+            ],
+            [
+              567.000009,
+              613.000031
+            ],
+            [
+              562.125009,
+              619.250031
+            ],
+            [
+              561.375009,
+              629.750031
+            ]
+          ]
+        ]
+      }
     }
   ]
 }
