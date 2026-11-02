@@ -11,10 +11,10 @@ const ICONS={
  fort:{label:'Fort',emoji:'🏯',asset:'fort'},
  tower:{label:'Tower',emoji:'🗼',asset:'tower'},
  village:{label:'Settlement',emoji:'🏘️',asset:'settlement'},
- guildhouse:{label:'Guildhouse',emoji:'🏠'},
+ guildhouse:{label:'Guildhouse',emoji:'🏠',asset:'guildhouse'},
  camp:{label:'Camp',emoji:'⛺',asset:'camp'},
- landmark:{label:'Landmark',emoji:'🗿'},
- territory:{label:'Territory',emoji:'⚑'},
+ landmark:{label:'Landmark',emoji:'🗿',asset:'landmark'},
+ territory:{label:'Territory',emoji:'⚑',asset:'territory'},
  pin:{label:'Pin',emoji:'📍'},
  battle:{label:'PvP — Clashing Swords',emoji:'⚔️',asset:'pvp'},
  skull:{label:'World Event — Skull',emoji:'💀',asset:'world-event'}
