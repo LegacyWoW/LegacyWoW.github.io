@@ -13478,6 +13478,74 @@
           229.625
         ]
       }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "Dolanaar",
+        "owner": "Neutral",
+        "color": "#9aa7b5",
+        "category": "neutral",
+        "status": "neutral",
+        "type": "settlement",
+        "icon": "village",
+        "striped": false,
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0,
+        "importance": "",
+        "garrison": "",
+        "fortifications": "",
+        "battleNotes": "",
+        "lastUpdated": "",
+        "history": [],
+        "battleStart": "",
+        "battleEnd": "",
+        "battleType": "",
+        "strategicNotes": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          292.75,
+          897.25
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "Ridgepoint Tower",
+        "owner": "Neutral",
+        "color": "#9aa7b5",
+        "category": "neutral",
+        "status": "neutral",
+        "type": "camp",
+        "icon": "tower",
+        "striped": false,
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0,
+        "importance": "",
+        "garrison": "",
+        "fortifications": "",
+        "battleNotes": "",
+        "lastUpdated": "",
+        "history": [],
+        "battleStart": "",
+        "battleEnd": "",
+        "battleType": "",
+        "strategicNotes": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          1360.125,
+          259.75
+        ]
+      }
     }
   ]
 }
