@@ -11,7 +11,6 @@
         "status": "neutral",
         "type": "territory",
         "icon": "territory",
-        "striped": false,
         "description": "",
         "defense": 0,
         "attacker": "",
@@ -213,7 +212,6 @@
         "status": "neutral",
         "type": "settlement",
         "icon": "village",
-        "striped": false,
         "description": "",
         "defense": 0,
         "attacker": "",
@@ -247,7 +245,6 @@
         "status": "neutral",
         "type": "territory",
         "icon": "territory",
-        "striped": false,
         "description": "",
         "defense": 0,
         "attacker": "",
@@ -421,7 +418,6 @@
         "status": "neutral",
         "type": "fort",
         "icon": "fort",
-        "striped": false,
         "description": "",
         "defense": 0,
         "attacker": "",
@@ -455,7 +451,6 @@
         "status": "neutral",
         "type": "territory",
         "icon": "territory",
-        "striped": false,
         "description": "",
         "defense": 0,
         "attacker": "",
@@ -693,7 +688,6 @@
         "status": "neutral",
         "type": "settlement",
         "icon": "village",
-        "striped": false,
         "description": "",
         "defense": 0,
         "attacker": "",
@@ -727,7 +721,6 @@
         "status": "neutral",
         "type": "territory",
         "icon": "territory",
-        "striped": true,
         "description": "",
         "defense": 0,
         "attacker": "",
@@ -905,7 +898,6 @@
         "status": "neutral",
         "type": "territory",
         "icon": "territory",
-        "striped": false,
         "description": "",
         "defense": 0,
         "attacker": "",
@@ -1111,7 +1103,6 @@
         "status": "neutral",
         "type": "settlement",
         "icon": "village",
-        "striped": false,
         "description": "",
         "defense": 0,
         "attacker": "",
@@ -1145,7 +1136,6 @@
         "status": "neutral",
         "type": "territory",
         "icon": "territory",
-        "striped": false,
         "description": "",
         "defense": 0,
         "attacker": "",
@@ -1335,7 +1325,6 @@
         "status": "neutral",
         "type": "landmark",
         "icon": "village",
-        "striped": false,
         "description": "",
         "defense": 0,
         "attacker": "",
@@ -1369,7 +1358,6 @@
         "status": "neutral",
         "type": "territory",
         "icon": "territory",
-        "striped": false,
         "description": "",
         "defense": 0,
         "attacker": "",
@@ -1627,7 +1615,6 @@
         "status": "neutral",
         "type": "city",
         "icon": "capital",
-        "striped": false,
         "description": "",
         "defense": 0,
         "attacker": "",
@@ -1661,7 +1648,6 @@
         "status": "neutral",
         "type": "territory",
         "icon": "territory",
-        "striped": false,
         "description": "",
         "defense": 0,
         "attacker": "",
@@ -1851,7 +1837,6 @@
         "status": "neutral",
         "type": "settlement",
         "icon": "village",
-        "striped": false,
         "description": "",
         "defense": 0,
         "attacker": "",
@@ -1885,7 +1870,6 @@
         "status": "neutral",
         "type": "territory",
         "icon": "territory",
-        "striped": false,
         "description": "",
         "defense": 0,
         "attacker": "",
@@ -2095,7 +2079,6 @@
         "status": "neutral",
         "type": "fort",
         "icon": "fort",
-        "striped": false,
         "description": "",
         "defense": 0,
         "attacker": "",
@@ -2129,7 +2112,6 @@
         "status": "neutral",
         "type": "territory",
         "icon": "territory",
-        "striped": false,
         "description": "",
         "defense": 0,
         "attacker": "",
@@ -2295,7 +2277,6 @@
         "status": "neutral",
         "type": "territory",
         "icon": "territory",
-        "striped": false,
         "description": "",
         "defense": 0,
         "attacker": "",
@@ -2457,7 +2438,6 @@
         "status": "neutral",
         "type": "settlement",
         "icon": "village",
-        "striped": false,
         "description": "",
         "defense": 0,
         "attacker": "",
@@ -2491,7 +2471,6 @@
         "status": "neutral",
         "type": "territory",
         "icon": "territory",
-        "striped": false,
         "description": "",
         "defense": 0,
         "attacker": "",
@@ -2669,7 +2648,6 @@
         "status": "neutral",
         "type": "settlement",
         "icon": "village",
-        "striped": false,
         "description": "",
         "defense": 0,
         "attacker": "",
@@ -2703,7 +2681,6 @@
         "status": "neutral",
         "type": "camp",
         "icon": "camp",
-        "striped": false,
         "description": "",
         "defense": 0,
         "attacker": "",
@@ -2737,7 +2714,6 @@
         "status": "neutral",
         "type": "territory",
         "icon": "territory",
-        "striped": false,
         "description": "",
         "defense": 0,
         "attacker": "",
@@ -3055,7 +3031,6 @@
         "status": "neutral",
         "type": "settlement",
         "icon": "village",
-        "striped": false,
         "description": "",
         "defense": 0,
         "attacker": "",
@@ -3089,7 +3064,6 @@
         "status": "neutral",
         "type": "city",
         "icon": "capital",
-        "striped": false,
         "description": "",
         "defense": 0,
         "attacker": "",
@@ -3123,7 +3097,6 @@
         "status": "neutral",
         "type": "settlement",
         "icon": "village",
-        "striped": false,
         "description": "",
         "defense": 0,
         "attacker": "",
@@ -3157,7 +3130,6 @@
         "status": "neutral",
         "type": "territory",
         "icon": "territory",
-        "striped": false,
         "description": "",
         "defense": 0,
         "attacker": "",
@@ -3419,7 +3391,6 @@
         "status": "neutral",
         "type": "fort",
         "icon": "fort",
-        "striped": false,
         "description": "",
         "defense": 0,
         "attacker": "",
@@ -3453,7 +3424,6 @@
         "status": "neutral",
         "type": "territory",
         "icon": "territory",
-        "striped": false,
         "description": "",
         "defense": 0,
         "attacker": "",
@@ -3643,7 +3613,6 @@
         "status": "neutral",
         "type": "camp",
         "icon": "camp",
-        "striped": false,
         "description": "",
         "defense": 0,
         "attacker": "",
@@ -3677,7 +3646,6 @@
         "status": "neutral",
         "type": "fort",
         "icon": "fort",
-        "striped": false,
         "description": "",
         "defense": 0,
         "attacker": "",
@@ -3711,7 +3679,6 @@
         "status": "neutral",
         "type": "territory",
         "icon": "territory",
-        "striped": false,
         "description": "",
         "defense": 0,
         "attacker": "",
@@ -3961,7 +3928,6 @@
         "status": "neutral",
         "type": "settlement",
         "icon": "village",
-        "striped": false,
         "description": "",
         "defense": 0,
         "attacker": "",
@@ -3995,7 +3961,6 @@
         "status": "neutral",
         "type": "settlement",
         "icon": "village",
-        "striped": false,
         "description": "",
         "defense": 0,
         "attacker": "",
@@ -4029,7 +3994,6 @@
         "status": "neutral",
         "type": "territory",
         "icon": "territory",
-        "striped": false,
         "description": "",
         "defense": 0,
         "attacker": "",
@@ -4331,7 +4295,6 @@
         "status": "neutral",
         "type": "settlement",
         "icon": "village",
-        "striped": false,
         "description": "",
         "defense": 0,
         "attacker": "",
@@ -4365,7 +4328,6 @@
         "status": "neutral",
         "type": "settlement",
         "icon": "village",
-        "striped": false,
         "description": "",
         "defense": 0,
         "attacker": "",
@@ -4399,7 +4361,6 @@
         "status": "neutral",
         "type": "territory",
         "icon": "territory",
-        "striped": false,
         "description": "",
         "defense": 0,
         "attacker": "",
@@ -4681,7 +4642,6 @@
         "status": "neutral",
         "type": "camp",
         "icon": "camp",
-        "striped": false,
         "description": "",
         "defense": 0,
         "attacker": "",
@@ -4715,7 +4675,6 @@
         "status": "neutral",
         "type": "territory",
         "icon": "territory",
-        "striped": false,
         "description": "",
         "defense": 0,
         "attacker": "",
@@ -4861,7 +4820,6 @@
         "status": "neutral",
         "type": "territory",
         "icon": "territory",
-        "striped": false,
         "description": "",
         "defense": 0,
         "attacker": "",
@@ -5211,7 +5169,6 @@
         "status": "neutral",
         "type": "city",
         "icon": "capital",
-        "striped": false,
         "description": "",
         "defense": 0,
         "attacker": "",
@@ -5245,7 +5202,6 @@
         "status": "neutral",
         "type": "settlement",
         "icon": "village",
-        "striped": false,
         "description": "",
         "defense": 0,
         "attacker": "",
@@ -5266,6 +5222,235 @@
         "coordinates": [
           1246.5,
           741.125
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "title": "Western Plaguelands",
+        "owner": "Neutral",
+        "color": "#9aa7b5",
+        "category": "neutral",
+        "status": "neutral",
+        "type": "territory",
+        "icon": "territory",
+        "description": "",
+        "defense": 0,
+        "attacker": "",
+        "attackerRating": 0,
+        "importance": "",
+        "garrison": "",
+        "fortifications": "",
+        "battleNotes": "",
+        "lastUpdated": "",
+        "history": [],
+        "battleStart": "",
+        "battleEnd": "",
+        "battleType": "",
+        "strategicNotes": ""
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              1314.75,
+              702.875
+            ],
+            [
+              1318.75,
+              710.375
+            ],
+            [
+              1318.875,
+              720.75
+            ],
+            [
+              1327.5,
+              726.625
+            ],
+            [
+              1339.125,
+              732.125
+            ],
+            [
+              1349.5,
+              738
+            ],
+            [
+              1350.25,
+              768.75
+            ],
+            [
+              1353.766975,
+              773.306191
+            ],
+            [
+              1361.766975,
+              777.681191
+            ],
+            [
+              1374.016975,
+              775.806191
+            ],
+            [
+              1384.766975,
+              773.806191
+            ],
+            [
+              1396.891975,
+              770.056191
+            ],
+            [
+              1412.891975,
+              766.056191
+            ],
+            [
+              1422.016975,
+              763.431191
+            ],
+            [
+              1424.141975,
+              757.056191
+            ],
+            [
+              1424.641975,
+              750.056191
+            ],
+            [
+              1427.266975,
+              744.556191
+            ],
+            [
+              1437.266975,
+              738.556191
+            ],
+            [
+              1439.516975,
+              726.181191
+            ],
+            [
+              1438.141975,
+              715.056191
+            ],
+            [
+              1449.766975,
+              714.306191
+            ],
+            [
+              1454.141975,
+              711.806191
+            ],
+            [
+              1454.641975,
+              707.681191
+            ],
+            [
+              1461.266975,
+              706.056191
+            ],
+            [
+              1464.016975,
+              703.431191
+            ],
+            [
+              1464.391975,
+              699.181191
+            ],
+            [
+              1466.016975,
+              695.431191
+            ],
+            [
+              1463.391975,
+              692.556191
+            ],
+            [
+              1460.016975,
+              689.681191
+            ],
+            [
+              1460.266975,
+              684.056191
+            ],
+            [
+              1447.141975,
+              683.431191
+            ],
+            [
+              1448.875,
+              680
+            ],
+            [
+              1434.75,
+              679.5
+            ],
+            [
+              1420.875,
+              683.75
+            ],
+            [
+              1414.75,
+              684.5
+            ],
+            [
+              1410.25,
+              683.5
+            ],
+            [
+              1408.5,
+              678.625
+            ],
+            [
+              1402.625,
+              675
+            ],
+            [
+              1392,
+              673.625
+            ],
+            [
+              1384.125,
+              672.5
+            ],
+            [
+              1384.125,
+              672.5
+            ],
+            [
+              1377,
+              680.875
+            ],
+            [
+              1370.75,
+              683.625
+            ],
+            [
+              1350.75,
+              683.75
+            ],
+            [
+              1342.375,
+              685.875
+            ],
+            [
+              1334.5,
+              690
+            ],
+            [
+              1327.875,
+              696.25
+            ],
+            [
+              1321.125,
+              700.75
+            ],
+            [
+              1314.75,
+              702.875
+            ]
+          ]
         ]
       }
     }
