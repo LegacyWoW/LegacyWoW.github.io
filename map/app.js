@@ -4,8 +4,30 @@ const ADMIN = new URLSearchParams(location.search).get('admin') === '1';
 const IMAGE_HEIGHT=1000, IMAGE_WIDTH=1800, IMAGE_URL='/assets/worldmap.jpg', DATA_URL='/data/overlays.geojson';
 const STATUSES={controlled:'Controlled',contested:'Contested',attacked:'Under siege / attack',neutral:'Unclaimed / neutral'};
 const TERRITORY_TYPES={territory:'Territory',settlement:'Settlement',fort:'Fort',city:'City',capital:'Faction Capital',landmark:'Landmark',camp:'Camp',guildhouse:'Guildhouse'};
-const ICONS={auto:{label:'Automatic by type',emoji:'🏴'},capital:{label:'City / Capital',emoji:'🏰'},factionCapital:{label:'Faction Capital',emoji:'👑'},fort:{label:'Fort / Castle',emoji:'🏯'},tower:{label:'Guard Tower',emoji:'🗼'},village:{label:'Village / Settlement',emoji:'🏘️'},guildhouse:{label:'Guildhouse',emoji:'🏠'},camp:{label:'Camp',emoji:'⛺'},landmark:{label:'Landmark',emoji:'🗿'},territory:{label:'Territory',emoji:'⚑'},pin:{label:'Pin',emoji:'📍'},battle:{label:'World Event — Clashing Swords',emoji:'⚔️'},skull:{label:'World Event — Skull',emoji:'💀'}};
+const ICONS={
+ auto:{label:'Automatic by type',emoji:'🏴'},
+ capital:{label:'City',emoji:'🏰',asset:'city'},
+ factionCapital:{label:'Capital',emoji:'👑',asset:'capital'},
+ fort:{label:'Fort',emoji:'🏯',asset:'fort'},
+ tower:{label:'Tower',emoji:'🗼',asset:'tower'},
+ village:{label:'Settlement',emoji:'🏘️',asset:'settlement'},
+ guildhouse:{label:'Guildhouse',emoji:'🏠'},
+ camp:{label:'Camp',emoji:'⛺',asset:'camp'},
+ landmark:{label:'Landmark',emoji:'🗿'},
+ territory:{label:'Territory',emoji:'⚑'},
+ pin:{label:'Pin',emoji:'📍'},
+ battle:{label:'PvP — Clashing Swords',emoji:'⚔️',asset:'pvp'},
+ skull:{label:'World Event — Skull',emoji:'💀',asset:'world-event'}
+};
 const TYPE_ICON={territory:'territory',settlement:'village',fort:'fort',city:'capital',capital:'factionCapital',landmark:'landmark',camp:'camp',guildhouse:'guildhouse'};
+const iconStyle=document.createElement('style');
+iconStyle.textContent=`
+ .lw-marker{width:46px;height:46px;display:flex;align-items:center;justify-content:center;background:transparent;border:0;box-shadow:none;overflow:visible}
+ .lw-marker-art{display:block;width:46px;height:46px;object-fit:contain;filter:drop-shadow(0 1px 1px rgba(255,255,255,.75))}
+ .lw-marker-fallback{font-size:28px;line-height:1}
+ .lw-map-icon{background:transparent;border:0}
+`;
+document.head.appendChild(iconStyle);
 const map=L.map('map',{crs:L.CRS.Simple,minZoom:-2,maxZoom:3,zoomControl:true,attributionControl:false});
 const bounds=[[0,0],[IMAGE_HEIGHT,IMAGE_WIDTH]]; map.fitBounds(bounds);map.setMaxBounds(bounds);L.imageOverlay(IMAGE_URL,bounds).addTo(map);
 
@@ -47,49 +69,29 @@ function factionKey(name){return String(name||'Neutral').trim()||'Neutral';}
 function factionColor(name){const f=factionKey(name).toLowerCase();if(f==='alliance')return '#2d8cff';if(f==='horde')return '#e44852';if(f==='neutral'||f==='unclaimed')return '#9aa7b5';return '#9aa7b5';}
 function groupKey(name){return factionKey(name).toLowerCase();}
 function getGroup(name){const key=groupKey(name);if(!groups[key])groups[key]=L.featureGroup().addTo(map);return groups[key];}
-function meta(layer){layer._lw=layer._lw||{};const p=layer._lw;p.title=p.title||'Unnamed territory';p.owner=factionKey(p.owner||p.category||'Neutral');p.color=safeColor(p.color||factionColor(p.owner));p.status=STATUSES[p.status]?p.status:'controlled';p.type=TERRITORY_TYPES[p.type]?p.type:'territory';p.icon=ICONS[p.icon]?p.icon:(TYPE_ICON[p.type]||'territory');p.description=p.description||'';p.defense=clampRating(p.defense);p.attacker=p.attacker||'';p.attackerRating=clampRating(p.attackerRating);p.importance=p.importance||'';p.garrison=p.garrison||'';p.fortifications=p.fortifications||'';p.battleNotes=p.battleNotes||'';p.lastUpdated=p.lastUpdated||'';p.history=Array.isArray(p.history)?p.history:[];p.battleStart=p.battleStart||'';p.battleEnd=p.battleEnd||'';p.battleType=p.battleType||'';p.strategicNotes=p.strategicNotes||'';p.striped=!!p.striped;return p;}
+function meta(layer){layer._lw=layer._lw||{};const p=layer._lw;p.title=p.title||'Unnamed territory';p.owner=factionKey(p.owner||p.category||'Neutral');p.color=safeColor(p.color||factionColor(p.owner));p.status=STATUSES[p.status]?p.status:'controlled';p.type=TERRITORY_TYPES[p.type]?p.type:'territory';p.icon=ICONS[p.icon]?p.icon:(TYPE_ICON[p.type]||'territory');p.description=p.description||'';p.defense=clampRating(p.defense);p.attacker=p.attacker||'';p.attackerRating=clampRating(p.attackerRating);p.importance=p.importance||'';p.garrison=p.garrison||'';p.fortifications=p.fortifications||'';p.battleNotes=p.battleNotes||'';p.lastUpdated=p.lastUpdated||'';p.history=Array.isArray(p.history)?p.history:[];p.battleStart=p.battleStart||'';p.battleEnd=p.battleEnd||'';p.battleType=p.battleType||'';p.strategicNotes=p.strategicNotes||'';return p;}
 function clampRating(v){const n=Number(v);return Number.isFinite(n)?n:0;}
 function colorOf(layer){const p=meta(layer);return (p.status==='contested'||p.status==='attacked')?'#f0b94e':p.color;}
 function iconOf(layer){const p=meta(layer);return p.icon==='auto'?(TYPE_ICON[p.type]||'territory'):p.icon;}
-function markerIcon(layer){const p=meta(layer),ic=ICONS[iconOf(layer)]||ICONS.territory,c=colorOf(layer);return L.divIcon({className:'lw-map-icon',html:`<div class="lw-marker" style="--marker-color:${c}">${ic.emoji}</div>`,iconSize:[36,36],iconAnchor:[18,18],popupAnchor:[0,-16]});}
-function ensureStripePattern(layer, color){
- const path=layer && layer._path;
- const svg=path && path.ownerSVGElement;
- if(!svg || !layer._leaflet_id) return null;
- const id='lw-stripe-pattern-'+layer._leaflet_id;
- let defs=svg.querySelector('defs');
- if(!defs){defs=document.createElementNS('http://www.w3.org/2000/svg','defs');svg.insertBefore(defs,svg.firstChild);}
- let pattern=svg.querySelector('#'+id);
- if(!pattern){
-  pattern=document.createElementNS('http://www.w3.org/2000/svg','pattern');
-  pattern.setAttribute('id',id);pattern.setAttribute('patternUnits','userSpaceOnUse');
-  pattern.setAttribute('width','12');pattern.setAttribute('height','12');pattern.setAttribute('patternTransform','rotate(35)');
-  const bg=document.createElementNS('http://www.w3.org/2000/svg','rect');bg.setAttribute('width','12');bg.setAttribute('height','12');bg.setAttribute('fill',color);bg.setAttribute('fill-opacity','0.16');pattern.appendChild(bg);
-  const lines=document.createElementNS('http://www.w3.org/2000/svg','path');lines.setAttribute('d','M 0 0 L 0 12 M 6 0 L 6 12');lines.setAttribute('fill','none');lines.setAttribute('stroke',color);lines.setAttribute('stroke-width','3');lines.setAttribute('stroke-opacity','0.88');pattern.appendChild(lines);defs.appendChild(pattern);
- } else {
-  const bg=pattern.querySelector('rect'),lines=pattern.querySelector('path');
-  if(bg)bg.setAttribute('fill',color);if(lines)lines.setAttribute('stroke',color);
- }
- return 'url(#'+id+')';
+function markerIcon(layer){
+ const p=meta(layer),key=iconOf(layer),ic=ICONS[key]||ICONS.territory,c=colorOf(layer);
+ const art=ic.asset
+  ? `<img class="lw-marker-art" src="/assets/map-icons/${ic.asset}.png" alt="${esc(ic.label)}" />`
+  : `<span class="lw-marker-fallback">${ic.emoji}</span>`;
+ return L.divIcon({className:'lw-map-icon',html:`<div class="lw-marker" style="--marker-color:${c}">${art}</div>`,iconSize:[48,48],iconAnchor:[24,24],popupAnchor:[0,-20]});
 }
 function applyStyle(layer){
  const p=meta(layer),c=colorOf(layer);
  if(layer instanceof L.Marker){layer.setIcon(markerIcon(layer));return;}
- if(!layer.setStyle)return;
- // SVG pattern is attached after Leaflet has created the path. The one-time add hook
- // covers layers whose SVG path is not available yet during their first style pass.
- const stripeFill=p.striped?ensureStripePattern(layer,p.color):null;
- layer.setStyle({
+ if(layer.setStyle)layer.setStyle({
    color:(p.status==='attacked'||p.status==='contested')?c:'#17212b',
    weight:(p.status==='attacked')?3.5:(p.status==='contested'?3:1.35),
    opacity:(p.status==='attacked'||p.status==='contested')?.98:.9,
-   fillColor:stripeFill||c,
-   fillOpacity:p.striped?1:(p.status==='attacked'?.32:p.status==='contested'?.29:.24),
+   fillColor:c,
+   fillOpacity:p.status==='attacked'?.32:p.status==='contested'?.29:.24,
    dashArray:p.status==='attacked'?'7 4':null,
    lineCap:'round',lineJoin:'round'
  });
- if(p.striped && !stripeFill && !layer._lwStripeHook){layer._lwStripeHook=true;layer.once('add',()=>{layer._lwStripeHook=false;applyStyle(layer);});}
- if(!p.striped && layer._path)layer.setStyle({fillColor:c,fillOpacity:p.status==='attacked'?.32:p.status==='contested'?.29:.24});
 }
 function addToOwner(layer){const p=meta(layer);Object.values(groups).forEach(g=>g.removeLayer(layer));getGroup(p.owner).addLayer(layer);drawnItems.addLayer(layer);applyStyle(layer);}
 function iconLabel(layer){const p=meta(layer);return (ICONS[iconOf(layer)]||ICONS.territory).emoji;}
@@ -110,7 +112,7 @@ function attachClick(layer){
    selectedLayer=layer;
    if(layer instanceof L.Marker){layer.setZIndexOffset(1200);if(layer._icon)layer._icon.style.zIndex='1200';}
    else if(layer.setStyle)layer.setStyle({color:'#f6d477',weight:4,opacity:1,fillOpacity:.34});
-   if(ADMIN){const oe=event?.originalEvent;attachEditor(layer,oe?{x:oe.clientX,y:oe.clientY}:null);}else{updateDetails(layer);}
+   if(ADMIN){const oe=event?.originalEvent;attachEditor(layer,oe?{x:oe.clientX,y:oe.clientY}:null);}else{attachViewer(layer);updateDetails(layer);}
  });
 }
 function field(label,id,value,type='text',extra=''){return `<label for="${id}">${label}</label><input id="${id}" type="${type}" value="${esc(value)}" ${extra}>`;}
@@ -119,7 +121,7 @@ function attachEditor(layer, clickPoint){
  const types=Object.entries(TERRITORY_TYPES).map(([k,v])=>`<option value="${k}" ${p.type===k?'selected':''}>${v}</option>`).join('');
  const statuses=Object.entries(STATUSES).map(([k,v])=>`<option value="${k}" ${p.status===k?'selected':''}>${v}</option>`).join('');
  const icons=Object.entries(ICONS).map(([k,v])=>`<option value="${k}" ${iconOf(layer)===k?'selected':''}>${v.emoji} ${v.label}</option>`).join('');
- const html=`<div class="edit-form">${field('Territory name','lw-title',p.title,'text','maxlength="100"')}${field('Faction / owner name (create any faction)','lw-owner',p.owner,'text','maxlength="80" placeholder="e.g. Alliance, Horde, Guild name"')}<label>Territory color</label><input id="lw-color" type="color" value="${p.color}"><label class="lw-stripe-toggle" style="display:flex;align-items:center;gap:9px;margin:8px 0"><input id="lw-striped" type="checkbox" ${p.striped?'checked':''} style="width:auto;margin:0"> Stripe fill (for unavailable / unreleased zones)</label><div style="font-size:12px;opacity:.75;margin:-3px 0 8px">Stripes use the selected territory color.</div><label>Territory type</label><select id="lw-type">${types}</select><label>Map icon</label><select id="lw-icon">${icons}</select><label>Territory status</label><select id="lw-status">${statuses}</select>${field('Defense rating (any number)','lw-defense',p.defense,'number','step="any"')}<div id="siegeFields" style="display:${p.status==='attacked'||p.status==='contested'?'grid':'none'};gap:7px"><label for="lw-attacker">Attacker / attacking faction</label><input id="lw-attacker" value="${esc(p.attacker)}" maxlength="100" placeholder="Who is attacking?">${field('Attacker rating (any number)','lw-attackrating',p.attackerRating,'number','step="any"')}</div><label>Strategic importance</label><select id="lw-importance"><option value="" ${!p.importance?'selected':''}>Not specified</option>${['Low','Moderate','High','Critical'].map(v=>`<option ${p.importance===v?'selected':''}>${v}</option>`).join('')}</select>${field('Garrison strength (optional)','lw-garrison',p.garrison)}<label>Defensive fortifications (optional)</label><textarea id="lw-fortifications" maxlength="500">${esc(p.fortifications)}</textarea><label>Battle notes (optional)</label><textarea id="lw-battle-notes" maxlength="1000">${esc(p.battleNotes)}</textarea>${field('Last updated (optional)','lw-last-updated',p.lastUpdated)}${field('Battle / siege type (optional)','lw-battle-type',p.battleType)}${field('Battle start date (optional)','lw-battle-start',p.battleStart)}${field('Battle end date (optional)','lw-battle-end',p.battleEnd)}<label>Strategic notes (optional)</label><textarea id="lw-strategic-notes" maxlength="1000">${esc(p.strategicNotes)}</textarea><label>Chronicle entries (one per line: YYYY-MM-DD | Event title | Details)</label><textarea id="lw-history" maxlength="4000" placeholder="2026-10-13 | Siege begins | The attackers reached the outer gate.">${esc(p.history.map(h=>[h.date||'',h.title||'',h.details||''].join(' | ')).join('\n'))}</textarea><label>Information</label><textarea id="lw-description" maxlength="1000" placeholder="Optional details, defenses, history, siege notes">${esc(p.description)}</textarea><button class="btn" id="lw-save" type="button">Save territory</button><div class="statusline">Changes are local until you export and publish the GeoJSON.</div></div>`;
+ const html=`<div class="edit-form">${field('Territory name','lw-title',p.title,'text','maxlength="100"')}${field('Faction / owner name (create any faction)','lw-owner',p.owner,'text','maxlength="80" placeholder="e.g. Alliance, Horde, Guild name"')}<label>Territory color</label><input id="lw-color" type="color" value="${p.color}"><label>Territory type</label><select id="lw-type">${types}</select><label>Map icon</label><select id="lw-icon">${icons}</select><label>Territory status</label><select id="lw-status">${statuses}</select>${field('Defense rating (any number)','lw-defense',p.defense,'number','step="any"')}<div id="siegeFields" style="display:${p.status==='attacked'||p.status==='contested'?'grid':'none'};gap:7px"><label for="lw-attacker">Attacker / attacking faction</label><input id="lw-attacker" value="${esc(p.attacker)}" maxlength="100" placeholder="Who is attacking?">${field('Attacker rating (any number)','lw-attackrating',p.attackerRating,'number','step="any"')}</div><label>Strategic importance</label><select id="lw-importance"><option value="" ${!p.importance?'selected':''}>Not specified</option>${['Low','Moderate','High','Critical'].map(v=>`<option ${p.importance===v?'selected':''}>${v}</option>`).join('')}</select>${field('Garrison strength (optional)','lw-garrison',p.garrison)}<label>Defensive fortifications (optional)</label><textarea id="lw-fortifications" maxlength="500">${esc(p.fortifications)}</textarea><label>Battle notes (optional)</label><textarea id="lw-battle-notes" maxlength="1000">${esc(p.battleNotes)}</textarea>${field('Last updated (optional)','lw-last-updated',p.lastUpdated)}${field('Battle / siege type (optional)','lw-battle-type',p.battleType)}${field('Battle start date (optional)','lw-battle-start',p.battleStart)}${field('Battle end date (optional)','lw-battle-end',p.battleEnd)}<label>Strategic notes (optional)</label><textarea id="lw-strategic-notes" maxlength="1000">${esc(p.strategicNotes)}</textarea><label>Chronicle entries (one per line: YYYY-MM-DD | Event title | Details)</label><textarea id="lw-history" maxlength="4000" placeholder="2026-10-13 | Siege begins | The attackers reached the outer gate.">${esc(p.history.map(h=>[h.date||'',h.title||'',h.details||''].join(' | ')).join('\n'))}</textarea><label>Information</label><textarea id="lw-description" maxlength="1000" placeholder="Optional details, defenses, history, siege notes">${esc(p.description)}</textarea><button class="btn" id="lw-save" type="button">Save territory</button><div class="statusline">Changes are local until you export and publish the GeoJSON.</div></div>`;
  const body=openFloatingEditor(layer,html,clickPoint);
  const status=body.querySelector('#lw-status');
  status.onchange=()=>{body.querySelector('#siegeFields').style.display=(status.value==='attacked'||status.value==='contested')?'grid':'none';};
@@ -130,12 +132,12 @@ function attachEditor(layer, clickPoint){
   p.title=get('lw-title').value.trim()||'Unnamed territory';p.owner=factionKey(get('lw-owner').value);
   const faction=factionProfiles[groupKey(p.owner)];p.color=safeColor(get('lw-color').value||(faction&&faction.color));p.type=get('lw-type').value;
   if(p.type==='capital'){const other=territoryLayers().find(l=>l!==layer&&meta(l).type==='capital'&&groupKey(meta(l).owner)===groupKey(p.owner));if(other&&!confirm('This faction already has a designated capital ('+meta(other).title+'). Keep both capitals?'))return;}
-  p.striped=!!get('lw-striped')?.checked;p.icon=get('lw-icon').value;if(p.type==='capital'&&p.icon==='auto')p.icon='factionCapital';p.status=status.value;p.defense=clampRating(get('lw-defense').value);p.attacker=get('lw-attacker')?.value.trim()||'';p.attackerRating=clampRating(get('lw-attackrating')?.value);p.description=get('lw-description').value.trim();p.importance=get('lw-importance').value;p.garrison=get('lw-garrison').value.trim();p.fortifications=get('lw-fortifications').value.trim();p.battleNotes=get('lw-battle-notes').value.trim();p.lastUpdated=get('lw-last-updated').value.trim();p.battleType=get('lw-battle-type').value.trim();p.battleStart=get('lw-battle-start').value.trim();p.battleEnd=get('lw-battle-end').value.trim();p.strategicNotes=get('lw-strategic-notes').value.trim();
+  p.icon=get('lw-icon').value;if(p.type==='capital'&&p.icon==='auto')p.icon='factionCapital';p.status=status.value;p.defense=clampRating(get('lw-defense').value);p.attacker=get('lw-attacker')?.value.trim()||'';p.attackerRating=clampRating(get('lw-attackrating')?.value);p.description=get('lw-description').value.trim();p.importance=get('lw-importance').value;p.garrison=get('lw-garrison').value.trim();p.fortifications=get('lw-fortifications').value.trim();p.battleNotes=get('lw-battle-notes').value.trim();p.lastUpdated=get('lw-last-updated').value.trim();p.battleType=get('lw-battle-type').value.trim();p.battleStart=get('lw-battle-start').value.trim();p.battleEnd=get('lw-battle-end').value.trim();p.strategicNotes=get('lw-strategic-notes').value.trim();
   p.history=get('lw-history').value.split('\n').map(line=>line.trim()).filter(Boolean).map(line=>{const parts=line.split('|').map(x=>x.trim());return {date:parts[0]||'',title:parts[1]||'Territory update',details:parts.slice(2).join(' | ')};});
   addToOwner(layer);attachClick(layer);attachViewer(layer);updateDetails(layer);renderLegend();refreshWarRoom();closeFloatingEditor();
  };
 }
-function loadFeature(layer,props,geom){const oldOwner=props.owner||props.category||'Neutral';layer._lw={title:props.title||(geom==='Point'?'Map marker':'Unnamed territory'),owner:factionKey(oldOwner),color:safeColor(props.color||factionColor(oldOwner)),status:STATUSES[props.status]?props.status:((String(oldOwner).toLowerCase()==='neutral')?'neutral':'controlled'),type:TERRITORY_TYPES[props.type]?props.type:(geom==='Point'?(props.icon==='city'?'city':props.icon==='fort'?'fort':'territory'):'territory'),icon:props.icon&&ICONS[props.icon]?props.icon:(props.icon==='city'?'capital':props.icon==='fort'?'fort':'auto'),description:props.description||'',defense:clampRating(props.defense),attacker:props.attacker||'',attackerRating:clampRating(props.attackerRating),importance:props.importance||'',garrison:props.garrison||'',fortifications:props.fortifications||'',battleNotes:props.battleNotes||'',lastUpdated:props.lastUpdated||'',history:Array.isArray(props.history)?props.history:[],battleStart:props.battleStart||'',battleEnd:props.battleEnd||'',battleType:props.battleType||'',strategicNotes:props.strategicNotes||'',striped:!!props.striped};addToOwner(layer);attachClick(layer);if(!ADMIN)attachViewer(layer);}
+function loadFeature(layer,props,geom){const oldOwner=props.owner||props.category||'Neutral';layer._lw={title:props.title||(geom==='Point'?'Map marker':'Unnamed territory'),owner:factionKey(oldOwner),color:safeColor(props.color||factionColor(oldOwner)),status:STATUSES[props.status]?props.status:((String(oldOwner).toLowerCase()==='neutral')?'neutral':'controlled'),type:TERRITORY_TYPES[props.type]?props.type:(geom==='Point'?(props.icon==='city'?'city':props.icon==='fort'?'fort':'territory'):'territory'),icon:props.icon&&ICONS[props.icon]?props.icon:(props.icon==='city'?'capital':props.icon==='fort'?'fort':'auto'),description:props.description||'',defense:clampRating(props.defense),attacker:props.attacker||'',attackerRating:clampRating(props.attackerRating),importance:props.importance||'',garrison:props.garrison||'',fortifications:props.fortifications||'',battleNotes:props.battleNotes||'',lastUpdated:props.lastUpdated||'',history:Array.isArray(props.history)?props.history:[],battleStart:props.battleStart||'',battleEnd:props.battleEnd||'',battleType:props.battleType||'',strategicNotes:props.strategicNotes||''};addToOwner(layer);attachClick(layer);}
 
 
 function matchesFilters(layer){
@@ -267,80 +269,33 @@ function manageFactions(){
  $('fm-export').onclick=exportFactionProfiles;$('fm-close').onclick=()=>modal.remove();
 }
 
-// Shared-boundary assistance for Leaflet polygons.
-// Vertices snap to nearby existing border SEGMENTS (not only existing vertices).
-// If a new edge follows an existing edge, the existing edge's intermediate vertices
-// are inserted into the new ring so the two features can share the same path.
+// Snap newly drawn/edited polygon vertices to nearby existing polygon vertices.
+// This makes it much easier to make neighboring territories share exact corner points.
+// It does not perform polygon clipping or guarantee that interiors never overlap.
 function snapPolygonVertices(layer){
  if(!(layer instanceof L.Polygon) || layer instanceof L.Rectangle || !map || !layer.getLatLngs) return layer;
- const SNAP_PX=30, FOLLOW_PX=9;
- const existing=[];
- const sameLayer=(a,b)=>a===b;
- function rings(value,out=[]){
-  if(!Array.isArray(value))return out;
-  if(value.length && value[0] && Number.isFinite(value[0].lat) && Number.isFinite(value[0].lng))out.push(value);
-  else value.forEach(v=>rings(v,out));
-  return out;
+ const candidates=[];
+ function collectExisting(value){
+  if(Array.isArray(value)){value.forEach(collectExisting);return;}
+  if(value && Number.isFinite(value.lat) && Number.isFinite(value.lng)) candidates.push(value);
  }
- function addExisting(other){
-  if(sameLayer(other,layer)||!(other instanceof L.Polygon)||other instanceof L.Rectangle)return;
-  rings(other.getLatLngs()).forEach(ring=>{
-   if(ring.length<2)return;
-   const closed=ring.length>2 && ring[0].equals(ring[ring.length-1]);
-   const segmentCount=closed?ring.length-1:ring.length;
-   for(let i=0;i<segmentCount;i++){
-    const a=ring[i],b=ring[(i+1)%ring.length],pa=map.latLngToContainerPoint(a),pb=map.latLngToContainerPoint(b);
-    existing.push({a,b,pa,pb,layer:other});
-   }
-  });
- }
- allLayers.forEach(addExisting);
- if(!existing.length)return layer;
- const distPointSeg=(p,a,b)=>{const dx=b.x-a.x,dy=b.y-a.y,l2=dx*dx+dy*dy;if(!l2)return {d:p.distanceTo(a),t:0,point:a};const t=Math.max(0,Math.min(1,((p.x-a.x)*dx+(p.y-a.y)*dy)/l2));const q=L.point(a.x+t*dx,a.y+t*dy);return {d:p.distanceTo(q),t,point:q};};
- function snapPoint(ll){
-  const pt=map.latLngToContainerPoint(ll);let best=null,bestD=SNAP_PX;
-  for(const e of existing){const r=distPointSeg(pt,e.pa,e.pb);if(r.d<bestD){bestD=r.d;best={e,r};}}
-  if(!best)return ll;
-  // Preserve exact existing endpoints when close; otherwise use the projected point
-  // on the existing segment (converted back to map coordinates).
-  const {e,r}=best;
-  if(r.t<0.035)return L.latLng(e.a.lat,e.a.lng);
-  if(r.t>0.965)return L.latLng(e.b.lat,e.b.lng);
-  return map.containerPointToLatLng(r.point);
- }
- function pointLineDistance(p,a,b){return distPointSeg(p,a,b);}
- function normalizeRing(input){
-  if(!Array.isArray(input)||input.length<3)return input;
-  let ring=input.map(snapPoint);
-  // For every new edge, insert existing border vertices that lie along that edge.
-  // This makes shared sections use the same ordered vertices, instead of merely
-  // crossing at a similar-looking point.
-  const out=[];
-  for(let i=0;i<ring.length;i++){
-   const a=ring[i],b=ring[(i+1)%ring.length],pa=map.latLngToContainerPoint(a),pb=map.latLngToContainerPoint(b);
-   out.push(a);
-   const dx=pb.x-pa.x,dy=pb.y-pa.y,len2=dx*dx+dy*dy;if(len2<1)continue;
-   const inserts=[];
-   for(const e of existing){
-    for(const ll of [e.a,e.b]){
-     const q=map.latLngToContainerPoint(ll),r=pointLineDistance(q,pa,pb);
-     if(r.d<=FOLLOW_PX && r.t>0.015 && r.t<0.985)inserts.push({t:r.t,ll});
-    }
-   }
-   inserts.sort((x,y)=>x.t-y.t);
-   let lastT=-1;
-   for(const v of inserts){if(v.t-lastT<0.003)continue;lastT=v.t;const prev=out[out.length-1];if(!prev||map.latLngToContainerPoint(prev).distanceTo(map.latLngToContainerPoint(v.ll))>0.5)out.push(L.latLng(v.ll.lat,v.ll.lng));}
+ allLayers.forEach(other=>{
+  if(other===layer || !(other instanceof L.Polygon) || !other.getLatLngs) return;
+  collectExisting(other.getLatLngs());
+ });
+ if(!candidates.length)return layer;
+ const candidatePoints=candidates.map(ll=>({ll,pt:map.latLngToContainerPoint(ll)}));
+ const SNAP_PIXELS=24;
+ function snapTree(value){
+  if(Array.isArray(value))return value.map(snapTree);
+  if(value && Number.isFinite(value.lat) && Number.isFinite(value.lng)){
+   const pt=map.latLngToContainerPoint(value);let best=null,bestDist=SNAP_PIXELS;
+   for(const c of candidatePoints){const d=pt.distanceTo(c.pt);if(d<bestDist){best=c.ll;bestDist=d;}}
+   return best ? L.latLng(best.lat,best.lng) : value;
   }
-  // Leaflet expects the polygon ring to be closed only implicitly; don't duplicate first point.
-  if(out.length>1 && out[0].equals(out[out.length-1]))out.pop();
-  return out;
+  return value;
  }
- function mapTree(value){
-  if(!Array.isArray(value))return value;
-  if(value.length && value[0] && Number.isFinite(value[0].lat) && Number.isFinite(value[0].lng))return normalizeRing(value);
-  return value.map(mapTree);
- }
- layer.setLatLngs(mapTree(layer.getLatLngs()));
+ layer.setLatLngs(snapTree(layer.getLatLngs()));
  if(layer.redraw)layer.redraw();
  return layer;
 }
@@ -369,6 +324,6 @@ document.addEventListener('keydown',ev=>{
 });
 map.on(L.Draw.Event.DRAWSTART,e=>{closeFloatingEditor();activeDrawType=e.layerType||null;finishPolygonBtn.style.display=activeDrawType==='polygon'?'block':'none';});
 map.on(L.Draw.Event.DRAWSTOP,()=>{activeDrawType=null;finishPolygonBtn.style.display='none';});
-map.on(L.Draw.Event.CREATED,e=>{const layer=e.layer;snapPolygonVertices(layer);layer._lw={title:layer instanceof L.Marker?'New marker':'New territory',owner:'Neutral',color:'#9aa7b5',status:'neutral',type:layer instanceof L.Marker?'landmark':'territory',icon:layer instanceof L.Marker?'auto':'territory',striped:false,description:'',defense:0,attacker:'',attackerRating:0};addToOwner(layer);allLayers.push(layer);attachClick(layer);attachEditor(layer);renderLegend();refreshWarRoom();});map.on(L.Draw.Event.EDITED,e=>e.layers.eachLayer(l=>{snapPolygonVertices(l);applyStyle(l);attachClick(l);}));map.on(L.Draw.Event.DELETED,e=>{e.layers.eachLayer(l=>{Object.values(groups).forEach(g=>g.removeLayer(l));allLayers=allLayers.filter(x=>x!==l);});renderLegend();});}
-document.getElementById('resetViewBtn')?.addEventListener('click',()=>map.fitBounds(bounds));document.getElementById('exportBtn')?.addEventListener('click',()=>{if(!ADMIN)return alert('Admin only.');const features=[];drawnItems.eachLayer(layer=>{const gj=layer.toGeoJSON(),p=meta(layer);gj.properties={title:p.title,owner:p.owner,color:p.color,category:p.owner.toLowerCase(),status:p.status,type:p.type,icon:p.icon,striped:!!p.striped,description:p.description,defense:p.defense,attacker:p.attacker,attackerRating:p.attackerRating,importance:p.importance,garrison:p.garrison,fortifications:p.fortifications,battleNotes:p.battleNotes,lastUpdated:p.lastUpdated,history:p.history,battleStart:p.battleStart,battleEnd:p.battleEnd,battleType:p.battleType,strategicNotes:p.strategicNotes};features.push(gj);});downloadJson({type:'FeatureCollection',features},'overlays.geojson');});document.getElementById('clearBtn')?.addEventListener('click',()=>{if(!ADMIN)return alert('Admin only.');if(!confirm('Remove all territories from this editing session? This does not change the published map until you export and replace overlays.geojson.'))return;Object.values(groups).forEach(g=>g.clearLayers());drawnItems.clearLayers();allLayers=[];renderLegend();refreshWarRoom();document.getElementById('details').innerHTML='<div class="detail-name">Map cleared</div><div class="detail-copy">Current editing session cleared only.</div>';});
+map.on(L.Draw.Event.CREATED,e=>{const layer=e.layer;snapPolygonVertices(layer);layer._lw={title:layer instanceof L.Marker?'New marker':'New territory',owner:'Neutral',color:'#9aa7b5',status:'neutral',type:layer instanceof L.Marker?'landmark':'territory',icon:layer instanceof L.Marker?'auto':'territory',description:'',defense:0,attacker:'',attackerRating:0};addToOwner(layer);allLayers.push(layer);attachClick(layer);attachEditor(layer);renderLegend();refreshWarRoom();});map.on(L.Draw.Event.EDITED,e=>e.layers.eachLayer(l=>{snapPolygonVertices(l);applyStyle(l);attachClick(l);}));map.on(L.Draw.Event.DELETED,e=>{e.layers.eachLayer(l=>{Object.values(groups).forEach(g=>g.removeLayer(l));allLayers=allLayers.filter(x=>x!==l);});renderLegend();});}
+document.getElementById('resetViewBtn')?.addEventListener('click',()=>map.fitBounds(bounds));document.getElementById('exportBtn')?.addEventListener('click',()=>{if(!ADMIN)return alert('Admin only.');const features=[];drawnItems.eachLayer(layer=>{const gj=layer.toGeoJSON(),p=meta(layer);gj.properties={title:p.title,owner:p.owner,color:p.color,category:p.owner.toLowerCase(),status:p.status,type:p.type,icon:p.icon,description:p.description,defense:p.defense,attacker:p.attacker,attackerRating:p.attackerRating,importance:p.importance,garrison:p.garrison,fortifications:p.fortifications,battleNotes:p.battleNotes,lastUpdated:p.lastUpdated,history:p.history,battleStart:p.battleStart,battleEnd:p.battleEnd,battleType:p.battleType,strategicNotes:p.strategicNotes};features.push(gj);});downloadJson({type:'FeatureCollection',features},'overlays.geojson');});document.getElementById('clearBtn')?.addEventListener('click',()=>{if(!ADMIN)return alert('Admin only.');if(!confirm('Remove all territories from this editing session? This does not change the published map until you export and replace overlays.geojson.'))return;Object.values(groups).forEach(g=>g.clearLayers());drawnItems.clearLayers();allLayers=[];renderLegend();refreshWarRoom();document.getElementById('details').innerHTML='<div class="detail-name">Map cleared</div><div class="detail-copy">Current editing session cleared only.</div>';});
 function downloadJson(obj,filename){const blob=new Blob([JSON.stringify(obj,null,2)],{type:'application/geo+json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=filename;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);}
